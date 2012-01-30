@@ -18,14 +18,9 @@ on property:sys.usb.config=none
 on property:sys.usb.config=adb
     write /sys/class/android_usb/android0/enable 0
 
-    # What's the correct vendor ID for Inte?
-    write /sys/class/android_usb/android0/idVendor 0x0bb4
-
-    # GB had 0x0c01 for idProduct when ADB was enabled.
-    # ICS  had D002 for idProduct when ADB was enabled.
-    # Not sure what's what here
-    # write /sys/class/android_usb/android0/idProduct 0x0c01
-    write /sys/class/android_usb/android0/idProduct 0C01
+    # Intel VID/PID for ADB mode
+    write /sys/class/android_usb/android0/idVendor 0x8087
+    write /sys/class/android_usb/android0/idProduct 0x09ef
 
     # Not need to set iSerial, as driver will get it from emmc cid
     # write /sys/class/android_usb/android0/iSerial "Medfield12345678"
@@ -63,9 +58,9 @@ on property:sys.usb.config=accessory,adb
 on property:sys.usb.config=mtp
     write /sys/class/android_usb/android0/enable 0
 
-    # FIXME: Need to use Intel PID/VID
-    write /sys/class/android_usb/android0/idVendor 0x0bb4
-    write /sys/class/android_usb/android0/idProduct 2d02
+    # Intel VID/PID for MTP mode
+    write /sys/class/android_usb/android0/idVendor 0x8087
+    write /sys/class/android_usb/android0/idProduct 0x09fb
     write /sys/class/android_usb/android0/iProduct "Android-Phone"
     write /sys/class/android_usb/android0/functions $sys.usb.config
     write /sys/class/android_usb/android0/enable 1
@@ -75,9 +70,9 @@ on property:sys.usb.config=mtp
 on property:sys.usb.config=mtp,adb
     write /sys/class/android_usb/android0/enable 0
 
-    # FIXME: Need to use Intel PID/VID
-    write /sys/class/android_usb/android0/idVendor 0x0bb4
-    write /sys/class/android_usb/android0/idProduct 2d03
+    # Intel PID/VID for MTP + ADB mode
+    write /sys/class/android_usb/android0/idVendor 0x8087
+    write /sys/class/android_usb/android0/idProduct 0x09fc
     write /sys/class/android_usb/android0/iProduct "Android-Phone"
     write /sys/class/android_usb/android0/functions $sys.usb.config
     write /sys/class/android_usb/android0/enable 1
@@ -88,9 +83,9 @@ on property:sys.usb.config=mtp,adb
 on property:sys.usb.config=ptp
     write /sys/class/android_usb/android0/enable 0
 
-    # FIXME: Need to use Intel PID/VID
-    write /sys/class/android_usb/android0/idVendor 0x0bb4
-    write /sys/class/android_usb/android0/idProduct 2d04
+    # Intel PID/VID for PTP mode
+    write /sys/class/android_usb/android0/idVendor 0x8087
+    write /sys/class/android_usb/android0/idProduct 0x09fd
     write /sys/class/android_usb/android0/iProduct "Android-Phone"
     write /sys/class/android_usb/android0/functions $sys.usb.config
     write /sys/class/android_usb/android0/enable 1
@@ -100,9 +95,9 @@ on property:sys.usb.config=ptp
 on property:sys.usb.config=ptp,adb
     write /sys/class/android_usb/android0/enable 0
 
-    # FIXME: Need to use Intel PID/VID
-    write /sys/class/android_usb/android0/idVendor 0x0bb4
-    write /sys/class/android_usb/android0/idProduct 2d05
+    # Intel PID/VID for PTP + ADB mode
+    write /sys/class/android_usb/android0/idVendor 0x8087
+    write /sys/class/android_usb/android0/idProduct 0x09fe
     write /sys/class/android_usb/android0/iProduct "Android-Phone"
     write /sys/class/android_usb/android0/functions $sys.usb.config
     write /sys/class/android_usb/android0/enable 1
@@ -114,9 +109,9 @@ on property:sys.usb.config=ptp,adb
 on property:sys.usb.config=rndis
     write /sys/class/android_usb/android0/enable 0
 
-    # FIXME: Need to use Intel PID/VID
-    write /sys/class/android_usb/android0/idVendor 0x0bb4
-    write /sys/class/android_usb/android0/idProduct 2d06
+    # Intel PID/VID for RNDIS mode
+    write /sys/class/android_usb/android0/idVendor 0x8087
+    write /sys/class/android_usb/android0/idProduct 0x09f3
     write /sys/class/android_usb/android0/iProduct "Android-Phone"
     write /sys/class/android_usb/android0/functions $sys.usb.config
     write /sys/class/android_usb/android0/enable 1
@@ -126,9 +121,9 @@ on property:sys.usb.config=rndis
 on property:sys.usb.config=rndis,adb
     write /sys/class/android_usb/android0/enable 0
 
-    # FIXME: Need to use Intel PID/VID
-    write /sys/class/android_usb/android0/idVendor 0x0bb4
-    write /sys/class/android_usb/android0/idProduct 2d07
+    # Intel PID/VID for RNDIS + ADB mode
+    write /sys/class/android_usb/android0/idVendor 0x8087
+    write /sys/class/android_usb/android0/idProduct 0x09f4
     write /sys/class/android_usb/android0/iProduct "Android-Phone"
     write /sys/class/android_usb/android0/functions $sys.usb.config
     start adbd
@@ -139,24 +134,12 @@ on property:sys.usb.config=rndis,adb
 on property:sys.usb.config=rndis,acm,adb
     write /sys/class/android_usb/android0/enable 0
 
-    # FIXME: Need to use Intel PID/VID
-    write /sys/class/android_usb/android0/idVendor 0x0bb4
-    write /sys/class/android_usb/android0/idProduct 2d08
+    # Intel PID/VID for ACM + RNDIS + ADB mode
+    write /sys/class/android_usb/android0/idVendor 0x8087
+    write /sys/class/android_usb/android0/idProduct 0x09f8
     write /sys/class/android_usb/android0/iProduct "Android-Phone"
     write /sys/class/android_usb/android0/functions $sys.usb.config
     start adbd
-    write /sys/class/android_usb/android0/enable 1
-    setprop sys.usb.state $sys.usb.config
-
-# USB ACM configuration, with rndis
-on property:sys.usb.config=rndis,acm
-    write /sys/class/android_usb/android0/enable 0
-
-    # FIXME: Need to use Intel PID/VID
-    write /sys/class/android_usb/android0/idVendor 0x0bb4
-    write /sys/class/android_usb/android0/idProduct 2d09
-    write /sys/class/android_usb/android0/iProduct "Android-Phone"
-    write /sys/class/android_usb/android0/functions $sys.usb.config
     write /sys/class/android_usb/android0/enable 1
     setprop sys.usb.state $sys.usb.config
 
