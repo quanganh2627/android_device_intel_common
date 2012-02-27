@@ -1,0 +1,5 @@
+# Workaround for HSD #3470277
+service mmc_storage_startup /system/bin/mmc_storage_startup
+    group root system
+    disabled
+    oneshot

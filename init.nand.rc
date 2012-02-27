@@ -1,0 +1,38 @@
+on init
+
+# partition map
+#
+# nand
+#	-- pri --
+#	nda1		/boot
+#	nda2		/data
+#	nda3		/media
+#	-- ext --
+#	nda5		/recovery
+#	nda6		/system
+#	nda7		/cache
+#	nda8	not assigned yet
+#	nda9	not assigned yet
+#	nda10	not assigned yet
+#
+
+
+# mount android base partitions
+    mount ext3 /dev/block/nda6 /system
+
+    # We chown/chmod /data again so because mount is run as root + defaults
+    mount ext3 /dev/block/nda2 /data nosuid nodev
+    chown system system /data
+    chmod 0771 /data
+
+    # Same reason as /data above
+    mount ext3 /dev/block/nda7 /cache nosuid nodev
+    chown system cache /cache
+    chmod 0770 /cache
+
+    # This may have been created by the recovery system with odd permissions
+    chown system system /cache/recovery
+    chmod 0770 /cache/recovery
+
+on boot
+# See init.cdk-basic.rc

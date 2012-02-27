@@ -1,0 +1,179 @@
+
+# Perms
+on post-fs-data
+    chown system system /sys/class/android_usb/android0/f_mass_storage/lun/file
+    chmod 0660 /sys/class/android_usb/android0/f_mass_storage/lun/file
+    chown system system /sys/class/android_usb/android0/f_rndis/ethaddr
+    chmod 0660 /sys/class/android_usb/android0/f_rndis/ethaddr
+
+# Used to disable USB when switching states
+on property:sys.usb.config=none
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/bDeviceClass 0
+    setprop sys.usb.state $sys.usb.config
+
+# adb only USB configuration
+# This should only be used during device bringup
+# and as a fallback if the USB manager fails to set a standard configuration
+on property:sys.usb.config=adb
+    write /sys/class/android_usb/android0/enable 0
+
+    # What's the correct vendor ID for Inte?
+    write /sys/class/android_usb/android0/idVendor 0x0bb4
+
+    # GB had 0x0c01 for idProduct when ADB was enabled.
+    # ICS  had D002 for idProduct when ADB was enabled.
+    # Not sure what's what here
+    # write /sys/class/android_usb/android0/idProduct 0x0c01
+    write /sys/class/android_usb/android0/idProduct 0C01
+
+    # Not need to set iSerial, as driver will get it from emmc cid
+    # write /sys/class/android_usb/android0/iSerial "Medfield12345678"
+
+    # Google is no longer setting iProduct. What's it used for?
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+    start adbd
+    setprop sys.usb.state $sys.usb.config
+
+# USB accessory configuration
+on property:sys.usb.config=accessory
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 0x18d1
+    write /sys/class/android_usb/android0/idProduct 2d00
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+    setprop sys.usb.state $sys.usb.config
+
+# USB accessory configuration, with adb
+on property:sys.usb.config=accessory,adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 0x18d1
+    write /sys/class/android_usb/android0/idProduct 2d01
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+    start adbd
+    setprop sys.usb.state $sys.usb.config
+
+# USB MTP configuration
+on property:sys.usb.config=mtp
+    write /sys/class/android_usb/android0/enable 0
+
+    # FIXME: Need to use Intel PID/VID
+    write /sys/class/android_usb/android0/idVendor 0x0bb4
+    write /sys/class/android_usb/android0/idProduct 2d02
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+    setprop sys.usb.state $sys.usb.config
+
+# USB MTP configuration, with adb
+on property:sys.usb.config=mtp,adb
+    write /sys/class/android_usb/android0/enable 0
+
+    # FIXME: Need to use Intel PID/VID
+    write /sys/class/android_usb/android0/idVendor 0x0bb4
+    write /sys/class/android_usb/android0/idProduct 2d03
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+    start adbd
+    setprop sys.usb.state $sys.usb.config
+
+# USB PTP configuration
+on property:sys.usb.config=ptp
+    write /sys/class/android_usb/android0/enable 0
+
+    # FIXME: Need to use Intel PID/VID
+    write /sys/class/android_usb/android0/idVendor 0x0bb4
+    write /sys/class/android_usb/android0/idProduct 2d04
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+    setprop sys.usb.state $sys.usb.config
+
+# USB PTP configuration, with adb
+on property:sys.usb.config=ptp,adb
+    write /sys/class/android_usb/android0/enable 0
+
+    # FIXME: Need to use Intel PID/VID
+    write /sys/class/android_usb/android0/idVendor 0x0bb4
+    write /sys/class/android_usb/android0/idProduct 2d05
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+    start adbd
+    setprop sys.usb.state $sys.usb.config
+
+
+# USB RNDIS configuration
+on property:sys.usb.config=rndis
+    write /sys/class/android_usb/android0/enable 0
+
+    # FIXME: Need to use Intel PID/VID
+    write /sys/class/android_usb/android0/idVendor 0x0bb4
+    write /sys/class/android_usb/android0/idProduct 2d06
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+    setprop sys.usb.state $sys.usb.config
+
+# USB RNDIS configuration, with adb
+on property:sys.usb.config=rndis,adb
+    write /sys/class/android_usb/android0/enable 0
+
+    # FIXME: Need to use Intel PID/VID
+    write /sys/class/android_usb/android0/idVendor 0x0bb4
+    write /sys/class/android_usb/android0/idProduct 2d07
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    start adbd
+    write /sys/class/android_usb/android0/enable 1
+    setprop sys.usb.state $sys.usb.config
+
+# USB ACM configuration, with rndis and adb
+on property:sys.usb.config=rndis,acm,adb
+    write /sys/class/android_usb/android0/enable 0
+
+    # FIXME: Need to use Intel PID/VID
+    write /sys/class/android_usb/android0/idVendor 0x0bb4
+    write /sys/class/android_usb/android0/idProduct 2d08
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    start adbd
+    write /sys/class/android_usb/android0/enable 1
+    setprop sys.usb.state $sys.usb.config
+
+# USB ACM configuration, with rndis
+on property:sys.usb.config=rndis,acm
+    write /sys/class/android_usb/android0/enable 0
+
+    # FIXME: Need to use Intel PID/VID
+    write /sys/class/android_usb/android0/idVendor 0x0bb4
+    write /sys/class/android_usb/android0/idProduct 2d09
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+    setprop sys.usb.state $sys.usb.config
+
+# Used to set USB configuration at boot and to switch the configuration
+# when changing the default configuration
+on property:persist.sys.usb.config=*
+    setprop sys.usb.config $persist.sys.usb.config
+
+# This property trigger has added to imitiate the previous behavior of "adb root".
+# The adb gadget driver used to reset the USB bus when the adbd daemon exited,
+# and the host side adb relied on this behavior to force it to reconnect with the
+# new adbd instance after init relaunches it. So now we force the USB bus to reset
+# here when adbd sets the service.adb.root property to 1.  We also restart adbd here
+# rather than waiting for init to notice its death and restarting it so the timing
+# of USB resetting and adb restarting more closely matches the previous behavior.
+on property:service.adb.root=1
+    write /sys/class/android_usb/android0/enable 0
+    restart adbd
+    write /sys/class/android_usb/android0/enable 1
+
