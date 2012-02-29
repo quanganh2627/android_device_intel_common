@@ -82,6 +82,7 @@ on post-fs
     mkdir /data/system/    0775 system system
     mkdir /data/system/dropbox 0700 system system
     mkdir /data/logs/modemcrash 0775 system system
+    mkdir /data/logs/stats 0775 system system
 
     #you must enable next line when you don`t use crashlogd
     #write /proc/emmc_ipanic_console 1
