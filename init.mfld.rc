@@ -48,9 +48,6 @@ on boot
     chmod 0666 /sys/class/backlight/psb-bl/max_brightness
     chmod 0666 /sys/class/backlight/psb-bl/actual_brightness
 
-    # English as our default language.
-    setprop persist.sys.language en_US
-
     # we will remap this as /mnt/sdcard with the sdcard fuse tool
     mkdir /data/media 0775 media_rw media_rw
     chown media_rw media_rw /data/media
