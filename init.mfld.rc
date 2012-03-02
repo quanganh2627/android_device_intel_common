@@ -197,3 +197,6 @@ service ap_logsd /system/bin/logcat -b system -b events -b main -b radio -n 20 -
 # underlying files in /data/media will be created with user and group media_rw (1023)
 service sdcard /system/bin/sdcard /data/media 1023 1023
     class main
+
+on property:ro.intel.corp.email=1
+    copy /system/etc/security/email.p12 /sdcard/email.p12
