@@ -1,0 +1,11 @@
+#mount point   fstype   device                    device2                   size hint			flags and options...
+/reserved      hidden   /dev/block/mmcblk0_none   none                      length=100
+/factory       ext4     /dev/block/mmcblk0p1      none                      length=256
+/system        ext4     /dev/block/mmcblk0p2      none                      length=512			ro noatime
+/cache         ext4     /dev/block/mmcblk0p3      none                      length=256			nosuid nodev fsck data=ordered,nodelalloc
+/config        ext4     /dev/block/mmcblk0p5      none                      length=16			ro
+/panic         raw      /dev/block/mmcblk0p6      none                      length=2
+/media         vfat     /dev/block/mmcblk0p7      none                      length=128
+/data          ext4     /dev/block/mmcblk0p8      none                      length=0			nosuid nodev fsck data=ordered,nodelalloc
+/logs          ext4     /dev/block/mmcblk0p9      none                      length=1024			
+/mnt/sdcard    vfat     /dev/block/mmcblk1p1      /dev/block/mmcblk1        length=-1
