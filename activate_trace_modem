@@ -1,0 +1,190 @@
+#!/sbin/ash
+
+################################################################################
+# Configuration available
+#
+# activate_trace_modem
+# 			-on -e1 -o : write on emmc (100MB) oneshot
+# 			-on -e1 -p : write on emmc (100MB) persistent
+# 			-on -e2 -o : write on emmc extented (800MB) oneshot
+# 			-on -e2 -p : write on emmc extented (800MB) persistent
+# 			-on -sd1 -o : write on sd (100MB) oneshot
+# 			-on -sd1 -p : write on sd (100MB) persistent
+# 			-on -sd2 -o : write on sd extended (800MB) oneshot
+# 			-on -sd2 -p : write on sd extended (800MB) persistent
+# 			-on -usb -o : write on usb oneshot
+# 			-off : stop mts
+#			-on -mux : active mux traces channels 0 to 17
+#			-off -mux : disable mux traces
+################################################################################
+
+
+mtsfs_persist_status=$(getprop persist.service.mtsfs.enable)
+mtsextfs_persist_status=$(getprop persist.service.mtsextfs.enable)
+mtssd_persist_status=$(getprop persist.service.mtssd.enable)
+mtsextsd_persist_status=$(getprop persist.service.mtsextsd.enable)
+
+mtsfs_status=$(getprop init.svc.mtsfs)
+mtsextfs_status=$(getprop init.svc.mtsextfs)
+mtssd_status=$(getprop init.svc.mtssd)
+mtsextsd_status=$(getprop init.svc.mtsextsd)
+mtsusb_status=$(getprop init.svc.mtsusb)
+
+
+if [ "$1" = "-off" ] && ( [ -z "$2" ] || [ "$2" = "-mux" ] )
+then
+	if [ "$2" = "-mux" ] && [ -z "$3" ]
+	then
+		echo -e -r "at+xmux=1,0\r\n" > /dev/gsmtty1 &
+		sleep 1;
+		echo "mux traces disabled"
+		exit 0
+	elif [ -n "$mtsfs_persist_status" ] && [ $mtsfs_persist_status != "0" ]
+	then
+		echo "activate_trace_modem" $1 ": emmc (100MB) persistent disabled"
+		setprop persist.service.mtsfs.enable 0
+		exit 0
+	elif [ -n "$mtsextfs_persist_status" ] && [ $mtsextfs_persist_status != "0" ]
+	then
+		echo "activate_trace_modem" $1 ": emmc extended (800MB) persistent disabled"
+		setprop persist.service.mtsextfs.enable 0
+		exit 0
+	elif [ -n "$mtssd_persist_status" ] && [ $mtssd_persist_status != "0" ]
+	then
+		echo "activate_trace_modem" $1 ": sd (100MB) persistent disabled"
+		setprop persist.service.mtssd.enable 0
+		exit 0
+	elif [ -n "$mtsextsd_persist_status" ] && [ $mtsextsd_persist_status != "0" ]
+	then
+		echo "activate_trace_modem" $1 ": sd extended (800MB) persistent disabled"
+		setprop persist.service.mtsextsd.enable 0
+		exit 0
+	elif [ -n "$mtsfs_status" ] && [ $mtsfs_status != "stopped" ]
+	then
+		echo "activate_trace_modem" $1 ": emmc (100MB) disabled"
+		stop mtsfs
+		exit 0
+	elif [ -n "$mtsextfs_status" ] && [ $mtsextfs_status != "stopped" ]
+	then
+		echo "activate_trace_modem" $1 ": emmc extended (800MB) disabled"
+		stop mtsextfs
+		exit 0
+	elif [ -n "$mtssd_status" ] && [ $mtssd_status != "stopped" ]
+	then
+		echo "activate_trace_modem" $1 ": sd (100MB) disabled"
+		stop mtssd
+		exit 0
+	elif [ -n "$mtsextsd_status" ] && [ $mtsextsd_status != "stopped" ]
+	then
+		echo "activate_trace_modem" $1 ": sd extended (800MB) disabled"
+		stop mtsextsd
+		exit 0
+	elif [ -n "$mtsusb_status" ] && [ $mtsusb_status != "stopped" ]
+	then
+		echo "activate_trace_modem" $1 ": USB disabled"
+		stop mtsusb
+		exit 0
+	else
+		echo "ERROR : mts is not activated!"
+		exit 0
+	fi
+fi
+
+
+if [ "$1" = "-on" ] && ( [ "$2" = "-e1" ] || [ "$2" = "-e2" ] || [ "$2" = "-sd1" ] || [ "$2" = "-sd2" ] || [ "$2" = "-usb" ] || [ "$2" = "-mux" ] )
+then
+	if [ "$2" = "-mux" ] && [ -z "$3" ]
+	then
+		echo -e -r "at+xmux=1,3,262143\r\n" > /dev/gsmtty1 &
+		sleep 1;
+		echo "mux traces activated"
+		exit 0
+	elif (([ -n "$mtsfs_status" ] && [ $mtsfs_status != "stopped" ]) ||
+		([ -n "$mtsextfs_status" ] && [ $mtsextfs_status != "stopped" ]) ||
+		([ -n "$mtssd_status" ] && [ $mtssd_status != "stopped" ]) ||
+		([ -n "$mtsextsd_status" ] && [ $mtsextsd_status != "stopped" ]) ||
+		([ -n "$mtsusb_status" ] && [ $mtsusb_status != "stopped" ] ))
+	then
+		echo "mts is already running, please stop the service with the option -off"
+		exit 0
+	elif [ "$3" = "-o" ]
+	then
+		if [ "$2" = "-e1" ]
+		then
+			echo "activate_trace_modem" $1 ": emmc (100MB) enabled"
+			start mtsfs
+			exit 0
+		elif [ "$2" = "-e2" ]
+		then
+			echo "activate_trace_modem" $1 ": emmc extended (800MB) enabled"
+			start mtsextfs
+			exit 0
+		elif [ "$2" = "-sd1" ]
+		then
+			if [ ! -d "/mnt/sdcard/data/logs/" ]
+			then
+				mkdir "/mnt/sdcard/data/"
+				mkdir "/mnt/sdcard/data/logs/"
+			fi
+			echo "activate_trace_modem" $1 ": sd (100MB) enabled"
+			start mtssd
+			exit 0
+		elif [ "$2" = "-sd2" ]
+		then
+			if [ ! -d "/mnt/sdcard/data/logs/" ]
+			then
+				mkdir "/mnt/sdcard/data/"
+				mkdir "/mnt/sdcard/data/logs/"
+			fi
+			echo "activate_trace_modem" $1 ": sd extended (800MB) enabled"
+			start mtsextsd
+			exit 0
+		elif [ "$2" = "-usb" ]
+		then
+			start mtsusb
+			echo "activate_trace_modem" $1 ": USB enabled"
+			exit 0
+		fi
+	elif [ "$3" = "-p" ]
+	then
+		if [ "$2" = "-e1" ]
+		then
+			setprop persist.service.mtsfs.enable 1
+			echo "activate_trace_modem" $1 ": emmc (100MB) persistent enabled"
+			exit 0
+		elif [ "$2" = "-e2" ]
+		then
+			setprop persist.service.mtsextfs.enable 1
+			echo "activate_trace_modem" $1 ": emmc extended (800MB) persistent enabled"
+			exit 0
+		elif [ "$2" = "-sd1" ]
+		then
+			setprop persist.service.mtssd.enable 1
+			echo "activate_trace_modem" $1 ": sd (100MB) persistent enabled"
+			exit 0
+		elif [ "$2" = "-sd2" ]
+		then
+			setprop persist.service.mtsextsd.enable 1
+			echo "activate_trace_modem" $1 ": sd extended (800MB) persistent enabled"
+			exit 0
+		fi
+	else
+		echo "Please add the argument -o OR -p !"
+	fi
+else
+	echo "USAGE: activate_trace_modem [-on -e1|-e2|-sd1|-sd2 -o|-p]"
+	echo "USAGE: activate_trace_modem [-on -usb -o]"
+	echo "USAGE: activate_trace_modem [-off]"
+	echo "USAGE: activate_trace_modem [-on|-off -mux]"
+	echo "       -on: enable"
+	echo "       -off: disable"
+	echo "       -e1: write on emmc (100Mb)"
+	echo "       -e2: write on emmc (800Mb)"
+	echo "       -sd1: write on sdcard (100Mb)"
+	echo "       -sd2: write on sdcard (800Mb)"
+	echo "       -usb: write on usb"
+	echo "       -mux : mux traces channels 0 to 17"
+	echo "       -o: oneshot"
+	echo "       -p: persistent"
+	exit 0
+fi

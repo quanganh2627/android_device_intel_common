@@ -1,0 +1,12 @@
+#!/sbin/ash
+
+#######################################
+## Toggle pin on1 if the modem is dead
+######################################
+
+echo 0 > /sys/class/gpio/gpio113/value
+usleep 50000
+echo 1 > /sys/class/gpio/gpio113/value
+usleep 50000
+echo 0 > /sys/class/gpio/gpio113/value
+usleep 50000
