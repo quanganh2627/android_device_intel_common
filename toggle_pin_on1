@@ -7,6 +7,6 @@
 echo 0 > /sys/class/gpio/gpio113/value
 usleep 50000
 echo 1 > /sys/class/gpio/gpio113/value
-usleep 50000
+usleep 60
 echo 0 > /sys/class/gpio/gpio113/value
 usleep 50000
