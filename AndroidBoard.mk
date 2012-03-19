@@ -47,7 +47,6 @@ PRODUCT_COPY_FILES += \
 # board specific files
 PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/android.conf:system/etc/dhcpcd/android.conf \
-        $(LOCAL_PATH)/mxt224_touchscreen_0.idc:system/usr/idc/mxt224_touchscreen_0.idc \
         $(LOCAL_PATH)/activate_trace_modem:system/bin/activate_trace_modem \
         $(LOCAL_PATH)/configure_trace_modem:system/bin/configure_trace_modem \
         $(LOCAL_PATH)/usbswitch_modem:system/bin/usbswitch_modem \
