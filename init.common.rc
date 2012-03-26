@@ -12,6 +12,9 @@ on early-init
     symlink /mnt/sdcard /sdcard
     symlink /mnt/sdcard_ext /sdcard_ext
 
+    # set permission for charger-mode
+    chmod 0777 /charger
+
 # This section taken from init.goldfish.sh
 on boot
 # enable Google-specific location features,
@@ -109,6 +112,12 @@ on post-fs
     setprop net.tcp.buffersize.edge    83520,111360,256960,4096,16384,35040
     setprop net.tcp.buffersize.gprs    83520,111360,256960,4096,8760,11680
 
+
+on charger
+    class_start charger
+    start console
+    start watchdogd
+
 on early-boot
 # enable core dump function when application crash
     #setrlimit 4 -1 -1 set it at init.c
@@ -161,6 +170,10 @@ on property:persist.service.aklogpti.enable=1
 
 on property:persist.service.aklogpti.enable=0
    write /sys/module/logger_pti/parameters/out ""
+
+service charger_app /charger 5 1
+    class charger
+    user root
 
 service pvrsrvinit /system/bin/pvrsrvinit
     class core

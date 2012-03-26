@@ -2,6 +2,7 @@
 #
 
 LOCAL_PATH := $(TOP)/vendor/intel/common
+COMMON_PATH := $(TOP)/vendor/intel/common
 PERMISSIONS_PATH := $(TOP)/frameworks/base/data/etc
 
 include $(CLEAR_VARS)
@@ -32,6 +33,9 @@ LOCAL_SRC_FILES := gpio-keys.kl
 LOCAL_MODULE_CLASS := SHARED_LIBRARIES
 LOCAL_MODULE_PATH := $(TARGET_OUT_KEYLAYOUT)
 include $(BUILD_PREBUILT)
+
+# SOC initrc file
+PRODUCT_INIT_RC_FILES += $(COMMON_PATH)/init.common.rc
 
 # USB port turn around and initialization
 PRODUCT_INIT_RC_FILES += vendor/intel/common/init.mfld.usb.rc
