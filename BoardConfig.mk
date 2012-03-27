@@ -20,8 +20,6 @@ TARGET_RIL_DISABLE_STATUS_POLLING := true
 #Platform
 DISABLE_DEXPREOPT := true
 
-ADDITIONAL_DEFAULT_PROPERTIES += wifi.interface=wlan0:0
-
 ADDITIONAL_DEFAULT_PROPERTIES += gsm.net.interface=rmnet0
 #                                 gsm.net.interface=gtm0
 
@@ -71,3 +69,4 @@ ADDITIONAL_BUILD_PROPERTIES += dalvik.vm.heapsize=64m
 # Security
 BUILD_WITH_CHAABI_SUPPORT := true
 BUILD_WITH_WATCHDOG_DAEMON_SUPPORT := true
+
