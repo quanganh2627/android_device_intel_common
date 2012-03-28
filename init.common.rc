@@ -59,38 +59,15 @@ on post-fs
     # Create logs folder
     mkdir /data/logs
     chown root log /data/logs
-    #FIXME: changing 0750 -- > 0777 is just for core dump feature
-    #When core dump is removed, please back 0777 -- > 0750 for security
-    chmod 0777 /data/logs
-
-    # Collect emmc ipanic data, free resources and re-arm trigger
-    copy /proc/emmc_ipanic_console /data/dontpanic/emmc_ipanic_console
-    chown root log /data/dontpanic/emmc_ipanic_console
-    chmod 0640 /data/dontpanic/emmc_ipanic_console
-
-    copy /proc/emmc_ipanic_threads /data/dontpanic/emmc_ipanic_threads
-    chown root log /data/dontpanic/emmc_ipanic_threads
-    chmod 0640 /data/dontpanic/emmc_ipanic_threads
-
-    exec /system/bin/rm /data/dontpanic/emmc_ipanic_logcat
-    exec /system/bin/logcat -b system -b events -b main -b radio -d -v time -f /data/dontpanic/emmc_ipanic_logcat
-    chown root log /data/dontpanic/emmc_ipanic_logcat
-    chmod 0640 /data/dontpanic/emmc_ipanic_logcat
-    exec /system/bin/logcat -b system -b events -b main -b radio -c
+    # Here /data/logs is changed to 0750, then crashlogd will be
+    # change /data/logs to 777.
+    chmod 0750 /data/logs
 
     mkdir /data/tombstones 0755 system system
     mkdir /data/system/    0775 system system
     mkdir /data/system/dropbox 0700 system system
     mkdir /data/logs/modemcrash 0775 system system
     mkdir /data/logs/stats 0775 system system
-
-    #you must enable next line when you don`t use crashlogd
-    #write /proc/emmc_ipanic_console 1
-
-    # Collect fabric error data, free resources and re-arm trigger
-    copy /proc/ipanic_fabric_err /data/dontpanic/ipanic_fabric_err
-    chown root log /data/dontpanic/ipanic_fabric_err
-    chmod 0640 /data/dontpanic/ipanic_fabric_err
 
     # make nodes for alsa-lib
     symlink /dev/snd/pcmC0D0c /dev/pcmC0D0c

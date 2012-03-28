@@ -35,12 +35,16 @@ ADDITIONAL_DEFAULT_PROPERTIES += persist.service.profile.enable=1
 endif
 endif
 
-#ifeq ($(TARGET_BUILD_VARIANT),eng)
-#ADDITIONAL_DEFAULT_PROPERTIES += persist.core.enabled=1
-#endif
+ifeq ($(TARGET_BUILD_VARIANT),eng)
+ADDITIONAL_DEFAULT_PROPERTIES += persist.core.enabled=1
+endif
 
 ifeq ($(TARGET_RIL_DISABLE_STATUS_POLLING),true)
 ADDITIONAL_BUILD_PROPERTIES += ro.ril.status.polling.enable=0
+endif
+
+ifeq ($(TARGET_BUILD_VARIANT),eng)
+BUILD_INIT_EXEC := true
 endif
 
 #Intel recovery images and boot images are different from android images.
