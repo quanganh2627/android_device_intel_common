@@ -16,6 +16,7 @@ TARGET_PRELINK_MODULE := false
 TARGET_PROVIDES_INIT_RC := true
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_RIL_DISABLE_STATUS_POLLING := true
+TARGET_BOOTLOADER_BOARD_NAME := mrst
 
 #Platform
 DISABLE_DEXPREOPT := true
@@ -28,6 +29,9 @@ ifeq ($(PRODUCT_MANUFACTURER),intel)
 ifeq ($(TARGET_BUILD_VARIANT),eng)
 ADDITIONAL_DEFAULT_PROPERTIES += persist.service.profile.enable=1
 endif
+
+# This will be replaced by the OEM/carrier with a string like android-<carrier>-us
+ADDITIONAL_DEFAULT_PROPERTIES += ro.com.google.clientidbase=android-google
 endif
 
 ifeq ($(TARGET_BUILD_VARIANT),eng)
