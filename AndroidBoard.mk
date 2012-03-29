@@ -65,7 +65,6 @@ PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/init.nfs.rc:root/init.nfs.rc \
         $(LOCAL_PATH)/init.sdcard1.rc:root/init.sdcard1.rc \
         $(LOCAL_PATH)/init.sdcard2.rc:root/init.sdcard2.rc \
-        frameworks/base/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
         $(PERMISSIONS_PATH)/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
         $(PERMISSIONS_PATH)/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
         $(PERMISSIONS_PATH)/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
