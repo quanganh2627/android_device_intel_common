@@ -3,6 +3,7 @@
 
 LOCAL_PATH := $(TOP)/vendor/intel/common
 COMMON_PATH := $(TOP)/vendor/intel/common
+RELEASE_PATH:= $(TOP)/vendor/intel/release/daily_build
 PERMISSIONS_PATH := $(TOP)/frameworks/base/data/etc
 
 include $(CLEAR_VARS)
@@ -79,8 +80,13 @@ PRODUCT_COPY_FILES += \
         $(PERMISSIONS_PATH)/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
         $(PERMISSIONS_PATH)/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml
 
-flashfiles: firmware otapackage
-	vendor/intel/release/daily_build/sync_build/publish_build.py vendor/intel/release/daily_build/sync-build.ini `pwd` $(TARGET_PRODUCT) $(TARGET_BUILD_VARIANT) $(BUILD_NUMBER)
+
+ifneq ($(TARGET_USE_DROIDBOOT),true)
+flashfiles: boottarball systemtarball firmware otapackage recoveryimage
+else
+flashfiles: boottarball systemtarball firmware otapackage droidbootimage recoveryimage
+endif
+	$(RELEASE_PATH)/sync_build/publish_build.py vendor/intel/release/daily_build/sync-build.ini `pwd` $(TARGET_PRODUCT) $(TARGET_BUILD_VARIANT) $(FILE_NAME_TAG)
 
 # sepdk and vTunes
 -include $(TOP)/device/intel/PRIVATE/sepdk/src/AndroidSEP.mk
