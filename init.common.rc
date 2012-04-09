@@ -56,6 +56,8 @@ on boot
     chown media_rw media_rw /data/media
 
 on post-fs
+    write /proc/sys/kernel/ctrl-alt-del 0
+
     # Create logs folder
     mkdir /data/logs
     chown root log /data/logs
