@@ -219,6 +219,16 @@ on post-fs-data
     chown system system /sys/class/android_usb/android0/f_rndis/ethaddr
     chmod 0660 /sys/class/android_usb/android0/f_rndis/ethaddr
 
+    # Create logs folder
+    mkdir /data/logs
+    chown root log /data/logs
+    chmod 0750 /data/logs
+    # Remount the /data/logs
+    #mount /data/logs to emmc0p9
+    mount ext4 /dev/block/mmcblk0p9 /data/logs nosuid nodev barrier=1,data=ordered
+    mkdir /data/logs/modemcrash 0775 system system
+    mkdir /data/logs/stats 0775 system system
+
 on boot
 # basic network init
     ifup lo
