@@ -121,8 +121,5 @@ ifeq ($(powerdk),1)
 $(PRODUCT_OUT)/ramdisk.img : apwr
 # Wuwatch binaries
 PRODUCT_COPY_FILES += \
-        $(TOP)/device/intel/PRIVATE/debug_tools/powerdk/bin/wuwatch_static:/system/bin/powerdk/wuwatch_static \
-        $(TOP)/device/intel/PRIVATE/debug_tools/powerdk/bin/wudump_static:/system/bin/powerdk/wudump_static \
-        $(TOP)/device/intel/PRIVATE/debug_tools/powerdk/src/insmod-apwr2:/system/bin/powerdk/insmod-apwr2 \
-        $(TOP)/device/intel/PRIVATE/debug_tools/powerdk/src/rmmod-apwr2:/system/bin/powerdk/rmmod-apwr2
+        $(TOP)/device/intel/PRIVATE/debug_tools/powerdk/bin/wuwatch:/system/bin/powerdk/wuwatch
 endif
