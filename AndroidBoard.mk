@@ -61,6 +61,10 @@ PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/usbswitch_status:system/bin/usbswitch_status \
         $(LOCAL_PATH)/toggle_pin_on1:system/bin/toggle_pin_on1
 
+ifneq ($(TARGET_BUILD_VARIANT),user)
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/acs_apps:system/bin/acs_apps
+endif
+
 # platform common files
 PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/init.rc:init.rc \

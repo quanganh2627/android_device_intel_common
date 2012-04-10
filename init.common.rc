@@ -102,6 +102,10 @@ on post-fs-data
     setprop persist.service.aplogsd.enable $persist.service.aplogsd.enable
     setprop persist.service.aplogpti.enable $persist.service.aplogpti.enable
     setprop persist.service.aklogpti.enable $persist.service.aklogpti.enable
+    setprop acs.ui_recorder.record 0
+    setprop acs.ui_recorder.record_run stop
+    setprop acs.ui_recorder.replay_run stop
+    setprop acs.ui_recorder.base_path "/sdcard/acs_ui/001"
 
 on charger
     class_start charger
@@ -161,6 +165,24 @@ on property:persist.service.aklogpti.enable=1
 on property:persist.service.aklogpti.enable=0
    write /sys/module/logger_pti/parameters/out ""
 
+on property:acs.ui_recorder.record_run=start
+   setprop acs.ui_recorder.record 1
+   stop acs_ui_replay
+   start acs_ui_apps
+   start acs_ui_record
+
+on property:acs.ui_recorder.replay_run=start
+   stop acs_ui_apps
+   stop acs_ui_record
+   start acs_ui_replay
+
+on property:acs.ui_recorder.record_run=stop
+   stop acs_ui_record
+   stop acs_ui_apps
+
+on property:acs.ui_recorder.replay_run=stop
+   stop acs_ui_replay
+
 service charger_app /charger 5 1
     class charger
     user root
@@ -208,6 +230,19 @@ service apk_logsd /system/bin/logcat -b system -b events -b main -b radio -b ker
 
 service ap_logsd /system/bin/logcat -b system -b events -b main -b radio -n 20 -r 5000 -v threadtime -f /sdcard/aplog
     disabled
+
+# ACS services
+service acs_ui_record /system/bin/logwrapper /system/bin/getevent -a
+   disabled
+   oneshot
+
+service acs_ui_replay /system/bin/logwrapper /system/bin/sendevent
+   disabled
+   oneshot
+
+service acs_ui_apps /system/bin/acs_apps
+   disabled
+   oneshot
 
 on property:ro.intel.corp.email=1
     copy /system/etc/security/email.p12 /data/media/email.p12
