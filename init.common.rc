@@ -167,6 +167,17 @@ service watchdogd /system/xbin/watchdogd
     user root
     oneshot
 
+service drm /system/bin/drmserver
+    class main
+    user drm
+    group system inet drmrpc security
+
+service media /system/bin/mediaserver
+    class main
+    user media
+    group system audio camera inet net_bt net_bt_admin net_bw_acct drmrpc net_raw security
+    ioprio rt 4
+
 # log services
 service ap_logfs /system/bin/logcat -b system -b events -b main -b radio -n 20 -r 5000 -v threadtime -f /data/logs/aplog
     class main
