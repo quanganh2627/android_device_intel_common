@@ -33,6 +33,17 @@ on property:sys.usb.config=adb
     start adbd
     setprop sys.usb.state $sys.usb.config
 
+# this is charging only mode, no need to enable adbd
+on property:sys.usb.config=charging
+    stop adbd
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 0x8087
+    write /sys/class/android_usb/android0/idProduct 0x09ef
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/functions adb
+    write /sys/class/android_usb/android0/enable 1
+    setprop sys.usb.state $sys.usb.config
+
 # USB accessory configuration
 on property:sys.usb.config=accessory
     write /sys/class/android_usb/android0/enable 0
