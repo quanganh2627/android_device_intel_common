@@ -7,10 +7,8 @@
 on early-init
     export EXTERNAL_STORAGE /mnt/sdcard
     mkdir /mnt/sdcard 0000 system system
-    mkdir /mnt/sdcard_ext 0000 system system
     # for backwards compatibility
     symlink /mnt/sdcard /sdcard
-    symlink /mnt/sdcard_ext /sdcard_ext
 
     # set permission for charger-mode
     chmod 0777 /charger
@@ -50,10 +48,6 @@ on boot
     chmod 0664 /sys/class/backlight/psb-bl/brightness
     chmod 0664 /sys/class/backlight/psb-bl/max_brightness
     chmod 0664 /sys/class/backlight/psb-bl/actual_brightness
-
-    # we will remap this as /mnt/sdcard with the sdcard fuse tool
-    mkdir /data/media 0775 media_rw media_rw
-    chown media_rw media_rw /data/media
 
 on post-fs
     write /proc/sys/kernel/ctrl-alt-del 0
