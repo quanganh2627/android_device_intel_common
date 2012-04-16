@@ -178,6 +178,11 @@ service media /system/bin/mediaserver
     group system audio camera inet net_bt net_bt_admin net_bw_acct drmrpc net_raw security
     ioprio rt 4
 
+#enable Houdini for executable
+service enable_houdini /system/bin/enable_houdini
+    class main
+    oneshot
+
 # log services
 service ap_logfs /system/bin/logcat -b system -b events -b main -b radio -n 20 -r 5000 -v threadtime -f /data/logs/aplog
     class main
