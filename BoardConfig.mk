@@ -74,3 +74,5 @@ ADDITIONAL_BUILD_PROPERTIES += ro.product.cpu.abi2=armeabi-v7a
 BUILD_WITH_CHAABI_SUPPORT := true
 BUILD_WITH_WATCHDOG_DAEMON_SUPPORT := true
 
+# Imaging by default
+USE_INTEL_HDR := true
