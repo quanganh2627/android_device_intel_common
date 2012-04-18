@@ -85,6 +85,23 @@ on post-fs
     setprop net.tcp.buffersize.edge    83520,111360,256960,4096,16384,35040
     setprop net.tcp.buffersize.gprs    83520,111360,256960,4096,8760,11680
 
+on post-fs-data
+    # Create logs folder
+    mkdir /data/logs
+    chown root log /data/logs
+    chmod 0750 /data/logs
+    # Remount the /data/logs
+    #mount /data/logs to emmc0p9
+    mount ext4 /dev/block/mmcblk0p9 /data/logs nosuid nodev barrier=1,data=ordered
+    mkdir /data/logs/modemcrash 0775 system system
+    mkdir /data/logs/stats 0775 system system
+    restart crashlogd
+    setprop persist.service.aplogfs.enable $persist.service.aplogfs.enable
+    setprop persist.service.apklogfs.enable $persist.service.apklogfs.enable
+    setprop persist.service.apklogsd.enable $persist.service.apklogsd.enable
+    setprop persist.service.aplogsd.enable $persist.service.aplogsd.enable
+    setprop persist.service.aplogpti.enable $persist.service.aplogpti.enable
+    setprop persist.service.aklogpti.enable $persist.service.aklogpti.enable
 
 on charger
     class_start charger
@@ -109,25 +126,25 @@ on property:persist.service.crashlog.enable=0
 
 
 on property:persist.service.aplogfs.enable=1
-    start ap_logfs
+    restart ap_logfs
 
 on property:persist.service.aplogfs.enable=0
     stop ap_logfs
 
 on property:persist.service.apklogfs.enable=1
-    start apk_logfs
+    restart apk_logfs
 
 on property:persist.service.apklogfs.enable=0
     stop apk_logfs
 
 on property:persist.service.apklogsd.enable=1
-    start apk_logsd
+    restart apk_logsd
 
 on property:persist.service.apklogsd.enable=0
     stop apk_logsd
 
 on property:persist.service.aplogsd.enable=1
-    start ap_logsd
+    restart ap_logsd
 
 on property:persist.service.aplogsd.enable=0
     stop ap_logsd
