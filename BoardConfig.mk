@@ -68,8 +68,7 @@ BUILD_WITH_FULL_STAGEFRIGHT := true
 ADDITIONAL_BUILD_PROPERTIES += dalvik.vm.heapsize=64m
 
 # Enabling Houdini by default
-ADDITIONAL_BUILD_PROPERTIES += ro.product.cpu.abi2=armeabi \
-                               ro.product.cpu.upgradeabi=armeabi-v7a
+ADDITIONAL_BUILD_PROPERTIES += ro.product.cpu.abi2=armeabi-v7a
 
 # Security
 BUILD_WITH_CHAABI_SUPPORT := true
