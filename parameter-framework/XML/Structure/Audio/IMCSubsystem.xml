@@ -59,7 +59,8 @@
                     <ValuePair Literal="HeadsetHandset-DestOnly" Numerical="6"/>
                     <ValuePair Literal="TTY" Numerical="7"/>
                     <ValuePair Literal="Bluetooth" Numerical="8"/>
-                    <ValuePair Literal="UserDefined" Numerical="9"/>
+                    <ValuePair Literal="UserDefined1" Numerical="9"/>
+                    <ValuePair Literal="UserDefined15" Numerical="10"/>
                 </EnumParameter>
             </ParameterBlock>
         </ComponentType>
