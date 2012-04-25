@@ -1,4 +1,10 @@
 
+# add USB host entry in /dev
+on init
+    mkdir /dev/bus
+    mkdir /dev/bus/usb
+    mkdir /dev/bus/usb/001
+
 # Perms
 on post-fs-data
     chown system system /sys/class/android_usb/android0/f_mass_storage/lun/file
