@@ -21,11 +21,13 @@ TARGET_BOOTLOADER_BOARD_NAME := mrst
 #Platform
 DISABLE_DEXPREOPT := true
 
-# Enabling logs into file system by default
+# Enabling logs into file system for eng and user debug builds
+ifeq ($(PRODUCT_MANUFACTURER),intel)
+ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 ADDITIONAL_DEFAULT_PROPERTIES += persist.service.apklogfs.enable=1 \
                                  persist.service.crashlog.enable=1
+endif
 
-ifeq ($(PRODUCT_MANUFACTURER),intel)
 ifeq ($(TARGET_BUILD_VARIANT),eng)
 ADDITIONAL_DEFAULT_PROPERTIES += persist.service.profile.enable=1
 endif
