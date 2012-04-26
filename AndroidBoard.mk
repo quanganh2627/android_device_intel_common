@@ -35,6 +35,11 @@ LOCAL_MODULE_CLASS := SHARED_LIBRARIES
 LOCAL_MODULE_PATH := $(TARGET_OUT_KEYLAYOUT)
 include $(BUILD_PREBUILT)
 
+# MKBOOTIMG is the tool that is used by AOSP build system to
+# stitch kernel. We overide the default script to
+# adapt to out own IAFW format.
+MKBOOTIMG := vendor/intel/support/mkbootimg
+
 # SOC initrc file
 PRODUCT_INIT_RC_FILES += $(COMMON_PATH)/init.common.rc
 
