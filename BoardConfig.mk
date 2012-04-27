@@ -19,7 +19,10 @@ TARGET_RIL_DISABLE_STATUS_POLLING := true
 TARGET_BOOTLOADER_BOARD_NAME := mrst
 
 #Platform
-DISABLE_DEXPREOPT := true
+#Enable ODEX for userdebug and user builds
+ifneq (,$(findstring $(TARGET_BUILD_VARIANT),userdebug user))
+WITH_DEXPREOPT := true
+endif
 
 # Enabling logs into file system for eng and user debug builds
 ifeq ($(PRODUCT_MANUFACTURER),intel)
