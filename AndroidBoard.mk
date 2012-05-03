@@ -87,9 +87,13 @@ PRODUCT_COPY_FILES += \
         $(PERMISSIONS_PATH)/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml
 
 
+ifeq ($(FLASHFILE_BOOTONLY),true)
+flashfiles: bootimage
+else
 flashfiles: systemtarball firmware otapackage recoveryimage
 ifeq ($(TARGET_USE_DROIDBOOT),true)
 flashfiles: droidbootimage
+endif
 endif
 	$(RELEASE_PATH)/sync_build/publish_build.py vendor/intel/release/daily_build/sync-build.ini `pwd` $(TARGET_PRODUCT) $(TARGET_BUILD_VARIANT) $(FILE_NAME_TAG)
 
