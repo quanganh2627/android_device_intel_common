@@ -210,4 +210,5 @@ service ap_logsd /system/bin/logcat -b system -b events -b main -b radio -n 20 -
     disabled
 
 on property:ro.intel.corp.email=1
-    copy /system/etc/security/email.p12 /sdcard/email.p12
+    copy /system/etc/security/email.p12 /data/media/email.p12
+    chmod 0666 /data/media/email.p12
