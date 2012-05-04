@@ -16,27 +16,27 @@
             <ParameterBlock Name="CONFIG" Mapping="I2SPortConfig">
                 <IntegerParameter Name="CLOCK" Size="8" Min="0" Max="1"/>
                 <BooleanParameter Name="MASTER"/>
-                <EnumParameter Name="SAMPLING_RATE" Size="8">
-                    <ValuePair Literal="8kHz" Numerical="0"/>
-                    <ValuePair Literal="11.025kHz" Numerical="1"/>
-                    <ValuePair Literal="12kHz" Numerical="2"/>
-                    <ValuePair Literal="16kHz" Numerical="3"/>
-                    <ValuePair Literal="22.05kHz" Numerical="4"/>
-                    <ValuePair Literal="24kHz" Numerical="5"/>
-                    <ValuePair Literal="32kHz" Numerical="6"/>
-                    <ValuePair Literal="44.1kHz" Numerical="7"/>
-                    <ValuePair Literal="48kHz" Numerical="8"/>
-                    <ValuePair Literal="96kHz" Numerical="9"/>
-                    <ValuePair Literal="192kHz" Numerical="10"/>
+                <EnumParameter Name="SAMPLING_RATE" Size="8" Description="Sampling rate frequency (f) in kHz">
+                    <ValuePair Literal="f8" Numerical="0"/>
+                    <ValuePair Literal="f11.025" Numerical="1"/>
+                    <ValuePair Literal="f12" Numerical="2"/>
+                    <ValuePair Literal="f16" Numerical="3"/>
+                    <ValuePair Literal="f22.05" Numerical="4"/>
+                    <ValuePair Literal="f24" Numerical="5"/>
+                    <ValuePair Literal="f32" Numerical="6"/>
+                    <ValuePair Literal="f44.1" Numerical="7"/>
+                    <ValuePair Literal="f48" Numerical="8"/>
+                    <ValuePair Literal="f96" Numerical="9"/>
+                    <ValuePair Literal="f192" Numerical="10"/>
                 </EnumParameter>
-                <EnumParameter Name="QUANTIZATION" Size="8">
-                    <ValuePair Literal="16bits" Numerical="0"/>
-                    <ValuePair Literal="18bits" Numerical="1"/>
-                    <ValuePair Literal="20bits" Numerical="2"/>
-                    <ValuePair Literal="24bits" Numerical="3"/>
-                    <ValuePair Literal="32bits" Numerical="4"/>
-                    <ValuePair Literal="48bits" Numerical="5"/>
-                    <ValuePair Literal="64bits" Numerical="6"/>
+                <EnumParameter Name="QUANTIZATION" Size="8" Description="Size (s) of quantization in bits">
+                    <ValuePair Literal="s16" Numerical="0"/>
+                    <ValuePair Literal="s18" Numerical="1"/>
+                    <ValuePair Literal="s20" Numerical="2"/>
+                    <ValuePair Literal="s24" Numerical="3"/>
+                    <ValuePair Literal="s32" Numerical="4"/>
+                    <ValuePair Literal="s48" Numerical="5"/>
+                    <ValuePair Literal="s64" Numerical="6"/>
                 </EnumParameter>
                 <EnumParameter Name="TRANSMISSION_MODE" Size="8">
                     <ValuePair Literal="PCM" Numerical="0"/>
