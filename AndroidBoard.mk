@@ -43,9 +43,6 @@ MKBOOTIMG := vendor/intel/support/mkbootimg
 # SOC initrc file
 PRODUCT_INIT_RC_FILES += $(COMMON_PATH)/init.common.rc
 
-# USB port turn around and initialization
-PRODUCT_INIT_RC_FILES += vendor/intel/common/init.mfld.usb.rc
-
 # OOM Killer tweaks
 PRODUCT_INIT_RC_FILES += vendor/intel/common/init.mfld.oom.rc
 
