@@ -1,11 +1,11 @@
 #mount point   fstype   device                    device2                   size hint                    flags and options...
-/reserved      hidden   /dev/block/mmcblk0_none   none                      size_hint=100
-/factory       ext4     /dev/block/mmcblk0p1      none                      size_hint=256
-/system        ext4     /dev/block/mmcblk0p2      none                      size_hint=512                ro noatime
-/cache         ext4     /dev/block/mmcblk0p3      none                      size_hint=512                nosuid nodev fsck data=ordered,nodelalloc
-/config        ext4     /dev/block/mmcblk0p5      none                      size_hint=16                 ro
-/panic         raw      /dev/block/mmcblk0p6      none                      size_hint=2
-/media         vfat     /dev/block/mmcblk0p7      none                      size_hint=128
-/data          ext4     /dev/block/mmcblk0p8      none                      size_hint=0,length=-16384    nosuid nodev fsck data=ordered,nodelalloc
-/logs          ext4     /dev/block/mmcblk0p9      none                      size_hint=1024
+/reserved      hidden   /dev/block/mmcblk0_none   none                      size_hint=164
+/panic         raw      /dev/block/mmcblk0p1      none                      size_hint=8
+/factory       ext4     /dev/block/mmcblk0p2      none                      size_hint=32
+/config        ext4     /dev/block/mmcblk0p3      none                      size_hint=16                 ro
+/cache         ext4     /dev/block/mmcblk0p5      none                      size_hint=512                nosuid nodev fsck data=ordered,nodelalloc
+/system        ext4     /dev/block/mmcblk0p6      none                      size_hint=704                ro noatime
+/logs          ext4     /dev/block/mmcblk0p7      none                      size_hint=1024
+/media         ext4     /dev/block/mmcblk0p8      none                      size_hint=128
+/data          ext4     /dev/block/mmcblk0p9      none                      size_hint=0,length=-16384    nosuid nodev fsck data=ordered,nodelalloc
 /mnt/sdcard    vfat     /dev/block/mmcblk1p1      /dev/block/mmcblk1        size_hint=-1

@@ -39,7 +39,7 @@ on init
     chown system system /cache/recovery
     chmod 0770 /cache/recovery
 
-    mount ext4 /dev/block/mmcblk0p9 /data/logs nosuid nodev barrier=1,data=ordered
+    mount ext4 /dev/block/mmcblk0p7 /data/logs nosuid nodev barrier=1,data=ordered
     chown system system /data/logs
     chmod 0777 /data/logs
 
