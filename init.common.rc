@@ -183,6 +183,9 @@ on property:acs.ui_recorder.record_run=stop
 on property:acs.ui_recorder.replay_run=stop
    stop acs_ui_replay
 
+on property:sys.forcecoldboot=yes
+    write /sys/module/intel_mid/parameters/force_cold_boot Y
+
 service charger_app /charger 5 1
     class charger
     user root
