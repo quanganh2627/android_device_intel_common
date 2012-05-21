@@ -8,5 +8,5 @@ on post-fs-data
 service widiservice /system/bin/widi_api_server
     class main
     user system
-    group wifi bluetooth inet
+    group wifi bluetooth inet net_raw
     ioprio rt 4
