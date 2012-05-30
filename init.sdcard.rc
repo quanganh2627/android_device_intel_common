@@ -3,20 +3,17 @@ on init
 # partition map
 #
 # sdcard
-#	-- pri --
-#	mmcblk0p1	/boot
-#	mmcblk0p2	/data
-#	mmcblk0p3	/media
+#	mmcblk0p1	/factory
+#	mmcblk0p2	/system
+#	mmcblk0p3	/cache
 #	mmcblk0p4	not assigned (extended)
-#	-- ext --
-#	mmcblk0p5	/recovery
-#	mmcblk0p6	/system
-#	mmcblk0p7	/cache
-#	mmcblk0p8	not assigned yet
-#	mmcblk0p9	not assigned yet
+#	mmcblk0p5	/config
+#	mmcblk0p6	/panic
+#	mmcblk0p7	/media
+#	mmcblk0p8	/data
+#	mmcblk0p9	/logs
 #	mmcblk0p10	not assigned yet
 #
-
 
 # mount android base partitions
     # since init.sdcard.rc was ran before init.rc
@@ -25,6 +22,14 @@ on init
     mkdir /data 0771 system system
     mkdir /cache 0770 system cache
     mkdir /config
+    mkdir /factory 0777 system system
+
+    mount ext4 /dev/block/mmcblk0p1 /factory
+    chown system system /factory
+    chmod 0777 /factory
+    mkdir /factory/wifi
+    chown system system /factory/wifi
+    chmod 0777 /factory/wifi
 
     mount_fstab /android.fstab
 
@@ -42,6 +47,7 @@ on init
     mount ext4 /dev/block/mmcblk0p9 /data/logs nosuid nodev barrier=1,data=ordered
     chown system system /data/logs
     chmod 0777 /data/logs
+
 
 #on boot
 # See init.cdk-basic.rc
