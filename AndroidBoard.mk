@@ -138,6 +138,8 @@ publish_acs:
 	(cd $(ACS_CAMPAIGN_FT_PATH) && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
 
 # Add sepdk driver
+ifneq ($(BOARD_USE_64BIT_KERNEL),true)
+# sepdk and vTunes
 -include $(TOP)/device/intel/debug_tools/sepdk/src/AndroidSEP.mk
 -include $(TOP)/device/intel/debug_tools/sepdk/src/pax/AndroidPAX.mk
 
@@ -152,4 +154,4 @@ endif
 ifeq ($(powerdk),1)
 $(PRODUCT_OUT)/ramdisk.img : apwr
 endif
-
+endif
