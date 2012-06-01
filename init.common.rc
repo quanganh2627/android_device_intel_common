@@ -247,10 +247,6 @@ service acs_ui_apps /system/bin/acs_apps
    disabled
    oneshot
 
-service acs_ui_service /system/bin/acs_ui_service
-  class main
-  oneshot
-
 on property:ro.intel.corp.email=1
     copy /system/etc/security/email.p12 /data/media/email.p12
     chmod 0666 /data/media/email.p12
