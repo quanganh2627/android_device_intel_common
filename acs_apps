@@ -1,7 +1,0 @@
-#!/system/bin/sh
-
-base_path=`getprop acs.ui_recorder.base_path`
-
-mkdir -p ${base_path}
-/system/bin/getprop > ${base_path}/build_properties.log &
-/system/bin/logcat -f ${base_path}/used_apps.log -b main -v threadtime -s /system/bin/getevent:I -s ActivityManager:I -s /system/bin/sendevent:I
