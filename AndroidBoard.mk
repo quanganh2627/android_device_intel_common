@@ -40,16 +40,14 @@ include $(BUILD_PREBUILT)
 # adapt to out own IAFW format.
 MKBOOTIMG := vendor/intel/support/mkbootimg
 
+$(INSTALLED_KERNEL_TARGET): build_kernel
+$(INSTALLED_RAMDISK_TARGET): build_kernel
+
 # SOC initrc file
 PRODUCT_INIT_RC_FILES += $(COMMON_PATH)/init.common.rc
 
 # OOM Killer tweaks
 PRODUCT_INIT_RC_FILES += vendor/intel/common/init.mfld.oom.rc
-
-# The kernel and kernel_modules were copied to PRODUCT_OUT by build.sh.
-# The kernel needs to be renamed to 'kernel' for the build.
-PRODUCT_COPY_FILES += \
-        $(PRODUCT_OUT)/bzImage:kernel
 
 # board specific files
 PRODUCT_COPY_FILES += \
