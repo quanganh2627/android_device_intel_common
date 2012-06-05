@@ -85,7 +85,15 @@ else
 flashfiles: systemtarball
 endif
 endif
-	$(RELEASE_PATH)/sync_build/publish_build.py vendor/intel/release/daily_build/sync-build.ini `pwd` $(TARGET_PRODUCT) $(TARGET_BUILD_VARIANT) $(FILE_NAME_TAG)
+
+ifeq ($(USE_GMS_ALL),false)
+PUBLISH_TARGET_BUILD_VARIANT := $(TARGET_BUILD_VARIANT)
+else
+PUBLISH_TARGET_BUILD_VARIANT := $(TARGET_BUILD_VARIANT)_gms
+endif
+
+flashfiles:
+	$(RELEASE_PATH)/sync_build/publish_build.py vendor/intel/release/daily_build/sync-build.ini `pwd` $(TARGET_PRODUCT) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG)
 
 # sepdk and vTunes
 -include $(TOP)/device/intel/debug_tools/sepdk/src/AndroidSEP.mk
