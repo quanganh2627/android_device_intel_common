@@ -81,7 +81,11 @@ PRODUCT_COPY_FILES += \
 ifeq ($(FLASHFILE_BOOTONLY),true)
 flashfiles: bootimage
 else
+ifeq ($(FLASHFILE_NO_OTA),true)
+flashfiles: firmware recoveryimage
+else
 flashfiles: firmware otapackage recoveryimage
+endif
 ifeq ($(TARGET_USE_DROIDBOOT),true)
 flashfiles: droidbootimage systemimg_gz
 else
