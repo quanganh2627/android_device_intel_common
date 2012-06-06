@@ -4,7 +4,9 @@
 LOCAL_PATH := $(TOP)/vendor/intel/common
 COMMON_PATH := $(TOP)/vendor/intel/common
 SUPPORT_PATH:= $(TOP)/vendor/intel/support
-PUBLISH_PATH:= $(TOP)/pub
+ACS_BUILDBOT_PATH := $(TOP)/vendor/intel/PRIVATE/buildbot_acs
+ACS_CAMPAIGN_ST_PATH := $(TOP)/vendor/intel/PRIVATE/ST_acs_campaigns
+ACS_CAMPAIGN_FT_PATH := $(TOP)/vendor/intel/PRIVATE/FT_acs_campaigns
 PERMISSIONS_PATH := $(TOP)/frameworks/base/data/etc
 
 include $(CLEAR_VARS)
@@ -123,6 +125,39 @@ publish_modem:
 	BOARD_HAVE_MODEM=$(BOARD_HAVE_MODEM) \
 	RADIO_FIRMWARE_DIR=$(RADIO_FIRMWARE_PUBLISH_DIR) \
 	$(SUPPORT_PATH)/publish_build.py `pwd` $(TARGET_PRODUCT) 'modem' $(FILE_NAME_TAG)
+
+publish_system_symbols: systemtarball
+	@ echo "Publish system symbols"
+	@ mkdir -p $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/fastboot-images/$(TARGET_BUILD_VARIANT)
+	tar czf $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/fastboot-images/$(TARGET_BUILD_VARIANT)/symbols.tar.gz $(PRODUCT_OUT)/symbols
+
+publish_kernel_debug: bootimage
+	@ echo "Publish kernel config and symbols"
+	@ mkdir -p $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/kernel
+	cp $(PRODUCT_OUT)/kernel_build/.config $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/kernel/kernel.config
+	bzip2 -k $(PRODUCT_OUT)/kernel_build/vmlinux
+	mv $(PRODUCT_OUT)/kernel_build/vmlinux.bz2 $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/kernel/
+
+PUBLISH_LINUX_TOOLS_deps := \
+	$(HOST_OUT_EXECUTABLES)/adb \
+	$(HOST_OUT_EXECUTABLES)/fastboot
+publish_linux_tools: $(PUBLISH_LINUX_TOOLS_deps)
+	@ echo "Publish linux tools"
+	@ mkdir -p $(PUBLISH_TOOLS_PATH)
+	(cd out/host/ && cp --parents linux-x86/bin/adb $(PUBLISH_TOOLS_PATH))
+	(cd out/host/ && cp --parents linux-x86/bin/fastboot $(PUBLISH_TOOLS_PATH))
+
+publish_acs:
+	$(eval ACS_ZIP := $(abspath $(PUBLISH_PATH)/buildbot/acs.zip))
+	$(eval RUN_ACS_ZIP := $(abspath $(PUBLISH_PATH)/buildbot/run_acs.zip))
+	$(eval ACS_CAMPAIGNS_ZIP := $(abspath $(PUBLISH_PATH)/buildbot/campaigns.zip))
+	@ echo "Publish acs tool and buildbot campaigns"
+	@ mkdir -p $(PUBLISH_PATH)/buildbot
+	(cd $(ACS_BUILDBOT_PATH) && zip -qr $(ACS_ZIP) executable/*)
+	(cd $(ACS_BUILDBOT_PATH) && zip -qr $(RUN_ACS_ZIP) run_acs/*)
+	(cd $(ACS_BUILDBOT_PATH)/campaigns && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
+	(cd $(ACS_CAMPAIGN_ST_PATH) && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
+	(cd $(ACS_CAMPAIGN_FT_PATH) && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
 
 # sepdk and vTunes
 -include $(TOP)/device/intel/debug_tools/sepdk/src/AndroidSEP.mk
