@@ -78,9 +78,11 @@ PRODUCT_COPY_FILES += \
 ifeq ($(FLASHFILE_BOOTONLY),true)
 flashfiles: bootimage
 else
-flashfiles: systemtarball firmware otapackage recoveryimage
+flashfiles: firmware otapackage recoveryimage
 ifeq ($(TARGET_USE_DROIDBOOT),true)
-flashfiles: droidbootimage
+flashfiles: droidbootimage systemimg_gz
+else
+flashfiles: systemtarball
 endif
 endif
 	$(RELEASE_PATH)/sync_build/publish_build.py vendor/intel/release/daily_build/sync-build.ini `pwd` $(TARGET_PRODUCT) $(TARGET_BUILD_VARIANT) $(FILE_NAME_TAG)
