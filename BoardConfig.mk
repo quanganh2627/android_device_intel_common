@@ -104,3 +104,6 @@ USE_INTEL_HDR := true
 
 # Enabled to use Intel face detection libraries by default
 USE_INTEL_FACE_DETECTION := true
+
+# select libcamera2 as the camera HAL
+USE_CAMERA_HAL2 := true
