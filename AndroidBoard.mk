@@ -191,8 +191,8 @@ PRODUCT_COPY_FILES += \
         $(TOP)/device/intel/debug_tools/sepdk/bin/libtbrw.so:/system/bin/sepdk/libtbrw.so
 endif
 
-# powerdk and wuwatch
--include $(TOP)/device/intel/debug_tools/powerdk/src/AndroidPowerDK.mk
+# uncomment this line to add powerdk and wuwatch. System image footprint: 5MB
+#-include $(TOP)/device/intel/debug_tools/powerdk/src/AndroidPowerDK.mk
 
 ifeq ($(powerdk),1)
 $(PRODUCT_OUT)/ramdisk.img : apwr
