@@ -159,9 +159,9 @@ publish_acs:
 	(cd $(ACS_CAMPAIGN_ST_PATH) && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
 	(cd $(ACS_CAMPAIGN_FT_PATH) && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
 
-# sepdk and vTunes
--include $(TOP)/device/intel/debug_tools/sepdk/src/AndroidSEP.mk
--include $(TOP)/device/intel/debug_tools/sepdk/src/pax/AndroidPAX.mk
+# uncomment these lines to add sepdk and vTunes. System image footprint: 4MB
+#-include $(TOP)/device/intel/debug_tools/sepdk/src/AndroidSEP.mk
+#-include $(TOP)/device/intel/debug_tools/sepdk/src/pax/AndroidPAX.mk
 
 ifeq ($(sepdk),1)
 $(PRODUCT_OUT)/ramdisk.img : sep
