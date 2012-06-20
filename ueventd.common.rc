@@ -1,0 +1,2 @@
+# Put Matrix driver device interface to diag grp
+/dev/matrix               0640   root       diag

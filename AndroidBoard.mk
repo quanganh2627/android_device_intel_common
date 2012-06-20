@@ -60,7 +60,8 @@ PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/usbswitch_modem:system/bin/usbswitch_modem \
         $(LOCAL_PATH)/usbswitch_ape:system/bin/usbswitch_ape \
         $(LOCAL_PATH)/usbswitch_status:system/bin/usbswitch_status \
-        $(LOCAL_PATH)/toggle_pin_on1:system/bin/toggle_pin_on1
+        $(LOCAL_PATH)/toggle_pin_on1:system/bin/toggle_pin_on1 \
+        $(LOCAL_PATH)/ueventd.common.rc:root/ueventd.$(TARGET_PRODUCT).rc
 
 # platform common files
 PRODUCT_COPY_FILES += \
