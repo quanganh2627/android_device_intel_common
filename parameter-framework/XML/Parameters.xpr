@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="13.0">
+    <meta>
+        <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
+        <options/>
+    </meta>
+    <projectTree name="Parameters.xpr">
+        <folder path="Schemas/"/>
+        <folder path="Settings/"/>
+        <folder path="Structure/"/>
+        <file name="ParameterFrameworkConfiguration.xml"/>
+        <file name="ParameterFrameworkConfigurationNoTuning.xml"/>
+        <file name="ParameterFrameworkConfigurationVibrator.xml"/>
+        <file name="ParameterFrameworkConfigurationVibratorNoTuning.xml"/>
+    </projectTree>
+</project>

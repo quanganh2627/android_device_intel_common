@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Subsystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Schemas/Subsystem.xsd" Name="VIBRATOR" Type="AMIXER" Endianness="Little">
+	<ComponentLibrary>
+		<ComponentType Name="VIBRATOR_TYPE">
+			<ParameterBlock Name="SHAPE">
+				<IntegerParameter Name="BOOST_TIME" Size="8" Signed="false" Min="0" Max="7" Mapping="Control:'Vibra%1 Boost Time'"/>
+				<BooleanParameter Name="BRAKE" Size="8" Mapping="Control:'Vibra%1 Brake'"/>
+				<IntegerParameter Name="CYCLE_COUNT" Size="8" Signed="false" Min="0" Max="7" Mapping="Control:'Vibra%1 Cycle Count'"/>
+				<EnumParameter Size="8" Name="DIRECTION" Mapping="Control:'Vibra%1 Direction'">
+					<ValuePair Literal="FORWARD" Numerical="0"/>
+					<ValuePair Literal="FORWARD_REVERSE" Numerical="1"/>
+				</EnumParameter>
+				<IntegerParameter Name="DUTY_CYCLE" Size="8" Signed="false" Min="0" Max="31" Mapping="Control:'Vibra%1 Duty Cycle'"/>
+				<ParameterBlock Name="TIME">
+					<IntegerParameter Name="OFF" Size="8" Signed="false" Min="0" Max="15" Mapping="Control:'Vibra%1 Off Time'"/>
+					<IntegerParameter Name="ON" Size="8" Signed="false" Min="0" Max="15" Mapping="Control:'Vibra%1 On Time'"/>
+				</ParameterBlock>
+			</ParameterBlock>
+			<EnumParameter Size="8" Name="MUX" Mapping="Control:'Vibra%1 Enable Mux'">
+				<ValuePair Literal="PWD" Numerical="0"/>
+				<ValuePair Literal="SPI" Numerical="1"/>
+			</EnumParameter>
+			<BooleanParameter Name="STARTED" Size="8" Mapping="Control:'Vibra%1 Start'"/>
+		</ComponentType>
+		<ComponentType Name="ALSA_VIBRATOR">
+			<Component Name="0" Type="VIBRATOR_TYPE" Mapping="Amend1:1"/>
+			<Component Name="1" Type="VIBRATOR_TYPE" Mapping="Amend1:2"/>
+		</ComponentType>
+	</ComponentLibrary>
+	<InstanceDefinition>
+		<Component Name="DEVICE" Type="ALSA_VIBRATOR" Mapping="Card:medfieldaudio"/>
+	</InstanceDefinition>
+</Subsystem>

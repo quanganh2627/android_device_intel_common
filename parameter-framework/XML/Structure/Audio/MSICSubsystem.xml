@@ -30,7 +30,7 @@
 				</EnumParameter>
 				<BooleanParameter Name="HEADPHONE_EARPIECE_ENABLED" ArrayLength="2" Mapping="Control:'Headphone Playback Switch'"/>
 				<BooleanParameter Name="HEADPHONE_DISABLED" Mapping="Control:'Headset Playback Route'"/>
-				<BooleanParameter Name="SPEAKER_ENABLED" ArrayLength="2" Mapping="Control:'Speaker Playback Switch'" />
+				<BooleanParameter Name="SPEAKER_ENABLED" ArrayLength="2" Mapping="Control:'Speaker Playback Switch'"/>
 			</ParameterBlock>
 		</ComponentType>
 		<ComponentType Name="ANALOG_PATH">

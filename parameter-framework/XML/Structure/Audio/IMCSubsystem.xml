@@ -3,7 +3,7 @@
     <ComponentLibrary>
         <!-- GENERAL -->
         <ComponentType Name="DESTINATION_TYPE">
-            <ParameterBlock Name="VOLUME"  Mapping="Volume">
+            <ParameterBlock Name="VOLUME" Mapping="Volume">
                 <IntegerParameter Name="LEVEL" Size="8" Min="0" Max="100" Description="Step size: 0,5dB ; 0 is mute, 100 is +6dB"/>
                 <BooleanParameter Name="MUTED"/>
             </ParameterBlock>
@@ -89,8 +89,8 @@
             <Component Name="RX" Type="SPEECH_RX_TYPE" Mapping="Direction:src"/>
             <Component Name="TX" Type="SPEECH_TX_TYPE" Mapping="Direction:dst"/>
         </ComponentType>
-         <!-- ANALOG COMPONENT LIBRARY -->
-        <ComponentType Name="ANALOG_OUT"  Extends="DESTINATION_TYPE">
+        <!-- ANALOG COMPONENT LIBRARY -->
+        <ComponentType Name="ANALOG_OUT" Extends="DESTINATION_TYPE">
             <EnumParameter Name="MODE" Size="8" Mapping="AnalogConfig">
                 <ValuePair Literal="Handset" Numerical="0"/>
                 <ValuePair Literal="Headset" Numerical="1"/>
@@ -114,7 +114,7 @@
         <ComponentType Name="DIGITAL_IN" Extends="SOURCE_TYPE">
             <EnumParameter Name="MODE" Size="8" Mapping="DigitalConfig">
                 <ValuePair Literal="Default" Numerical="0"/>
-                <ValuePair Literal="Handset" Numerical="1"/>		
+                <ValuePair Literal="Handset" Numerical="1"/>
                 <ValuePair Literal="Headset" Numerical="2"/>
                 <ValuePair Literal="Handsfree" Numerical="3"/>
                 <ValuePair Literal="Aux" Numerical="4"/>
@@ -128,7 +128,7 @@
         <ComponentType Name="DIGITAL_PORT">
             <Component Name="MIC" Type="DIGITAL_IN" Mapping="Direction:src"/>
         </ComponentType>
-         <!-- PROBE COMPONENT LIBRARY -->
+        <!-- PROBE COMPONENT LIBRARY -->
         <ComponentType Name="PROBE_TYPE">
             <Component Name="IN" Type="SOURCE_TYPE" Mapping="SrcPort:10,Direction:src"/>
             <Component Name="IN_A" Type="SOURCE_TYPE" Mapping="SrcPort:12,Direction:src"/>
@@ -141,7 +141,7 @@
             <Component Name="B" Type="SOURCE_TYPE" Mapping="SrcPort:16,Direction:src"/>
             <Component Name="C" Type="SOURCE_TYPE" Mapping="SrcPort:17,Direction:src"/>
             <Component Name="D" Type="SOURCE_TYPE" Mapping="SrcPort:18,Direction:src"/>
-        </ComponentType> 
+        </ComponentType>
         <ComponentType Name="PORTS_CONFIG">
             <Component Name="SPEECH" Type="SPEECH_PORT" Mapping="SrcPort:0,DstPort:0"/>
             <Component Name="ANALOG" Type="ANALOG_PORT" Mapping="SrcPort:1,DstPort:1"/>
@@ -149,7 +149,7 @@
             <Component Name="I2S1" Type="I2S_PORT" Mapping="SrcPort:3,DstPort:2"/>
             <Component Name="I2S2" Type="I2S_PORT" Mapping="SrcPort:4,DstPort:3"/>
             <Component Name="SIMPLE_TONES" Type="SOURCE_TYPE" Mapping="SrcPort:5,Direction:src"/>
-            <Component Name="PCM_GENERAL_RX" Type="SOURCE_TYPE"  Mapping="SrcPort:6,Direction:src"/>
+            <Component Name="PCM_GENERAL_RX" Type="SOURCE_TYPE" Mapping="SrcPort:6,Direction:src"/>
             <Component Name="FM_RADIO_RX" Type="SOURCE_TYPE" Mapping="SrcPort:9,Direction:src"/>
             <Component Name="PROBE" Type="PROBE_TYPE"/>
             <Component Name="AMR_DECODER" Type="SOURCE_TYPE" Mapping="SrcPort:11,Direction:src"/>
