@@ -15,7 +15,7 @@
         <ComponentType Name="I2S_DESTINATION" Extends="DESTINATION_TYPE">
             <ParameterBlock Name="CONFIG" Mapping="I2SPortConfig">
                 <IntegerParameter Name="CLOCK" Size="8" Min="0" Max="1"/>
-                <BooleanParameter Name="MASTER"/>
+                <BooleanParameter Name="SLAVE"/>
                 <EnumParameter Name="SAMPLING_RATE" Size="8" Description="Sampling rate frequency (f) in kHz">
                     <ValuePair Literal="f8" Numerical="0"/>
                     <ValuePair Literal="f11.025" Numerical="1"/>
