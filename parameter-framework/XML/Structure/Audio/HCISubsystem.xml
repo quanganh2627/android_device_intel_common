@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Subsystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Schemas/Subsystem.xsd" Name="HCI" Type="HCI" Endianness="Little">
+    <ComponentLibrary>
+        <ComponentType Name="AUDIO_PATH">
+            <BooleanParameter Name="ENABLED" Mapping="AudioPath"/>
+        </ComponentType>
+        <ComponentType Name="PCM_PORT" Extends="AUDIO_PATH">
+            <ParameterBlock Name="CONFIG" Mapping="PCMPortConfig">
+                <ParameterBlock Name="CLOCK">
+                    <IntegerParameter Name="RATE" Size="16" Min="64" Max="16000" Unit="kHz"/>
+                    <BooleanParameter Name="MASTER" Size="8"/>
+                </ParameterBlock>
+                <ParameterBlock Name="FRAME_SYNC">
+                    <IntegerParameter Name="FREQUENCY" Size="32" Min="100" Max="173" Unit="kHz"/>
+                    <IntegerParameter Name="DUTY_CYCLES" Size="16" Unit="Cycles of PCM Clock" Description="0 stands for 50% of FSync period, 0x1 to 0xFFFF is the number of cycles of PCM Clock"/>
+                    <BooleanParameter Name="FALLING_EDGE" Size="8"/>
+                    <BooleanParameter Name="POLARITY_ACTIVE_LOW" Size="8"/>
+                </ParameterBlock>
+                <ParameterBlock Name="CHANNELS" ArrayLength="2" Description="0 stands for channel 1; 1 stands for channel 2">
+                    <ParameterBlock Name="DATA_OUT">
+                        <IntegerParameter Name="SIZE" Size="16" Min="1" Max="640" Description="Value between 1 and 0x0280 bits. If data size is greater than 24 bits, the size must be divisible by 8 (for example: 1-24, 32, 40, ...)"/>
+                        <IntegerParameter Name="OFFSET" Size="16" Description="Number of PCM clock cycles between rising of frame sync and data start"/>
+                        <BooleanParameter Name="FALLING_EDGE" Size="8"/>
+                    </ParameterBlock>
+                    <ParameterBlock Name="DATA_IN">
+                        <IntegerParameter Name="SIZE" Size="16" Min="1" Max="640" Description="Value between 1 and 0x0280 bits. If data size is greater than 24 bits, the size must be divisible by 8 (for example: 1-24, 32, 40, ...)"/>
+                        <IntegerParameter Name="OFFSET" Size="16" Description="Number of PCM clock cycles between rising of frame sync and data start"/>
+                        <BooleanParameter Name="FALLING_EDGE" Size="8"/>
+                    </ParameterBlock>
+                </ParameterBlock>
+            </ParameterBlock>
+        </ComponentType>
+    </ComponentLibrary>
+    <InstanceDefinition>
+        <Component Name="BLUETOOTH" Type="PCM_PORT" Mapping="Device:BT"/>
+        <Component Name="FM" Type="AUDIO_PATH" Mapping="Device:FM"/>
+    </InstanceDefinition>
+</Subsystem>
