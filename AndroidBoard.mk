@@ -7,7 +7,7 @@ SUPPORT_PATH:= $(TOP)/vendor/intel/support
 ACS_BUILDBOT_PATH := $(TOP)/vendor/intel/PRIVATE/buildbot_acs
 ACS_CAMPAIGN_ST_PATH := $(TOP)/vendor/intel/PRIVATE/ST_acs_campaigns
 ACS_CAMPAIGN_FT_PATH := $(TOP)/vendor/intel/PRIVATE/FT_acs_campaigns
-PERMISSIONS_PATH := $(TOP)/frameworks/base/data/etc
+PERMISSIONS_PATH := $(TOP)/frameworks/native/data/etc
 
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := mrst_keypad.kcm
