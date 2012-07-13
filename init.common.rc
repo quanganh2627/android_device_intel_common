@@ -1,42 +1,17 @@
+on init
+    mkdir /storage 0775 root system
+    mkdir /storage/sdcard0 0000 system system
 
-# init.mfld.rc is catenated at the end of init.rc via the use
-# of PRODUCT_INIT_RC_FILES. See AndroidBoard.mk
+    symlink /storage/sdcard0 /mnt/sdcard
 
-
-# This section taken from init.goldfish.sh
-on early-init
-    export EXTERNAL_STORAGE /mnt/sdcard
-    mkdir /mnt/sdcard 0000 system system
-    # for backwards compatibility
-    symlink /mnt/sdcard /sdcard
-
-    # set permission for charger-mode
-    chmod 0777 /charger
-
-# This section taken from init.goldfish.sh
-on boot
-# enable Google-specific location features,
-# like NetworkLocationProvider and LocationCollector
-    setprop ro.com.google.locationfeatures 1
-
-# For testing, it can be handy to pre-initialize your google account.
-# If you do so... be sure to use an account who's password does not need
-# to be secret
-#   setprop ro.config.hosted_account username@hosteddomain.org:password
-#   setprop ro.config.google_account username@gmail.com:password
+    mkdir /mnt/sdcard_ext 0000 system system
+    symlink /mnt/sdcard_ext /sdcard_ext
 
 on boot
-    # MRST platform specific setup.
-    # The permissions below should be tighter.
     chown system system /dev/card0
     chmod 0666 /dev/card0
     mkdir /dev/dri
-    symlink /dev/dri/card0 /dev/card0
-    chown system system /dev/lpe
-    chown system system /dev/lpe_ctrl
-    chmod 0666 /dev/lpe
-    chmod 0666 /dev/lpe_ctrl
-    chmod 0777 /dev/cmt_speech
+    symlink /dev/card0 /dev/dri/card0
 
     # IMG Graphics specific setup. See also "service pvrsrvinit"
     # The permissions below should be tighter.
@@ -49,169 +24,24 @@ on boot
     chmod 0664 /sys/class/backlight/psb-bl/max_brightness
     chmod 0664 /sys/class/backlight/psb-bl/actual_brightness
 
-on post-fs
-    write /proc/sys/kernel/ctrl-alt-del 0
+    setprop sys.usb.config adb
 
-    # Create logs folder
-    mkdir /data/logs
-    chown root log /data/logs
-    # Here /data/logs is changed to 0750, then crashlogd will be
-    # change /data/logs to 777.
-    chmod 0750 /data/logs
-
-    mkdir /data/tombstones 0755 system system
-    mkdir /data/system/    0775 system system
-    mkdir /data/system/dropbox 0700 system system
-    mkdir /data/logs/modemcrash 0775 system system
-    mkdir /data/logs/stats 0775 system system
-
-    # make nodes for alsa-lib
-    symlink /dev/snd/pcmC0D0c /dev/pcmC0D0c
-    symlink /dev/snd/pcmC0D0p /dev/pcmC0D0p
-    symlink /dev/snd/controlC0 /dev/controlC0
-    symlink /dev/snd/timer /dev/timer
-    chmod 0777 /dev/pcmC0D0c
-    chmod 0777 /dev/pcmC0D0p
-    chmod 0777 /dev/controlC0
-    chmod 0777 /dev/timer
-
-#settings network buffers sizes to improve cellular data throughput
-    write /proc/sys/net/core/rmem_max 256960
-    write /proc/sys/net/ipv4/tcp_mem  "83520 111360 256960"
-
-    setprop net.tcp.buffersize.default 83520,111360,256960,4096,16384,110208
-    setprop net.tcp.buffersize.umts    83520,111360,256960,4096,16384,110208
-    setprop net.tcp.buffersize.hspa    83520,111360,256960,4096,16384,110208
-    setprop net.tcp.buffersize.edge    83520,111360,256960,4096,16384,35040
-    setprop net.tcp.buffersize.gprs    83520,111360,256960,4096,8760,11680
+on fs
+    mount ext4 /dev/block/mmcblk0p2 /system ro noatime
+    mount ext4 /dev/block/mmcblk0p8 /data nosuid nodev barrier=1,data=ordered
+    mount ext4 /dev/block/mmcblk0p3 /cache nosuid nodev barrier=1,data=ordered
 
 on post-fs-data
-    # Create logs folder
-    mkdir /data/logs
-    chown root log /data/logs
-    chmod 0750 /data/logs
-    # Remount the /data/logs
-    #mount /data/logs to emmc0p9
-    mount ext4 /dev/block/mmcblk0p9 /data/logs nosuid nodev barrier=1,data=ordered
-    mkdir /data/logs/modemcrash 0775 system system
-    mkdir /data/logs/stats 0775 system system
-    restart crashlogd
-    setprop persist.service.aplogfs.enable $persist.service.aplogfs.enable
-    setprop persist.service.apklogfs.enable $persist.service.apklogfs.enable
-    setprop persist.service.apklogsd.enable $persist.service.apklogsd.enable
-    setprop persist.service.aplogsd.enable $persist.service.aplogsd.enable
-    setprop persist.service.aplogpti.enable $persist.service.aplogpti.enable
-    setprop persist.service.aklogpti.enable $persist.service.aklogpti.enable
+    mkdir /data/system/ 0775 system system
 
-on charger
-    class_start charger
-    start console
-    start watchdogd
-
-on early-boot
-# enable core dump function when application crash
-    #setrlimit 4 -1 -1 set it at init.c
-    mkdir /data/logs/core
-    chown root log /data/logs/core
-    chmod 0777 /data/logs/core
-    write /proc/sys/kernel/core_pattern /data/logs/core/%t_%e_%p.core
-    write /proc/sys/fs/suid_dumpable 1
-    start crashlogd
-
-on property:persist.service.crashlog.enable=1
-    start crashlogd
-
-on property:persist.service.crashlog.enable=0
-    stop crashlogd
-
-
-on property:persist.service.aplogfs.enable=1
-    restart ap_logfs
-
-on property:persist.service.aplogfs.enable=0
-    stop ap_logfs
-
-on property:persist.service.apklogfs.enable=1
-    restart apk_logfs
-
-on property:persist.service.apklogfs.enable=0
-    stop apk_logfs
-
-on property:persist.service.apklogsd.enable=1
-    restart apk_logsd
-
-on property:persist.service.apklogsd.enable=0
-    stop apk_logsd
-
-on property:persist.service.aplogsd.enable=1
-    restart ap_logsd
-
-on property:persist.service.aplogsd.enable=0
-    stop ap_logsd
-
-on property:persist.service.aplogpti.enable=1
-    write /sys/module/logger_pti/parameters/out "main,system,radio"
-
-on property:persist.service.aplogpti.enable=0
-    write /sys/module/logger_pti/parameters/out ""
-
-on property:persist.service.aklogpti.enable=1
-   write /sys/module/logger_pti/parameters/out "main,system,radio,kernel"
-
-on property:persist.service.aklogpti.enable=0
-   write /sys/module/logger_pti/parameters/out ""
-
-on property:sys.forcecoldboot=yes
-    write /sys/module/intel_mid/parameters/force_cold_boot Y
-
-service charger_app /charger 5 1
-    class charger
-    user root
+    # we will remap this as /storage/sdcard0 with the sdcard fuse tool
+    mkdir /data/media 0775 media_rw media_rw
+    chown media_rw media_rw /data/media
 
 service pvrsrvinit /system/bin/pvrsrvinit
     class core
     oneshot
     user root
 
-service crashlogd /system/bin/crashlogd
-    oneshot
-
-service watchdogd /system/xbin/watchdogd
-    class core
-    user root
-    oneshot
-
-service drm /system/bin/drmserver
+service sdcard /system/bin/sdcard /data/media 1023 1023
     class main
-    user drm
-    group system inet drmrpc security
-
-service media /system/bin/mediaserver
-    class main
-    user media
-    group system audio camera inet net_bt net_bt_admin net_bw_acct drmrpc net_raw security
-    ioprio rt 4
-
-#enable Houdini for executable
-service enable_houdini /system/bin/enable_houdini
-    class main
-    oneshot
-
-# log services
-service ap_logfs /system/bin/logcat -b system -b events -b main -b radio -n 20 -r 5000 -v threadtime -f /data/logs/aplog
-    class main
-    disabled
-
-service apk_logfs /system/bin/logcat -b system -b events -b main -b radio -b kernel -n 20 -r 5000 -v threadtime -f /data/logs/aplog
-    class main
-    disabled
-
-service apk_logsd /system/bin/logcat -b system -b events -b main -b radio -b kernel -n 20 -r 5000 -v threadtime -f /sdcard/aplog
-    disabled
-
-service ap_logsd /system/bin/logcat -b system -b events -b main -b radio -n 20 -r 5000 -v threadtime -f /sdcard/aplog
-    disabled
-
-on property:ro.intel.corp.email=1
-    copy /system/etc/security/email.p12 /data/media/email.p12
-    chmod 0666 /data/media/email.p12

@@ -50,7 +50,7 @@ $(INSTALLED_RAMDISK_TARGET): build_kernel
 PRODUCT_INIT_RC_FILES += $(COMMON_PATH)/init.common.rc
 
 # OOM Killer tweaks
-PRODUCT_INIT_RC_FILES += vendor/intel/common/init.mfld.oom.rc
+#PRODUCT_INIT_RC_FILES += vendor/intel/common/init.mfld.oom.rc
 
 # board specific files
 PRODUCT_COPY_FILES += \
@@ -66,9 +66,6 @@ PRODUCT_COPY_FILES += \
 # platform common files
 PRODUCT_COPY_FILES += \
         $(LOCAL_PATH)/init.rc:init.rc \
-        $(LOCAL_PATH)/init.nfs.rc:root/init.nfs.rc \
-        $(LOCAL_PATH)/init.sdcard1.rc:root/init.sdcard1.rc \
-        $(LOCAL_PATH)/init.sdcard2.rc:root/init.sdcard2.rc \
         $(PERMISSIONS_PATH)/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
         $(PERMISSIONS_PATH)/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
         $(PERMISSIONS_PATH)/android.hardware.touchscreen.xml:system/etc/permissions/android.hardware.touchscreen.xml \
