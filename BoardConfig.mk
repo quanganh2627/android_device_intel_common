@@ -10,13 +10,17 @@ TARGET_CPU_ABI := x86
 TARGET_CPU_SMP := true
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
-TARGET_NO_RECOVERY := false
-
 TARGET_PRELINK_MODULE := false
 TARGET_PROVIDES_INIT_RC := true
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_RIL_DISABLE_STATUS_POLLING := true
 TARGET_BOOTLOADER_BOARD_NAME := mrst
+
+TARGET_NO_RECOVERY := true
+FLASHFILE_NO_OTA := true
+INTEL_CRASHLOGD := false
+INTEL_HOUDINI := false
+INTEL_CAMERA := false
 
 #Platform
 #Enable ODEX for userdebug and user builds
@@ -64,7 +68,7 @@ SYSTEM_TARBALL_FORMAT := gz
 # Required for the size calculations in definitions.mk. Since
 # definitions.mk assume a nand... a bit of space will be wasted
 BOARD_FLASH_BLOCK_SIZE := 2048
-BUILD_WITH_FULL_STAGEFRIGHT := true
+BUILD_WITH_FULL_STAGEFRIGHT := false
 
 
 # Set property of maximal runtime heap size to 64MB for intel's mfld board.
@@ -79,7 +83,7 @@ ADDITIONAL_BUILD_PROPERTIES += ro.product.cpu.abi2=armeabi-v7a
 ADDITIONAL_BUILD_PROPERTIES += ro.config.personality=compat_layout
 
 # Security
-BUILD_WITH_CHAABI_SUPPORT := true
+BUILD_WITH_CHAABI_SUPPORT := false
 BUILD_WITH_WATCHDOG_DAEMON_SUPPORT := true
 
 # Imaging by default
