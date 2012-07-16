@@ -46,12 +46,6 @@ MKBOOTIMG := vendor/intel/support/mkbootimg
 $(INSTALLED_KERNEL_TARGET): build_kernel
 $(INSTALLED_RAMDISK_TARGET): build_kernel
 
-# SOC initrc file
-PRODUCT_INIT_RC_FILES += $(COMMON_PATH)/init.common.rc
-
-# OOM Killer tweaks
-#PRODUCT_INIT_RC_FILES += vendor/intel/common/init.mfld.oom.rc
-
 flashfiles: bootimage
 ifneq ($(FLASHFILE_BOOTONLY),true)
 ifeq ($(FLASHFILE_NO_OTA),true)

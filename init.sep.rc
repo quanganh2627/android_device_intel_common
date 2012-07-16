@@ -1,4 +1,0 @@
-
-service start-sep /system/bin/start-sep
-    oneshot
-
