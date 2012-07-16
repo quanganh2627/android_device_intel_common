@@ -97,7 +97,7 @@ ADDITIONAL_BUILD_PROPERTIES += ro.product.cpu.abi2=armeabi-v7a
 ADDITIONAL_BUILD_PROPERTIES += ro.config.personality=compat_layout
 
 # Security
-BUILD_WITH_CHAABI_SUPPORT := false
+BUILD_WITH_CHAABI_SUPPORT := true
 BUILD_WITH_WATCHDOG_DAEMON_SUPPORT := true
 
 # Imaging by default
