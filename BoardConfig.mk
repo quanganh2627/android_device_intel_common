@@ -56,7 +56,20 @@ BUILD_INIT_EXEC := true
 endif
 
 #Intel recovery images and boot images are different from android images.
-INTEL_BOOTIMG := true
+TARGET_MAKE_NO_DEFAULT_BOOTIMAGE := true
+TARGET_MAKE_INTEL_BOOTIMAGE := true
+
+# Enable to use Intel boot.bin
+ifeq ($(TARGET_MAKE_INTEL_BOOTIMAGE),true)
+INSTALLED_BOOTIMAGE_TARGET := $(PRODUCT_OUT)/boot.bin
+MAKE_NO_DEFAULT_BOOTIMAGE_ITEMS = $(MKBOOTIMG) \
+	$(INTERNAL_BOOTIMAGE_FILES)
+MAKE_NO_DEFAULT_BOOTIMAGE = $(MKBOOTIMG) \
+	$(INTERNAL_BOOTIMAGE_ARGS) \
+	--product $(TARGET_PRODUCT) \
+	--type mos \
+	--output $(INSTALLED_BOOTIMAGE_TARGET)
+endif # TARGET_MAKE_INTEL_BOOTIMAGE
 
 ifeq ($(BOARD_BOOTMEDIA),)
 BOARD_BOOTMEDIA := sdcard
