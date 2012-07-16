@@ -112,7 +112,8 @@ blank_flashfiles: droidbootimage
 else
 blank_flashfiles: recoveryimage
 endif
-blank_flashfiles:
+blank_flashfiles: $(PREBUILT_DROIDBOOT_IMG) | $(ACP)
+	$(ACP) $(PREBUILT_DROIDBOOT_IMG) $(PRODUCT_OUT)
 	$(if $(IFWI_PREBUILT_PATHS), \
 		PUBLISH_PATH=$(PUBLISH_PATH) \
 		TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
