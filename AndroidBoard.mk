@@ -76,19 +76,17 @@ PRODUCT_COPY_FILES += \
         $(PERMISSIONS_PATH)/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml
 
 
-ifeq ($(FLASHFILE_BOOTONLY),true)
 flashfiles: bootimage
-else
+ifneq ($(FLASHFILE_BOOTONLY),true)
 ifeq ($(FLASHFILE_NO_OTA),true)
 flashfiles: firmware recoveryimage
 else
 flashfiles: firmware otapackage recoveryimage
 endif
 ifeq ($(TARGET_USE_DROIDBOOT),true)
-flashfiles: droidbootimage systemimg_gz
-else
-flashfiles: systemtarball
+flashfiles: droidbootimage
 endif
+flashfiles: systemimg_gz
 endif
 
 ifeq ($(USE_GMS_ALL),true)
