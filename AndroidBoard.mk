@@ -91,10 +91,10 @@ flashfiles: systemtarball
 endif
 endif
 
-ifeq ($(USE_GMS_ALL),false)
-PUBLISH_TARGET_BUILD_VARIANT := $(TARGET_BUILD_VARIANT)
-else
+ifeq ($(USE_GMS_ALL),true)
 PUBLISH_TARGET_BUILD_VARIANT := $(TARGET_BUILD_VARIANT)_gms
+else
+PUBLISH_TARGET_BUILD_VARIANT := $(TARGET_BUILD_VARIANT)
 endif
 
 flashfiles:
