@@ -81,7 +81,7 @@ SYSTEM_TARBALL_FORMAT := gz
 # Required for the size calculations in definitions.mk. Since
 # definitions.mk assume a nand... a bit of space will be wasted
 BOARD_FLASH_BLOCK_SIZE := 2048
-BUILD_WITH_FULL_STAGEFRIGHT := false
+BUILD_WITH_FULL_STAGEFRIGHT := true
 
 
 # Set property of maximal runtime heap size to 64MB for intel's mfld board.
