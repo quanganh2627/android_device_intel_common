@@ -53,20 +53,6 @@ SED=sed
 MKDIR=mkdir
 GREP=grep
 
-####################################
-# Product files to copy
-####################################
-
-# common product files to copy
-PRODUCT_COPY_FILES += \
-   $(PERMISSIONS_PATH)/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
-   $(PERMISSIONS_PATH)/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml
-
-# manufacturer specific files to copy
-ifeq ($(BOARD_WLAN_DEVICE),wl12xx-compat)
-PRODUCT_COPY_FILES += \
-        $(wildcard $(VARIANT_PATH)/wifi/TQS*ini):system/etc/wifi/TQS.ini
-endif
 
 ####################################
 # init files
