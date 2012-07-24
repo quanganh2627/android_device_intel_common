@@ -124,3 +124,6 @@ BUILD_BT_GAP_TEST := true
 
 # force user build variant to display build number for internal dev builds. External release builds should not set this flag
 DISPLAY_BUILD_NUMBER := true
+
+# Wi-Fi
+include vendor/intel/common/wifi/WifiBoardConfig.mk
