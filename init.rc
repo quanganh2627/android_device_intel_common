@@ -476,11 +476,11 @@ service mtpd /system/bin/mtpd
     disabled
     oneshot
 
-#service keystore /system/bin/keystore /data/misc/keystore
-#    class main
-#    user keystore
-#    group keystore drmrpc
-#    socket keystore stream 666
+service keystore /system/bin/keystore /data/misc/keystore
+    class main
+    user keystore
+    group keystore drmrpc
+    socket keystore stream 666
 
 #service dumpstate /system/bin/dumpstate -s
 #    class main
