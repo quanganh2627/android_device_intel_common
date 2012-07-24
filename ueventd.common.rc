@@ -3,3 +3,7 @@
 # modem tty node change to radio user can read and write
 /dev/gsmtty*              0660   radio      system
 /dev/ttyMFD*              0660   radio      system
+# Audience device to audio group
+/dev/audience_es305       0770   audio      audio
+/dev/intel_sst_ctrl       0600   media      media
+
