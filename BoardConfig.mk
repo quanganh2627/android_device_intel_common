@@ -20,7 +20,7 @@ TARGET_HAS_MULTIPLE_DISPLAY := true
 
 FLASHFILE_NO_OTA := true
 INTEL_CRASHLOGD := false
-INTEL_HOUDINI := false
+INTEL_HOUDINI := true
 INTEL_CAMERA := false
 
 #Platform

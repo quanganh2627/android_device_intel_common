@@ -48,6 +48,11 @@ service watchdogd /system/xbin/watchdogd
 service sdcard /system/bin/sdcard /data/media 1023 1023
     class main
 
+#Enable Houdini for execuable
+service enable_houdini /system/bin/enable_houdini
+    class main
+    oneshot
+
 # This property trigger has added to imitiate the previous behavior of "adb root".
 # The adb gadget driver used to reset the USB bus when the adbd daemon exited,
 # and the host side adb relied on this behavior to force it to reconnect with the
