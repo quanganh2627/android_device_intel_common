@@ -318,7 +318,7 @@ on boot
     setprop net.tcp.buffersize.gprs    4092,8760,11680,4096,8760,11680
 
 # Set this property so surfaceflinger is not started by system_init
-    setprop system_init.startsurfaceflinger 0
+    setprop system_init.startsurfaceflinger 1
 
     class_start core
     class_start main
