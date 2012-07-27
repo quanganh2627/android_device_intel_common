@@ -119,3 +119,6 @@ TARGET_USE_GR_STATIC_RECT_VB := true
 
 # customize the malloced address to be 16-byte aligned
 BOARD_MALLOC_ALIGNMENT := 16
+
+# Enabled Bluetooth GAP test build in bluez
+BUILD_BT_GAP_TEST := true
