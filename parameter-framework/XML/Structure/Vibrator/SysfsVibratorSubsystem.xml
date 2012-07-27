@@ -6,6 +6,6 @@
 		</ComponentType>
 	</ComponentLibrary>
 	<InstanceDefinition>
-		<Component Name="STATE" Type="SYSFS_FILE" Mapping="Directory:/sys/devices/platform/intel_mid_vibra/"/>
+		<Component Name="STATE" Type="SYSFS_FILE" Mapping="Directory:/sys/bus/pci/devices/0000:00:06.6/"/>
 	</InstanceDefinition>
 </Subsystem>
