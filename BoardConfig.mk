@@ -22,6 +22,7 @@ FLASHFILE_NO_OTA := true
 INTEL_CRASHLOGD := false
 INTEL_HOUDINI := true
 INTEL_CAMERA := false
+INTEL_TEST_CAMERA := true
 
 #Platform
 #Enable ODEX for userdebug and user builds
