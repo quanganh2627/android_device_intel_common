@@ -30,6 +30,9 @@ on boot
     #Change mmc queue nr_requests from 128 to 32 to reduce write latencies
     write /sys/block/mmcblk0/queue/nr_requests 32
 
+    #reduce dirty memory size
+    write /proc/sys/vm/dirty_background_bytes  5242880
+
 on fs
     mount ext4 /dev/block/mmcblk0p2 /system ro noatime
     mount ext4 /dev/block/mmcblk0p8 /data nosuid nodev barrier=1,data=ordered
