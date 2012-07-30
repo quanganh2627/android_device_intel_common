@@ -44,6 +44,9 @@ on fs
 on post-fs-data
     mkdir /data/system/ 0770 system system
 
+on charger
+    setprop sys.usb.config charging
+
 service pvrsrvinit /system/bin/pvrsrvinit
     class core
     oneshot
