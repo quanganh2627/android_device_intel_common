@@ -46,7 +46,7 @@ service pvrsrvinit /system/bin/pvrsrvinit
     oneshot
     user root
 
-service watchdogd /system/xbin/watchdogd
+service watchdogd /sbin/watchdogd
     class core
     user root
     oneshot
