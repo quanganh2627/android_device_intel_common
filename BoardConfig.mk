@@ -109,3 +109,6 @@ USE_INTEL_FACE_DETECTION := true
 
 # select libcamera2 as the camera HAL
 USE_CAMERA_HAL2 := true
+
+# Turn on GR_STATIC_RECT_VB flag in skia to boost performance
+TARGET_USE_GR_STATIC_RECT_VB := true
