@@ -12,20 +12,9 @@ on init
     mkdir /sdcard
     mkdir /system
     mkdir /data
+    mkdir /logs
     mkdir /cache
     mount /tmp /tmp tmpfs
-
-    chown root shell /tmp
-    chmod 0775 /tmp
-
-    write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 18D1
-    write /sys/class/android_usb/android0/idProduct D001
-    write /sys/class/android_usb/android0/functions adb
-    write /sys/class/android_usb/android0/iManufacturer ${ro.product.manufacturer}
-    write /sys/class/android_usb/android0/iProduct ${ro.product.model}
-    write /sys/class/android_usb/android0/iSerial ${ro.serialno}
-
 
 on boot
 
@@ -43,17 +32,95 @@ service recovery /sbin/recovery
 service adbd /sbin/adbd recovery
     disabled
 
-service watchdogd /sbin/watchdogd
-    user root
-    oneshot
+service console /sbin/busybox sh
+    console
+    disabled
 
 # Always start adbd on userdebug and eng builds
 on property:ro.debuggable=1
-    write /sys/class/android_usb/android0/enable 1
+    start console
+
+on property:ro.debuggable=0
+    stop console
+
+on property:service.adb.enable=1
     start adbd
+
+on property:service.adb.enable=0
+    stop adbd
 
 # Restart adbd so it can run as root
 on property:service.adb.root=1
     write /sys/class/android_usb/android0/enable 0
     restart adbd
     write /sys/class/android_usb/android0/enable 1
+
+#one of the following property triggers will enable adb if it is enabled in regular operation
+
+on property:sys.usb.config=adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 8087
+    write /sys/class/android_usb/android0/idProduct 09ef
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+
+# USB ACM configuration, with rndis and adb
+on property:sys.usb.config=rndis,acm,adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 8087
+    write /sys/class/android_usb/android0/idProduct 09f8
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+
+on property:sys.usb.config=mass_storage,adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 8087
+    write /sys/class/android_usb/android0/idProduct 09f2
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+
+on property:sys.usb.config=mtp,adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 18d1
+    write /sys/class/android_usb/android0/idProduct Fec0
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+
+on property:sys.usb.config=ptp,adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 18d1
+    write /sys/class/android_usb/android0/idProduct Fec0
+    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/enable 1
+
+
+service watchdogd /sbin/watchdogd
+    user root
+    oneshot
+
+service apk_logfs /sbin/logcat -b system -b events -b main -b radio -n 20 -r 5000 -v threadtime -f /logs/aplog -K
+    disabled
+
+on property:persist.service.apklogfs.enable=1
+    start apk_logfs
+
+on property:persist.service.apklogfs.enable=0
+    stop apk_logfs
+
+# Add Proxy service for Modem provisionning
+service proxy /sbin/proxy -d none -m /dev/ttyIFX0 -p /dev/ttyGS0 -t on
+    disabled
+
+on property:service.proxy.enable=1
+    setprop sys.usb.config rndis,acm,adb
+    start proxy
+
+on property:service.proxy.enable=0
+    stop proxy
+    setprop sys.usb.config adb
+
+on property:sys.forcecoldboot=yes
+    write /sys/module/intel_mid/parameters/force_cold_boot Y
+
