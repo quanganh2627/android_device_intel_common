@@ -383,7 +383,6 @@ service servicemanager /system/bin/servicemanager
     critical
     onrestart restart zygote
     onrestart restart media
-    onrestart restart surfaceflinger
     onrestart restart drm
 
 service vold /system/bin/vold
@@ -407,11 +406,11 @@ service debuggerd /system/bin/debuggerd
 #    user root
 #    group radio cache inet misc audio sdcard_rw log
 
-service surfaceflinger /system/bin/surfaceflinger
-    class main
-    user system
-    group graphics
-    onrestart restart zygote
+#service surfaceflinger /system/bin/surfaceflinger
+#    class main
+#    user system
+#    group graphics
+#    onrestart restart zygote
 
 service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
     class main
