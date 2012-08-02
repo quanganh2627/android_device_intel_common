@@ -24,6 +24,10 @@ INTEL_INGREDIENTS_VERSIONS := true
 INTEL_CAMERA := false
 INTEL_TEST_CAMERA := true
 
+ifneq ($(wildcard $(TOP)/vendor/intel/PRIVATE/cert/testkey*),)
+PRODUCT_DEFAULT_DEV_CERTIFICATE :=  $(TOP)/vendor/intel/PRIVATE/cert/testkey
+endif
+
 #Platform
 #Enable ODEX for userdebug and user builds
 ifneq (,$(findstring $(TARGET_BUILD_VARIANT),userdebug user))
