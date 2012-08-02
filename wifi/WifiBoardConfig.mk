@@ -5,7 +5,19 @@ BOARD_WLAN_DEVICE              := wl12xx-compat
 BOARD_WPA_SUPPLICANT_DRIVER    := NL80211
 WPA_SUPPLICANT_VERSION         := VER_0_8_X
 ADDITIONAL_DEFAULT_PROPERTIES  += wifi.interface=wlan0:0
-endif
+
+ifeq ($(strip $(INTEL_WIDI)),true)
+ADDITIONAL_DEFAULT_PROPERTIES  += widi.interface=wlan3
+
+ifeq ($(strip $(INTEL_WIFI_WIDI_MR)),true)
+ADDITIONAL_DEFAULT_PROPERTIES  += ro.wifi.widi.mr=true
+else
+ADDITIONAL_DEFAULT_PROPERTIES  += ro.wifi.widi.mr=false
+endif # INTEL_WIFI_WIDI_MR
+
+endif # INTEL_WIDI
+
+endif # BOARD_HAVE_TI12XX
 
 # BCM43xx serie wifi specific
 ifeq ($(strip $(BOARD_HAVE_BCM43XX)),true)
