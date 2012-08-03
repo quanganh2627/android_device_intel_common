@@ -74,6 +74,7 @@ flashfiles:
 	FLASH_MODEM=$(BOARD_HAVE_MODEM) \
 	$(SUPPORT_PATH)/publish_build.py `pwd` $(TARGET_PRODUCT) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG)
 
+ifneq ($(FLASHFILE_BOOTONLY),true)
 blank_flashfiles: firmware
 ifeq ($(TARGET_USE_DROIDBOOT),true)
 blank_flashfiles: droidbootimage
@@ -88,6 +89,10 @@ blank_flashfiles:
 		TARGET_USE_DROIDBOOT=$(TARGET_USE_DROIDBOOT) \
 		$(SUPPORT_PATH)/publish_build.py `pwd` $(TARGET_PRODUCT) 'blankphone' $(FILE_NAME_TAG), \
 		@echo "No IFWI found for this target. No blank flashfile to generate")
+else
+blank_flashfiles:
+	@echo "No blank_flashfiles for this target - FLASHFILE_BOOTONLY set to TRUE"
+endif
 
 publish_modem:
 	PUBLISH_PATH=$(PUBLISH_PATH) \
