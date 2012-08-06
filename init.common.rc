@@ -89,7 +89,7 @@ service mediabt /system/bin/mediabtservice
 service media /system/bin/mediaserver
     class main
     user media
-    group system audio camera inet net_bt net_bt_admin net_bw_acct drmrpc net_raw security
+    group system audio camera inet net_bt net_bt_admin net_bw_acct drmrpc net_raw security radio
     ioprio rt 4
 
 #Enable Houdini for execuable
