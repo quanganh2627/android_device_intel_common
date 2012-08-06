@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Subsystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Schemas/Subsystem.xsd" Name="PROPERTIES" Type="PROPERTY" Endianness="Little">
+	<ComponentLibrary>
+		<ComponentType Name="AUDIO_HARDWARE_PRESENT">
+			<BooleanParameter Name="IS_PRESENT" Mapping="BooleanProperty:IsPresent"/>
+		</ComponentType>
+		<ComponentType Name="AUDIENCE" Extends="AUDIO_HARDWARE_PRESENT" Mapping="Component:Audience">
+			<StringParameter Name="FIRMWARE_PATH" MaxLength="256" Mapping="StringProperty:FwPath"/>
+		</ComponentType>
+		<ComponentType Name="AUDIO_HARDWARE">
+			<Component Name="EARPIECE" Type="AUDIO_HARDWARE_PRESENT" Mapping="Component:Earpiece"/>
+			<Component Name="AUDIENCE" Type="AUDIENCE"/>
+		</ComponentType>
+		<ComponentType Name="SAMPLE_SPEC">
+			<IntegerParameter Size="16" Min="8000" Max="48000" Signed="false" Name="SAMPLE_RATE" Mapping="IntegerProperty:%1.SampleRate"/>
+		</ComponentType>
+		<ComponentType Name="AUDIO_DEFAULT_SAMPLE_SPEC" Mapping="Component:Conf">
+			<Component Name="INPUT" Type="SAMPLE_SPEC" Mapping="Amend1:In"/>
+			<Component Name="OUTPUT" Type="SAMPLE_SPEC" Mapping="Amend1:Out"/>
+		</ComponentType>
+		<ComponentType Name="AUDIO_COMMS_FEATURE" Mapping="Feature:AudioComms">
+			<Component Name="DEFAULT_SAMPLE_SPEC" Type="AUDIO_DEFAULT_SAMPLE_SPEC"/>
+			<Component Name="HARDWARE" Type="AUDIO_HARDWARE"/>
+		</ComponentType>
+	</ComponentLibrary>
+	<InstanceDefinition>
+		<Component Name="AUDIO_COMMS" Type="AUDIO_COMMS_FEATURE"/>
+	</InstanceDefinition>
+</Subsystem>
