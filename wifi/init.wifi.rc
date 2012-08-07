@@ -15,7 +15,6 @@ on boot
     insmod /lib/modules/mac80211.ko
     insmod /lib/modules/wl12xx.ko
     insmod /lib/modules/wl12xx_sdio.ko
-    start wlan_prov
 
 on post-fs-data
    mkdir /data/misc/wifi/sockets 0770 wifi wifi
@@ -28,6 +27,9 @@ on post-fs-data
    chown wifi wifi /system/etc/wifi/p2p_supplicant.conf
    chmod 0660 /system/etc/wifi/hostapd.conf
    chown wifi wifi /system/etc/wifi/hostapd.conf
+
+on property:dev.bootcomplete=1
+   start wlan_prov
 
 on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd
