@@ -1,0 +1,12 @@
+#mount point   fstype   device                    option             size hint
+/reserved      hidden   /dev/block/mmcblk0_none   length=0           size_hint=164
+/panic         raw      /dev/block/mmcblk0p1      length=0           size_hint=8
+/factory       ext4     /dev/block/mmcblk0p2      length=0           size_hint=32
+/config        ext4     /dev/block/mmcblk0p3      length=0           size_hint=128
+/media         vfat     /dev/block/mmcblk0p5      length=0           size_hint=128
+/cache         ext4     /dev/block/mmcblk0p6      length=0           size_hint=768
+/logs          ext4     /dev/block/mmcblk0p7      length=0           size_hint=1024
+/system        ext4     /dev/block/mmcblk0p8      length=0           size_hint=1024
+/data          ext4     /dev/block/mmcblk0p9      length=-16384      size_hint=0
+
+/mnt/sdcard    vfat     /dev/block/mmcblk1p1      length=0           size_hint=-1

@@ -1,12 +1,18 @@
-#mount point   fstype   device                    option             size hint
-/reserved      hidden   /dev/block/mmcblk0_none   length=0           size_hint=164
-/panic         raw      /dev/block/mmcblk0p1      length=0           size_hint=8
-/factory       ext4     /dev/block/mmcblk0p2      length=0           size_hint=32
-/config        ext4     /dev/block/mmcblk0p3      length=0           size_hint=128
-/media         vfat     /dev/block/mmcblk0p5      length=0           size_hint=128
-/cache         ext4     /dev/block/mmcblk0p6      length=0           size_hint=768
-/logs          ext4     /dev/block/mmcblk0p7      length=0           size_hint=1024
-/system        ext4     /dev/block/mmcblk0p8      length=0           size_hint=1024
-/data          ext4     /dev/block/mmcblk0p9      length=-16384      size_hint=0
+# Android fstab file.
+#<src> <mnt_point> <type> <mnt_flags and options> <fs_mgr_flags>
+# The filesystem that contains the filesystem checker binary (typically /system) cannot
+# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
 
-/mnt/sdcard    vfat     /dev/block/mmcblk1p1      length=0           size_hint=-1
+# Temporary disabled
+#/dev/block/mmcblk0p2 /factory ext4 nosuid,nodev,noatime,barrier=1,data=ordered wait
+/dev/block/mmcblk0p8 /system ext4 ro,noatime wait
+/dev/block/mmcblk0p6 /cache ext4 nosuid,nodev,noatime,barrier=1,data=ordered wait,check
+/dev/block/mmcblk0p3 /config ext4 ro wait
+#/dev/block/mmcblk0p1 /panic raw defaults wait
+# blankphone does not erase /media
+# new partition schema, media mount fails (not vfat)
+# JB fs_mgr exits, ICS does not check ?
+#/dev/block/mmcblk0p5 /media vfat defaults wait
+/dev/block/mmcblk0p9 /data ext4 nosuid,nodev,noatime,barrier=1,data=ordered,noauto_da_alloc wait,check,encryptable=/factory/userdata_footer
+# until logs partition is mounted on /data/logs/
+#/dev/block/mmcblk0p7 /data/logs ext4 nosuid,nodev,barrier=1,data=ordered wait
