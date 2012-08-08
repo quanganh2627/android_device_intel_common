@@ -63,6 +63,17 @@ service charger_app /charger
     class charger
     user root
 
+service drm /system/bin/drmserver
+    class main
+    user drm
+    group drm system inet drmrpc sdcard_r security
+
+service media /system/bin/mediaserver
+    class main
+    user media
+    group system audio camera inet net_bt net_bt_admin net_bw_acct drmrpc net_raw security
+    ioprio rt 4
+
 #Enable Houdini for execuable
 service enable_houdini /system/bin/enable_houdini
     class main
