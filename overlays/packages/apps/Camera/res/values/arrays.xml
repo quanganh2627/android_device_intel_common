@@ -230,6 +230,17 @@
         <item>@string/pref_camera_scenemode_entry_night</item>
         <item>@string/pref_camera_scenemode_entry_sunset</item>
         <item>@string/pref_camera_scenemode_entry_party</item>
+        <item>@string/pref_camera_scenemode_entry_portrait</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_landscape</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_night_portrait</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_theatre</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_beach</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_snow</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_steadyphoto</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_fireworks</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_sports</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_candlelight</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_barcode</item> <!-- Intel -->
     </string-array>
 
     <string-array name="pref_camera_scenemode_entryvalues" translatable="false">
@@ -238,6 +249,17 @@
         <item>night</item>
         <item>sunset</item>
         <item>party</item>
+        <item>portrait</item> <!-- Intel -->
+        <item>landscape</item> <!-- Intel -->
+        <item>night-portrait</item> <!-- Intel -->
+        <item>theatre</item> <!-- Intel -->
+        <item>beach</item> <!-- Intel -->
+        <item>snow</item> <!-- Intel -->
+        <item>steadyphoto</item> <!-- Intel -->
+        <item>fireworks</item> <!-- Intel -->
+        <item>sports</item> <!-- Intel -->
+        <item>candlelight</item> <!-- Intel -->
+        <item>barcode</item> <!-- Intel -->
     </string-array>
 
     <array name="camera_id_entries" translatable="false">
