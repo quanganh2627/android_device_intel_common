@@ -62,9 +62,6 @@ service watchdogd /sbin/watchdogd
     user root
     oneshot
 
-service sdcard /system/bin/sdcard /data/media 1023 1023
-    class main
-
 service charger_app /charger
     class charger
     user root
