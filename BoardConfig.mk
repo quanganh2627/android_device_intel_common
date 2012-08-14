@@ -113,3 +113,6 @@ USE_CAMERA_HAL2 := true
 
 # Turn on GR_STATIC_RECT_VB flag in skia to boost performance
 TARGET_USE_GR_STATIC_RECT_VB := true
+
+# customize the malloced address to be 16-byte aligned
+BOARD_MALLOC_ALIGNMENT := 16
