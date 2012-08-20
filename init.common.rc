@@ -25,7 +25,7 @@ on boot
     mkdir /dev/dri
     symlink /dev/card0 /dev/dri/card0
 
-    # IMG Graphics specific setup. See also "service pvrsrvinit"
+    # IMG Graphics specific setup. See also "service pvrsrvctl"
     # The permissions below should be tighter.
     chown system system /dev/card0
     chown system system /sys/class/backlight/psb-bl/brightness
@@ -63,7 +63,7 @@ on charger
     setprop sys.usb.config mtp,adb
     setprop ro.debuggable 1
 
-service pvrsrvinit /system/bin/pvrsrvinit
+service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
     class core
     oneshot
     user root
