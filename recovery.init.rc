@@ -17,6 +17,11 @@ on init
     mkdir /cache
     mount /tmp /tmp tmpfs
 
+    # mount logs in /logs
+    mount ext4 /dev/block/mmcblk0p7 /logs nosuid nodev barrier=1,data=ordered
+    chown system system /logs
+    chmod 777 /logs
+
     write /sys/module/intel_mid/parameters/force_cold_boot Y
 
     # adb shell needs /system/bin/sh
@@ -38,10 +43,6 @@ service ueventd /sbin/ueventd
 service recovery /sbin/recovery
 
 service adbd /sbin/adbd recovery
-    disabled
-
-service console /sbin/busybox sh
-    console
     disabled
 
 # Always start adbd on userdebug and eng builds
@@ -111,7 +112,7 @@ service watchdogd /sbin/watchdogd
     user root
     oneshot
 
-service apk_logfs /sbin/logcat -b system -b events -b main -b radio -n 20 -r 5000 -v threadtime -f /logs/aplog -K
+service apk_logfs /sbin/logcat -b system -b events -b main -b radio -b kernel -n 20 -r 5000 -v threadtime -f /logs/aplog
     disabled
 
 on property:persist.service.apklogfs.enable=1
