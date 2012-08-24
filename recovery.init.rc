@@ -2,7 +2,8 @@ on early-init
     start ueventd
 
 on init
-    export PATH /sbin
+    export PATH /sbin:/system/bin
+    export LD_LIBRARY_PATH /system/lib
     export ANDROID_ROOT /system
     export ANDROID_DATA /data
     export EXTERNAL_STORAGE /sdcard
@@ -18,11 +19,16 @@ on init
 
     write /sys/module/intel_mid/parameters/force_cold_boot Y
 
+    # adb shell needs /system/bin/sh
+    symlink /system/bin/mksh /system/bin/sh
+
 on boot
 
     ifup lo
     hostname localhost
     domainname localdomain
+
+    setprop sys.usb.config mtp,adb
 
     class_start default
 
@@ -85,10 +91,13 @@ on property:sys.usb.config=mass_storage,adb
 
 on property:sys.usb.config=mtp,adb
     write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/idVendor 18d1
-    write /sys/class/android_usb/android0/idProduct Fec0
+    write /sys/class/android_usb/android0/idVendor 0x8087 
+    write /sys/class/android_usb/android0/idProduct 0x09fc
+    write /sys/class/android_usb/android0/iProduct "Android-Phone"
     write /sys/class/android_usb/android0/functions $sys.usb.config
     write /sys/class/android_usb/android0/enable 1
+    start adbd
+    setprop sys.usb.state $sys.usb.config
 
 on property:sys.usb.config=ptp,adb
     write /sys/class/android_usb/android0/enable 0
