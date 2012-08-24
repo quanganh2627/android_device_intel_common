@@ -50,7 +50,15 @@ on post-fs-data
     mkdir /data/system/ 0770 system system
 
 on charger
-    setprop sys.usb.config charging
+    # basic networking for "adb root"
+    ifup lo
+    hostname localhost
+    domainname localdomain
+    # /system is not already mounted under COS
+    mount ext4 /dev/block/mmcblk0p2 /system ro noatime
+    # we enable ADB
+    setprop sys.usb.config mtp,adb
+    setprop ro.debuggable 1
 
 service pvrsrvinit /system/bin/pvrsrvinit
     class core
