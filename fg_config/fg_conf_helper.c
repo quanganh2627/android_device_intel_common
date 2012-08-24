@@ -600,12 +600,6 @@ int main(int argc, char *argv[])
 				LOGE("Error(%d) in write_fgdev_config\n", ret);
 				return ret;
 			}
-			/* Save secondary file */
-			ret = read_fg_write_sec();
-			if (ret) {
-				LOGE("Error(%d) in read_fg_write_sec\n", ret);
-				return ret;
-			}
 			LOGI("Restored FG data successfully\n");
 
 			break;
