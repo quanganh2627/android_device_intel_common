@@ -14,7 +14,7 @@ on init
     export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/framework-ext.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar
 
     mkdir /factory 0770 system system
-    mount ext4 /dev/block/mmcblk0p1 /factory
+    mount ext4 /dev/block/mmcblk0p2 /factory
     mkdir /factory/wifi
     chown system wifi /factory/wifi
     chmod 0770 /factory/wifi
@@ -43,9 +43,9 @@ on boot
     write /proc/sys/vm/dirty_background_bytes  5242880
 
 on fs
-    mount ext4 /dev/block/mmcblk0p2 /system ro noatime
-    mount ext4 /dev/block/mmcblk0p8 /data nosuid nodev noatime barrier=1,data=ordered,noauto_da_alloc
-    mount ext4 /dev/block/mmcblk0p3 /cache nosuid nodev noatime barrier=1,data=ordered
+    mount ext4 /dev/block/mmcblk0p8 /system ro noatime
+    mount ext4 /dev/block/mmcblk0p9 /data nosuid nodev noatime barrier=1,data=ordered,noauto_da_alloc
+    mount ext4 /dev/block/mmcblk0p6 /cache nosuid nodev noatime barrier=1,data=ordered
 
 on post-fs-data
     mkdir /data/system/ 0770 system system
