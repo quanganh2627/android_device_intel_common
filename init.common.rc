@@ -49,6 +49,7 @@ on fs
 
 on post-fs-data
     mkdir /data/system/ 0770 system system
+    write /proc/sys/kernel/ctrl-alt-del 0
 
 on charger
     # basic networking for "adb root"
