@@ -119,3 +119,6 @@ BOARD_MALLOC_ALIGNMENT := 16
 
 # Enabled Bluetooth GAP test build in bluez
 BUILD_BT_GAP_TEST := true
+
+# force user build variant to display build number for internal dev builds. External release builds should not set this flag
+DISPLAY_BUILD_NUMBER := true
