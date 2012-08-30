@@ -57,7 +57,7 @@ on charger
     hostname localhost
     domainname localdomain
     # /system is not already mounted under COS
-    mount ext4 /dev/block/mmcblk0p2 /system ro noatime
+    mount ext4 /dev/block/mmcblk0p8 /system ro noatime
     # we enable ADB
     setprop sys.usb.config mtp,adb
     setprop ro.debuggable 1
