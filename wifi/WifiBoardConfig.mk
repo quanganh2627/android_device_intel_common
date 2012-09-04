@@ -7,7 +7,7 @@ WPA_SUPPLICANT_VERSION         := VER_0_8_X
 ADDITIONAL_DEFAULT_PROPERTIES  += wifi.interface=wlan0:0
 
 ifeq ($(strip $(INTEL_WIDI)),true)
-ADDITIONAL_DEFAULT_PROPERTIES  += widi.interface=wlan3
+ADDITIONAL_DEFAULT_PROPERTIES  += widi.interface=wlan0
 
 ifeq ($(strip $(INTEL_WIFI_WIDI_MR)),true)
 ADDITIONAL_DEFAULT_PROPERTIES  += ro.wifi.widi.mr=true

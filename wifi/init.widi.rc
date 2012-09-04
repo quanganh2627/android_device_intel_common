@@ -10,13 +10,13 @@ on post-fs-data
 
 service widiservice /system/bin/widi_api_server
     class main
-    user root
+    user system
     group system wifi bluetooth inet net_raw net_admin dhcp
     ioprio rt 4
 
 service widi_supplicant /system/bin/wpa_supplicant -Dnl80211 -d
     class main
-    socket wpa_wlan3 dgram 660 wifi wifi
+    socket wpa_wlan0 dgram 660 wifi wifi
     group system wifi inet
     disabled
     oneshot
