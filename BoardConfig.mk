@@ -105,11 +105,8 @@ ADDITIONAL_BUILD_PROPERTIES += ro.config.personality=compat_layout
 BUILD_WITH_CHAABI_SUPPORT := true
 BUILD_WITH_WATCHDOG_DAEMON_SUPPORT := true
 
-# Imaging by default
-USE_INTEL_HDR := true
-
-# Enabled to use Intel face detection libraries by default
-USE_INTEL_FACE_DETECTION := true
+# Use Intel camera extras (HDR, face detection, panorama, etc.) by default
+USE_INTEL_CAMERA_EXTRAS := true
 
 # select libcamera2 as the camera HAL
 USE_CAMERA_HAL2 := true
