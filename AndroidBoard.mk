@@ -46,6 +46,10 @@ MKBOOTIMG := vendor/intel/support/mkbootimg
 $(INSTALLED_KERNEL_TARGET): build_kernel
 $(INSTALLED_RAMDISK_TARGET): build_kernel
 
+# checkapi is only called if droid is among the cmd goals, or no cmd goal is given
+# We add it here to be called for other targets as well
+droid: checkapi
+
 flashfiles: bootimage
 ifneq ($(FLASHFILE_BOOTONLY),true)
 ifeq ($(FLASHFILE_NO_OTA),true)
