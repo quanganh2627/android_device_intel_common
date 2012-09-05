@@ -56,18 +56,13 @@ on post-fs-data
 
 
 on charger
-    # basic networking for "adb root"
-    ifup lo
-    hostname localhost
-    domainname localdomain
     # /system is not already mounted under COS
     mount ext4 /dev/block/mmcblk0p8 /system ro noatime
     start pvrsrvctl
     # reduce backlight
     write /sys/class/backlight/psb-bl/brightness 50
-    # we enable ADB
-    setprop sys.usb.config mtp,adb
-    setprop ro.debuggable 1
+    #default setting to enable charging in COS
+    setprop sys.usb.config charging
 
 service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
     class core
