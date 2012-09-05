@@ -59,6 +59,8 @@ on charger
     domainname localdomain
     # /system is not already mounted under COS
     mount ext4 /dev/block/mmcblk0p8 /system ro noatime
+    # reduce backlight
+    write /sys/class/backlight/psb-bl/brightness 50
     # we enable ADB
     setprop sys.usb.config mtp,adb
     setprop ro.debuggable 1
