@@ -62,6 +62,7 @@ on charger
     domainname localdomain
     # /system is not already mounted under COS
     mount ext4 /dev/block/mmcblk0p8 /system ro noatime
+    start pvrsrvctl
     # reduce backlight
     write /sys/class/backlight/psb-bl/brightness 50
     # we enable ADB
