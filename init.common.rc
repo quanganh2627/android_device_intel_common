@@ -52,6 +52,10 @@ on post-fs-data
     mkdir /data/system/ 0770 system system
     write /proc/sys/kernel/ctrl-alt-del 0
 
+    # Set indication (checked by vold) that we have finished this action
+    setprop vold.post_fs_data_done 1
+
+
 on charger
     # basic networking for "adb root"
     ifup lo
