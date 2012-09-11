@@ -37,6 +37,9 @@ on boot
 
     class_start default
 
+    # reset counter watchdog at the end of system boot
+    write /sys/devices/virtual/misc/watchdog/counter "0"
+
 service ueventd /sbin/ueventd
     critical
 
