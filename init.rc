@@ -27,6 +27,8 @@ on early-init
 
 # create mountpoints
     mkdir /mnt 0775 root system
+# Google create a new mountpoints
+    mkdir /storage 0775 root system
 
 on init
     # Sets the data roaming setting by default to false
