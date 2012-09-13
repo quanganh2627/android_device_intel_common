@@ -48,6 +48,9 @@ struct __attribute__((__packed__)) sec_file_body {
 	struct table_body tbl;
 	unsigned short pcksum;
 };
+#define MAX_FG_TABLES	15
+#define MAX_PRIM_FILE_SIZE (sizeof(struct primary_header) +\
+	MAX_FG_TABLES * sizeof(struct table_body))
 
 
 #define LOG_TAG "EM FG User Space:"
@@ -64,6 +67,9 @@ int read_primary_header(struct primary_header *pheader)
 		return ENODATA;
 	}
 	close(fd);
+
+	if (pheader->file_size > MAX_PRIM_FILE_SIZE)
+		return EINVAL;
 	return 0;
 }
 
