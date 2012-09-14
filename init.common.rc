@@ -100,11 +100,6 @@ service drm /system/bin/drmserver
     user drm
     group drm system inet drmrpc sdcard_r security
 
-service mediabt /system/bin/mediabtservice
-    class main
-    user media
-    group audio sdcard_rw inet net_bt net_bt_admin net_bw_acct net_raw security
-
 service media /system/bin/mediaserver
     class main
     user media
