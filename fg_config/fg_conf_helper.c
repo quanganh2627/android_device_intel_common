@@ -271,7 +271,7 @@ int get_primary_fg_config(unsigned char *pbuf,
 		if (!strncmp(temp_tbl->table_name, ps_batt_name,
 					MAX_TABLE_NAME_SIZE)) {
 			if (!strncmp(temp_tbl->battid, battid,
-						MODEL_NAME_SIZE)) {
+						BATTID_LEN)) {
 				LOGI("Matching table_name and battid:%.8s:%.8s\n", temp_tbl->table_name, temp_tbl->battid);
 				memcpy(tbl, temp_tbl, sizeof(*tbl));
 				return 0;
@@ -339,7 +339,7 @@ int get_fg_config_table(struct table_body *sec_tbl)
 	secondary checksum is not ok or primary file has a new config */
 	if (!is_scksum_ok)
 		LOGE("Secondary checksum failed\n");
-	else if (strncmp(sbuf.tbl.battid, battid, MODEL_NAME_SIZE))
+	else if (strncmp(sbuf.tbl.battid, battid, BATTID_LEN))
 		LOGE("Secondary Battid doesn't match %s:%s\n", sbuf.tbl.battid, battid);
 	else if (pheader.cksum != sbuf.pcksum)
 		LOGE("Secondary.primary_checksum mismatch. New primary file detected\n");
