@@ -2,10 +2,10 @@
 <Subsystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Schemas/Subsystem.xsd" Name="CIRRUS" Type="AMIXER" Endianness="Little">
 	<ComponentLibrary>
 		<ComponentType Name="STEREO_SOURCE_TYPE">
-			<IntegerParameter Name="VOLUME" Size="8" Min="0" Max="62" ArrayLength="2" Mapping="Control:'%1-%2 Volume'"/>
+			<IntegerParameter Name="VOLUME" Size="8" Min="0" Max="63" ArrayLength="2" Mapping="Control:'%1-%2 Volume'"/>
 		</ComponentType>
 		<ComponentType Name="MONO_SOURCE_TYPE">
-			<IntegerParameter Name="VOLUME" Size="8" Min="0" Max="62" Mapping="Control:'%1-%2 Mono Volume'"/>
+			<IntegerParameter Name="VOLUME" Size="8" Min="0" Max="63" Mapping="Control:'%1-%2 Mono Volume'"/>
 		</ComponentType>
 		<ComponentType Name="MONO_MUX_SOURCE_TYPE" Extends="MONO_SOURCE_TYPE">
 			<EnumParameter Name="MUX" Size="8" Mapping="Control:'%1-%2 Mux'">
@@ -67,7 +67,7 @@
 		</ComponentType>
 		<ComponentType Name="DIGITAL_STEREO_PLAYBACK_TYPE" Extends="PLAYBACK_TYPE">
 			<BooleanParameter Name="MUTED" ArrayLength="2" Mapping="Control:'%3 Digital Playback Switch'"/>
-			<IntegerParameter Name="VOLUME" Size="8" Min="0" Max="255" ArrayLength="2" Mapping="Control:'%3 Digital Playback Volume'"/>
+			<IntegerParameter Name="VOLUME" Size="8" Min="0" Max="228" ArrayLength="2" Mapping="Control:'%3 Digital Playback Volume'"/>
 		</ComponentType>
 
 		<ComponentType Name="STEREO_ANALOG_LINEOUT">
@@ -102,7 +102,7 @@
 
 		<ComponentType Name="INPUT_PATH_TYPE">
 			<BooleanParameter Name="MUTED" ArrayLength="2" Mapping="Control:'Input Path Digital Switch'" Description="Input Path Digital Switch"/>
-			<IntegerParameter Name="VOLUME" Size="8" Min="0" Max="256" ArrayLength="2" Mapping="Control:'Input Path Digital Volume'"/>
+			<IntegerParameter Name="VOLUME" Size="8" Min="0" Max="108" ArrayLength="2" Mapping="Control:'Input Path Digital Volume'"/>
 			<EnumParameter Name="MONO_CHANNEL_CONFIGURATION" Size="8" Mapping="Control:'IP Digital Swap/Mono Select'">
 				<ValuePair Literal="Stereo" Numerical="0"/>
 				<ValuePair Literal="Mono_A" Numerical="1"/>
@@ -132,7 +132,7 @@
 					</ParameterBlock>
 					<ParameterBlock Name="PGA">
 						<BooleanParameter Name="SOFT_RAMP_ENABLED" Mapping="Control:'PGA Soft-Ramp Switch'"/>
-						<IntegerParameter Name="INPUT_ANALOG_VOLUME" Size="8" Min="0" Max="255" ArrayLength="2" Mapping="Control:'Input PGA Analog Volume'"/>
+						<IntegerParameter Name="INPUT_ANALOG_VOLUME" Size="8" Min="0" Max="36" ArrayLength="2" Mapping="Control:'Input PGA Analog Volume'"/>
 						<BooleanParameter Name="MIC_PREAMP_ENABLED" Size="8" ArrayLength="2" Mapping="Control:'MIC Preamp Switch'" Description="Preamp: [+10dB, +20dB]"/>
 					</ParameterBlock>
 					<ParameterBlock Name="MUX">
