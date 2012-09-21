@@ -41,6 +41,13 @@ on boot
     #reduce dirty memory size
     write /proc/sys/vm/dirty_background_bytes  5242880
 
+# Change TCP Net-Core buffers sizes to improve cellular data throughput
+     write /proc/sys/net/core/rmem_default 1048576
+     write /proc/sys/net/core/wmem_default 524288
+     write /proc/sys/net/core/rmem_max 2097152
+     write /proc/sys/net/core/wmem_max 1048576
+     write /proc/sys/net/ipv4/tcp_mem  "83520 111360 2097152"
+
 on fs
     mkdir /factory 0775 system system
     mkdir /config 0775 system system
