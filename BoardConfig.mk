@@ -27,6 +27,8 @@ endif
 #Enable ODEX for userdebug and user builds
 ifneq (,$(findstring $(TARGET_BUILD_VARIANT),userdebug user))
 WITH_DEXPREOPT := true
+# enable dex-preopt on prebuilt apks
+WITH_DEXPREOPT_PREBUILT := true
 endif
 
 # Enabling logs into file system for eng and user debug builds
