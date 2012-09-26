@@ -405,6 +405,7 @@ service console /system/bin/sh
 
 on property:ro.debuggable=1
     start console
+    write /proc/sys/kernel/randomize_va_space 0
 
 # adbd is controlled via property triggers in init.<platform>.usb.rc
 service adbd /sbin/adbd
