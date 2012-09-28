@@ -1,9 +1,0 @@
-#!/sbin/ash
-
-#############################################
-## usbswitch modem to ape
-## used by service : usb_to_ape
-#############################################
-
-echo 0 > /sys/class/gpio/gpio169/value
-echo "0" > /data/data/com.intel.amtl/files/usbswitch.conf
