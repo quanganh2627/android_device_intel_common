@@ -22,6 +22,7 @@ on init
     chown system system /logs
     chmod 777 /logs
 
+    write /proc/sys/kernel/panic_on_oops 1
     write /sys/module/intel_mid/parameters/force_cold_boot Y
 
     # adb shell needs /system/bin/sh
