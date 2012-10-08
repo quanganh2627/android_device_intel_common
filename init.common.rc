@@ -61,6 +61,8 @@ on post-fs-data
     # Set indication (checked by vold) that we have finished this action
     setprop vold.post_fs_data_done 1
 
+    # Set this property to force the camera shutter sound to play on speaker
+    setprop ro.camera.sound.forced 1
 
 on charger
     # /system is not already mounted under COS
