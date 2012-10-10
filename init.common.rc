@@ -12,8 +12,6 @@ on init
 # setup the global environment
 #    export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/framework-ext.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar
 
-    mkdir /factory 0770 system system
-    mount ext4 /dev/block/mmcblk0p2 /factory
     mkdir /factory/wifi
     chown system wifi /factory/wifi
     chmod 0770 /factory/wifi
@@ -51,7 +49,7 @@ on fs
     mkdir /factory 0775 system system
     mkdir /config 0775 system system
     mkdir /media 0775 media media
-#    mount_all /fstab.${ro.hardware}
+    mount_all /fstab.${ro.hardware}
 
 on post-fs-data
     mkdir /data/system/ 0770 system system

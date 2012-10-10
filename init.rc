@@ -142,9 +142,6 @@ on fs
 #    mount yaffs2 mtd@system /system ro remount
 #    mount yaffs2 mtd@userdata /data nosuid nodev
 #    mount yaffs2 mtd@cache /cache nosuid nodev
-    mount ext4 /dev/block/mmcblk0p8 /system ro noatime
-    mount ext4 /dev/block/mmcblk0p9 /data nosuid nodev barrier=1,data=ordered
-    mount ext4 /dev/block/mmcblk0p6 /cache nosuid nodev barrier=1,data=ordered
 
 on post-fs
     # once everything is setup, no need to modify /

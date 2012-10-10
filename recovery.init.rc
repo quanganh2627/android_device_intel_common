@@ -1,4 +1,4 @@
-import /init.recovery.${ro.hardware}.rc
+import /recovery.init.${ro.hardware}.rc
 
 on early-init
     start ueventd
