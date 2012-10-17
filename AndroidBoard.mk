@@ -105,7 +105,6 @@ publish_modem:
 	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
 	BOARD_HAVE_MODEM=$(BOARD_HAVE_MODEM) \
 	FLASH_MODEM_DICO=$(BOARD_MODEM_DICO) \
-	RADIO_FIRMWARE_DIR=$(RADIO_FIRMWARE_DIR) \
 	$(SUPPORT_PATH)/publish_build.py `pwd` $(TARGET_DEVICE) 'modem' $(FILE_NAME_TAG)
 
 publish_system_symbols: systemtarball
@@ -140,19 +139,6 @@ publish_acs:
 	(cd $(ACS_BUILDBOT_PATH)/campaigns && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
 	(cd $(ACS_CAMPAIGN_ST_PATH) && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
 	(cd $(ACS_CAMPAIGN_FT_PATH) && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
-
-# RADIO FIRMWARE
-ifeq ($(BOARD_HAVE_MODEM),true)
-systemimg_gz: radio_firmware
-radio_firmware:
-	@ mkdir -p $(PRODUCT_OUT)/modem
-	@ echo "Created directory $(PRODUCT_OUT)/modem"
-	@ $(foreach modem,$(BOARD_MODEM_LIST), \
-		cp $(RADIO_FIRMWARE_DIR)/$(modem)/$(RADIO_FIRMWARE) $(PRODUCT_OUT)/modem/radio_firmware_$(modem).bin;)
-	@ find $(PRODUCT_OUT)/modem -exec zip -qj $(PRODUCT_OUT)/modem.zip {} \;
-	@ mkdir -p $(PRODUCT_OUT)/system/etc/firmware/modem
-	@ cp $(PRODUCT_OUT)/modem.zip $(PRODUCT_OUT)/system/etc/firmware/modem/modem.zip
-endif
 
 # Add sepdk driver
 ifneq ($(BOARD_USE_64BIT_KERNEL),true)
