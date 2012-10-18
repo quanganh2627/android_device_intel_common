@@ -1,4 +1,4 @@
-ifneq (,$(filter $(CUSTOM_BOARD),ivydale crossroads mrst_ref))
+ifneq (,$(filter $(TARGET_DEVICE),ivydale crossroads mrst_ref))
 
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
