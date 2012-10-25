@@ -160,6 +160,9 @@ endif
 # Add powerdk driver
 -include $(TOP)/device/intel/debug_tools/powerdk/src/AndroidPowerDK.mk
 
+# KCT Crashtool kernel module
+-include $(TOP)/hardware/intel/PRIVATE/monitor/ksrc/AndroidKCT.mk
+
 ifeq ($(powerdk),1)
 $(PRODUCT_OUT)/ramdisk.img : apwr
 endif
