@@ -64,11 +64,6 @@ on post-fs-data
     # Set this property to force the camera shutter sound to play on speaker
     setprop ro.camera.sound.forced 1
 
-    # Re-create(mount) temporary media folder
-    # The contents inside of this folder will be all erased when the device reboot
-    mkdir /data/local/tmp/media 0770 system system
-    mount tmpfs tmpfs /data/local/tmp/media
-
 on charger
     # /system is not already mounted under COS
     mount ext4 /dev/block/mmcblk0p8 /system ro noatime
