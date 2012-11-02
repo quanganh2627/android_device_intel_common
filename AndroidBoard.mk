@@ -164,3 +164,5 @@ ifeq ($(powerdk),1)
 $(PRODUCT_OUT)/ramdisk.img : apwr
 endif
 endif
+
+$(PRODUCT_OUT)/ramdisk.img: partition_files
