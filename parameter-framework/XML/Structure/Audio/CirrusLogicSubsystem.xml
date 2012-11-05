@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Subsystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Schemas/Subsystem.xsd" Name="CIRRUS" Type="AMIXER" Endianness="Little">
+<Subsystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Schemas/Subsystem.xsd" Name="CIRRUS" Type="ALSACTL" Endianness="Little">
 	<ComponentLibrary>
 		<ComponentType Name="STEREO_SOURCE_TYPE">
 			<IntegerParameter Name="VOLUME" Size="8" Min="0" Max="63" ArrayLength="2" Mapping="Control:'%1-%2 Volume'"/>
@@ -70,15 +70,20 @@
 			<IntegerParameter Name="VOLUME" Size="8" Min="0" Max="228" ArrayLength="2" Mapping="Control:'%3 Digital Playback Volume'"/>
 		</ComponentType>
 
-		<ComponentType Name="STEREO_ANALOG_LINEOUT">
+		<ComponentType Name="LINE">
+			<BooleanParameter Name="LOOPBACK_DISABLED" Mapping="Control:'%1 Loopback'"/>
+		</ComponentType>
+
+		<ComponentType Name="STEREO_ANALOG_LINEOUT" Extends="LINE">
 			<Component Name="LIMITER" Type="STEREO_LIMITER_TYPE"/>
 			<Component Name="HEADPHONE" Type="ANALOG_STEREO_PLAYBACK_TYPE" Mapping="Amend2:HP,Amend3:Headphone"/>
 			<Component Name="LINEOUT" Type="DIGITAL_STEREO_PLAYBACK_TYPE" Mapping="Amend2:LO,Amend3:HL"/>
 		</ComponentType>
-		<ComponentType Name="ESL_MONO_ANALOG_LINEOUT" Extends="DIGITAL_MONO_PLAYBACK_TYPE">
+		<ComponentType Name="ESL_MONO_ANALOG_LINEOUT" Extends="LINE">
 			<Component Name="LIMITER" Type="MONO_LIMITER_TYPE"/>
+			<Component Name="EARPIECE" Type="DIGITAL_MONO_PLAYBACK_TYPE" Mapping="Amend2:EAR,Amend3:Ear Speaker"/>
 		</ComponentType>
-		<ComponentType Name="SPK_MONO_ANALOG_LINEOUT">
+		<ComponentType Name="SPK_MONO_ANALOG_LINEOUT" Extends="LINE">
 			<Component Name="LIMITER" Type="SPK_LIMITER_TYPE"/>
 			<Component Name="SPEAKERPHONE" Type="DIGITAL_MONO_PLAYBACK_TYPE" Mapping="Amend2:SPK,Amend3:Speakerphone"/>
 			<Component Name="LINEOUT" Type="ANALOG_STEREO_PLAYBACK_TYPE" Mapping="Amend2:SPKLO,Amend3:LineOut"/>
@@ -86,7 +91,7 @@
 
 		<ComponentType Name="OUTPUTS">
 			<Component Name="HEADPHONE_LINE" Type="STEREO_ANALOG_LINEOUT" Mapping="Amend1:HL"/>
-			<Component Name="EAR_SPEAKER" Type="ESL_MONO_ANALOG_LINEOUT" Mapping="Amend1:ESL,Amend2:EAR,Amend3:Ear Speaker"/>
+			<Component Name="EAR_SPEAKER" Type="ESL_MONO_ANALOG_LINEOUT" Mapping="Amend1:ESL"/>
 			<Component Name="SPEAKER_LINE" Type="SPK_MONO_ANALOG_LINEOUT" Mapping="Amend1:SPK"/>
 			<ParameterBlock Name="SERIAL_PORTS">
 				<EnumParameter Name="AUXILIARY" Size="8" Mapping="Control:'XSPOUT Mono/Stereo Select'">
@@ -165,6 +170,19 @@
 			</ParameterBlock>
 		</ComponentType>
 
+		<ComponentType Name="SSP_PORT" Description="Voice Port">
+			<!--BooleanParameter Name="PCM_MASTER" Mapping="Control:'PCM1 Mode'"/-->
+			<ParameterBlock Name="CONFIG" Mapping="PortConfig">
+				<BooleanParameter Name="PLAYBACK_ENABLED"/>
+				<BooleanParameter Name="CAPTURE_ENABLED"/>
+				<EnumParameter Name="FORMAT" Size="8">
+					<ValuePair Literal="S16LE" Numerical="2"/>
+				</EnumParameter>
+				<IntegerParameter Name="CHANNEL_NUMBER" Size="8" Min="1" Max="2"/>
+				<IntegerParameter Name="SAMPLE_RATE" Size="16"/>
+			</ParameterBlock>
+		</ComponentType>
+
 		<ComponentType Name="SOUND_CARD">
 			<Component Name="INPUT" Type="INPUT_PATH_TYPE" Description="MIC/Line Input Path"/>
 			<Component Name="OUTPUT" Type="OUTPUTS"/>
@@ -176,6 +194,7 @@
 				</ParameterBlock>
 				<BooleanParameter Name="OUTPUT_ANALOG_ZERO_CROSS_ENABLED" Mapping="Control:'Analog Zero Cross Switch'"/>
 			</ParameterBlock>
+			<Component Name="VOICE_PORT" Type="SSP_PORT" Mapping="Device:1"/>
 		</ComponentType>
 	</ComponentLibrary>
 	<InstanceDefinition>
