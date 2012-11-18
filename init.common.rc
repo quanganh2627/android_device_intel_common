@@ -10,7 +10,7 @@ on early-init
 
 on init
 # setup the global environment
-    export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/framework-ext.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar
+#    export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/framework-ext.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar
 
     mkdir /factory 0770 system system
     mount ext4 /dev/block/mmcblk0p2 /factory
@@ -19,10 +19,9 @@ on init
     chmod 0770 /factory/wifi
 
 on boot
-    chown system system /dev/card0
-    chmod 0666 /dev/card0
-    mkdir /dev/dri
-    symlink /dev/card0 /dev/dri/card0
+    chown system system /dev/dri/card0
+    chmod 0666 /dev/dri/card0
+    symlink /dev/dri/card0 /dev/card0
 
     # IMG Graphics specific setup. See also "service pvrsrvctl"
     # The permissions below should be tighter.
@@ -52,7 +51,7 @@ on fs
     mkdir /factory 0775 system system
     mkdir /config 0775 system system
     mkdir /media 0775 media media
-    mount_all /fstab.${ro.hardware}
+#    mount_all /fstab.${ro.hardware}
 
 on post-fs-data
     mkdir /data/system/ 0770 system system
@@ -95,16 +94,16 @@ service drm /system/bin/drmserver
     user drm
     group drm system inet drmrpc sdcard_r security
 
-service media /system/bin/mediaserver
-    class main
-    user media
-    group system audio camera media_rw sdcard_rw inet net_bt net_bt_admin net_bw_acct drmrpc net_raw security radio
-    ioprio rt 4
+#service media /system/bin/mediaserver
+#    class main
+#    user media
+#    group system audio camera media_rw sdcard_rw inet net_bt net_bt_admin net_bw_acct drmrpc net_raw security radio
+#    ioprio rt 4
 
 #Enable Houdini for execuable
-service enable_houdini /system/bin/enable_houdini
-    class main
-    oneshot
+#service enable_houdini /system/bin/enable_houdini
+#    class main
+#    oneshot
 
 # This property trigger has added to imitiate the previous behavior of "adb root".
 # The adb gadget driver used to reset the USB bus when the adbd daemon exited,
