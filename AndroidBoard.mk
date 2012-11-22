@@ -103,6 +103,9 @@ blank_flashfiles:
 	@echo "No blank_flashfiles for this target - FLASHFILE_BOOTONLY set to TRUE"
 endif
 
+ifeq ($(BOARD_HAVE_MODEM),true)
+publish_modem: modem_nvm modem
+endif
 publish_modem:
 	PUBLISH_PATH=$(PUBLISH_PATH) \
 	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
