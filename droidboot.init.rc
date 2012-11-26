@@ -13,8 +13,7 @@ on init
     mount /tmp /tmp tmpfs
     mount /data /data tmpfs
 
-    # mount logs in /logs
-    mount ext4 /dev/block/mmcblk0p7 /logs nosuid nodev barrier=1,data=ordered
+    mount_all /fstab.${ro.hardware}
     chown system system /logs
     chmod 777 /logs
 

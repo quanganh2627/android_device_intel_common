@@ -102,7 +102,7 @@
 	    "try": 0,
 	    "length": 0,
 	    "mount_point": null,
-	    "mount_options": "ro",
+	    "mount_options": "nosuid,nodev,noatime,barrier=1,data=ordered",
 	    "fs_mgr": "wait"
 	},
 

@@ -177,5 +177,3 @@ $(PRODUCT_OUT)/ramdisk.img : vtsspp
 endif
 
 endif
-
-$(PRODUCT_OUT)/ramdisk.img: partition_files

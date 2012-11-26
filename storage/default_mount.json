@@ -5,6 +5,7 @@
             "fstab_file": "root/fstab.$model",
 	    "recovery_fstab_dest_file": null,
 	    "mount": [
+                "factory",
                 "system",
                 "cache",
                 "config",
@@ -34,8 +35,6 @@
 	    "fstab_file": "droidboot/root/fstab.$model",
 	    "recovery_fstab_dest_file": "droidboot/root/system/etc/recovery.fstab",
 	    "mount": [
-                "cache",
-		"logs"
 		]
 	}
     }

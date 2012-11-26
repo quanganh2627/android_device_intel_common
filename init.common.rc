@@ -7,12 +7,6 @@ on init
 # setup the global environment
     export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/com.intel.multidisplay.jar
 
-    mkdir /factory 0770 system system
-    mount ext4 /dev/block/mmcblk0p2 /factory
-    mkdir /factory/wifi
-    chown system wifi /factory/wifi
-    chmod 0770 /factory/wifi
-
 on boot
     chown system system /dev/dri/card0
     chmod 0666 /dev/dri/card0
@@ -45,6 +39,9 @@ on fs
     mkdir /config 0775 system system
     mkdir /media 0775 media media
     mount_all /fstab.${ro.hardware}
+    mkdir /factory/wifi
+    chown system wifi /factory/wifi
+    chmod 0770 /factory/wifi
 
 on post-fs-data
     mkdir /data/system/ 0770 system system
@@ -63,8 +60,7 @@ on post-fs-data
     setprop persist.service.thermal 1
 
 on charger
-    # /system is not already mounted under COS
-    mount ext4 /dev/block/mmcblk0p8 /system ro noatime
+    mount_all /fstab.charger.${ro.hardware}
     start pvrsrvctl
     # reduce backlight
     write /sys/class/backlight/psb-bl/brightness 50
