@@ -1,6 +1,5 @@
 # make file for common
 #
-
 LOCAL_PATH := $(TOP)/vendor/intel/common
 COMMON_PATH := $(TOP)/vendor/intel/common
 SUPPORT_PATH:= $(TOP)/vendor/intel/support
@@ -9,6 +8,7 @@ ACS_CAMPAIGN_ST_PATH := $(TOP)/vendor/intel/PRIVATE/ST_acs_campaigns
 ACS_CAMPAIGN_FT_PATH := $(TOP)/vendor/intel/PRIVATE/FT_acs_campaigns
 PERMISSIONS_PATH := $(TOP)/frameworks/native/data/etc
 
+include $(LOCAL_PATH)/util.mk
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := mrst_keypad.kcm
 LOCAL_MODULE_TAGS := optional
