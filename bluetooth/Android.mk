@@ -14,33 +14,8 @@
 # limitations under the License.
 #
 
-ifeq ($(BOARD_HAVE_BLUETOOTH),true)
+LOCAL_DIR := $(call my-dir)
 
-LOCAL_PATH:= $(call my-dir)
-
-include $(CLEAR_VARS)
-
-LOCAL_COPY_HEADERS := \
-    include/hci_vs.h \
-    include/hci_vs_lib.h \
-
-LOCAL_COPY_HEADERS_TO := libbluetooth_vs
-
-include $(BUILD_COPY_HEADERS)
-
-include $(CLEAR_VARS)
-
-LOCAL_SRC_FILES:= \
-	hci_vs.c \
-
-LOCAL_C_INCLUDES:= \
-	$(LOCAL_PATH)/include \
-	$(TOP)/external/bluetooth/bluez/lib/
-LOCAL_SHARED_LIBRARIES := \
-	libbluetooth
-LOCAL_MODULE:= libbluetooth_vs
-LOCAL_MODULE_TAGS := optional
-
-include $(BUILD_SHARED_LIBRARY)
-
-endif
+include  $(LOCAL_DIR)/AndroidBtCommon.mk
+include  $(LOCAL_DIR)/AndroidBtTI.mk
+include  $(LOCAL_DIR)/AndroidBtBCM.mk
