@@ -467,11 +467,11 @@ service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-sys
 #    user drm
 #    group drm system inet drmrpc
 
-service media /system/bin/mediaserver
-    class main
-    user media
-    group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc
-    ioprio rt 4
+#service media /system/bin/mediaserver
+#    class main
+#    user media
+#    group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc
+#    ioprio rt 4
 
 service bootanim /system/bin/bootanimation
     class main
