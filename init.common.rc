@@ -1,3 +1,4 @@
+
 on early-init
     # Create the env for the filesystem mounting(FUSE and Vold)
     export EXTERNAL_STORAGE /storage/sdcard0
@@ -102,6 +103,11 @@ service media /system/bin/mediaserver
 #service enable_houdini /system/bin/enable_houdini
 #    class main
 #    oneshot
+
+#Enable Houdini for execuable
+service enable_houdini /system/bin/enable_houdini
+    class main
+    oneshot
 
 # This property trigger has added to imitiate the previous behavior of "adb root".
 # The adb gadget driver used to reset the USB bus when the adbd daemon exited,
