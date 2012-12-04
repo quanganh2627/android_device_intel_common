@@ -13,5 +13,7 @@
      limitations under the License.
  -->
 <resources>
+    <!--
     <string name="personalisation_puklocked">Network Unlock request Failed, Device PUK Locked.</string>
+    -->
 </resources>
