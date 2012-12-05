@@ -1,11 +1,5 @@
 
 on early-init
-    # Create the env for the filesystem mounting(FUSE and Vold)
-    export EXTERNAL_STORAGE /storage/sdcard0
-    mkdir /storage/sdcard0 0000 system system
-    symlink /storage/sdcard0 /mnt/sdcard
-    symlink /storage/sdcard0 /sdcard
-
     # set permission for charger-mode
     chmod 0770 /charger
 
