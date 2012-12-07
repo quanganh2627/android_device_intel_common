@@ -1,10 +1,5 @@
-#
-# config.mk for mrst
-#
-
 TARGET_ARCH := x86
 TARGET_ARCH_VARIANT := x86
-TARGET_BOARD_PLATFORM := mrst
 TARGET_BOOTIMAGE_USE_EXT2 := true
 TARGET_CPU_ABI := x86
 TARGET_CPU_SMP := true

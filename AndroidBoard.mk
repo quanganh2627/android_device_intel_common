@@ -69,6 +69,9 @@ else
 PUBLISH_TARGET_BUILD_VARIANT := $(TARGET_BUILD_VARIANT)
 endif
 
+TARGET_PUBLISH_PATH ?= $(shell echo $(TARGET_PRODUCT) | tr '[:lower:]' '[:upper:]')
+GENERIC_TARGET_NAME ?= $(TARGET_PRODUCT)
+
 flashfiles:
 	PUBLISH_PATH=$(PUBLISH_PATH) \
 	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
@@ -78,7 +81,7 @@ flashfiles:
 	FLASHFILE_NO_OTA=$(FLASHFILE_NO_OTA) \
 	FLASH_MODEM=$(BOARD_HAVE_MODEM) \
 	FLASH_MODEM_DICO=$(BOARD_MODEM_DICO) \
-	$(SUPPORT_PATH)/publish_build.py `pwd` $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG)
+	$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG)
 
 ifneq ($(FLASHFILE_BOOTONLY),true)
 blank_flashfiles: firmware
@@ -93,7 +96,7 @@ blank_flashfiles:
 		TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
 		GENERIC_TARGET_NAME=$(GENERIC_TARGET_NAME) \
 		TARGET_USE_DROIDBOOT=$(TARGET_USE_DROIDBOOT) \
-		$(SUPPORT_PATH)/publish_build.py `pwd` $(TARGET_DEVICE) 'blankphone' $(FILE_NAME_TAG), \
+		$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) 'blankphone' $(FILE_NAME_TAG), \
 		@echo "No IFWI found for this target. No blank flashfile to generate")
 else
 blank_flashfiles:
@@ -105,7 +108,7 @@ publish_modem:
 	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
 	BOARD_HAVE_MODEM=$(BOARD_HAVE_MODEM) \
 	FLASH_MODEM_DICO=$(BOARD_MODEM_DICO) \
-	$(SUPPORT_PATH)/publish_build.py `pwd` $(TARGET_DEVICE) 'modem' $(FILE_NAME_TAG)
+	$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) 'modem' $(FILE_NAME_TAG)
 
 publish_system_symbols: systemtarball
 	@ echo "Publish system symbols"
