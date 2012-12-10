@@ -1,10 +1,9 @@
 PRODUCT_MANUFACTURER := intel
 override PRODUCT_BRAND := intel
 
-#Add SensorCal App and HdmiSettings app
+#Add SensorCal App
 PRODUCT_PACKAGES += \
     SensorCal
-#    HdmiSettings
 
 #Add update_recovery binary for OTA
 PRODUCT_PACKAGES += \
