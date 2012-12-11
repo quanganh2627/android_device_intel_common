@@ -7,16 +7,9 @@ on init
     chown bluetooth bluetooth /dev/ttyMFD0
 
 on post-fs
-
-service bluetoothd /system/bin/bluetoothd -d -n
-    class main
-    socket bluetooth stream 660 bluetooth bluetooth
-    socket dbus_bluetooth stream 660 bluetooth bluetooth
-    # init.rc does not yet support applying capabilities, so run as root and
-    # let hcid drop uid to bluetooth with the right linux capabilities
-    group bluetooth net_bt_admin misc
-    disabled
-    oneshot
+    chown bluetooth bluetooth /sys/devices/pci0000:00/0000:00:05.0/power/control
+    chmod 0660 /sys/devices/pci0000:00/0000:00:05.0/power/control
+    write /sys/devices/pci0000:00/0000:00:05.0/power/control "on"
 
 service bd_prov /system/bin/bd_prov
     class core
@@ -32,42 +25,5 @@ service dhcpcd_bnep0 /system/bin/logwrapper /system/bin/dhcpcd -ABKL
 
 service iprenew_bnep0 /system/bin/logwrapper /system/bin/dhcpcd -n
     group bluetooth system dhcp
-    disabled
-    oneshot
-
-#service hciattach /system/bin/hciattach -n /dev/ttyMFD0 texas 3500000
-
-# changing user to root from bluetooth is a potential security issue
-# service hciattach_legacy is used instead of hciattach because, we dont
-# have nodes named ttyHS0
-    group bluetooth net_bt_admin misc
-    disabled
-    oneshot
-
-service hfag /system/bin/sdptool add --channel=10 HFAG
-    class main
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
-
-service hsag /system/bin/sdptool add --channel=11 HSAG
-    class main
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
-
-service opush /system/bin/sdptool add --channel=12 OPUSH
-    class main
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
-
-service pbap /system/bin/sdptool add --channel=19 PBAP
-    class main
-    user bluetooth
-    group bluetooth net_bt_admin
     disabled
     oneshot
