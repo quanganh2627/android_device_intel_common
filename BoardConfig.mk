@@ -122,4 +122,7 @@ DISPLAY_BUILD_NUMBER := true
 # Wi-Fi
 include vendor/intel/common/wifi/WifiBoardConfig.mk
 
+# Gps
+include vendor/intel/common/gps/GpsBoardConfig.mk
+
 OVERRIDE_PARTITION_FILE = "$(TOP)/vendor/intel/common/storage/default_override.json"
