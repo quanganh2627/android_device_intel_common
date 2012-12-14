@@ -17,6 +17,7 @@ LOCAL_MODULE := gps_ti_wl128x
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     gps_common \
+    wl128x_common \
     GPSCConfigFile.cfg \
     pathconfigfile.txt \
     GpsConfigFile.txt \

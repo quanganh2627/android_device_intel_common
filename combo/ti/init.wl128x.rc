@@ -1,0 +1,29 @@
+on init
+
+    insmod /lib/modules/st_drv.ko
+
+on boot
+
+    chown system system /system/bin/uim
+
+    chmod 0660 /sys/devices/platform/kim/install
+    chown system system /sys/devices/platform/kim/install
+
+    chmod 0660 /sys/devices/platform/kim/dev_name
+    chown system system /sys/devices/platform/kim/dev_name
+
+    chmod 0660 /sys/devices/platform/kim/baud_rate
+    chown system system /sys/devices/platform/kim/baud_rate
+
+    chmod 0660 /sys/devices/platform/kim/flow_cntrl
+    chown system system /sys/devices/platform/kim/flow_cntrl
+
+    chmod 0660 /dev/ttyMFD0
+    chown system system /dev/ttyMFD0
+
+service uim /system/bin/uim
+    class core
+    user system
+    group media system
+#    disabled
+    oneshot
