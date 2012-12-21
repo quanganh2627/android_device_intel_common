@@ -163,6 +163,16 @@ endif
 ifeq ($(powerdk),1)
 $(PRODUCT_OUT)/ramdisk.img : apwr
 endif
+
+# Add vtunedk: sep3_8, vtsspp drivers. PAX driver will be used from sepdk.
+-include $(TOP)/device/intel/debug_tools/vtunedk/src/AndroidSEP3_8.mk
+-include $(TOP)/device/intel/debug_tools/vtunedk/src/vtsspp/AndroidVTSSPP.mk
+
+ifeq ($(vtunedk),1)
+$(PRODUCT_OUT)/ramdisk.img : sep3_8
+$(PRODUCT_OUT)/ramdisk.img : vtsspp
+endif
+
 endif
 
 $(PRODUCT_OUT)/ramdisk.img: partition_files
