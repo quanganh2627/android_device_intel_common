@@ -19,7 +19,9 @@ LOCAL_REQUIRED_MODULES := \
     wl128x-fw-4-mr.bin    \
     wl128x-fw-4-plt.bin   \
     crda                  \
-    regulatory.bin
+    regulatory.bin        \
+    linville.key.pub.pem  \
+    intel.key.pub.pem
 
 # TO DO: To be removed from user builds
 LOCAL_REQUIRED_MODULES += \
@@ -60,14 +62,4 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(FW_TARGET_PATH)
 LOCAL_SRC_FILES := $(TIWLAN_PATH)/$(LOCAL_MODULE)
-include $(BUILD_PREBUILT)
-
-##################################################
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := regulatory.bin
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/crda
-LOCAL_SRC_FILES := device/intel/fw/wifi/crda/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
