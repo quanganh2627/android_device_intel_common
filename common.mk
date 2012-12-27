@@ -49,7 +49,8 @@ PRODUCT_PACKAGES += \
     enable_houdini \
     disable_houdini \
     check.xml \
-    cpuinfo
+    cpuinfo \
+    cpuinfo.neon
 endif
 
 #GMS package

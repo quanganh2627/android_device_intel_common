@@ -97,11 +97,6 @@ service media /system/bin/mediaserver
     ioprio rt 4
 
 #Enable Houdini for execuable
-#service enable_houdini /system/bin/enable_houdini
-#    class main
-#    oneshot
-
-#Enable Houdini for execuable
 service enable_houdini /system/bin/enable_houdini
     class main
     oneshot
