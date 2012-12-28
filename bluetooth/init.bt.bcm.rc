@@ -4,8 +4,18 @@
 
 on init
     insmod /lib/modules/bcm_bt_lpm.ko
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
+    chown system system /sys/class/rfkill/rfkill0/state
     chmod 0660 /sys/class/rfkill/rfkill0/state
     chmod 0660 /dev/rfkill
     chown bluetooth bluetooth /dev/rfkill
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
+    chown system system /sys/class/rfkill/rfkill0/type
+
+## To be enabled only for using BlueZ
+
+#
+#on boot
+#
+#service hciattach /system/bin/brcm_patchram_plus -d --no2bytes --tosleep 50000 --enable_hci --baudrate 3500000 /dev/ttyMFD0 --patchram /etc/firmware/BCM94334.hcd --scopcm=0,0,0,0,0,0,0,0,0,0
+#    class main
+#    user root
+#    oneshot

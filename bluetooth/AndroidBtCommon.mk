@@ -2,7 +2,6 @@ LOCAL_PATH := $(ANDROID_BUILD_TOP)
 
 COMMON := vendor/intel/common
 BT_COMMON := $(COMMON)/bluetooth
-BCM_LIBBT_CONF_PATH := device/common/libbt/conf/intel/common
 
 ##################################################
 
@@ -12,9 +11,7 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := \
 	bd_prov \
 	init.bt.rc \
-	init.bt.vendor.rc \
-	libbt-vendor \
-	bt_vendor.conf
+	init.bt.vendor.rc
 
 include $(BUILD_PHONY_PACKAGE)
 
@@ -37,16 +34,6 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
 LOCAL_SRC_FILES := $(BT_COMMON)/init.bt.$(COMBO_CHIP_VENDOR).rc
-include $(BUILD_PREBUILT)
-
-##################################################
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := bt_vendor.conf
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/bluetooth
-LOCAL_SRC_FILES := $(BCM_LIBBT_CONF_PATH)/bt_vendor.conf
 include $(BUILD_PREBUILT)
 
 ##################################################
