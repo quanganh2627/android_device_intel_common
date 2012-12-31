@@ -137,8 +137,10 @@ int get_battery_ps_name(char *ps_battery_path)
 		snprintf(path, sizeof(path), "%s/%s/type", POWER_SUPPLY_PATH, ps_name);
 		fd = open(path, O_RDONLY);
 
-		if (fd < 0)
+		if (fd < 0) {
+			closedir(dir);
 			return errno;
+		}
 
 		length = read(fd, buf, sizeof(buf));
 		close(fd);
@@ -184,7 +186,7 @@ int get_battid(char *battid)
 		close(fd);
 		return errno;
 	}
-
+	close(fd);
 	return 0;
 }
 
@@ -308,12 +310,19 @@ int get_fg_config_table(struct table_body *sec_tbl)
 		LOGE("Error(%d) in read_primary_header:%s\n", ret, strerror(ret));
 		return ret;
 	}
+
 	pbuf = malloc(pheader.file_size);
+
+	if (pbuf == NULL) {
+		LOGE("%s:%d:insufficient memory\n", __func__, __LINE__);
+		return ENOMEM;
+	}
 
 	/*read primary file including header */
 	ret = read_primary_file(pbuf, pheader.file_size);
 	if (ret) {
 		LOGE("Error(%d) in read_primary:%s\n", ret, strerror(ret));
+		free(pbuf);
 		return ret;
 	}
 
@@ -332,6 +341,7 @@ int get_fg_config_table(struct table_body *sec_tbl)
 	/* If primary checksum mismatch return error */
 	if (!(is_pcksum_ok) && !(is_scksum_ok)) {
 		LOGE("primary and secondary checksum failed.\n");
+		free(pbuf);
 		return EINVAL;
 	}
 
@@ -351,13 +361,16 @@ int get_fg_config_table(struct table_body *sec_tbl)
 	}
 
 read_pri_config:
-	if (!is_pcksum_ok)
+	if (!is_pcksum_ok) {
+		free(pbuf);
 		return -EINVAL;
+	}
 
 	LOGI("Using FG data from %s\n", PRIMARY_FILE);
 	ret = get_primary_fg_config(pbuf, &sbuf.tbl, battid);
 	if (ret) {
 		LOGE("Error(%d) in get_primary_fg_config:%s\n", ret, strerror(ret));
+		free(pbuf);
 		return ret;
 	}
 	/* copy the secondary table */
@@ -403,7 +416,7 @@ int write_sec_config(struct sec_file_body *sbuf)
 		return ENODATA;
 	}
 	close(fds);
-	LOGI("Wrote %d bytes to %s Size of table=%ld\n", ret, SECONDARY_FILE, sizeof(sbuf->tbl));
+	LOGI("Wrote %d bytes to %s Size of table=%d\n", ret, SECONDARY_FILE, sizeof(sbuf->tbl));
 	return 0;
 }
 
@@ -423,7 +436,7 @@ int write_fgdev_config(void)
 
 int  read_fg_write_sec()
 {
-	int fds, fdd, ret;
+	int fdd, ret;
 	unsigned char fg_config[MAX_FG_CONFIG_SIZE];
 	struct sec_file_body sbuf;
 
@@ -438,7 +451,6 @@ int  read_fg_write_sec()
 	ret = read(fdd, &sbuf.tbl, (sizeof(sbuf.tbl) - sizeof(sbuf.tbl.cksum)));
 	if (ret != (sizeof(sbuf.tbl) - sizeof(sbuf.tbl.cksum))) {
 		close(fdd);
-		close(fds);
 
 		LOGE("Error(%d) in reading %s:%s requested=%d read=%d\n", errno, DEV_FILE, strerror(errno),
 				(int)(sizeof(sbuf.tbl) - sizeof(sbuf.tbl.cksum)), ret);
@@ -451,7 +463,6 @@ int  read_fg_write_sec()
 	ret = write_sec_config(&sbuf);
 	if (ret) {
 		LOGE("Error(%d) in saving secondary:%s\n", ret, strerror(ret));
-		return ret;
 	}
 
 	close(fdd);
@@ -488,6 +499,7 @@ int dump_config(struct table_body *config)
 {
 	unsigned short  *data_ptr =  (unsigned short *) config->fg_config;
 	int i = 0;
+	int char_table_size;
 
 
 	LOGI("table_type:0x%x\n", (unsigned int)config->table_type);
@@ -502,7 +514,9 @@ int dump_config(struct table_body *config)
 
 	data_ptr--;
 
-	for (i = (i - 1); i < MAX_FG_CONFIG_SIZE / sizeof(unsigned short); ++i)
+	char_table_size = MAX_FG_CONFIG_SIZE / sizeof(unsigned short);
+
+	for (i = (i - 1); i < char_table_size; ++i)
 		LOGI("cell_char_tbl[%d]:0x%x\n", i, *data_ptr++);
 
 	LOGI("checksum:0x%x\n", config->cksum);
@@ -538,12 +552,20 @@ int dump_fg_config(char sel)
 		}
 
 		dump_primary_header(pheader);
+
 		pbuf = malloc(pheader.file_size);
+
+		if (pbuf == NULL) {
+			LOGE("%s:%d:Error: Insufficient memory\n",
+					__func__, __LINE__);
+			return ENOMEM;
+		}
 
 		/*read primary file including header */
 		ret = read_primary_file(pbuf, pheader.file_size);
 		if (ret) {
 			LOGE("Error(%d) in read_primary:%s\n", ret, strerror(ret));
+			free(pbuf);
 			return ret;
 		}
 
@@ -553,6 +575,7 @@ int dump_fg_config(char sel)
 			ret = dump_config((struct table_body *)(pbuf + offset));
 			if (ret) {
 				LOGE("Error(%d) in dump_config:%s\n", ret, strerror(ret));
+				free(pbuf);
 				return ret;
 			}
 			offset += sizeof(struct table_body);
