@@ -6,8 +6,6 @@ BT_FW_TARGET_PATH := $(TARGET_OUT_ETC)/firmware
 
 BT_COMMON_ABS := $(TOP)/vendor/intel/common/bluetooth
 
--include $(BT_COMMON)/../ComboChipVendor.mk
-
 ##################################################
 
 include $(CLEAR_VARS)

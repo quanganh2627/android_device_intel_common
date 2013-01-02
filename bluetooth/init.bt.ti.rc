@@ -11,6 +11,8 @@ on init
     chmod 0660 /dev/rfkill
     chown bluetooth bluetooth /dev/rfkill
     chown system system /sys/class/rfkill/rfkill0/type
+    chown 0660 /dev/hci_tty
+    chown bluetooth bluetooth /dev/hci_tty
 
 on boot
 # uim interfaces
