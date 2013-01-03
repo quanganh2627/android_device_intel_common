@@ -76,9 +76,6 @@ PRODUCT_COPY_FILES += \
         $(PERMISSIONS_PATH)/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml
 
 
-PRODUCT_COPY_FILES += \
-	$(PERMISSIONS_PATH)/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml
-
 # Power Debug Tools
 -include hardware/intel/PRIVATE/platform_test/power-debug/power-debug.mk
 
