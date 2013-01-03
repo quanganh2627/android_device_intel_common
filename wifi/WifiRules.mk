@@ -1,4 +1,10 @@
 ####################################
+# Build configuration
+####################################
+
+USE_MOST_RESTRICTIVE_REGDOM=true
+
+####################################
 # Paths declaration
 ####################################
 
@@ -72,7 +78,11 @@ endif
 # Locale variables
 ####################################
 
+ifeq ($(USE_MOST_RESTRICTIVE_REGDOM),true)
+REGDOM=00
+else
 REGDOM=$(word 2,$(subst _, ,$(word 1,$(PRODUCT_LOCALES))))
+endif
 MV=mv
 CAT=cat
 SED=sed
