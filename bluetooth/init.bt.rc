@@ -6,11 +6,6 @@ on init
     chmod 0660 /dev/ttyMFD0
     chown bluetooth bluetooth /dev/ttyMFD0
 
-on post-fs
-    chown bluetooth bluetooth /sys/devices/pci0000:00/0000:00:05.0/power/control
-    chmod 0660 /sys/devices/pci0000:00/0000:00:05.0/power/control
-    write /sys/devices/pci0000:00/0000:00:05.0/power/control "on"
-
 service bd_prov /system/bin/bd_prov
     class core
     user bluetooth
