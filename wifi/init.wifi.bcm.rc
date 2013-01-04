@@ -1,6 +1,14 @@
 on boot
     setprop wifi.interface wlan0
     insmod /lib/modules/cfg80211.ko
+    start wlan_prov
+
+service wlan_prov /system/bin/wlan_prov
+    class main
+    user root
+    group system wifi
+    disabled
+    oneshot
 
 service wpa_supplicant /system/bin/wpa_supplicant -Dnl80211 -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf -d
     class main

@@ -7,6 +7,7 @@ LOCAL_MODULE := wifi_bcm
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     netd.bcm               \
+    wlan_prov.bcm          \
     wpa_supplicant.bcm     \
     hostapd.bcm            \
     lib_driver_cmd_bcmdhd

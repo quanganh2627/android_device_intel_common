@@ -13,7 +13,7 @@ LOCAL_REQUIRED_MODULES := \
     netd.ti               \
     wpa_supplicant.ti     \
     hostapd_bin.ti        \
-    wlan_prov             \
+    wlan_prov.ti          \
     calibrator            \
     wl128x-fw-4-sr.bin    \
     wl128x-fw-4-mr.bin    \
