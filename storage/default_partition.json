@@ -179,7 +179,7 @@
 	    "id": 9,
 	    "label": null,
 	    "lba_start": null,
-	    "size": -1,
+	    "size": 0,
 	    "type": "data",
 	    "fs_type": "ext4",
 	    "uuid": "000000000008",
