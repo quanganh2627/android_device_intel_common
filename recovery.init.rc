@@ -20,6 +20,10 @@ on init
     mount /tmp /tmp tmpfs
 
     mount_all /fstab.${ro.hardware}
+
+    chown root shell /tmp
+    chmod 0775 /tmp
+
     chown system system /logs
     chmod 777 /logs
 
