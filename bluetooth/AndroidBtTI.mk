@@ -15,28 +15,10 @@ LOCAL_MODULE := bt_ti
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := \
     uim \
-    libbluetooth_vs \
     TIInit_10.6.15.bts \
     bt_common
 
 include $(BUILD_PHONY_PACKAGE)
-
-##################################################
-
-include $(CLEAR_VARS)
-
-LOCAL_SRC_FILES:= \
-	$(BT_COMMON)/hci_vs.c \
-
-LOCAL_C_INCLUDES:= \
-	$(BT_COMMON_ABS)/include \
-	$(TOP)/external/bluetooth/bluez/lib
-LOCAL_SHARED_LIBRARIES := \
-	libbluetooth
-LOCAL_MODULE:= libbluetooth_vs
-LOCAL_MODULE_TAGS := optional
-
-include $(BUILD_SHARED_LIBRARY)
 
 ##################################################
 
