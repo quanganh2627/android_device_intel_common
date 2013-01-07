@@ -59,6 +59,9 @@ on post-fs-data
     # Set this property to avoid fm rx to be muted
     setprop ro.fmrx.sound.forced 1
 
+    # Set this property to enable Thermal service
+    setprop persist.service.thermal 1
+
 on charger
     # /system is not already mounted under COS
     mount ext4 /dev/block/mmcblk0p8 /system ro noatime
