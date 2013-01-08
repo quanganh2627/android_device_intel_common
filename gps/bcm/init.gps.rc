@@ -1,0 +1,12 @@
+import init.gps.io.rc
+
+on post-fs-data
+
+    # GPS BCM
+    mkdir /data/gps 0770 system system
+
+# start GPS daemon
+service gpsd /system/bin/gpsd -c /system/etc/gps.xml
+    class main
+    user gps
+    group system inet sdcard_rw
