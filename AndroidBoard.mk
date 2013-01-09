@@ -162,6 +162,7 @@ endif
 
 # KCT Crashtool kernel module
 -include $(TOP)/hardware/intel/PRIVATE/monitor/ksrc/AndroidKCT.mk
+$(PRODUCT_OUT)/ramdisk.img : kct_daemon
 
 ifeq ($(powerdk),1)
 $(PRODUCT_OUT)/ramdisk.img : apwr
