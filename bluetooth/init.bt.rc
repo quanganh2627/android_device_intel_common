@@ -6,11 +6,11 @@ on init
     chmod 0660 /dev/ttyMFD0
     chown bluetooth bluetooth /dev/ttyMFD0
 
-service bd_prov /system/bin/bd_prov
-    class core
-    user bluetooth
-    group bluetooth security
-    oneshot
+#service bd_prov /system/bin/bd_prov
+#    class core
+#    user bluetooth
+#    group bluetooth security
+#    oneshot
 
 service dhcpcd_bnep0 /system/bin/logwrapper /system/bin/dhcpcd -ABKL
     class main
