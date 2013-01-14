@@ -11,6 +11,7 @@ LOCAL_MODULE := wifi_ti
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := \
     netd.ti               \
+    libpcsclite           \
     wpa_supplicant.ti     \
     hostapd_bin.ti        \
     wlan_prov             \
