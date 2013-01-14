@@ -81,6 +81,11 @@ service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
     oneshot
     user root
 
+service ct_monitor /system/bin/ct_monitor
+    class core
+    user root
+    disabled
+
 service watchdogd /sbin/ia_watchdogd
     class core
     user root
