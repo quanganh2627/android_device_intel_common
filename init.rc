@@ -351,7 +351,7 @@ on boot
     setprop net.tcp.buffersize.evdo    4094,87380,262144,4096,16384,262144
 
 # Set this property so surfaceflinger is not started by system_init
-    setprop system_init.startsurfaceflinger 0
+    setprop system_init.startsurfaceflinger 1
 
     class_start core
     class_start main
@@ -446,11 +446,11 @@ service debuggerd /system/bin/debuggerd
 #    user root
 #    group radio cache inet misc audio log
 
-service surfaceflinger /system/bin/surfaceflinger
-    class main
-    user system
-    group graphics drmrpc
-    onrestart restart zygote
+#service surfaceflinger /system/bin/surfaceflinger
+#   class main
+#   user system
+#   group graphics drmrpc
+#   onrestart restart zygote
 
 service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
     class main
