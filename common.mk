@@ -68,7 +68,9 @@ PRODUCT_COPY_FILES += \
 endif
 PRODUCT_COPY_FILES += \
         $(COMMON_PATH)/init.rc:root/init.rc \
-        $(COMMON_PATH)/init.common.rc:root/init.common.rc
+        $(COMMON_PATH)/init.common.rc:root/init.common.rc \
+        $(COMMON_PATH)/props.rc:root/props.rc \
+        $(COMMON_PATH)/props.default.rc:root/props.default.rc
 
 PERMISSIONS_PATH := frameworks/native/data/etc
 PRODUCT_COPY_FILES += \

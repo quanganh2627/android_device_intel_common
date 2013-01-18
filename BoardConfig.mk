@@ -137,5 +137,16 @@ include vendor/intel/common/wifi/WifiBoardConfig.mk
 # Gps
 include vendor/intel/common/gps/GpsBoardConfig.mk
 
+# SPID
+#
+# Can be customized for each board simply defining "SPID=" in local BoardConfig.mk
+# Without customization, will be auto-set by kernel
+#
+# SPID format :
+#        vend:cust:manu:plat:prod:hard
+SPID ?= "xxxx:xxxx:xxxx:xxxx:xxxx:xxxx"
+
+cmdline_extra += androidboot.spid=$(SPID)
+
 # external release
 include vendor/intel/common/external/external.mk
