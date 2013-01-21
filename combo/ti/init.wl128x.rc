@@ -1,10 +1,12 @@
+########################################################
+#  COMBO CONFIGURATION - TI SPECIFIC
+########################################################
+
 on init
+    chmod 0660 /dev/ttyMFD0
+    chown system system /dev/ttyMFD0
 
     insmod /lib/modules/st_drv.ko
-
-on boot
-
-    chown system system /system/bin/uim
 
     chmod 0660 /sys/devices/platform/kim/install
     chown system system /sys/devices/platform/kim/install
@@ -18,12 +20,5 @@ on boot
     chmod 0660 /sys/devices/platform/kim/flow_cntrl
     chown system system /sys/devices/platform/kim/flow_cntrl
 
-    chmod 0660 /dev/ttyMFD0
-    chown system system /dev/ttyMFD0
-
-service uim /system/bin/uim
-    class core
-    user system
-    group media system
-#    disabled
-    oneshot
+on boot
+    start bd_prov

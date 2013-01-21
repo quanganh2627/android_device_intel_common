@@ -2,24 +2,21 @@
 #  BLUETOOTH CONFIGURATION - TI SPECIFIC
 ########################################################
 
-on init
-#    insmod /lib/modules/st_drv.ko
-#    insmod /lib/modules/btwilink.ko
-    chown 0660 /dev/hci_tty
+on property:init.svc.uim=running
+    insmod /lib/modules/tty_hci.ko
+    chmod 0660 /dev/hci_tty
     chown bluetooth bluetooth /dev/hci_tty
 
-#on post-fs
-#
-#service uim /system/bin/uim
-#    class core
-#    user bluetooth
-#    group media bluetooth
-#    disabled
-#    oneshot
+service uim /system/bin/uim
+    class core
+    user system
+    group media system
+    disabled
+    oneshot
 
-#service hciattach /system/xbin/hciconfig hci0 up
-#    class main
-#    user bluetooth
-#    group bluetooth net_bt_admin misc
-#    disabled
-#    oneshot
+service bd_prov /system/bin/bd_prov
+    class core
+    user system
+    group system bluetooth security
+    disabled
+    oneshot

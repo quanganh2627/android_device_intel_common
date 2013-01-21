@@ -6,6 +6,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := wl128x_common
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
+    bd_prov \
     uim \
     init.wl128x.rc
 include $(BUILD_PHONY_PACKAGE)

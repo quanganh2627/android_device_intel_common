@@ -1,17 +1,5 @@
 import init.bt.vendor.rc
 
-on init
-    mkdir /data/misc/bluetoothd 0770 bluetooth bluetooth
-    mkdir /data/misc/hcid 0770 bluetooth bluetooth
-    chmod 0660 /dev/ttyMFD0
-    chown bluetooth bluetooth /dev/ttyMFD0
-
-#service bd_prov /system/bin/bd_prov
-#    class core
-#    user bluetooth
-#    group bluetooth security
-#    oneshot
-
 service dhcpcd_bnep0 /system/bin/logwrapper /system/bin/dhcpcd -ABKL
     class main
     group bluetooth wifi system dhcp
