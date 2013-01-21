@@ -81,7 +81,7 @@ service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
     oneshot
     user root
 
-service watchdogd /sbin/watchdogd
+service watchdogd /sbin/ia_watchdogd
     class core
     user root
     oneshot

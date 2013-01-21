@@ -17,6 +17,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	fast_click.pcm
 
+#Add kernel watchdog daemon
+PRODUCT_PACKAGES += \
+    ia_watchdogd \
+    libwatchdogd_devel
+
 # copy boot animation resources
 BOOTANIMATION_RESOURCE_PATH := vendor/intel/common/
 PRODUCT_COPY_FILES += \

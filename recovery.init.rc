@@ -117,7 +117,7 @@ on property:sys.usb.config=ptp,adb
     write /sys/class/android_usb/android0/enable 1
 
 
-service watchdogd /sbin/watchdogd
+service watchdogd /sbin/ia_watchdogd
     user root
     oneshot
 
