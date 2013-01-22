@@ -9,3 +9,7 @@ on init
     chmod 0660 /dev/rfkill
     chown bluetooth bluetooth /dev/rfkill
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
+
+on post-fs
+    chown bluetooth bluetooth /sys/devices/pci0000:00/0000:00:05.0/power/control
+    chmod 0660 /sys/devices/pci0000:00/0000:00:05.0/power/control
