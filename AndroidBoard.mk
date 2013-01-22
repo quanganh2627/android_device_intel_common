@@ -160,10 +160,6 @@ endif
 # Add powerdk driver
 -include $(TOP)/device/intel/debug_tools/powerdk/src/AndroidPowerDK.mk
 
-# KCT Crashtool kernel module
--include $(TOP)/hardware/intel/PRIVATE/monitor/ksrc/AndroidKCT.mk
-$(PRODUCT_OUT)/ramdisk.img : kct_daemon
-
 ifeq ($(powerdk),1)
 $(PRODUCT_OUT)/ramdisk.img : apwr
 endif
@@ -175,6 +171,13 @@ endif
 ifeq ($(vtunedk),1)
 $(PRODUCT_OUT)/ramdisk.img : sep3_8
 $(PRODUCT_OUT)/ramdisk.img : vtsspp
+endif
+
+# KCT Crashtool kernel module
+-include $(TOP)/hardware/intel/PRIVATE/monitor/ksrc/AndroidKCT.mk
+
+ifeq ($(kct_daemon),1)
+$(PRODUCT_OUT)/ramdisk.img : kct_daemon
 endif
 
 endif
