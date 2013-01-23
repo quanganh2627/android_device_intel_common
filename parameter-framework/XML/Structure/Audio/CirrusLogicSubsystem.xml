@@ -98,7 +98,7 @@
 					<ValuePair Literal="Mono" Numerical="0"/>
 					<ValuePair Literal="Stereo" Numerical="1"/>
 				</EnumParameter>
-				<EnumParameter Name="VOICE" Size="8" Mapping="Control:'VSPOUT Mono/Stereo Select'">
+				<EnumParameter Name="VOICE_OUT" Size="8" Mapping="Control:'VSPOUT Mono/Stereo Select'">
 					<ValuePair Literal="Mono" Numerical="0"/>
 					<ValuePair Literal="Stereo" Numerical="1"/>
 				</EnumParameter>
@@ -170,7 +170,7 @@
 			</ParameterBlock>
 		</ComponentType>
 
-		<ComponentType Name="SSP_PORT" Description="Voice Port">
+		<ComponentType Name="SSP_PORT" Description="SSP port">
 			<!--BooleanParameter Name="PCM_MASTER" Mapping="Control:'PCM1 Mode'"/-->
 			<ParameterBlock Name="CONFIG" Mapping="PortConfig">
 				<BooleanParameter Name="PLAYBACK_ENABLED"/>
@@ -194,7 +194,10 @@
 				</ParameterBlock>
 				<BooleanParameter Name="OUTPUT_ANALOG_ZERO_CROSS_ENABLED" Mapping="Control:'Analog Zero Cross Switch'"/>
 			</ParameterBlock>
-			<Component Name="VOICE_PORT" Type="SSP_PORT" Mapping="Device:1"/>
+			<Component Name="VOICE_PORT"  Type="SSP_PORT" Mapping="Device:1"/>
+			<Component Name="AUX_BT_PORT" Type="SSP_PORT" Mapping="Device:3"/>
+			<Component Name="AUX_FM_PORT" Type="SSP_PORT" Mapping="Device:4"/>
+
 		</ComponentType>
 	</ComponentLibrary>
 	<InstanceDefinition>
