@@ -126,7 +126,5 @@ include vendor/intel/common/wifi/WifiBoardConfig.mk
 # Gps
 include vendor/intel/common/gps/GpsBoardConfig.mk
 
-OVERRIDE_PARTITION_FILE = "$(TOP)/vendor/intel/common/storage/default_override.json"
-
 # external release
 include vendor/intel/common/external/external.mk
