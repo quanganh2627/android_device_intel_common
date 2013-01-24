@@ -11,6 +11,11 @@ TARGET_PROVIDES_INIT_RC := true
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_RIL_DISABLE_STATUS_POLLING := true
 
+# By default, signing is performed using ISU (Intel Signing Utility).  Can be
+# overridden on specific target BoardConfig.mk.  Currently supported values for
+# the signing method are 'none' and 'isu'.
+TARGET_OS_SIGNING_METHOD := isu
+
 FLASHFILE_NO_OTA := true
 INTEL_CRASHLOGD := false
 INTEL_INGREDIENTS_VERSIONS := true
@@ -65,9 +70,14 @@ TARGET_MAKE_INTEL_BOOTIMAGE := true
 # Enable to use Intel boot.bin
 ifeq ($(TARGET_MAKE_INTEL_BOOTIMAGE),true)
 INSTALLED_BOOTIMAGE_TARGET := $(PRODUCT_OUT)/boot.bin
+
 MAKE_NO_DEFAULT_BOOTIMAGE_ITEMS = $(MKBOOTIMG) \
 	$(INTERNAL_BOOTIMAGE_FILES)
+# CAUTION: DO NOT CHANGE the flavor of COMMON_BOOTIMAGE_ARGS.  It must remain
+# a recursively-expanded variable, i.e., it must be defined using the '=' sign.
+COMMON_BOOTIMAGE_ARGS = --sign-with $(TARGET_OS_SIGNING_METHOD)
 MAKE_NO_DEFAULT_BOOTIMAGE = $(MKBOOTIMG) \
+	$(COMMON_BOOTIMAGE_ARGS) \
 	$(INTERNAL_BOOTIMAGE_ARGS) \
 	--product $(TARGET_DEVICE) \
 	--type mos \
