@@ -147,6 +147,7 @@ publish_acs:
 	(cd $(ACS_CAMPAIGN_ST_PATH) && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
 	(cd $(ACS_CAMPAIGN_FT_PATH) && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
 
+ifneq ($(TARGET_KERNEL_SOURCE_IS_PRESENT),false)
 # Add sepdk driver
 ifneq ($(BOARD_USE_64BIT_KERNEL),true)
 # sepdk and vTunes
@@ -182,3 +183,4 @@ $(PRODUCT_OUT)/ramdisk.img : kct_daemon
 endif
 
 endif
+endif #TARGET_KERNEL_SOURCE_IS_PRESENT

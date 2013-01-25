@@ -64,9 +64,8 @@ ifeq ($(TARGET_BUILD_VARIANT),eng)
 BUILD_INIT_EXEC := true
 endif
 
-#Intel recovery images and boot images are different from android images.
-TARGET_MAKE_NO_DEFAULT_BOOTIMAGE := true
-TARGET_MAKE_INTEL_BOOTIMAGE := true
+TARGET_MAKE_NO_DEFAULT_BOOTIMAGE ?= true
+TARGET_MAKE_INTEL_BOOTIMAGE ?= true
 
 # Enable to use Intel boot.bin
 ifeq ($(TARGET_MAKE_INTEL_BOOTIMAGE),true)
