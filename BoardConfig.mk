@@ -103,7 +103,7 @@ BUILD_WITH_CHAABI_SUPPORT := true
 BUILD_WITH_WATCHDOG_DAEMON_SUPPORT := true
 
 # Use Intel camera extras (HDR, face detection, panorama, etc.) by default
-USE_INTEL_CAMERA_EXTRAS := true
+USE_INTEL_CAMERA_EXTRAS := false
 
 # select libcamera2 as the camera HAL
 USE_CAMERA_HAL2 := true
