@@ -16,6 +16,7 @@ typedef enum {FALSE = 0, TRUE} bool;
 #define DEV_FILE "/dev/fg"
 #define BATTID_LEN 8
 #define POWER_SUPPLY_PATH "/sys/class/power_supply/"
+#define MAX_COMMAND_LINE_BUF	1024
 
 #define TRUE 1
 #define FALSE 0
@@ -39,7 +40,7 @@ struct __attribute__((__packed__)) table_body {
 	unsigned short rev;
 	char table_name[MAX_TABLE_NAME_SIZE];
 	char battid[MAX_BATTID_SIZE];
-	unsigned char res;
+	unsigned char config_init;
 	unsigned char fg_config[MAX_FG_CONFIG_SIZE];
 	unsigned short cksum;
 };
@@ -287,6 +288,36 @@ int get_primary_fg_config(unsigned char *pbuf,
 	return EINVAL;
 }
 
+static int isCOS()
+{
+	int cos = 0;
+	char cmdline_buf[MAX_COMMAND_LINE_BUF];
+	char *ptr;
+
+	int fd, size;
+
+	fd = open("/proc/cmdline", O_RDONLY);
+	if (fd < 0) {
+		LOGI("%s:Unable to read commandline\n", __func__);
+	} else {
+		size = read(fd, cmdline_buf, MAX_COMMAND_LINE_BUF);
+		if ( size <= 0) {
+			LOGI("%s:error to read commandline\n", __func__);
+		} else {
+			ptr = strstr(cmdline_buf, "androidboot.mode=");
+			if (ptr != NULL) {
+				ptr += strlen("androidboot.mode=");
+				if (strncmp(ptr, "main", 4) == 0)
+					cos = 0;
+				else if (strncmp(ptr, "charger", 7) == 0)
+					cos = 1;
+			}
+			close(fd);
+		}
+	}
+	return cos;
+}
+
 int get_fg_config_table(struct table_body *sec_tbl)
 {
 	char battid[MAX_BATTID_SIZE];
@@ -296,6 +327,7 @@ int get_fg_config_table(struct table_body *sec_tbl)
 	struct primary_header pheader;
 	struct sec_file_body sbuf;
 	int ret;
+	int inCOS;
 
 	/* get battid */
 	ret = get_battid(battid);
@@ -373,6 +405,11 @@ read_pri_config:
 		free(pbuf);
 		return ret;
 	}
+	/* WA to  set fg_config.config_init = 1 in COS */
+	inCOS = isCOS();
+	LOGI("inCOS=%d\n", inCOS);
+	if(inCOS)
+		sbuf.tbl.config_init = 1;
 	/* copy the secondary table */
 	memcpy(sec_tbl, &sbuf.tbl, sizeof(*sec_tbl));
 	free(pbuf);
@@ -507,7 +544,7 @@ int dump_config(struct table_body *config)
 	LOGI("revision:0x%x\n", (int)config->rev);
 	LOGI("table_name:%.8s\n", config->table_name);
 	LOGI("battid:%.8s\n", config->battid);
-	LOGI("reserved:0x%x\n", (unsigned int)config->res);
+	LOGI("reserved:0x%x\n", (unsigned int)config->config_init);
 
 	while (cfg_name[i] != NULL)
 		LOGI("%s:0x%x\n", cfg_name[i++], *data_ptr++);
