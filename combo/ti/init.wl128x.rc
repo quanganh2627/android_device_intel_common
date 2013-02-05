@@ -21,4 +21,11 @@ on init
     chown system system /sys/devices/platform/kim/flow_cntrl
 
 on boot
-    start bd_prov
+    start uim
+
+service uim /system/bin/uim
+    class core
+    user system
+    group media system
+    disabled
+    oneshot
