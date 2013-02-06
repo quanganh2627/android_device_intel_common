@@ -61,6 +61,14 @@ on post-fs-data
 
 on charger
     mount_all /fstab.charger.${ro.hardware}
+    chown system system /dev/dri/card0
+    chmod 0666 /dev/dri/card0
+    symlink /dev/dri/card0 /dev/card0
+
+    # IMG Graphics specific setup. See also "service pvrsrvctl"
+    # The permissions below should be tighter.
+    chown system system /dev/card0
+
     start pvrsrvctl
     # reduce backlight
     write /sys/class/backlight/psb-bl/brightness 50
