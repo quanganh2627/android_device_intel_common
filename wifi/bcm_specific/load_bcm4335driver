@@ -1,0 +1,3 @@
+#!/system/bin/sh
+
+/system/bin/insmod /lib/modules/bcmdhd.ko firmware_path=/system/etc/firmware/fw_bcmdhd_4335.bin nvram_path=/system/etc/wifi/bcmdhd_4335.cal

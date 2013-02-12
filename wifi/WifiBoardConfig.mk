@@ -15,9 +15,6 @@ BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
 BOARD_HOSTAPD_DRIVER        := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_bcmdhd
 WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
-WIFI_DRIVER_MODULE_PATH     := "/lib/modules/bcmdhd.ko"
-WIFI_DRIVER_MODULE_NAME     := bcmdhd
-
 ifeq (bcm4334,$(COMBO_CHIP))
 WIFI_DRIVER_MODULE_ARG      := "firmware_path=/system/etc/firmware/fw_bcmdhd_4334.bin nvram_path=/system/etc/wifi/bcmdhd_4334.cal"
 WIFI_DRIVER_FW_PATH_STA     := "/system/etc/firmware/fw_bcmdhd_4334.bin"

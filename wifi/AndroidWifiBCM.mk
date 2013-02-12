@@ -10,7 +10,8 @@ LOCAL_REQUIRED_MODULES :=  \
     wlan_prov.bcm          \
     wpa_supplicant.bcm     \
     hostapd.bcm            \
-    lib_driver_cmd_bcmdhd
+    lib_driver_cmd_bcmdhd  \
+    load_bcmdriver
 
 #We don't want following packages to be automatically compiled
 LOCAL_REQUIRED_MODULES +=   \
