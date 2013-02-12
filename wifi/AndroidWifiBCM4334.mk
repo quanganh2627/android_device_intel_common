@@ -47,12 +47,3 @@ LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(WIFI_TARGET_PATH)
 LOCAL_SRC_FILES := $(BCM4334_FW_PATH)/bcm94334wlagb.txt
 include $(BUILD_PREBUILT)
-
-##################################################
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := load_bcmdriver
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := EXECUTABLES
-LOCAL_SRC_FILES :=  vendor/intel/common/wifi/bcm_specific/load_bcm4334driver
-include $(BUILD_PREBUILT)

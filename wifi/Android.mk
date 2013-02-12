@@ -3,10 +3,6 @@ include  $(LOCAL_DIR)/AndroidWifiCommon.mk
 include  $(LOCAL_DIR)/AndroidWifiTI.mk
 include  $(LOCAL_DIR)/AndroidWifiBCM.mk
 
-ifeq (bcm4334,$(COMBO_CHIP))
-  include  $(LOCAL_DIR)/AndroidWifiBCM4334.mk
-endif
+include  $(LOCAL_DIR)/AndroidWifiBCM4334.mk
+include  $(LOCAL_DIR)/AndroidWifiBCM4335.mk
 
-ifeq (bcm4335,$(COMBO_CHIP))
-  include  $(LOCAL_DIR)/AndroidWifiBCM4335.mk
-endif

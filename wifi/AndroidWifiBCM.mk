@@ -25,3 +25,10 @@ LOCAL_REQUIRED_MODULES +=  \
     wifi_common
 
 include $(BUILD_PHONY_PACKAGE)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := load_bcmdriver
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := EXECUTABLES
+LOCAL_SRC_FILES := vendor/intel/common/wifi/bcm_specific/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
