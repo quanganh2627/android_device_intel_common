@@ -301,6 +301,7 @@ static int isCOS()
 		LOGI("%s:Unable to read commandline\n", __func__);
 	} else {
 		size = read(fd, cmdline_buf, MAX_COMMAND_LINE_BUF);
+		cmdline_buf[MAX_COMMAND_LINE_BUF - 1] = '\0';
 		if ( size <= 0) {
 			LOGI("%s:error to read commandline\n", __func__);
 		} else {
