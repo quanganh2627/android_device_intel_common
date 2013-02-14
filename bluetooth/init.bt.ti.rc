@@ -4,5 +4,3 @@
 
 on property:init.svc.uim=running
     insmod /lib/modules/tty_hci.ko
-    chmod 0660 /dev/hci_tty
-    chown bluetooth bluetooth /dev/hci_tty
