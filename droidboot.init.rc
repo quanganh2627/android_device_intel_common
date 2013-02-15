@@ -101,6 +101,8 @@ on property:sys.partitioning=1
 
 on property:sys.partitioning=0
     mount ext4 /dev/block/mmcblk0p7 /logs nosuid nodev barrier=1 data=ordered
+    mkdir /logs/flashing
+    write /logs/flashing/blankphone_file ""
     start apk_logfs
 
 # Add Proxy service for Modem provisionning

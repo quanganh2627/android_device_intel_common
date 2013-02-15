@@ -10,6 +10,7 @@ TARGET_PRELINK_MODULE := false
 TARGET_PROVIDES_INIT_RC := true
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_RIL_DISABLE_STATUS_POLLING := true
+KERNEL_SRC_DIR ?= kernel
 
 # By default, signing is performed using ISU (Intel Signing Utility).  Can be
 # overridden on specific target BoardConfig.mk.  Currently supported values for
