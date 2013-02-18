@@ -158,11 +158,14 @@ ifneq ($(TARGET_KERNEL_SOURCE_IS_PRESENT),false)
 # Add sepdk driver
 ifneq ($(BOARD_USE_64BIT_KERNEL),true)
 # sepdk and vTunes
--include $(TOP)/device/intel/debug_tools/sepdk/src/AndroidSEP.mk
--include $(TOP)/device/intel/debug_tools/sepdk/src/pax/AndroidPAX.mk
+-include $(TOP)/device/intel/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
+-include $(TOP)/device/intel/debug_tools/vtunedk/src/pax/AndroidPAX.mk
 
 ifeq ($(sepdk),1)
 $(PRODUCT_OUT)/ramdisk.img : sep
+endif
+
+ifeq ($(pax),1)
 $(PRODUCT_OUT)/ramdisk.img : pax
 endif
 
