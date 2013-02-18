@@ -42,6 +42,8 @@ include $(BUILD_PREBUILT)
 # stitch kernel. We overide the default script to
 # adapt to out own IAFW format.
 MKBOOTIMG := vendor/intel/support/mkbootimg
+# Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
+$(MKBOOTIMG): isu isu_stream xfstk-stitcher
 
 $(INSTALLED_KERNEL_TARGET): build_kernel
 $(INSTALLED_RAMDISK_TARGET): build_kernel
