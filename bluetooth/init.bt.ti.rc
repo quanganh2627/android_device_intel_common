@@ -4,19 +4,3 @@
 
 on property:init.svc.uim=running
     insmod /lib/modules/tty_hci.ko
-    chmod 0660 /dev/hci_tty
-    chown bluetooth bluetooth /dev/hci_tty
-
-service uim /system/bin/uim
-    class core
-    user system
-    group media system
-    disabled
-    oneshot
-
-service bd_prov /system/bin/bd_prov
-    class core
-    user system
-    group system bluetooth security
-    disabled
-    oneshot

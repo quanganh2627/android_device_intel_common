@@ -64,9 +64,8 @@ ifeq ($(TARGET_BUILD_VARIANT),eng)
 BUILD_INIT_EXEC := true
 endif
 
-#Intel recovery images and boot images are different from android images.
-TARGET_MAKE_NO_DEFAULT_BOOTIMAGE := true
-TARGET_MAKE_INTEL_BOOTIMAGE := true
+TARGET_MAKE_NO_DEFAULT_BOOTIMAGE ?= true
+TARGET_MAKE_INTEL_BOOTIMAGE ?= true
 
 # Enable to use Intel boot.bin
 ifeq ($(TARGET_MAKE_INTEL_BOOTIMAGE),true)
@@ -136,6 +135,17 @@ include vendor/intel/common/wifi/WifiBoardConfig.mk
 
 # Gps
 include vendor/intel/common/gps/GpsBoardConfig.mk
+
+# SPID
+#
+# Can be customized for each board simply defining "SPID=" in local BoardConfig.mk
+# Without customization, will be auto-set by kernel
+#
+# SPID format :
+#        vend:cust:manu:plat:prod:hard
+SPID ?= "xxxx:xxxx:xxxx:xxxx:xxxx:xxxx"
+
+cmdline_extra += androidboot.spid=$(SPID)
 
 # external release
 include vendor/intel/common/external/external.mk
