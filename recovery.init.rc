@@ -1,4 +1,5 @@
 import /recovery.init.${ro.hardware}.rc
+import init.recovery.debug.rc
 
 on early-init
     start ueventd
@@ -38,8 +39,6 @@ on boot
     ifup lo
     hostname localhost
     domainname localdomain
-
-    setprop sys.usb.config mtp,adb
 
     class_start default
 
