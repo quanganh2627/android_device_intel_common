@@ -13,7 +13,8 @@ LOCAL_REQUIRED_MODULES :=  \
     iw                     \
     init.wifi.rc           \
     init.wifi.vendor.rc    \
-    android.conf
+    android.conf           \
+    dhcp_lease_evt.sh
 
 ifeq ($(strip $(INTEL_WIDI)),true)
 LOCAL_REQUIRED_MODULES +=  \
@@ -71,4 +72,14 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/dhcpcd
 LOCAL_SRC_FILES := $(WIFI_COMMON)/android.$(COMBO_CHIP_VENDOR).conf
+include $(BUILD_PREBUILT)
+
+##################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := dhcp_lease_evt.sh
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(PRODUCT_OUT)/system/bin
+LOCAL_SRC_FILES := $(WIFI_COMMON)/dhcp_lease_evt.sh
 include $(BUILD_PREBUILT)
