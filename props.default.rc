@@ -2,3 +2,4 @@
 on property:ro.boot.spid=*:*:*:*:*:*
 	setprop ro.spid.telephony.rxdiv 0
 	setprop ro.AudioComms.PFW.ConfPath /etc/parameter-framework/ParameterFrameworkConfiguration.xml
+	setprop ro.spid.gps.tty ttyMFD1
