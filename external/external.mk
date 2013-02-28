@@ -44,6 +44,7 @@ $(if $(filter $(1),$(_metatarget)), \
     $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_UNINSTALLABLE_MODULE := $(strip $(LOCAL_UNINSTALLABLE_MODULE))) \
     $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_BUILT_MODULE_STEM := $(strip $(LOCAL_BUILT_MODULE_STEM))) \
     $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_STRIP_MODULE := ) \
+    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_REQUIRED_MODULES := $(strip $(LOCAL_SHARED_LIBRARIES) $(LOCAL_REQUIRED_MODULES))) \
     $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_INSTALLED_MODULE_STEM := $(strip $(LOCAL_INSTALLED_MODULE_STEM))) \
     $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_CERTIFICATE := $(strip $(notdir $(LOCAL_CERTIFICATE)))) \
     $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(LOCAL_MODULE_PATH))))) \
@@ -77,6 +78,7 @@ endef
 # $(10): LOCAL_MODULE_STEM
 # $(11): LOCAL_CERTIFICATE
 # $(12): LOCAL_MODULE_PATH
+# $(13): LOCAL_REQUIRED_MODULES
 #
 define external-auto-prebuilt-boilerplate
 $(if $(filter %: :%,$(1)), \
@@ -99,6 +101,7 @@ $(foreach t,$(1), \
   $(call external-echo-makefile, 'LOCAL_MODULE_STEM:=$(10)') \
   $(call external-echo-makefile, 'LOCAL_CERTIFICATE:=$(11)') \
   $(call external-echo-makefile, 'LOCAL_MODULE_PATH:=$(12)') \
+  $(call external-echo-makefile, 'LOCAL_REQUIRED_MODULES:=$(13)') \
   $(call external-echo-makefile, 'include $$(BUILD_PREBUILT)') \
  )
 endef
