@@ -12,6 +12,8 @@ TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_RIL_DISABLE_STATUS_POLLING := true
 KERNEL_SRC_DIR ?= kernel
 
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
+
 # By default, signing is performed using ISU (Intel Signing Utility).  Can be
 # overridden on specific target BoardConfig.mk.  Currently supported values for
 # the signing method are 'none' and 'isu'.
