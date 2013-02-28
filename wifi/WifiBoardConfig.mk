@@ -1,4 +1,4 @@
-COMMON := vendor/intel/common
+COMMON := device/intel/common
 
 include $(COMMON)/ComboChipVendor.mk
 

@@ -7,7 +7,7 @@ prebuilt directory in order to be published aside in a binary artifact storage s
 The external.mk file must be included in the begining of the BoardConfig.mk files, so that
 the hooks are done before any Android.mk inclusion. (actually this is factorized in common dir)
 
-Thus we are in vendor/intel/common, and the include external/external.mk is made in common/BoardConfig.mk
+Thus we are in device/intel/common, and the include external/external.mk is made in common/BoardConfig.mk
 
 when the GOAL intel_prebuilts is set, and when the "LOCAL_PATH" variable contains "/PRIVATE/",
 then the metatargets are hooked, so that the proper rules are generated for creating prebuilt makefiles.

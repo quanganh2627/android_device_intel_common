@@ -29,7 +29,7 @@ PRODUCT_PACKAGES += \
 endif
 
 # copy boot animation resources
-BOOTANIMATION_RESOURCE_PATH := vendor/intel/common/
+BOOTANIMATION_RESOURCE_PATH := device/intel/common/
 PRODUCT_COPY_FILES += \
     $(BOOTANIMATION_RESOURCE_PATH)/bootanimation.zip:system/media/bootanimation.zip
 
@@ -68,7 +68,7 @@ endif
 #GMS package
 -include vendor/google/PRIVATE/gms/products/gms.mk
 
-COMMON_PATH := vendor/intel/common
+COMMON_PATH := device/intel/common
 ifneq ($(strip $(TARGET_BUILD_VARIANT)),user)
 PRODUCT_COPY_FILES += \
         $(COMMON_PATH)/atproxy_usbreset:system/bin/atproxy_usbreset

@@ -30,5 +30,5 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := load_bcmdriver
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := EXECUTABLES
-LOCAL_SRC_FILES := vendor/intel/common/wifi/bcm_specific/$(LOCAL_MODULE)
+LOCAL_SRC_FILES := device/intel/common/wifi/bcm_specific/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)

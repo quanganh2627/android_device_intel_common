@@ -131,7 +131,7 @@ $(foreach f, $(1), $(strip \
     $(_cmf_src)))
 endef
 
-EXTERNAL_BUILD_SYSTEM=vendor/intel/common/external
+EXTERNAL_BUILD_SYSTEM=device/intel/common/external
 
 TARGET_OUT_prebuilts := $(PRODUCT_OUT)/prebuilts/intel
 

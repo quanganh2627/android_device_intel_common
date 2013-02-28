@@ -1,7 +1,7 @@
 # make file for common
 #
-LOCAL_PATH := $(TOP)/vendor/intel/common
-COMMON_PATH := $(TOP)/vendor/intel/common
+LOCAL_PATH := $(TOP)/device/intel/common
+COMMON_PATH := $(TOP)/device/intel/common
 SUPPORT_PATH:= $(TOP)/vendor/intel/support
 ACS_BUILDBOT_PATH := $(TOP)/vendor/intel/PRIVATE/buildbot_acs
 ACS_CAMPAIGN_ST_PATH := $(TOP)/vendor/intel/PRIVATE/ST_acs_campaigns

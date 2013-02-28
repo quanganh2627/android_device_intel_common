@@ -140,10 +140,10 @@ BUILD_BT_GAP_TEST := true
 DISPLAY_BUILD_NUMBER := true
 
 # Wi-Fi
-include vendor/intel/common/wifi/WifiBoardConfig.mk
+include device/intel/common/wifi/WifiBoardConfig.mk
 
 # Gps
-include vendor/intel/common/gps/GpsBoardConfig.mk
+include device/intel/common/gps/GpsBoardConfig.mk
 
 # SPID
 #
@@ -159,4 +159,4 @@ cmdline_extra += androidboot.spid=$(SPID)
 cmdline_extra += androidboot.serialno=01234567890123456789012345678901
 
 # external release
-include vendor/intel/common/external/external.mk
+include device/intel/common/external/external.mk
