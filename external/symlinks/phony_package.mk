@@ -1,1 +1,1 @@
-../generic_rules.mk
+../unsupported.mk
