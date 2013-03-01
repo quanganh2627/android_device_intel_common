@@ -42,6 +42,8 @@ include $(BUILD_PREBUILT)
 # stitch kernel. We overide the default script to
 # adapt to out own IAFW format.
 MKBOOTIMG := vendor/intel/support/mkbootimg
+# Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
+$(MKBOOTIMG): isu isu_stream xfstk-stitcher
 
 $(INSTALLED_KERNEL_TARGET): build_kernel
 $(INSTALLED_RAMDISK_TARGET): build_kernel
@@ -136,6 +138,9 @@ publish_linux_tools: $(PUBLISH_LINUX_TOOLS_deps)
 	(cd out/host/ && cp --parents linux-x86/bin/fastboot $(PUBLISH_TOOLS_PATH))
 
 publish_acs:
+ifneq ($(wildcard $(ACS_BUILDBOT_PATH)),)
+ifneq ($(wildcard $(ACS_CAMPAIGN_ST_PATH)),)
+publish_acs:
 	$(eval ACS_ZIP := $(abspath $(PUBLISH_PATH)/buildbot/acs.zip))
 	$(eval RUN_ACS_ZIP := $(abspath $(PUBLISH_PATH)/buildbot/run_acs.zip))
 	$(eval ACS_CAMPAIGNS_ZIP := $(abspath $(PUBLISH_PATH)/buildbot/campaigns.zip))
@@ -146,16 +151,21 @@ publish_acs:
 	(cd $(ACS_BUILDBOT_PATH)/campaigns && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
 	(cd $(ACS_CAMPAIGN_ST_PATH) && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
 	(cd $(ACS_CAMPAIGN_FT_PATH) && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
+endif
+endif
 
 ifneq ($(TARGET_KERNEL_SOURCE_IS_PRESENT),false)
 # Add sepdk driver
 ifneq ($(BOARD_USE_64BIT_KERNEL),true)
 # sepdk and vTunes
--include $(TOP)/device/intel/debug_tools/sepdk/src/AndroidSEP.mk
--include $(TOP)/device/intel/debug_tools/sepdk/src/pax/AndroidPAX.mk
+-include $(TOP)/device/intel/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
+-include $(TOP)/device/intel/debug_tools/vtunedk/src/pax/AndroidPAX.mk
 
 ifeq ($(sepdk),1)
 $(PRODUCT_OUT)/ramdisk.img : sep
+endif
+
+ifeq ($(pax),1)
 $(PRODUCT_OUT)/ramdisk.img : pax
 endif
 

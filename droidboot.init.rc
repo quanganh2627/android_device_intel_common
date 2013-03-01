@@ -14,8 +14,6 @@ on init
     mount /data /data tmpfs
 
     mount_all /fstab.${ro.hardware}
-    chown system system /logs
-    chmod 777 /logs
 
 
 on boot
@@ -50,6 +48,7 @@ on property:sys.usb.config=rndis,acm,adb
     write /sys/class/android_usb/android0/idVendor 8087
     write /sys/class/android_usb/android0/idProduct 09f8
     write /sys/class/android_usb/android0/iProduct "Android-Phone"
+    write /sys/class/android_usb/android0/f_acm/instances 1
     write /sys/class/android_usb/android0/functions $sys.usb.config
     write /sys/class/android_usb/android0/enable 1
 
@@ -100,6 +99,9 @@ on property:sys.partitioning=1
     stop apk_logfs
 
 on property:sys.partitioning=0
+    mkdir /logs
+    chown system system /logs
+    chmod 777 /logs
     mount ext4 /dev/block/mmcblk0p7 /logs nosuid nodev barrier=1 data=ordered
     mkdir /logs/flashing
     write /logs/flashing/blankphone_file ""

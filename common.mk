@@ -70,7 +70,8 @@ PRODUCT_COPY_FILES += \
         $(COMMON_PATH)/init.rc:root/init.rc \
         $(COMMON_PATH)/init.common.rc:root/init.common.rc \
         $(COMMON_PATH)/props.rc:root/props.rc \
-        $(COMMON_PATH)/props.default.rc:root/props.default.rc
+        $(COMMON_PATH)/props.default.rc:root/props.default.rc \
+        $(COMMON_PATH)/ueventd.modules.blacklist:system/etc/ueventd.modules.blacklist
 
 PERMISSIONS_PATH := frameworks/native/data/etc
 PRODUCT_COPY_FILES += \
@@ -91,6 +92,12 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 -include vendor/intel/PRIVATE/apps/Kratos/products/Kratos.mk
 endif
 
+# vTunes binaires (not for user builds)
+ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
+-include device/intel/PRIVATE/debug_internal_tools/sepdk/bin/sepbin.mk
+endif
+
+
 # Crashinfo
 -include device/intel/PRIVATE/log_infra/crashinfo/crashinfo.mk
 
@@ -100,10 +107,6 @@ PRODUCT_COPY_FILES += \
         device/intel/log_capture/crashlog/del_hist.sh:system/bin/del_hist.sh \
         device/intel/log_capture/crashlog/del_log.sh:system/bin/del_log.sh \
         device/intel/log_capture/crashlog/dumpstate_dropbox.sh:system/bin/dumpstate_dropbox.sh
-
-#wuwatch
-PRODUCT_COPY_FILES += \
-        device/intel/debug_tools/wuwatch/wuwatch_config.txt:system/bin/wuwatch_config.txt
 
 #Bring in camera media effects
 $(call inherit-product-if-exists, frameworks/base/data/videos/VideoPackage2.mk)
