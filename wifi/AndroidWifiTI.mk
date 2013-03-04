@@ -1,6 +1,6 @@
 LOCAL_PATH := $(ANDROID_BUILD_TOP)
 
-FW_PATH := device/intel/fw/wifi
+FW_PATH := vendor/intel/fw/wifi
 TIWLAN_PATH := $(FW_PATH)/tiwl128x/wlan
 FW_TARGET_PATH := $(TARGET_OUT_ETC)/firmware/ti-connectivity
 
