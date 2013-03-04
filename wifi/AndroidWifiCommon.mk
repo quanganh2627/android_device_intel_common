@@ -22,6 +22,14 @@ LOCAL_REQUIRED_MODULES +=  \
     init.widi.vendor.rc
 endif
 
+ifeq ($(TARGET_BUILD_VARIANT),eng)
+LOCAL_REQUIRED_MODULES += wifi_wfa
+endif
+
+ifeq ($(TARGET_BUILD_VARIANT),userdebug)
+LOCAL_REQUIRED_MODULES += wifi_wfa
+endif
+
 include $(BUILD_PHONY_PACKAGE)
 
 ##################################################
