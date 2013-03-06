@@ -170,7 +170,7 @@
 			</ParameterBlock>
 		</ComponentType>
 
-		<ComponentType Name="SSP_PORT" Description="SSP port">
+		<ComponentType Name="SSP_PORT" Description="Voice or Virtual Port">
 			<!--BooleanParameter Name="PCM_MASTER" Mapping="Control:'PCM1 Mode'"/-->
 			<ParameterBlock Name="CONFIG" Mapping="PortConfig">
 				<BooleanParameter Name="PLAYBACK_ENABLED"/>
@@ -197,7 +197,7 @@
 			<Component Name="VOICE_PORT"  Type="SSP_PORT" Mapping="Device:1"/>
 			<Component Name="AUX_BT_PORT" Type="SSP_PORT" Mapping="Device:3"/>
 			<Component Name="AUX_FM_PORT" Type="SSP_PORT" Mapping="Device:4"/>
-
+			<Component Name="VIRTUAL_ASP_PORT" Type="SSP_PORT" Mapping="Device:6" Description="Virtual ASP Port"/>
 		</ComponentType>
 	</ComponentLibrary>
 	<InstanceDefinition>
