@@ -92,7 +92,7 @@ PRODUCT_COPY_FILES += \
 
 
 # Power Debug Tools
--include hardware/intel/PRIVATE/platform_test/power-debug/power-debug.mk
+-include vendor/intel/hardware/PRIVATE/platform_test/power-debug/power-debug.mk
 
 # memmonitor (not for user builds)
 ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
