@@ -29,7 +29,7 @@ on init
     chmod 777 /logs
 
     write /proc/sys/kernel/panic_on_oops 1
-    write /sys/module/intel_mid/parameters/force_cold_boot Y
+    write /sys/module/intel_mid/parameters/force_cold_boot 1
 
     # adb shell needs /system/bin/sh
     symlink /system/bin/mksh /system/bin/sh
