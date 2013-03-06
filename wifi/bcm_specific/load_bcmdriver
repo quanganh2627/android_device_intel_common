@@ -9,8 +9,15 @@ fi
 
 # These hardcoded path for firmware and nvram are also defined in
 # WifiBoardConfig.mk. Make sure to change at both places...
+BCM43241_FLAGS="firmware_path=/system/etc/firmware/fw_bcmdhd_43241.bin nvram_path=/system/etc/wifi/bcmdhd_43241.cal"
 BCM4334_FLAGS="firmware_path=/system/etc/firmware/fw_bcmdhd_4334.bin nvram_path=/system/etc/wifi/bcmdhd_4334_${NVRAM_REV}.cal"
-BCM4335_FLAGS='firmware_path=/system/etc/firmware/fw_bcmdhd_4335.bin nvram_path=/system/etc/wifi/bcmdhd_4335.cal'
+BCM4335_FLAGS="firmware_path=/system/etc/firmware/fw_bcmdhd_4335.bin nvram_path=/system/etc/wifi/bcmdhd_4335.cal"
+
+setprop wlan.bcm.chip 43241
+if [ -f /lib/modules/bcm43241.ko ]; then
+    /system/bin/insmod /lib/modules/bcm43241.ko ${BCM43241_FLAGS} && /system/xbin/busybox ifconfig wlan0 up && exit 0;
+    sleep 1;
+fi
 
 setprop wlan.bcm.chip 4334
 
