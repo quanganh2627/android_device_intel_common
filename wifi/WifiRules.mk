@@ -41,14 +41,18 @@ endif
 
 include $(COMMON)/ComboChipVendor.mk
 
-ifeq (ti,$(COMBO_CHIP_VENDOR))
-    include $(TOP)/hardware/ti/wlan/wl12xx-compat/AndroidWl12xxCompat.mk
+ifneq (,$(filter wifi_ti,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+  include $(TOP)/hardware/ti/wlan/wl12xx-compat/AndroidWl12xxCompat.mk
 endif
 
-ifeq (bcm,$(COMBO_CHIP_VENDOR))
-    include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd.mk
-    include $(TOP)/hardware/broadcom/wlan_driver/bcm4335/AndroidBcmdhd.mk
+ifneq (,$(filter wifi_bcm_4334,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+  include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd.mk
 endif
+
+ifneq (,$(filter wifi_bcm_4335,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+  include $(TOP)/hardware/broadcom/wlan_driver/bcm4335/AndroidBcmdhd.mk
+endif
+
 
 ####################################
 # Configuration files
