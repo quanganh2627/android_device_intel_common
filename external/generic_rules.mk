@@ -36,10 +36,6 @@ endif
 
 ########################################################################################
 ifneq (custom_external, $(_metatarget))
-ifneq ($(filter java_library,$(_metatarget)),)
-# force dex preopt to nostripping in case of java library
-LOCAL_DEX_PREOPT:= nostripping
-endif
 include $(call original-metatarget)
 endif
 ########################################################################################
@@ -91,7 +87,7 @@ $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(ACP) $(EXTERNAL_BUILD_SYSTEM)/generic_rules
 		$(call external-echo-makefile, 'include $$(BUILD_MULTI_PREBUILT)'))
 	@$(foreach class, LIBS EXECUTABLES JAVA_LIBRARIES STATIC_JAVA_LIBRARIES HOST_LIBS HOST_EXECUTABLES HOST_JAVA_LIBRARIES HOST_STATIC_JAVA_LIBRARIES, \
 		$(foreach module, $($@.$(class).LOCAL_INSTALLED_STEM_MODULES), \
-			$(call external-auto-prebuilt-boilerplate,$(module),$($@.$(class).$(module).LOCAL_IS_HOST_MODULE),$($@.$(class).$(module).LOCAL_MODULE_CLASS),$($@.$(class).$(module).LOCAL_MODULE_TAGS),$($@.$(class).$(module).OVERRIDE_BUILT_MODULE_PATH),$($@.$(class).$(module).LOCAL_UNINSTALLABLE_MODULE),$($@.$(class).$(module).LOCAL_BUILT_MODULE_STEM),$($@.$(class).$(module).LOCAL_STRIP_MODULE),$($@.$(class).$(module).LOCAL_MODULE),$($@.$(class).$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.$(class).$(module).LOCAL_CERTIFICATE),$($@.$(class).$(module).LOCAL_MODULE_PATH),$($@.$(class).$(module).LOCAL_REQUIRED_MODULES))))
+			$(call external-auto-prebuilt-boilerplate,$(module),$($@.$(class).$(module).LOCAL_IS_HOST_MODULE),$($@.$(class).$(module).LOCAL_MODULE_CLASS),$($@.$(class).$(module).LOCAL_MODULE_TAGS),$($@.$(class).$(module).OVERRIDE_BUILT_MODULE_PATH),$($@.$(class).$(module).LOCAL_UNINSTALLABLE_MODULE),$($@.$(class).$(module).LOCAL_BUILT_MODULE_STEM),$($@.$(class).$(module).LOCAL_STRIP_MODULE),$($@.$(class).$(module).LOCAL_MODULE),$($@.$(class).$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.$(class).$(module).LOCAL_CERTIFICATE),$($@.$(class).$(module).LOCAL_MODULE_PATH))))
 	@$(foreach to, $($@.headers_to), \
 		$(if $(filter _none_,$(to)), \
 			$(eval _to_:=),\
@@ -102,7 +98,7 @@ $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(ACP) $(EXTERNAL_BUILD_SYSTEM)/generic_rules
 			$(call external-echo-makefile, 'LOCAL_COPY_HEADERS_TO:=$(_to_)') \
 			$(call external-echo-makefile, 'include $$(BUILD_COPY_HEADERS)')))
 	@$(foreach module, $($@.prebuilt), \
-		$(call external-auto-prebuilt-boilerplate,$($@.prebuilt.$(module).LOCAL_SRC_FILES),$($@.prebuilt.$(module).LOCAL_IS_HOST_MODULE),$($@.prebuilt.$(module).LOCAL_MODULE_CLASS),$($@.prebuilt.$(module).LOCAL_MODULE_TAGS),$($@.prebuilt.$(module).OVERRIDE_BUILT_MODULE_PATH),$($@.prebuilt.$(module).LOCAL_UNINSTALLABLE_MODULE),$($@.prebuilt.$(module).LOCAL_BUILT_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_STRIP_MODULE),$(module),$($@.prebuilt.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_CERTIFICATE),$($@.prebuilt.$(module).LOCAL_MODULE_PATH),$($@.prebuilt.$(module).LOCAL_REQUIRED_MODULES)))
+		$(call external-auto-prebuilt-boilerplate,$($@.prebuilt.$(module).LOCAL_SRC_FILES),$($@.prebuilt.$(module).LOCAL_IS_HOST_MODULE),$($@.prebuilt.$(module).LOCAL_MODULE_CLASS),$($@.prebuilt.$(module).LOCAL_MODULE_TAGS),$($@.prebuilt.$(module).OVERRIDE_BUILT_MODULE_PATH),$($@.prebuilt.$(module).LOCAL_UNINSTALLABLE_MODULE),$($@.prebuilt.$(module).LOCAL_BUILT_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_STRIP_MODULE),$(module),$($@.prebuilt.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_CERTIFICATE),$($@.prebuilt.$(module).LOCAL_MODULE_PATH)))
 	@$(foreach module, $($@.PACKAGES.LOCAL_INSTALLED_STEM_MODULES), \
 		$(call external-auto-prebuilt-boilerplate,$(module),,APPS,optional,,,,,$($@.PACKAGES.$(module).LOCAL_MODULE),$($@.PACKAGES.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.PACKAGES.$(module).LOCAL_CERTIFICATE)))
 	@$(foreach mk, $($@.extramakefile), \
@@ -153,7 +149,6 @@ ifneq ($(filter prebuilt,$(_metatarget)),)
    $(my).prebuilt.$(LOCAL_MODULE).LOCAL_STRIP_MODULE := $(strip $(LOCAL_STRIP_MODULE))
    $(my).prebuilt.$(LOCAL_MODULE).LOCAL_INSTALLED_MODULE_STEM := $(strip $(LOCAL_INSTALLED_MODULE_STEM))
    $(my).prebuilt.$(LOCAL_MODULE).LOCAL_CERTIFICATE := $(strip $(notdir $(LOCAL_CERTIFICATE)))
-   $(my).prebuilt.$(LOCAL_MODULE).LOCAL_REQUIRED_MODULES := $(strip $(LOCAL_REQUIRED_MODULES))
    $(my).prebuilt.$(LOCAL_MODULE).LOCAL_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$(PRODUCT_OUT),$(LOCAL_MODULE_PATH))))
 endif
 ifneq ($(filter custom_external,$(_metatarget)),)

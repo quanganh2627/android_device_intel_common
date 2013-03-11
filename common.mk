@@ -108,5 +108,9 @@ PRODUCT_COPY_FILES += \
         device/intel/log_capture/crashlog/del_log.sh:system/bin/del_log.sh \
         device/intel/log_capture/crashlog/dumpstate_dropbox.sh:system/bin/dumpstate_dropbox.sh
 
+#wuwatch
+PRODUCT_COPY_FILES += \
+        device/intel/PRIVATE/debug_internal_tools/wuwatch/wuwatch_config.txt:system/bin/wuwatch_config.txt
+
 #Bring in camera media effects
 $(call inherit-product-if-exists, frameworks/base/data/videos/VideoPackage2.mk)
