@@ -118,6 +118,9 @@ USE_INTEL_CAMERA_EXTRAS := true
 # select libcamera2 as the camera HAL
 USE_CAMERA_HAL2 := true
 
+# Set USE_VIDEO_EFFECT to 'false' to unsupport live face effect. And Set OMX Component Input Buffer Count to 2.
+USE_VIDEO_EFFECT := true
+
 # Turn on GR_STATIC_RECT_VB flag in skia to boost performance
 TARGET_USE_GR_STATIC_RECT_VB := true
 

@@ -1,0 +1,37 @@
+#!/system/bin/sh
+
+# These hardcoded path for firmware and nvram are also defined in
+# WifiBoardConfig.mk. Make sure to change at both places...
+BCM4334_FLAGS='firmware_path=/system/etc/firmware/fw_bcmdhd_4334.bin nvram_path=/system/etc/wifi/bcmdhd_4334.cal'
+BCM4335_FLAGS='firmware_path=/system/etc/firmware/fw_bcmdhd_4335.bin nvram_path=/system/etc/wifi/bcmdhd_4335.cal'
+
+setprop wlan.bcm.chip 4334
+
+# Here we trry to insmod the bcm4334 driver. Depending on how the driver has
+# been compiled, it might fail directly here if the chip is bcm4335, in which
+# case we then insmod the bcm4335 driver.
+# If it's been compiled with ENABLE_INSMOD_NO_FW_LOAD, failure will happen when
+# bringin the interface up which is handled in next code block.
+/system/bin/insmod /lib/modules/bcm4334.ko ${BCM4334_FLAGS} || (
+    sleep 1;
+    # This sleep is required because previous insmod has failed and still has
+    # worker treads going on, which prevents the insmod of next module.
+    # Separate BZ opened to track this issue: 85864
+    /system/bin/insmod /lib/modules/bcm4335.ko ${BCM4335_FLAGS};
+    setprop wlan.bcm.chip 4335
+)
+
+/system/xbin/busybox ifconfig wlan0 up || (
+    rmmod bcmdhd;
+    sleep 1;
+    # This sleep is required because after previous rmmod there is still worker
+    # treads going on, which prevents the insmod of next module.
+    # Separate BZ opened to track this issue: 85864
+    /system/bin/insmod /lib/modules/bcm4335.ko ${BCM4335_FLAGS};
+    /system/xbin/busybox ifconfig wlan0 up
+    setprop wlan.bcm.chip 4335
+    exit 0
+)
+
+# Bring down the interface
+/system/xbin/busybox ifconfig wlan0 down

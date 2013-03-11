@@ -36,6 +36,13 @@
         android:title="@string/bluetooth_settings_title"
         android:icon="@drawable/ic_settings_bluetooth2" />
 
+    <!-- Hotspot -->
+    <header
+        android:id="@+id/hotspot_settings"
+        android:fragment="com.android.settings.hotspot.HotspotSettings"
+        android:title="@string/hotspot_settings"
+        android:icon="@drawable/ic_settings_hotspot" />
+
     <!-- Data Usage -->
     <header
         android:id="@+id/data_usage_settings"

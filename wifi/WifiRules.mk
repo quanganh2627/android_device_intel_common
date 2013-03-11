@@ -46,12 +46,8 @@ ifeq (ti,$(COMBO_CHIP_VENDOR))
 endif
 
 ifeq (bcm,$(COMBO_CHIP_VENDOR))
-ifeq (bcm4334,$(COMBO_CHIP))
     include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd.mk
-endif
-ifeq (bcm4335,$(COMBO_CHIP))
     include $(TOP)/hardware/broadcom/wlan_driver/bcm4335/AndroidBcmdhd.mk
-endif
 endif
 
 ####################################
