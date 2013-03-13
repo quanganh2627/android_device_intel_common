@@ -94,6 +94,12 @@ PRODUCT_COPY_FILES += \
 # Power Debug Tools
 -include hardware/intel/PRIVATE/platform_test/power-debug/power-debug.mk
 
+# memmonitor (not for user builds)
+ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
+-include device/intel/PRIVATE/log_infra/monitor/memmonitor/memmonitor.mk
+endif
+
+
 # Kratos (not for user builds)
 ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 -include vendor/intel/PRIVATE/apps/Kratos/products/Kratos.mk
