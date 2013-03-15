@@ -8,13 +8,15 @@ include $(COMMON)/ComboChipVendor.mk
 include $(CLEAR_VARS)
 LOCAL_MODULE := wifi_common
 LOCAL_MODULE_TAGS := optional
-LOCAL_REQUIRED_MODULES :=  \
-    libwpa_client          \
-    iw                     \
-    init.wifi.rc           \
-    init.wifi.vendor.rc    \
-    android.conf           \
-    dhcp_lease_evt.sh
+LOCAL_REQUIRED_MODULES :=          \
+    libwpa_client                  \
+    iw                             \
+    init.wifi.rc                   \
+    init.wifi.vendor.rc            \
+    android.conf                   \
+    dhcp_lease_evt.sh              \
+    dhcp6c.wlan0.stateless.conf    \
+    dhcp6c.wlan0.stateful.conf
 
 ifeq ($(strip $(INTEL_WIDI)),true)
 LOCAL_REQUIRED_MODULES +=  \
@@ -90,4 +92,24 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(PRODUCT_OUT)/system/bin
 LOCAL_SRC_FILES := $(WIFI_COMMON)/dhcp_lease_evt.sh
+include $(BUILD_PREBUILT)
+
+##################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := dhcp6c.wlan0.stateless.conf
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/dhcp6c
+LOCAL_SRC_FILES := $(WIFI_COMMON)/dhcp6c.wlan0.stateless.conf
+include $(BUILD_PREBUILT)
+
+##################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := dhcp6c.wlan0.stateful.conf
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/dhcp6c
+LOCAL_SRC_FILES := $(WIFI_COMMON)/dhcp6c.wlan0.stateful.conf
 include $(BUILD_PREBUILT)
