@@ -16,16 +16,15 @@
 			"sdcard": {
 				"used": 1,
 				"fstab_entry" : null,
-				"recovery_entry": [ "#size_hint=-1",
-				"\n",
-				"/mnt/sdcard",
+				"recovery_entry": [ "/mnt/sdcard",
 				"\t",
 				"vfat",
 				"\t",
 				"/dev/block/mmcblk1p1",
 				"\t",
 				"length=0",
-				"\n" ]
+				"\t",
+				"size_hint=-1\n" ]
 			}
 	},
 
