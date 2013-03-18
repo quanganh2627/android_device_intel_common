@@ -14,7 +14,6 @@ typedef enum {FALSE = 0, TRUE} bool;
 #define PRIMARY_FILE "/system/etc/fg_config.bin"
 #define SECONDARY_FILE "/data/system/battid.dat"
 #define DEV_FILE "/dev/fg"
-#define BATTID_LEN 8
 #define POWER_SUPPLY_PATH "/sys/class/power_supply/"
 #define MAX_COMMAND_LINE_BUF	1024
 
@@ -31,7 +30,7 @@ struct __attribute__((__packed__))primary_header {
 #define MAX_TABLE_NAME_SIZE 8
 #define MAX_BATTID_SIZE 8
 #define MAX_FG_CONFIG_SIZE 138
-#define MODEL_NAME_SIZE 4
+#define MODEL_NAME_SIZE 2
 
 
 struct __attribute__((__packed__)) table_body {
@@ -182,7 +181,7 @@ int get_battid(char *battid)
 	if (fd < 0)
 		return errno;
 
-	ret = read(fd, battid, BATTID_LEN);
+	ret = read(fd, battid, MODEL_NAME_SIZE);
 	if (ret < 0) {
 		close(fd);
 		return errno;
@@ -274,7 +273,7 @@ int get_primary_fg_config(unsigned char *pbuf,
 		if (!strncmp(temp_tbl->table_name, ps_batt_name,
 					MAX_TABLE_NAME_SIZE)) {
 			if (!strncmp(temp_tbl->battid, battid,
-						BATTID_LEN)) {
+						MODEL_NAME_SIZE)) {
 				LOGI("Matching table_name and battid:%.8s:%.8s\n", temp_tbl->table_name, temp_tbl->battid);
 				memcpy(tbl, temp_tbl, sizeof(*tbl));
 				return 0;
@@ -382,7 +381,7 @@ int get_fg_config_table(struct table_body *sec_tbl)
 	secondary checksum is not ok or primary file has a new config */
 	if (!is_scksum_ok)
 		LOGE("Secondary checksum failed\n");
-	else if (strncmp(sbuf.tbl.battid, battid, BATTID_LEN))
+	else if (strncmp(sbuf.tbl.battid, battid, MODEL_NAME_SIZE))
 		LOGE("Secondary Battid doesn't match %s:%s\n", sbuf.tbl.battid, battid);
 	else if (pheader.cksum != sbuf.pcksum)
 		LOGE("Secondary.primary_checksum mismatch. New primary file detected\n");
