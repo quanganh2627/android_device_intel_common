@@ -43,7 +43,8 @@ PRODUCT_PACKAGES += \
     sign_target_files_apks
 
 #Houdini prebuilt
-houdini_prebuilt_stamp := device/intel/PRIVATE/houdini/arm/stamp-prebuilt-done
+HOUDINI_ARM_PREBUILTS_DIR := device/intel/PRIVATE/houdini-armlibs
+houdini_prebuilt_stamp := $(HOUDINI_ARM_PREBUILTS_DIR)/stamp-prebuilt-done
 houdini_prebuilt_done := $(wildcard $(houdini_prebuilt_stamp))
 ifneq ($(houdini_prebuilt_done),)
 INTEL_HOUDINI := true

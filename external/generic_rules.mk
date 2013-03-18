@@ -36,10 +36,6 @@ endif
 
 ########################################################################################
 ifneq (custom_external, $(_metatarget))
-ifneq ($(filter java_library,$(_metatarget)),)
-# force dex preopt to nostripping in case of java library
-LOCAL_DEX_PREOPT:= nostripping
-endif
 include $(call original-metatarget)
 endif
 ########################################################################################
@@ -119,7 +115,7 @@ $(call external-gather-files,static_library,LIBS)
 $(call external-gather-files,host_executable,HOST_EXECUTABLES)
 $(call external-gather-files,host_shared_library,HOST_LIBS)
 $(call external-gather-files,host_static_library,HOST_LIBS)
-$(call external-gather-files,java_library,JAVA_LIBRARIES)
+$(call external-gather-files,java_library,JAVA_LIBRARIES,.dex)
 $(call external-gather-files,static_java_library,STATIC_JAVA_LIBRARIES)
 $(call external-gather-files,package,PACKAGES,.dex)
 
@@ -175,7 +171,7 @@ $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(call several-files-deps, $($(LOCAL_MODULE_P
 # For other modules like static or host classes, which are not installable, we store the prebuilt makefile to a single variable.
 # This is the same for copy_headers metatarget which does not define a module.
 # We use the sort function to remove duplicates from dependencies list.
-ifneq ($(filter shared_library executable raw_executable package java_library native_test,$(_metatarget)),)
+ifneq ($(filter shared_library executable raw_executable package java_library native_test prebuilt multi_prebuilt,$(_metatarget)),)
     ifndef LOCAL_UNINSTALLABLE_MODULE
         ALL_MODULES.$(LOCAL_INSTALLED_MODULE).PREBUILT_MAKEFILE := \
             $(sort $(strip $(ALL_MODULES.$(LOCAL_INSTALLED_MODULE).PREBUILT_MAKEFILE)) $(LOCAL_MODULE_PREBUILT_MAKEFILE))
