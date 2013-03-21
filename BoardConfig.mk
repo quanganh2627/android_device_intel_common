@@ -33,8 +33,8 @@ endif
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
-ifneq (,$(findstring $(TARGET_BUILD_VARIANT),eng userdebug))
-DISPLAY_DRIVER_DEBUG_INTERFACE := true
+ifneq (user,$(findstring $(TARGET_BUILD_VARIANT),user))
+export DISPLAY_DRIVER_DEBUG_INTERFACE=true
 endif
 #Enable ODEX for userdebug and user builds
 ifneq (,$(findstring $(TARGET_BUILD_VARIANT),userdebug user))
