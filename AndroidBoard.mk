@@ -176,12 +176,12 @@ ifeq ($(pax),1)
 $(PRODUCT_OUT)/ramdisk.img : pax
 endif
 
-# Add vtunedk: sep3_8, vtsspp drivers. PAX driver will be used from sepdk.
--include $(TOP)/device/intel/debug_tools/vtunedk/src/AndroidSEP3_8.mk
+# Add vtunedk: sep3_xx, vtsspp drivers. PAX driver will be used from sepdk.
+-include $(TOP)/device/intel/debug_tools/vtunedk/src/AndroidSEP.mk
 -include $(TOP)/device/intel/debug_tools/vtunedk/src/vtsspp/AndroidVTSSPP.mk
 
-ifeq ($(vtunedk),1)
-$(PRODUCT_OUT)/ramdisk.img : sep3_8
+ifeq ($(vtunedk),true)
+$(PRODUCT_OUT)/ramdisk.img : $(sep_version)
 $(PRODUCT_OUT)/ramdisk.img : vtsspp
 endif
 
