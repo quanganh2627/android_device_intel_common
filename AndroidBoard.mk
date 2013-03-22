@@ -176,13 +176,6 @@ ifeq ($(pax),1)
 $(PRODUCT_OUT)/ramdisk.img : pax
 endif
 
-# Add powerdk driver
--include $(TOP)/device/intel/debug_tools/powerdk/src/AndroidPowerDK.mk
-
-ifeq ($(powerdk),1)
-$(PRODUCT_OUT)/ramdisk.img : apwr
-endif
-
 # Add vtunedk: sep3_8, vtsspp drivers. PAX driver will be used from sepdk.
 -include $(TOP)/device/intel/debug_tools/vtunedk/src/AndroidSEP3_8.mk
 -include $(TOP)/device/intel/debug_tools/vtunedk/src/vtsspp/AndroidVTSSPP.mk
