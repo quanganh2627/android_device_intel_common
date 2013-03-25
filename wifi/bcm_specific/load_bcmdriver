@@ -35,7 +35,6 @@ setprop wlan.bcm.chip 4334
     # treads going on, which prevents the insmod of next module.
     # Separate BZ opened to track this issue: 85864
     /system/bin/insmod /lib/modules/bcm4335.ko ${BCM4335_FLAGS};
-    /system/xbin/busybox ifconfig wlan0 up
     setprop wlan.bcm.chip 4335
     exit 0
 )
