@@ -22,6 +22,12 @@ PRODUCT_PACKAGES += \
     ia_watchdogd \
     libwatchdogd_devel
 
+# SpeechRecorder for eng build variant
+ifneq ($(filter $(TARGET_BUILD_VARIANT),eng),)
+PRODUCT_PACKAGES += \
+    SpeechRecorder
+endif
+
 # copy boot animation resources
 BOOTANIMATION_RESOURCE_PATH := vendor/intel/common/
 PRODUCT_COPY_FILES += \
