@@ -104,7 +104,7 @@ $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(ACP) $(EXTERNAL_BUILD_SYSTEM)/generic_rules
 	@$(foreach mk, $($@.extramakefile), \
 		cat $(mk) >> $@;)
 	@$(foreach module, $($@.phony), \
-		$(call external-phony-package-boilerplate, $(module), $@.phony.$(module)))
+		$(call external-phony-package-boilerplate, $(module), $($@.phony.$(module).LOCAL_REQUIRED_MODULES)))
 	@echo 'endif' >> $@
 
 endif
@@ -160,7 +160,7 @@ endif
 # depends on other packages
 ifneq ($(filter phony_package,$(_metatarget)),)
    $(my).phony := $($(my).phony) $(LOCAL_MODULE)
-   $(my).phony.$(LOCAL_MODULE) := $(LOCAL_REQUIRED_MODULES)
+   $(my).phony.$(LOCAL_MODULE).LOCAL_REQUIRED_MODULES := $(LOCAL_REQUIRED_MODULES)
 endif
 
 ###################################### dependencies #########################################
