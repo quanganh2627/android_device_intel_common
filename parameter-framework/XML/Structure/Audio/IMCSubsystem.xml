@@ -43,6 +43,11 @@
                     <ValuePair Literal="I2S" Numerical="1"/>
                     <ValuePair Literal="PCM_BURST" Numerical="2"/>
                 </EnumParameter>
+                <EnumParameter Name="I2S_SETTINGS" Size="8">
+                    <ValuePair Literal="NORMAL" Numerical="0"/>
+                    <ValuePair Literal="SPECIAL1" Numerical="1"/>
+                    <ValuePair Literal="SPECIAL2" Numerical="2"/>
+                </EnumParameter>
                 <EnumParameter Name="CHANNELS" Size="8">
                     <ValuePair Literal="MONO" Numerical="0"/>
                     <ValuePair Literal="STEREO" Numerical="2"/>
