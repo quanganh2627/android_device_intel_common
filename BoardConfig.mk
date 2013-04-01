@@ -26,8 +26,6 @@ INTEL_INGREDIENTS_VERSIONS := true
 INTEL_CAMERA := false
 INTEL_TEST_CAMERA := false
 
-USE_PRIVATE_LIBM := true
-
 ifneq ($(wildcard $(TOP)/vendor/intel/PRIVATE/cert/testkey*),)
 PRODUCT_DEFAULT_DEV_CERTIFICATE :=  $(TOP)/vendor/intel/PRIVATE/cert/testkey
 endif
