@@ -8,6 +8,11 @@ ifneq (,$(findstring /PRIVATE/,$(abspath $(LOCAL_MODULE_MAKEFILE))))
 _need_prebuilts := true
 endif
 
+# Do not release prebuilts for tests modules
+ifneq (,$(filter $(LOCAL_MODULE_TAGS), tests))
+_need_prebuilts :=
+endif
+
 ifneq (,$(_need_prebuilts))
 # multi_prebuilt actually a shortcut to prebuilts, we support it to have a simpler output Android.mk
 # but dont support all the flavors of multi_prebuilt
@@ -135,8 +140,6 @@ ifneq ($(filter prebuilt,$(_metatarget)),)
    $(if $(word 2,$(LOCAL_SRC_FILES)), \
      $(error $(LOCAL_PATH): external script does not support multiple src files for BUILD_PREBUILT metatarget))
    $(my).copyfiles := $($(my).copyfiles) $(LOCAL_PATH)/$(LOCAL_SRC_FILES):$(dir $(my))$(notdir $(LOCAL_SRC_FILES))
-   $(if $(word 2,$(LOCAL_MODULE_TAGS)), \
-     $(info $(LOCAL_PATH): external script does not support multiple tags: $(LOCAL_MODULE_TAGS) in prebuilt using optional instead) $(eval LOCAL_MODULE_TAGS:=optional))
    # maintain a list of all possible combinations of parameters
    $(my).prebuilt := $($(my).prebuilt) $(LOCAL_MODULE)
    $(my).prebuilt.$(LOCAL_MODULE).LOCAL_SRC_FILES := $(notdir $(LOCAL_SRC_FILES))
