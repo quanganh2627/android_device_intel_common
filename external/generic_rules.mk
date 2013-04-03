@@ -4,9 +4,9 @@ ifeq ($(_metatarget),)
 # it has to be very first place, because include will alter the MAKEFILE_LIST)
 _metatarget := $(basename $(notdir $(call original-metatarget)))
 _need_prebuilts :=
-ifneq (,$(findstring /PRIVATE/,$(abspath $(LOCAL_MODULE_MAKEFILE))))
-_need_prebuilts := true
-endif
+$(foreach project, $(_prebuilt_projects),\
+  $(if $(findstring $(project), $(LOCAL_MODULE_MAKEFILE)),\
+    $(eval _need_prebuilts := true)))
 
 ifneq (,$(_need_prebuilts))
 # multi_prebuilt actually a shortcut to prebuilts, we support it to have a simpler output Android.mk

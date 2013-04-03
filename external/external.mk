@@ -9,6 +9,11 @@ ifeq ($(REF_PRODUCT_NAME),)
 REF_PRODUCT_NAME:=$(TARGET_PRODUCT)
 endif
 
+# Projects that require prebuilt are defined in manifest as follow:
+# - project belongs to bsp-priv manifest group
+# - and project has g_external annotation set to 'bin' ('g' meaning 'generic' customer)
+$(eval _prebuilt_projects := $(shell repo forall -g bsp-priv -a g_external=bin -c 'echo $$REPO_PATH'))
+
 # get the original path of the hooked build makefiles
 define original-metatarget
 $(strip \
