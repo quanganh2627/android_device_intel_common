@@ -80,6 +80,9 @@ service watchdogd /sbin/ia_watchdogd
     user root
     oneshot
 
+service partlink /system/bin/partlink
+    oneshot
+
 service droidboot /system/bin/droidboot
     oneshot
 
@@ -106,6 +109,7 @@ on property:sys.partitioning=0
     mkdir /logs/flashing
     write /logs/flashing/blankphone_file ""
     start apk_logfs
+    start partlink
 
 # Add Proxy service for Modem provisionning
 service proxy /sbin/proxy -d none -m /dev/ttyIFX0 -p /dev/ttyGS0 -t on
