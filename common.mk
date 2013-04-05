@@ -22,6 +22,12 @@ PRODUCT_PACKAGES += \
     ia_watchdogd \
     libwatchdogd_devel
 
+# SpeechRecorder for eng build variant
+ifneq ($(filter $(TARGET_BUILD_VARIANT),eng),)
+PRODUCT_PACKAGES += \
+    SpeechRecorder
+endif
+
 # copy boot animation resources
 BOOTANIMATION_RESOURCE_PATH := vendor/intel/common/
 PRODUCT_COPY_FILES += \
@@ -87,6 +93,12 @@ PRODUCT_COPY_FILES += \
 
 # Power Debug Tools
 -include hardware/intel/PRIVATE/platform_test/power-debug/power-debug.mk
+
+# memmonitor (not for user builds)
+ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
+-include device/intel/PRIVATE/log_infra/monitor/memmonitor/memmonitor.mk
+endif
+
 
 # Kratos (not for user builds)
 ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
