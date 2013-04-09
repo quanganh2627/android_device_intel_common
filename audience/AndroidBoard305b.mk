@@ -31,8 +31,8 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := \
     phonecall_es305b_close_talk_csv_nb.bin \
     phonecall_es305b_close_talk_hac_csv_nb.bin \
-    phonecall_es305b_speaker_far_talk_csv_nb \
-    phonecall_es305b_speaker_far_talk_csv_wb \
+    phonecall_es305b_speaker_far_talk_csv_nb.bin \
+    phonecall_es305b_speaker_far_talk_csv_wb.bin \
     phonecall_es305b_headset_close_talk_csv_nb.bin \
     phonecall_es305b_headphone_close_talk_csv_nb.bin \
     phonecall_es305b_bt_hsp_csv_nb.bin \
