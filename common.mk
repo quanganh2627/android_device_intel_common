@@ -102,7 +102,7 @@ endif
 
 # Kratos (not for user builds)
 ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
--include vendor/intel/PRIVATE/apps/Kratos/products/Kratos.mk
+-include vendor/intel/apps/PRIVATE/Kratos/products/Kratos.mk
 endif
 
 # vTunes binaires (not for user builds)
