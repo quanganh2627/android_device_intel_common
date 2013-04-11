@@ -127,3 +127,9 @@ PRODUCT_COPY_FILES += \
 
 #Bring in camera media effects
 $(call inherit-product-if-exists, frameworks/base/data/videos/VideoPackage2.mk)
+
+# PSI Recorder (not for user builds)
+ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
+ PRODUCT_PACKAGES += \
+     PSI_Recorder
+endif
