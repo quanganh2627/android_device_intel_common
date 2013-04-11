@@ -34,9 +34,6 @@ on init
     # adb shell needs /system/bin/sh
     symlink /system/bin/mksh /system/bin/sh
 
-    # set usb serial number
-    write /sys/class/android_usb/android0/iSerial ${ro.serialno}
-
 on boot
 
     ifup lo
