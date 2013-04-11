@@ -4,6 +4,9 @@ on early-init
     chmod 0770 /charger
 
 on init
+    # set usb serial number
+    write /sys/class/android_usb/android0/iSerial ${ro.serialno}
+
 # setup the global environment
     export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/com.intel.multidisplay.jar
 
@@ -39,9 +42,9 @@ on fs
     mkdir /config 0775 system system
     mkdir /media 0775 media media
     mount_all /fstab.${ro.hardware}
-    mkdir /factory/wifi
-    chown system wifi /factory/wifi
-    chmod 0770 /factory/wifi
+    mkdir /config/wifi
+    chown system wifi /config/wifi
+    chmod 0770 /config/wifi
 
 on post-fs-data
     mkdir /data/system/ 0770 system system

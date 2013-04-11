@@ -156,5 +156,7 @@ SPID ?= "xxxx:xxxx:xxxx:xxxx:xxxx:xxxx"
 
 cmdline_extra += androidboot.spid=$(SPID)
 
+cmdline_extra += androidboot.serialno=01234567890123456789012345678901
+
 # external release
 include vendor/intel/common/external/external.mk
