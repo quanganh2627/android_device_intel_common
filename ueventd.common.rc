@@ -15,4 +15,7 @@
 /dev/media*               0660   root       camera
 
 # Device needed by shared transport layer (used by bluetooth, FM and GPS)
+/dev/rfkill               0660   bluetooth  bluetooth
 /dev/hci_tty              0660   bluetooth  bluetooth
+/dev/ttyMFD0              0660   bluetooth  bluetooth
+/dev/ttyS1                0660   bluetooth  bluetooth
