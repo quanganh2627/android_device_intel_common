@@ -36,6 +36,7 @@ on init
 
     # set usb serial number
     write /sys/class/android_usb/android0/iSerial ${ro.serialno}
+    chmod 750 /ia_watchdogd
 
 on boot
 
@@ -119,7 +120,7 @@ on property:sys.usb.config=ptp,adb
     write /sys/class/android_usb/android0/enable 1
 
 
-service watchdogd /sbin/ia_watchdogd
+service watchdogd /ia_watchdogd
     user root
     oneshot
 

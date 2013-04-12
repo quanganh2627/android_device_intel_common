@@ -16,3 +16,6 @@
 
 # Device needed by shared transport layer (used by bluetooth, FM and GPS)
 /dev/hci_tty              0660   bluetooth  bluetooth
+
+# Intel SCU watchdog
+/dev/watchdog             0600   system     system
