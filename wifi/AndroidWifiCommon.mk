@@ -79,7 +79,7 @@ LOCAL_MODULE := android.conf
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/dhcpcd
-LOCAL_SRC_FILES := $(WIFI_COMMON)/android.$(COMBO_CHIP_VENDOR).conf
+LOCAL_SRC_FILES := $(WIFI_COMMON)/android.conf
 include $(BUILD_PREBUILT)
 
 ##################################################
