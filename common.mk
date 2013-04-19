@@ -1,6 +1,9 @@
 PRODUCT_MANUFACTURER := intel
 override PRODUCT_BRAND := intel
 
+TARGET_TOOLCHAIN_ROOT := prebuilts/PRIVATE/gcc/linux-x86/x86/x86_64-linux-android-4.7
+TARGET_TOOLS_PREFIX := $(TARGET_TOOLCHAIN_ROOT)/bin/x86_64-linux-android-
+
 #Add SensorCal App
 PRODUCT_PACKAGES += \
     SensorCal
