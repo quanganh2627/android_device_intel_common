@@ -36,3 +36,13 @@ LOCAL_REQUIRED_MODULES :=  \
 include $(BUILD_PHONY_PACKAGE)
 
 ##################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := gps_bcm_4752_extlna
+LOCAL_MODULE_TAGS := optional
+LOCAL_REQUIRED_MODULES :=  \
+    gps_bcm_4752
+
+include $(BUILD_PHONY_PACKAGE)
+
+##################################################

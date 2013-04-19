@@ -1,0 +1,54 @@
+# Enable by default android java wakelock logging
+on init
+    mkdir /logs
+
+on early-boot
+    chown system log /logs
+    chmod 0770 /logs
+
+on post-fs
+    mkdir /data/tombstones 0755 system system
+    mkdir /data/system/    0755 system system
+    mkdir /data/system/dropbox 0700 system system
+
+on post-fs-data
+    mkdir /logs/modemcrash 0775 system system
+    mkdir /logs/aplogs 0775 system log
+
+    # Collect emmc ipanic data, free resources and re-arm trigger
+    copy /proc/emmc_ipanic_console /data/dontpanic/emmc_ipanic_console
+    chown root log /data/dontpanic/emmc_ipanic_console
+    chmod 0640 /data/dontpanic/emmc_ipanic_console
+
+    copy /proc/emmc_ipanic_threads /data/dontpanic/emmc_ipanic_threads
+    chown root log /data/dontpanic/emmc_ipanic_threads
+    chmod 0640 /data/dontpanic/emmc_ipanic_threads
+
+    #you must enable next line when you don`t use crashlogd
+    #write /proc/emmc_ipanic_console 1
+
+    # Collect fabric error data, free resources and re-arm trigger
+    copy /proc/ipanic_fabric_err /data/dontpanic/ipanic_fabric_err
+    chown root log /data/dontpanic/ipanic_fabric_err
+    chmod 0640 /data/dontpanic/ipanic_fabric_err
+
+on charger
+    # basic networking for "adb root"
+    ifup lo
+    hostname localhost
+    domainname localdomain
+    mount ext4 /dev/block/mmcblk0p7 /logs nosuid nodev barrier=1,data=ordered
+    mkdir /logs/modemcrash 0775 system system
+    mkdir /logs/aplogs 0775 system log
+    setprop sys.usb.config iadb
+
+# crash and log services
+service crashlogd /system/bin/crashmonitor
+    class late_start
+
+# LogConfig service
+service logconfig /system/bin/logconfig
+    class main
+    socket logconfig stream 0660 root system
+    disabled
+    oneshot

@@ -67,6 +67,7 @@ endif
 ####################################
 # Configuration files
 ####################################
+ifneq (,$(COMBO_CHIP_VENDOR))
 
 # common configuration files
 STA_CONF_FILES      += $(LOCAL_COMMON_WIFI_DIR)/$(STA_CONF_FILE_NAME)
@@ -159,3 +160,4 @@ ifeq ($(strip $(INTEL_WIDI)),true)
 systemimg_gz: $(WIDI_CONF_TARGET)
 endif
 
+endif

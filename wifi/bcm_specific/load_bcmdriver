@@ -13,50 +13,30 @@ BCM43241_FLAGS="firmware_path=/system/etc/firmware/fw_bcmdhd_43241.bin nvram_pat
 BCM4334_FLAGS="firmware_path=/system/etc/firmware/fw_bcmdhd_4334.bin nvram_path=/system/etc/wifi/bcmdhd_4334_${NVRAM_REV}.cal"
 BCM4335_FLAGS="firmware_path=/system/etc/firmware/fw_bcmdhd_4335.bin nvram_path=/system/etc/wifi/bcmdhd_4335.cal"
 
+if [ -f /init.saltbay.rc ]; then
+    setprop wlan.bcm.chip 4335
+    /system/bin/insmod /lib/modules/bcm4335.ko ${BCM4335_FLAGS}
+elif [ -f /init.bodegabay.rc ]; then
+    setprop wlan.bcm.chip 4334
+    /system/bin/insmod /lib/modules/bcm4334.ko ${BCM4334_FLAGS}
+elif [ -f /init.baylake.rc ]; then
+    setprop wlan.bcm.chip 43241
 # Hack the gpio PCONF0 register to enable direct irq routing.
 # if the driver is handling rising edge interrupts, the use 0x2d02cc01
 # else 0x2b02cc01 in PCONF0 register accociated to GPIO_SUS_15
 # This change configure the right polarity needed by broadcom chip.
-if [ -f /init.baylake.rc ]; then
-   echo "w mmio 0xfed0e010 0x2b02cc01" > /d/dump_cmd
-   cat /d/dump_output
+    echo "w mmio 0xfed0e010 0x2b02cc01" > /d/dump_cmd
+    cat /d/dump_output
    # Route the GPIO 15 (wlan_irq) to the direct IOAPIC interrupt pin
-   echo "w mmio 0xfed0e98c 0x0f000000" > /d/dump_cmd
-   cat /d/dump_output
+    echo "w mmio 0xfed0e98c 0x0f000000" > /d/dump_cmd
+    cat /d/dump_output
+    /system/bin/insmod /lib/modules/bcm43241.ko ${BCM43241_FLAGS}
+elif [ -f /init.victoriabay.rc ]; then
+    setprop wlan.bcm.chip 4334
+    /system/bin/insmod /lib/modules/bcm4334.ko ${BCM4334_FLAGS}
+# ctpscale platforms rely on init.redhookbay.rc. This script will not
+# be executed on TI-based platform.
+elif [ -f /init.redhookbay.rc ]; then
+    setprop wlan.bcm.chip 4334
+    /system/bin/insmod /lib/modules/bcm4334.ko ${BCM4334_FLAGS}
 fi
-
-setprop wlan.bcm.chip 43241
-if [ -f /lib/modules/bcm43241.ko ]; then
-    /system/bin/insmod /lib/modules/bcm43241.ko ${BCM43241_FLAGS} && /system/xbin/busybox ifconfig wlan0 up && /system/xbin/busybox ifconfig wlan0 down && exit 0;
-    sleep 1;
-fi
-
-setprop wlan.bcm.chip 4334
-
-# Here we trry to insmod the bcm4334 driver. Depending on how the driver has
-# been compiled, it might fail directly here if the chip is bcm4335, in which
-# case we then insmod the bcm4335 driver.
-# If it's been compiled with ENABLE_INSMOD_NO_FW_LOAD, failure will happen when
-# bringin the interface up which is handled in next code block.
-/system/bin/insmod /lib/modules/bcm4334.ko ${BCM4334_FLAGS} || (
-    sleep 1;
-    # This sleep is required because previous insmod has failed and still has
-    # worker treads going on, which prevents the insmod of next module.
-    # Separate BZ opened to track this issue: 85864
-    /system/bin/insmod /lib/modules/bcm4335.ko ${BCM4335_FLAGS};
-    setprop wlan.bcm.chip 4335
-)
-
-/system/xbin/busybox ifconfig wlan0 up || (
-    rmmod bcmdhd;
-    sleep 1;
-    # This sleep is required because after previous rmmod there is still worker
-    # treads going on, which prevents the insmod of next module.
-    # Separate BZ opened to track this issue: 85864
-    /system/bin/insmod /lib/modules/bcm4335.ko ${BCM4335_FLAGS};
-    setprop wlan.bcm.chip 4335
-    exit 0
-)
-
-# Bring down the interface
-/system/xbin/busybox ifconfig wlan0 down

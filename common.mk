@@ -28,6 +28,10 @@ PRODUCT_PACKAGES += \
     SpeechRecorder
 endif
 
+#Add ccf App
+PRODUCT_PACKAGES += \
+    CC3
+
 # copy boot animation resources
 BOOTANIMATION_RESOURCE_PATH := vendor/intel/common/
 PRODUCT_COPY_FILES += \

@@ -30,5 +30,6 @@
 		<Component Name="ALSA_CONF" Type="ALSA_CONF"/>
 		<Component Name="IFX_MODEM" Type="IFX_MODEM"/>
 		<Component Name="FM_CONF" Type="FM_CONF"/>
+		<StringParameter Name="VOICE_VOLUME_CTRL_PARAMETER" MaxLength="256"/>
 	</InstanceDefinition>
 </Subsystem>
