@@ -82,6 +82,7 @@ service partlink /system/bin/partlink
     oneshot
 
 service droidboot /system/bin/droidboot
+    critical
 
 service console /system/bin/sh
     console
