@@ -28,6 +28,10 @@ PRODUCT_PACKAGES += \
     SpeechRecorder
 endif
 
+#Add ccf App
+PRODUCT_PACKAGES += \
+    CC3
+
 # copy boot animation resources
 BOOTANIMATION_RESOURCE_PATH := device/intel/common/
 PRODUCT_COPY_FILES += \
@@ -123,3 +127,9 @@ PRODUCT_COPY_FILES += \
 
 #Bring in camera media effects
 $(call inherit-product-if-exists, frameworks/base/data/videos/VideoPackage2.mk)
+
+# PSI Recorder (not for user builds)
+ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
+ PRODUCT_PACKAGES += \
+     PSI_Recorder
+endif

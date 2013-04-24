@@ -31,13 +31,13 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := \
     phonecall_es305b_close_talk_csv_nb.bin \
     phonecall_es305b_close_talk_hac_csv_nb.bin \
-    phonecall_es305b_speaker_far_talk_csv_nb \
-    phonecall_es305b_speaker_far_talk_csv_wb \
+    phonecall_es305b_speaker_far_talk_csv_nb.bin \
+    phonecall_es305b_speaker_far_talk_csv_wb.bin \
     phonecall_es305b_headset_close_talk_csv_nb.bin \
     phonecall_es305b_headphone_close_talk_csv_nb.bin \
     phonecall_es305b_bt_hsp_csv_nb.bin \
     phonecall_es305b_bt_carkit_csv_nb.bin \
-    phonecall_es305b_no_acoustic_csv_nb.bin \
+    phonecall_es305b_bt_nrec_csv_nb.bin \
     phonecall_es305b_close_talk_voip_nb.bin \
     phonecall_es305b_close_talk_hac_voip_nb.bin \
     phonecall_es305b_speaker_far_talk_voip_nb.bin \
@@ -45,14 +45,14 @@ LOCAL_REQUIRED_MODULES := \
     phonecall_es305b_headphone_close_talk_voip_nb.bin \
     phonecall_es305b_bt_hsp_voip_nb.bin \
     phonecall_es305b_bt_carkit_voip_nb.bin \
-    phonecall_es305b_no_acoustic_voip_nb.bin \
+    phonecall_es305b_bt_nrec_voip_nb.bin \
     phonecall_es305b_close_talk_csv_wb.bin \
     phonecall_es305b_close_talk_hac_csv_wb.bin \
     phonecall_es305b_headset_close_talk_csv_wb.bin \
     phonecall_es305b_headphone_close_talk_csv_wb.bin \
     phonecall_es305b_bt_hsp_csv_wb.bin \
     phonecall_es305b_bt_carkit_csv_wb.bin \
-    phonecall_es305b_no_acoustic_csv_wb.bin \
+    phonecall_es305b_bt_nrec_csv_wb.bin \
     phonecall_es305b_close_talk_voip_wb.bin \
     phonecall_es305b_close_talk_hac_voip_wb.bin \
     phonecall_es305b_speaker_far_talk_voip_wb.bin \
@@ -60,7 +60,11 @@ LOCAL_REQUIRED_MODULES := \
     phonecall_es305b_headphone_close_talk_voip_wb.bin \
     phonecall_es305b_bt_hsp_voip_wb.bin \
     phonecall_es305b_bt_carkit_voip_wb.bin \
-    phonecall_es305b_no_acoustic_voip_wb.bin
+    phonecall_es305b_bt_nrec_voip_wb.bin \
+    phonecall_es305b_active_pass_through_voip.bin \
+    phonecall_es305b_active_pass_through_csv.bin \
+    phonecall_es305b_passive_pass_through.bin
+
 include $(BUILD_PHONY_PACKAGE)
 
 include $(CLEAR_VARS)
@@ -196,7 +200,7 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := phonecall_es305b_no_acoustic_csv_nb.bin
+LOCAL_MODULE := phonecall_es305b_bt_nrec_csv_nb.bin
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := SYSTEM
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
@@ -260,7 +264,7 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := phonecall_es305b_no_acoustic_voip_nb.bin
+LOCAL_MODULE := phonecall_es305b_bt_nrec_voip_nb.bin
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := SYSTEM
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
@@ -372,7 +376,7 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := phonecall_es305b_no_acoustic_csv_wb.bin
+LOCAL_MODULE := phonecall_es305b_bt_nrec_csv_wb.bin
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := SYSTEM
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
@@ -436,7 +440,31 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := phonecall_es305b_no_acoustic_voip_wb.bin
+LOCAL_MODULE := phonecall_es305b_bt_nrec_voip_wb.bin
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := SYSTEM
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := $(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := phonecall_es305b_active_pass_through_voip.bin
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := SYSTEM
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := $(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := phonecall_es305b_active_pass_through_csv.bin
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := SYSTEM
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)
+LOCAL_SRC_FILES := $(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := phonecall_es305b_passive_pass_through.bin
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := SYSTEM
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)

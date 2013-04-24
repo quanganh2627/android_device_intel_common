@@ -80,6 +80,9 @@ service watchdogd /sbin/ia_watchdogd
     user root
     oneshot
 
+service partlink /system/bin/partlink
+    oneshot
+
 service droidboot /system/bin/droidboot
     oneshot
 
@@ -106,18 +109,7 @@ on property:sys.partitioning=0
     mkdir /logs/flashing
     write /logs/flashing/blankphone_file ""
     start apk_logfs
-
-# Add Proxy service for Modem provisionning
-service proxy /sbin/proxy -d none -m /dev/ttyIFX0 -p /dev/ttyGS0 -t on
-    disabled
-
-on property:service.proxy.enable=1
-    setprop sys.usb.config rndis,acm,adb
-    start proxy
-
-on property:service.proxy.enable=0
-    stop proxy
-    setprop sys.usb.config adb
+    start partlink
 
 on property:sys.forcecoldboot=yes
     write /sys/module/intel_mid/parameters/force_cold_boot 1

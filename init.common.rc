@@ -37,6 +37,9 @@ on boot
      write /proc/sys/net/core/rmem_max 2097152
      write /proc/sys/net/core/wmem_max 1048576
 
+    #Set freezing timeout value as 2000ms
+    write /sys/power/pm_freeze_timeout 2000
+
 on fs
     mkdir /factory 0775 system system
     mkdir /config 0775 system system
@@ -97,7 +100,6 @@ service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
 service ct_monitor /system/bin/ct_monitor
     class core
     user root
-    disabled
 
 service watchdogd /sbin/ia_watchdogd
     class core
