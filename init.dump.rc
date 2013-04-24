@@ -1,0 +1,13 @@
+on post-fs
+
+service wdump /system/xbin/tcpdump -w /logs/stats/cws.wifi.dump_data
+    class core
+    user root
+    disabled
+
+on property:dev.log.cws.wifi.dump=ON
+    start wdump
+
+on property:dev.log.cws.wifi.dump=OFF
+    stop wdump
+    write /logs/stats/cws.wifi.dump_trigger ""
