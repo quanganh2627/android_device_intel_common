@@ -45,6 +45,8 @@ on charger
 # crash and log services
 service crashlogd /system/bin/crashmonitor
     class late_start
+    user system
+    group system log radio
 
 # LogConfig service
 service logconfig /system/bin/logconfig
