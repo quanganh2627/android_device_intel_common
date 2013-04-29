@@ -31,6 +31,13 @@ ifneq ($(wildcard $(TOP)/vendor/intel/PRIVATE/cert/testkey*),)
 PRODUCT_DEFAULT_DEV_CERTIFICATE :=  $(TOP)/vendor/intel/PRIVATE/cert/testkey
 endif
 
+#Extend the AOSP path includes
+$(call add-path-map, stlport:external/stlport/stlport \
+        alsa-lib:external/alsa-lib/include \
+        libxml2:external/libxml2/include \
+        webcore-icu:external/webkit/Source/WebCore/icu \
+        tinyalsa:external/tinyalsa/include)
+
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
 ifneq (user,$(findstring $(TARGET_BUILD_VARIANT),user))
