@@ -10,6 +10,7 @@ LOCAL_REQUIRED_MODULES :=  \
     BCM4335A0_001.001.038.0035.0000_TestCfg_Intel_Merrifield.hcd \
     BCM4335B0_002.001.006.0037.0078.hcd \
     BCM43241B0_0082_Intel_BayTrail_TEST.hcd \
+    BCM43241B3_0082_Intel_BayTrail_TEST.hcd \
     bt_common
 
 include $(BUILD_PHONY_PACKAGE)
