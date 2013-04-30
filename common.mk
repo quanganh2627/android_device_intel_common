@@ -50,6 +50,7 @@ PRODUCT_PACKAGES += \
     edify_generator \
     lfstk_wrapper \
     mfld_osimage \
+    product_name_mapping \
     sign_target_files_apks
 
 #Houdini prebuilt
