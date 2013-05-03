@@ -112,7 +112,11 @@ blank_flashfiles:
 endif
 
 ifeq ($(BOARD_HAVE_MODEM),true)
+ifeq ($(BOARD_MODEM_FLASHLESS),true)
+publish_modem: modem_flashless
+else
 publish_modem: modem
+endif
 ifneq (,$(filter modem_nvm, $(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
 publish_modem: modem_nvm
 endif
@@ -125,6 +129,7 @@ publish_modem:
 	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
 	BOARD_HAVE_MODEM=$(BOARD_HAVE_MODEM) \
 	FLASH_MODEM_DICO=$(BOARD_MODEM_DICO) \
+	BOARD_MODEM_FLASHLESS=$(BOARD_MODEM_FLASHLESS) \
 	SKIP_NVM=$(BOARD_SKIP_NVM) \
 	$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) 'modem' $(FILE_NAME_TAG)
 
