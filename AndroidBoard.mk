@@ -45,6 +45,22 @@ MKBOOTIMG := vendor/intel/support/mkbootimg
 # Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
 $(MKBOOTIMG): isu isu_stream xfstk-stitcher
 
+#Kernel rules (build from source, or from tarball
+-include $(KERNEL_SRC_DIR)/AndroidKernel.mk
+
+.PHONY: build_kernel
+ifeq ($(TARGET_KERNEL_SOURCE_IS_PRESENT),true)
+build_kernel: get_kernel_from_source
+else
+build_kernel: get_kernel_from_tarball
+endif
+
+.PHONY: get_kernel_from_tarball
+get_kernel_from_tarball:
+	tar -xv -C $(PRODUCT_OUT) -f $(TARGET_KERNEL_TARBALL)
+
+bootimage: build_kernel
+
 $(INSTALLED_KERNEL_TARGET): build_kernel
 $(INSTALLED_RAMDISK_TARGET): build_kernel
 
@@ -178,29 +194,12 @@ ifneq ($(BOARD_USE_64BIT_KERNEL),true)
 -include $(TOP)/device/intel/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
 -include $(TOP)/device/intel/debug_tools/vtunedk/src/pax/AndroidPAX.mk
 
-ifeq ($(sepdk),1)
-$(PRODUCT_OUT)/ramdisk.img : sep
-endif
-
-ifeq ($(pax),1)
-$(PRODUCT_OUT)/ramdisk.img : pax
-endif
-
 # Add vtunedk: sep3_xx, vtsspp drivers. PAX driver will be used from sepdk.
 -include $(TOP)/device/intel/debug_tools/vtunedk/src/AndroidSEP.mk
 -include $(TOP)/device/intel/debug_tools/vtunedk/src/vtsspp/AndroidVTSSPP.mk
 
-ifeq ($(vtunedk),true)
-$(PRODUCT_OUT)/ramdisk.img : $(sep_version)
-$(PRODUCT_OUT)/ramdisk.img : vtsspp
-endif
-
 # KCT Crashtool kernel module
 -include $(TOP)/hardware/intel/PRIVATE/monitor/ksrc/AndroidKCT.mk
-
-ifeq ($(kct_daemon),1)
-$(PRODUCT_OUT)/ramdisk.img : kct_daemon
-endif
 
 endif
 endif #TARGET_KERNEL_SOURCE_IS_PRESENT
