@@ -1,4 +1,5 @@
 import /droidboot.init.${ro.hardware}.rc
+import /init.watchdog.rc
 
 on early-init
     start ueventd
@@ -76,10 +77,6 @@ on property:sys.usb.config=ptp,adb
 
 service ueventd /sbin/ueventd
     critical
-
-service watchdogd /sbin/ia_watchdogd
-    user root
-    oneshot
 
 service partlink /system/bin/partlink
     oneshot

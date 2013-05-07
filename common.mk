@@ -17,11 +17,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	fast_click.pcm
 
-#Add kernel watchdog daemon
-PRODUCT_PACKAGES += \
-    ia_watchdogd \
-    libwatchdogd_devel
-
 # SpeechRecorder for eng build variant
 ifneq ($(filter $(TARGET_BUILD_VARIANT),eng),)
 PRODUCT_PACKAGES += \

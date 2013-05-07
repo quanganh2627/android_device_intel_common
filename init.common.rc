@@ -1,3 +1,4 @@
+import /init.watchdog.rc
 
 on early-init
     # set permission for charger-mode
@@ -103,11 +104,6 @@ service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
 service ct_monitor /system/bin/ct_monitor
     class core
     user root
-
-service watchdogd /sbin/ia_watchdogd
-    class core
-    user root
-    oneshot
 
 service charger_app /charger
     class charger
