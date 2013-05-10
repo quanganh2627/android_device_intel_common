@@ -4,16 +4,6 @@ on boot
     insmod /lib/modules/cfg80211.ko
     start wlan_prov
 
-on property:init.svc.wlan_prov=stopped
-    start driver_loader
-
-service driver_loader /system/bin/load_bcmdriver
-    class main
-    user root
-    group system wifi
-    disabled
-    oneshot
-
 service wlan_prov /system/bin/wlan_prov
     class main
     user root
