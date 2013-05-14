@@ -44,6 +44,7 @@ on boot
     domainname localdomain
 
     class_start default
+    class_start core
 
     # reset counter watchdog at the end of system boot
     write /sys/devices/virtual/misc/watchdog/counter "0"

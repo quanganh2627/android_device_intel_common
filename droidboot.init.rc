@@ -23,6 +23,7 @@ on boot
     # USB settings to allow charging, but not to be declare as Fastboot Device
     setprop sys.usb.config charging
     class_start default
+    class_start core
 
     # reset counter watchdog at the end of system boot
     write /sys/devices/virtual/misc/watchdog/counter "0"
