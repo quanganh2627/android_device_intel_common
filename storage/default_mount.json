@@ -35,6 +35,7 @@
 			"fstab_file": "droidboot/root/fstab.$model",
 			"recovery_fstab_dest_file": "droidboot/root/system/etc/recovery.fstab",
 			"mount": [
+				"factory",
 				"logs"
 				]
 		}
