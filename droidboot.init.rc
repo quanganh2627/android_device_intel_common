@@ -100,6 +100,8 @@ on property:sys.partitioning=1
 
 on property:sys.partitioning=0
     mkdir /logs
+    mkdir /factory 0775 system system
+    mkdir /config 0775 system system
     chown system system /logs
     chmod 777 /logs
     mount_all /fstab.${ro.hardware}
