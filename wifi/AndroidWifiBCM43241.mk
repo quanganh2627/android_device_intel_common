@@ -26,7 +26,13 @@ LOCAL_MODULE := fw_bcmdhd_4324.bin
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(FW_TARGET_PATH)
+
+ifneq (,$(filter fw_bcmdhd_4324_B4.bin,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+LOCAL_SRC_FILES := $(BCM43241_FW_PATH)/fw_bcmdhd_43241_B4.bin
+else
 LOCAL_SRC_FILES := $(BCM43241_FW_PATH)/fw_bcmdhd_43241.bin
+endif
+
 include $(BUILD_PREBUILT)
 
 ##################################################
