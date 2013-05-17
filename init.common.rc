@@ -75,7 +75,6 @@ on post-fs-data
     setprop persist.service.thermal 1
 
 on charger
-    mount_all /fstab.charger.${ro.hardware}
     chown system system /dev/dri/card0
     chmod 0666 /dev/dri/card0
     symlink /dev/dri/card0 /dev/card0
