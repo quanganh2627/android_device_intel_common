@@ -1,0 +1,4 @@
+service watchdogd /sbin/ia_watchdogd
+    class core
+    user root
+    oneshot

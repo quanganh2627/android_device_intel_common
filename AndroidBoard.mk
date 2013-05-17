@@ -43,7 +43,11 @@ include $(BUILD_PREBUILT)
 # adapt to out own IAFW format.
 MKBOOTIMG := vendor/intel/support/mkbootimg
 # Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
-$(MKBOOTIMG): isu isu_stream xfstk-stitcher
+# Add dependancy on ISU packages only if ISU method is used as ISU might not be delivered.
+ifeq ($(TARGET_OS_SIGNING_METHOD),ISU)
+$(MKBOOTIMG): isu isu_stream
+endif
+$(MKBOOTIMG): xfstk-stitcher
 
 #Kernel rules (build from source, or from tarball
 -include $(KERNEL_SRC_DIR)/AndroidKernel.mk
