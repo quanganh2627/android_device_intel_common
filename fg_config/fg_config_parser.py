@@ -63,8 +63,8 @@ def getConfig(xml, confFile):
 if __name__ == "__main__":
 	global confFile
 	basepath = os.path.dirname(__file__)
-	xmlFile = str(sys.argv[1]) + "/fg_config.xml"
-	confFile = str(sys.argv[1]) + "/fg_config.bin"
+	xmlFile = str(sys.argv[1])
+	confFile = str(sys.argv[2])
 	fsizeOffset = 2 #header contains file size value after the 2nd byte
 	cksumOffset = 4 #header contains checksum after the 4th byte
 
