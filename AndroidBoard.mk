@@ -191,7 +191,6 @@ publish_acs:
 endif
 endif
 
-ifneq ($(TARGET_KERNEL_SOURCE_IS_PRESENT),false)
 # Add sepdk driver
 ifneq ($(BOARD_USE_64BIT_KERNEL),true)
 # sepdk and vTunes
@@ -206,4 +205,3 @@ ifneq ($(BOARD_USE_64BIT_KERNEL),true)
 -include $(TOP)/vendor/intel/hardware/PRIVATE/monitor/ksrc/AndroidKCT.mk
 
 endif
-endif #TARGET_KERNEL_SOURCE_IS_PRESENT
