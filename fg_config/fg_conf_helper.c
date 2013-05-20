@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <errno.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -425,8 +424,10 @@ int get_fg_config_table(struct table_body *sec_tbl)
 		LOGE("Secondary checksum failed\n");
 	else if (strncmp(sbuf.tbl.battid, battid, MODEL_NAME_SIZE))
 		LOGE("Secondary Battid doesn't match %s:%s\n", sbuf.tbl.battid, battid);
-	else if ((strlen(sbuf.serial_num) != strlen(serial_num))
-		|| (strncmp(sbuf.serial_num, serial_num, strlen(serial_num))))
+	else if ((strlen(sbuf.serial_num) !=
+		strnlen(serial_num, MAX_SERIAL_NUM_SIZE+1))
+		|| (strncmp(sbuf.serial_num, serial_num,
+		strnlen(serial_num, MAX_SERIAL_NUM_SIZE+1))))
 		LOGE("Secondary serial number doesn't match %s:%s\n", sbuf.serial_num, serial_num);
 	else if (pheader.cksum != sbuf.pcksum)
 		LOGE("Secondary.primary_checksum mismatch. New primary file detected\n");
@@ -500,7 +501,9 @@ int write_sec_config(struct sec_file_body *sbuf)
 		close(fds);
 		return ENODATA;
 	}
-	snprintf(sbuf->serial_num, strlen(serial_num) + 1, "%s", serial_num);
+	snprintf(sbuf->serial_num,
+			 strnlen(serial_num, MAX_SERIAL_NUM_SIZE+1) + 1,
+			"%s", serial_num);
 
 	/* write secondary file */
 	ret = write(fds, sbuf, sizeof(*sbuf));
