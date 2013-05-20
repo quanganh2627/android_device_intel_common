@@ -19,3 +19,10 @@
 /dev/hci_tty              0660   bluetooth  bluetooth
 /dev/ttyMFD0              0660   bluetooth  bluetooth
 /dev/ttyS1                0660   bluetooth  bluetooth
+
+# Define bcm modules args
+mod:bcm4335		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
+mod:bcm43241		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
+mod:bcm4334		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
+
+

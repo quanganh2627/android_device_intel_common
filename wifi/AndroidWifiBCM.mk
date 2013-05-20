@@ -9,8 +9,7 @@ LOCAL_REQUIRED_MODULES :=  \
     wlan_prov.bcm          \
     wpa_supplicant.bcm     \
     hostapd.bcm            \
-    lib_driver_cmd_bcmdhd  \
-    load_bcmdriver
+    lib_driver_cmd_bcmdhd
 
 #We don't want following packages to be automatically compiled
 LOCAL_REQUIRED_MODULES +=   \
@@ -25,9 +24,3 @@ LOCAL_REQUIRED_MODULES +=  \
 
 include $(BUILD_PHONY_PACKAGE)
 
-include $(CLEAR_VARS)
-LOCAL_MODULE := load_bcmdriver
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := EXECUTABLES
-LOCAL_SRC_FILES := device/intel/common/wifi/bcm_specific/$(LOCAL_MODULE)
-include $(BUILD_PREBUILT)

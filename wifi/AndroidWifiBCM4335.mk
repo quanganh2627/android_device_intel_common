@@ -11,7 +11,7 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     fw_bcmdhd_4335.bin          \
     fw_bcmdhd_4335_apsta.bin    \
-    bcmdhd_4335.cal
+    bcmdhd_4335_aob.cal
 
 LOCAL_REQUIRED_MODULES +=  \
     wifi_bcm
@@ -40,10 +40,11 @@ include $(BUILD_PREBUILT)
 
 ##################################################
 
+# nvram for Merrifield phone (4) / PHONE_SB_PRO (0) / SilverRidge VV FAB A (0)
 include $(CLEAR_VARS)
-LOCAL_MODULE := bcmdhd_4335.cal
+LOCAL_MODULE := bcmdhd_4335_aob.cal
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(WIFI_TARGET_PATH)
+LOCAL_MODULE_PATH := $(FW_TARGET_PATH)
 LOCAL_SRC_FILES := $(BCM4335_FW_PATH)/bcm94335wlagb.txt
 include $(BUILD_PREBUILT)

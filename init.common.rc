@@ -1,7 +1,11 @@
+import /init.watchdog.rc
 
 on early-init
     # set permission for charger-mode
     chmod 0770 /charger
+    chown system system /dev/dri/card0
+    chmod 0666 /dev/dri/card0
+    symlink /dev/dri/card0 /dev/card0
 
 on init
     # set usb serial number
@@ -11,9 +15,12 @@ on init
     export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/com.intel.multidisplay.jar
 
 on boot
-    chown system system /dev/dri/card0
-    chmod 0666 /dev/dri/card0
-    symlink /dev/dri/card0 /dev/card0
+    chown system system /dev/pvr_sync
+    chmod 666 /dev/pvr_sync
+
+#   chown system system /dev/dri/card0
+#   chmod 0666 /dev/dri/card0
+#   symlink /dev/dri/card0 /dev/card0
 
     # IMG Graphics specific setup. See also "service pvrsrvctl"
     # The permissions below should be tighter.
@@ -100,11 +107,6 @@ service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
 service ct_monitor /system/bin/ct_monitor
     class core
     user root
-
-service watchdogd /sbin/ia_watchdogd
-    class core
-    user root
-    oneshot
 
 service charger_app /charger
     class charger

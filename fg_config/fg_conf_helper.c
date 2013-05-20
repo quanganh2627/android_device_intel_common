@@ -31,7 +31,7 @@ struct __attribute__((__packed__))primary_header {
 #define MAX_BATTID_SIZE 8
 #define MAX_FG_CONFIG_SIZE 138
 #define MODEL_NAME_SIZE 2
-
+#define MAX_SERIAL_NUM_SIZE 12
 
 struct __attribute__((__packed__)) table_body {
 	unsigned char table_type;
@@ -47,7 +47,9 @@ struct __attribute__((__packed__)) table_body {
 struct __attribute__((__packed__)) sec_file_body {
 	struct table_body tbl;
 	unsigned short pcksum;
+	char serial_num[MAX_SERIAL_NUM_SIZE + 1];
 };
+
 #define MAX_FG_TABLES	15
 #define MAX_PRIM_FILE_SIZE (sizeof(struct primary_header) +\
 	MAX_FG_TABLES * sizeof(struct table_body))
@@ -190,6 +192,38 @@ int get_battid(char *battid)
 	return 0;
 }
 
+int get_serial_num(char *serial_num)
+{
+	int ret;
+	int fd;
+	char ps_batt_name[PATH_MAX];
+	char serial_num_path[PATH_MAX];
+	ret =  get_battery_ps_name(ps_batt_name);
+	if (ret) {
+		LOGE("Error(%d) in get_battery_ps_name:%s\n", ret, strerror(ret));
+		return ret;
+	}
+
+	snprintf(serial_num_path, sizeof(serial_num_path), "%s/%s/serial_number", POWER_SUPPLY_PATH, ps_batt_name);
+
+	LOGI("Reading serial number from %s\n", serial_num_path);
+
+	fd = open(serial_num_path, O_RDONLY);
+
+	if (fd < 0)
+		return errno;
+
+	ret = read(fd, serial_num, MAX_SERIAL_NUM_SIZE);
+	if (ret < 0) {
+		close(fd);
+		return errno;
+	}
+	close(fd);
+
+	serial_num[ret] = '\0';
+	return 0;
+}
+
 bool is_prim_cksum_ok(unsigned char *buf, int size)
 {
 
@@ -210,8 +244,8 @@ bool is_prim_cksum_ok(unsigned char *buf, int size)
 
 bool is_sec_cksum_ok(struct sec_file_body *sbuf, int len)
 {
-	if (checksum(sbuf, len - 4) != sbuf->tbl.cksum) {
-		LOGE("Secondary checksum failed:%x:%x\n", checksum(sbuf, len - 4), sbuf->tbl.cksum);
+	if (checksum(sbuf, len - 2) != sbuf->tbl.cksum) {
+		LOGE("Secondary checksum failed:%x:%x\n", checksum(sbuf, len - 2), sbuf->tbl.cksum);
 		return FALSE;
 	} else
 		return TRUE;
@@ -321,6 +355,7 @@ static int isCOS()
 int get_fg_config_table(struct table_body *sec_tbl)
 {
 	char battid[MAX_BATTID_SIZE];
+	char serial_num[MAX_SERIAL_NUM_SIZE + 1];
 	unsigned char *pbuf;
 	int is_pcksum_ok = 0;
 	int is_scksum_ok = 0;
@@ -333,6 +368,13 @@ int get_fg_config_table(struct table_body *sec_tbl)
 	ret = get_battid(battid);
 	if (ret) {
 		LOGE("Error(%d) in get_battid:%s\n", ret, strerror(ret));
+		return ret;
+	}
+
+	/* get serial number */
+	ret = get_serial_num(serial_num);
+	if (ret) {
+		LOGE("Error(%d) in get_serial_num:%s\n", ret, strerror(ret));
 		return ret;
 	}
 
@@ -368,7 +410,7 @@ int get_fg_config_table(struct table_body *sec_tbl)
 		LOGE("Error(%d) in read_secondary_file:%s\n", ret, strerror(ret));
 		goto read_pri_config;
 	} else
-		is_scksum_ok = is_sec_cksum_ok(&sbuf, sizeof(sbuf));
+		is_scksum_ok = is_sec_cksum_ok(&sbuf, sizeof(sbuf.tbl));
 
 	/* If primary checksum mismatch return error */
 	if (!(is_pcksum_ok) && !(is_scksum_ok)) {
@@ -383,6 +425,9 @@ int get_fg_config_table(struct table_body *sec_tbl)
 		LOGE("Secondary checksum failed\n");
 	else if (strncmp(sbuf.tbl.battid, battid, MODEL_NAME_SIZE))
 		LOGE("Secondary Battid doesn't match %s:%s\n", sbuf.tbl.battid, battid);
+	else if ((strlen(sbuf.serial_num) != strlen(serial_num))
+		|| (strncmp(sbuf.serial_num, serial_num, strlen(serial_num))))
+		LOGE("Secondary serial number doesn't match %s:%s\n", sbuf.serial_num, serial_num);
 	else if (pheader.cksum != sbuf.pcksum)
 		LOGE("Secondary.primary_checksum mismatch. New primary file detected\n");
 	else {
@@ -419,6 +464,7 @@ read_pri_config:
 int write_sec_config(struct sec_file_body *sbuf)
 {
 	int fds, ret;
+	char serial_num[MAX_SERIAL_NUM_SIZE + 1];
 	struct primary_header pheader;
 	/* open secondary file in write mode */
 	fds = open(SECONDARY_FILE, O_WRONLY|O_CREAT, S_IRWXU|S_IRWXG|S_IRWXO);
@@ -444,6 +490,17 @@ int write_sec_config(struct sec_file_body *sbuf)
 	/*set secondary checksum */
 	sbuf->tbl.cksum = checksum(&sbuf->tbl,
 				sizeof(sbuf->tbl) - sizeof(sbuf->tbl.cksum));
+
+	/* Set serial number of the battery. Next time when the same battery
+	 * is plugged in, we know that the data is valid for it.
+	 */
+	 ret = get_serial_num(serial_num);
+	 if (ret) {
+		LOGE("Error(%d) in get_serial_num%s\n", ret, strerror(ret));
+		close(fds);
+		return ENODATA;
+	}
+	snprintf(sbuf->serial_num, strlen(serial_num) + 1, "%s", serial_num);
 
 	/* write secondary file */
 	ret = write(fds, sbuf, sizeof(*sbuf));

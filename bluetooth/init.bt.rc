@@ -1,15 +1,15 @@
 import init.bt.vendor.rc
 
 on post-fs
-    mkdir /factory/bt
-    chown system bluetooth /factory/bt
-    chmod 0770 /factory/bt
+    mkdir /config/bt
+    chown system bluetooth /config/bt
+    chmod 0770 /config/bt
     start bd_prov
 
 on boot
-    wait /factory/bt/bd_addr.conf 1
-    chmod 0644 /factory/bt/bd_addr.conf
-    setprop ro.bt.bdaddr_path "/factory/bt/bd_addr.conf"
+    wait /config/bt/bd_addr.conf 1
+    chmod 0644 /config/bt/bd_addr.conf
+    setprop ro.bt.bdaddr_path "/config/bt/bd_addr.conf"
 
 service dhcpcd_bnep0 /system/bin/logwrapper /system/bin/dhcpcd -ABKL
     class main

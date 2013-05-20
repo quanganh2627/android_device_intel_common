@@ -1,9 +1,12 @@
-import init.gps.io.rc
-
 on post-fs-data
 
-    # GPS BCM
-    mkdir /data/gps 0770 system system
+    mkdir /data/gps 0770 gps system
+
+on post-fs
+
+    # nStandby GPIO
+    chmod 0660 /sys/devices/platform/intel_mid_gps/intel_mid_gps/enable
+    chown gps gps /sys/devices/platform/intel_mid_gps/intel_mid_gps/enable
 
 on property:ro.spid.gps.tty=ttyMFD1
     chmod 0660 /dev/ttyMFD1

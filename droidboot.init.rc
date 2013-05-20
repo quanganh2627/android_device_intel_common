@@ -1,4 +1,5 @@
 import /droidboot.init.${ro.hardware}.rc
+import /init.watchdog.rc
 
 on early-init
     start ueventd
@@ -23,6 +24,7 @@ on boot
     # USB settings to allow charging, but not to be declare as Fastboot Device
     setprop sys.usb.config charging
     class_start default
+    class_start core
 
     # reset counter watchdog at the end of system boot
     write /sys/devices/virtual/misc/watchdog/counter "0"
@@ -76,15 +78,10 @@ on property:sys.usb.config=ptp,adb
 service ueventd /sbin/ueventd
     critical
 
-service watchdogd /sbin/ia_watchdogd
-    user root
-    oneshot
-
 service partlink /system/bin/partlink
     oneshot
 
 service droidboot /system/bin/droidboot
-    oneshot
 
 service console /system/bin/sh
     console

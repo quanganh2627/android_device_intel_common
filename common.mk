@@ -17,11 +17,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	fast_click.pcm
 
-#Add kernel watchdog daemon
-PRODUCT_PACKAGES += \
-    ia_watchdogd \
-    libwatchdogd_devel
-
 # SpeechRecorder for eng build variant
 ifneq ($(filter $(TARGET_BUILD_VARIANT),eng),)
 PRODUCT_PACKAGES += \
@@ -98,22 +93,19 @@ PRODUCT_COPY_FILES += \
 # Power Debug Tools
 -include vendor/intel/hardware/PRIVATE/platform_test/power-debug/power-debug.mk
 
-# memmonitor (not for user builds)
 ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
--include device/intel/tools/PRIVATE/log_infra/monitor/memmonitor/memmonitor.mk
-endif
-
+# memmonitor (not for user builds)
+-include vendor/intel/tools/PRIVATE/log_infra/monitor/memmonitor/memmonitor.mk
 
 # Kratos (not for user builds)
-ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 -include vendor/intel/apps/PRIVATE/Kratos/products/Kratos.mk
-endif
 
 # vTunes binaires (not for user builds)
-ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 -include vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/bin/sepbin.mk
-endif
 
+# VISA binaires (not for user builds)
+-include vendor/intel/tools/PRIVATE/debug_internal_tools/visadk/bin/visabin.mk
+endif
 
 # Crashinfo
 -include vendor/intel/tools/PRIVATE/log_infra/crashinfo/crashinfo.mk
