@@ -21,6 +21,21 @@
 <!-- This version must agree with that in apps/common/res/apns.xml -->
 <apns version="7">
 
+  <apn carrier="Spirent"
+      mcc="001"
+      mnc="01"
+      apn="spirent-lcs.com"
+      user="none"
+      server="*"
+      password="none"
+  />
+
+  <apn carrier="CMW500"
+      mcc="001"
+      mnc="01"
+      apn="cmw500.rhode-schwarz.com.mnc01.mcc001.gprs"
+  />
+
   <apn carrier="Coriolis Internet"
       mcc="208"
       mnc="10"
