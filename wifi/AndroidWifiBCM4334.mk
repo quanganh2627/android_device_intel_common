@@ -9,42 +9,27 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := wifi_bcm_4334
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=            \
-    fw_bcmdhd_4334.bin               \
-    fw_bcmdhd_4334_apsta.bin         \
-    bcmdhd_4334_aob.cal              \
-    bcmdhd_4334_victoriabay_pr1.cal  \
-    bcmdhd_4334_bodegabay_pr1.cal    \
+    fw_bcmdhd.bin_4334_b2               \
+    bcmdhd_aob.cal_4334_b2              \
+    bcmdhd_victoriabay_pr1.cal_4334_b2  \
+    bcmdhd_bodegabay_pr1.cal_4334_b2
 
 LOCAL_REQUIRED_MODULES +=  \
     wifi_bcm
 
 include $(BUILD_PHONY_PACKAGE)
 
-##################################################
-
 include $(CLEAR_VARS)
-LOCAL_MODULE := fw_bcmdhd_4334.bin
+LOCAL_MODULE := fw_bcmdhd.bin_4334_b2
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(FW_TARGET_PATH)
 LOCAL_SRC_FILES := $(BCM4334_FW_PATH)/fw_bcmdhd_4334.bin
 include $(BUILD_PREBUILT)
-
-##################################################
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := fw_bcmdhd_4334_apsta.bin
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(FW_TARGET_PATH)
-LOCAL_SRC_FILES := $(BCM4334_FW_PATH)/fw_bcmdhd_4334.bin
-include $(BUILD_PREBUILT)
-
-##################################################
 
 # VV AOB
 include $(CLEAR_VARS)
-LOCAL_MODULE := bcmdhd_4334_aob.cal
+LOCAL_MODULE := bcmdhd_aob.cal_4334_b2
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(FW_TARGET_PATH)
@@ -53,7 +38,7 @@ include $(BUILD_PREBUILT)
 
 # VictoriaBay PR1
 include $(CLEAR_VARS)
-LOCAL_MODULE := bcmdhd_4334_victoriabay_pr1.cal
+LOCAL_MODULE := bcmdhd_victoriabay_pr1.cal_4334_b2
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(FW_TARGET_PATH)
@@ -62,7 +47,7 @@ include $(BUILD_PREBUILT)
 
 # BodegaBay PR1
 include $(CLEAR_VARS)
-LOCAL_MODULE := bcmdhd_4334_bodegabay_pr1.cal
+LOCAL_MODULE := bcmdhd_bodegabay_pr1.cal_4334_b2
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(FW_TARGET_PATH)
