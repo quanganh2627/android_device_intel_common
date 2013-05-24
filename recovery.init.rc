@@ -21,6 +21,9 @@ on init
     mkdir /cache
     mount /tmp /tmp tmpfs
 
+    mkdir /factory 0775 system system
+    mkdir /config 0775 system system
+
     mount_all /fstab.${ro.hardware}
 
     chown root shell /tmp

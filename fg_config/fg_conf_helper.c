@@ -346,8 +346,8 @@ static int isCOS()
 				else if (strncmp(ptr, "charger", 7) == 0)
 					cos = 1;
 			}
-			close(fd);
 		}
+		close(fd);
 	}
 	return cos;
 }
@@ -355,7 +355,7 @@ static int isCOS()
 int get_fg_config_table(struct table_body *sec_tbl)
 {
 	char battid[MAX_BATTID_SIZE];
-	char serial_num[MAX_SERIAL_NUM_SIZE + 1];
+	char serial_num[MAX_SERIAL_NUM_SIZE + 1] = {'\0'};
 	unsigned char *pbuf;
 	int is_pcksum_ok = 0;
 	int is_scksum_ok = 0;
@@ -464,7 +464,7 @@ read_pri_config:
 int write_sec_config(struct sec_file_body *sbuf)
 {
 	int fds, ret;
-	char serial_num[MAX_SERIAL_NUM_SIZE + 1];
+	char serial_num[MAX_SERIAL_NUM_SIZE + 1] = {'\0'};
 	struct primary_header pheader;
 	/* open secondary file in write mode */
 	fds = open(SECONDARY_FILE, O_WRONLY|O_CREAT, S_IRWXU|S_IRWXG|S_IRWXO);
