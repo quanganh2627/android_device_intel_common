@@ -1,6 +1,6 @@
 LOCAL_PATH := $(ANDROID_BUILD_TOP)
 
-BCM_FW_PATH := device/intel/fw/wifi_bcm
+BCM_FW_PATH := vendor/intel/fw/wifi_bcm
 BCM4334_FW_PATH := $(BCM_FW_PATH)/bcm4334
 FW_TARGET_PATH := $(TARGET_OUT_ETC)/firmware/
 WIFI_TARGET_PATH := $(TARGET_OUT_ETC)/wifi

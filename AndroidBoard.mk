@@ -1,7 +1,7 @@
 # make file for common
 #
-LOCAL_PATH := $(TOP)/vendor/intel/common
-COMMON_PATH := $(TOP)/vendor/intel/common
+LOCAL_PATH := $(TOP)/device/intel/common
+COMMON_PATH := $(TOP)/device/intel/common
 SUPPORT_PATH:= $(TOP)/vendor/intel/support
 ACS_BUILDBOT_PATH := $(TOP)/vendor/intel/PRIVATE/buildbot_acs
 ACS_CAMPAIGN_ST_PATH := $(TOP)/vendor/intel/PRIVATE/ST_acs_campaigns
@@ -195,15 +195,15 @@ ifneq ($(TARGET_KERNEL_SOURCE_IS_PRESENT),false)
 # Add sepdk driver
 ifneq ($(BOARD_USE_64BIT_KERNEL),true)
 # sepdk and vTunes
--include $(TOP)/device/intel/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
--include $(TOP)/device/intel/debug_tools/vtunedk/src/pax/AndroidPAX.mk
+-include $(TOP)/vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
+-include $(TOP)/linux/modules/debug_tools/vtunedk/src/pax/AndroidPAX.mk
 
 # Add vtunedk: sep3_xx, vtsspp drivers. PAX driver will be used from sepdk.
--include $(TOP)/device/intel/debug_tools/vtunedk/src/AndroidSEP.mk
--include $(TOP)/device/intel/debug_tools/vtunedk/src/vtsspp/AndroidVTSSPP.mk
+-include $(TOP)/linux/modules/debug_tools/vtunedk/src/AndroidSEP.mk
+-include $(TOP)/linux/modules/debug_tools/vtunedk/src/vtsspp/AndroidVTSSPP.mk
 
 # KCT Crashtool kernel module
--include $(TOP)/hardware/intel/PRIVATE/monitor/ksrc/AndroidKCT.mk
+-include $(TOP)/vendor/intel/hardware/PRIVATE/monitor/ksrc/AndroidKCT.mk
 
 endif
 endif #TARGET_KERNEL_SOURCE_IS_PRESENT

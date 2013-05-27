@@ -28,7 +28,7 @@ PRODUCT_PACKAGES += \
     CC3
 
 # copy boot animation resources
-BOOTANIMATION_RESOURCE_PATH := vendor/intel/common/
+BOOTANIMATION_RESOURCE_PATH := device/intel/common/
 PRODUCT_COPY_FILES += \
     $(BOOTANIMATION_RESOURCE_PATH)/bootanimation.zip:system/media/bootanimation.zip
 
@@ -48,7 +48,7 @@ PRODUCT_PACKAGES += \
     sign_target_files_apks
 
 #Houdini prebuilt
-HOUDINI_ARM_PREBUILTS_DIR := device/intel/PRIVATE/houdini-armlibs
+HOUDINI_ARM_PREBUILTS_DIR := vendor/intel/PRIVATE/houdini-armlibs
 houdini_prebuilt_stamp := $(HOUDINI_ARM_PREBUILTS_DIR)/stamp-prebuilt-done
 houdini_prebuilt_done := $(wildcard $(houdini_prebuilt_stamp))
 ifneq ($(houdini_prebuilt_done),)
@@ -67,7 +67,7 @@ endif
 #GMS package
 -include vendor/google/PRIVATE/gms/products/gms.mk
 
-COMMON_PATH := vendor/intel/common
+COMMON_PATH := device/intel/common
 ifneq ($(strip $(TARGET_BUILD_VARIANT)),user)
 PRODUCT_COPY_FILES += \
         $(COMMON_PATH)/atproxy_usbreset:system/bin/atproxy_usbreset
@@ -91,31 +91,31 @@ PRODUCT_COPY_FILES += \
 
 
 # Power Debug Tools
--include hardware/intel/PRIVATE/platform_test/power-debug/power-debug.mk
+-include vendor/intel/hardware/PRIVATE/platform_test/power-debug/power-debug.mk
 
 ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 # memmonitor (not for user builds)
--include device/intel/PRIVATE/log_infra/monitor/memmonitor/memmonitor.mk
+-include vendor/intel/tools/PRIVATE/log_infra/monitor/memmonitor/memmonitor.mk
 
 # Kratos (not for user builds)
--include vendor/intel/PRIVATE/apps/Kratos/products/Kratos.mk
+-include vendor/intel/apps/PRIVATE/Kratos/products/Kratos.mk
 
 # vTunes binaires (not for user builds)
--include device/intel/PRIVATE/debug_internal_tools/sepdk/bin/sepbin.mk
+-include vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/bin/sepbin.mk
 
 # VISA binaires (not for user builds)
--include device/intel/PRIVATE/debug_internal_tools/visadk/bin/visabin.mk
+-include vendor/intel/tools/PRIVATE/debug_internal_tools/visadk/bin/visabin.mk
 endif
 
 # Crashinfo
--include device/intel/PRIVATE/log_infra/crashinfo/crashinfo.mk
+-include vendor/intel/tools/PRIVATE/log_infra/crashinfo/crashinfo.mk
 
 #crash report
 PRODUCT_COPY_FILES += \
-        device/intel/log_capture/crashlog/monitor_crashenv:system/bin/monitor_crashenv \
-        device/intel/log_capture/crashlog/del_hist.sh:system/bin/del_hist.sh \
-        device/intel/log_capture/crashlog/del_log.sh:system/bin/del_log.sh \
-        device/intel/log_capture/crashlog/dumpstate_dropbox.sh:system/bin/dumpstate_dropbox.sh
+        vendor/intel/tools/log_capture/crashlog/monitor_crashenv:system/bin/monitor_crashenv \
+        vendor/intel/tools/log_capture/crashlog/del_hist.sh:system/bin/del_hist.sh \
+        vendor/intel/tools/log_capture/crashlog/del_log.sh:system/bin/del_log.sh \
+        vendor/intel/tools/log_capture/crashlog/dumpstate_dropbox.sh:system/bin/dumpstate_dropbox.sh
 
 #Bring in camera media effects
 $(call inherit-product-if-exists, frameworks/base/data/videos/VideoPackage2.mk)

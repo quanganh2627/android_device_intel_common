@@ -1,4 +1,4 @@
-GPS_PATH := vendor/intel/common/gps
+GPS_PATH := device/intel/common/gps
 
 containing = $(strip $(foreach v,$2,$(if $(findstring $1,$v),$v)))
 

@@ -1,6 +1,6 @@
 LOCAL_PATH := $(ANDROID_BUILD_TOP)
 
-COMMON := vendor/intel/common
+COMMON := device/intel/common
 BT_COMMON := $(COMMON)/bluetooth
 LIBBT_CONF_PATH := device/common/libbt/conf/intel
 
