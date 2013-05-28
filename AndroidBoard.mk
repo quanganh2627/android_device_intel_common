@@ -161,9 +161,9 @@ publish_system_symbols: systemtarball
 publish_kernel_debug: bootimage
 	@ echo "Publish kernel config and symbols"
 	@ mkdir -p $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/kernel
-	cp $(PRODUCT_OUT)/kernel_build/.config $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/kernel/kernel.config
-	bzip2 -k $(PRODUCT_OUT)/kernel_build/vmlinux
-	mv $(PRODUCT_OUT)/kernel_build/vmlinux.bz2 $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/kernel/
+	cp $(PRODUCT_OUT)/linux/kernel/.config $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/kernel/kernel.config
+	bzip2 -k $(PRODUCT_OUT)/linux/kernel/vmlinux
+	mv $(PRODUCT_OUT)/linux/kernel/vmlinux.bz2 $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/kernel/
 
 PUBLISH_LINUX_TOOLS_deps := \
 	$(HOST_OUT_EXECUTABLES)/adb \
