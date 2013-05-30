@@ -57,6 +57,9 @@ ifneq (,$(filter wifi_bcm_4335,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES))
   include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd4335.mk
 endif
 
+ifneq (,$(filter wifi_bcm_4334x,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+  include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd4334x.mk
+endif
 
 ####################################
 # Configuration files

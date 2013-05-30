@@ -33,6 +33,7 @@
 # Define bcm modules args
 mod:bcm4335		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
 mod:bcm43241		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
+mod:bcm4334x		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
 mod:bcm4334		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
 
 
