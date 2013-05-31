@@ -26,6 +26,9 @@ on init
 
     mount_all /fstab.${ro.hardware}
 
+    mkdir /factory/telephony 0770 system radio
+    mkdir /config/telephony 0770 system radio
+
     chown root shell /tmp
     chmod 0775 /tmp
 
