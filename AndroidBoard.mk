@@ -1,7 +1,7 @@
 # make file for common
 #
-LOCAL_PATH := $(TOP)/vendor/intel/common
-COMMON_PATH := $(TOP)/vendor/intel/common
+LOCAL_PATH := $(TOP)/device/intel/common
+COMMON_PATH := $(TOP)/device/intel/common
 SUPPORT_PATH:= $(TOP)/vendor/intel/support
 ACS_BUILDBOT_PATH := $(TOP)/vendor/intel/PRIVATE/buildbot_acs
 ACS_CAMPAIGN_ST_PATH := $(TOP)/vendor/intel/PRIVATE/ST_acs_campaigns
@@ -161,9 +161,9 @@ publish_system_symbols: systemtarball
 publish_kernel_debug: bootimage
 	@ echo "Publish kernel config and symbols"
 	@ mkdir -p $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/kernel
-	cp $(PRODUCT_OUT)/kernel_build/.config $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/kernel/kernel.config
-	bzip2 -k $(PRODUCT_OUT)/kernel_build/vmlinux
-	mv $(PRODUCT_OUT)/kernel_build/vmlinux.bz2 $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/kernel/
+	cp $(PRODUCT_OUT)/linux/kernel/.config $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/kernel/kernel.config
+	bzip2 -k $(PRODUCT_OUT)/linux/kernel/vmlinux
+	mv $(PRODUCT_OUT)/linux/kernel/vmlinux.bz2 $(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH)/kernel/
 
 PUBLISH_LINUX_TOOLS_deps := \
 	$(HOST_OUT_EXECUTABLES)/adb \
@@ -191,19 +191,17 @@ publish_acs:
 endif
 endif
 
-ifneq ($(TARGET_KERNEL_SOURCE_IS_PRESENT),false)
 # Add sepdk driver
 ifneq ($(BOARD_USE_64BIT_KERNEL),true)
 # sepdk and vTunes
--include $(TOP)/device/intel/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
--include $(TOP)/device/intel/debug_tools/vtunedk/src/pax/AndroidPAX.mk
+-include $(TOP)/vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
+-include $(TOP)/linux/modules/debug_tools/vtunedk/src/pax/AndroidPAX.mk
 
 # Add vtunedk: sep3_xx, vtsspp drivers. PAX driver will be used from sepdk.
--include $(TOP)/device/intel/debug_tools/vtunedk/src/AndroidSEP.mk
--include $(TOP)/device/intel/debug_tools/vtunedk/src/vtsspp/AndroidVTSSPP.mk
+-include $(TOP)/linux/modules/debug_tools/vtunedk/src/AndroidSEP.mk
+-include $(TOP)/linux/modules/debug_tools/vtunedk/src/vtsspp/AndroidVTSSPP.mk
 
 # KCT Crashtool kernel module
--include $(TOP)/hardware/intel/PRIVATE/monitor/ksrc/AndroidKCT.mk
+-include $(TOP)/vendor/intel/hardware/PRIVATE/monitor/ksrc/AndroidKCT.mk
 
 endif
-endif #TARGET_KERNEL_SOURCE_IS_PRESENT

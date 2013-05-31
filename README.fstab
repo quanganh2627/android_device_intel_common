@@ -26,4 +26,4 @@ Script to generate fstab:
 
 
     Usage:
-       ./vendor/intel/support/partition.py ./vendor/intel/common/storage/default_partition.json ./vendor/intel/common/storage/default_mount.json "./vendor/intel/common/storage/default_override.json" "out/target/product/mfld_pr2" "mfld_pr2" out/target/product/mfld_pr2/partition.tbl
+       ./vendor/intel/support/partition.py ./device/intel/common/storage/default_partition.json ./device/intel/common/storage/default_mount.json "./device/intel/common/storage/default_override.json" "out/target/product/mfld_pr2" "mfld_pr2" out/target/product/mfld_pr2/partition.tbl

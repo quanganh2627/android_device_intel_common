@@ -8,8 +8,8 @@ USE_MOST_RESTRICTIVE_REGDOM=true
 # Paths declaration
 ####################################
 
-COMMON_WIFI_DIR = vendor/intel/common/wifi
-COMMON = vendor/intel/common
+COMMON_WIFI_DIR = device/intel/common/wifi
+COMMON = device/intel/common
 LOCAL_COMMON_WIFI_DIR = $(PWD)/$(COMMON_WIFI_DIR)
 
 ####################################

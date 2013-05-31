@@ -23,3 +23,4 @@ LOCAL_REQUIRED_MODULES +=  \
     wifi_common
 
 include $(BUILD_PHONY_PACKAGE)
+

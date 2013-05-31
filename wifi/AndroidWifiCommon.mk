@@ -1,6 +1,6 @@
 LOCAL_PATH := $(ANDROID_BUILD_TOP)
-WIFI_COMMON := vendor/intel/common/wifi
-COMMON := vendor/intel/common
+WIFI_COMMON := device/intel/common/wifi
+COMMON := device/intel/common
 
 include $(COMMON)/ComboChipVendor.mk
 
