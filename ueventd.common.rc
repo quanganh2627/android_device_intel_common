@@ -14,6 +14,9 @@
 /dev/v4l-subdev*          0660   root       camera
 /dev/media*               0660   root       camera
 
+# Intel SCU watchdog
+/dev/watchdog             0600   system     system
+
 # Device needed by shared transport layer (used by bluetooth, FM and GPS)
 /dev/rfkill               0660   bluetooth  bluetooth
 /dev/hci_tty              0660   bluetooth  bluetooth
