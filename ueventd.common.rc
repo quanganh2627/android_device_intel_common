@@ -27,6 +27,9 @@
 /dev/sep_sec_driver       0660   system     system
 /dev/mei                  0660   system     system
 
+# Android sync framework sw driver
+/dev/sw_sync              0660   system     system
+
 # Define bcm modules args
 mod:bcm4335		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
 mod:bcm43241		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
