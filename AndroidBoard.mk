@@ -4,8 +4,6 @@ LOCAL_PATH := $(TOP)/device/intel/common
 COMMON_PATH := $(TOP)/device/intel/common
 SUPPORT_PATH:= $(TOP)/vendor/intel/support
 ACS_BUILDBOT_PATH := $(TOP)/vendor/intel/PRIVATE/buildbot_acs
-ACS_CAMPAIGN_ST_PATH := $(TOP)/vendor/intel/PRIVATE/ST_acs_campaigns
-ACS_CAMPAIGN_FT_PATH := $(TOP)/vendor/intel/PRIVATE/FT_acs_campaigns
 PERMISSIONS_PATH := $(TOP)/frameworks/native/data/etc
 
 include $(LOCAL_PATH)/util.mk
@@ -176,7 +174,6 @@ publish_linux_tools: $(PUBLISH_LINUX_TOOLS_deps)
 
 publish_acs:
 ifneq ($(wildcard $(ACS_BUILDBOT_PATH)),)
-ifneq ($(wildcard $(ACS_CAMPAIGN_ST_PATH)),)
 publish_acs:
 	$(eval ACS_ZIP := $(abspath $(PUBLISH_PATH)/buildbot/acs.zip))
 	$(eval RUN_ACS_ZIP := $(abspath $(PUBLISH_PATH)/buildbot/run_acs.zip))
@@ -186,9 +183,6 @@ publish_acs:
 	(cd $(ACS_BUILDBOT_PATH) && zip -qr $(ACS_ZIP) executable/*)
 	(cd $(ACS_BUILDBOT_PATH) && zip -qr $(RUN_ACS_ZIP) run_acs/*)
 	(cd $(ACS_BUILDBOT_PATH)/campaigns && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
-	(cd $(ACS_CAMPAIGN_ST_PATH) && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
-	(cd $(ACS_CAMPAIGN_FT_PATH) && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
-endif
 endif
 
 # Add sepdk driver

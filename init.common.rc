@@ -12,7 +12,7 @@ on init
     write /sys/class/android_usb/android0/iSerial ${ro.serialno}
 
 # setup the global environment
-    export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/com.intel.multidisplay.jar
+    export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/com.intel.multidisplay.jar:/system/framework/com.intel.security.jar
 
 on boot
     chown system system /dev/pvr_sync
@@ -37,7 +37,7 @@ on boot
     write /sys/block/mmcblk0/queue/nr_requests 32
 
     #reduce dirty memory size
-    write /proc/sys/vm/dirty_background_bytes  5242880
+    write /proc/sys/vm/dirty_background_bytes 8388608
 
 # Change TCP Net-Core buffers sizes to improve cellular data throughput
      write /proc/sys/net/core/rmem_default 1048576

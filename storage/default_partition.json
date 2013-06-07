@@ -1,5 +1,6 @@
 {
 	"globals": {
+		"partition_format" : "%sp%d",
 		"format_table" : "gpt",
 			"gpt" : {
 				"base_name_label": "/dev/block/platform/intel/by-label/",
@@ -29,7 +30,8 @@
 			}
 	},
 
-		"emmc": {
+		"storage": {
+			"type": "eMMC",
 			"sector_size": 512,
 			"vendor": "eMMC_vendor",
 			"base_name": "/dev/block/mmcblk0",
