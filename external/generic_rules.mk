@@ -105,7 +105,7 @@ $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(ACP) $(EXTERNAL_BUILD_SYSTEM)/generic_rules
 	@$(foreach module, $($@.prebuilt), \
 		$(call external-auto-prebuilt-boilerplate,$($@.prebuilt.$(module).LOCAL_SRC_FILES),$($@.prebuilt.$(module).LOCAL_IS_HOST_MODULE),$($@.prebuilt.$(module).LOCAL_MODULE_CLASS),$($@.prebuilt.$(module).LOCAL_MODULE_TAGS),$($@.prebuilt.$(module).OVERRIDE_BUILT_MODULE_PATH),$($@.prebuilt.$(module).LOCAL_UNINSTALLABLE_MODULE),$($@.prebuilt.$(module).LOCAL_BUILT_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_STRIP_MODULE),$(module),$($@.prebuilt.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_CERTIFICATE),$($@.prebuilt.$(module).LOCAL_MODULE_PATH),$($@.prebuilt.$(module).LOCAL_REQUIRED_MODULES)))
 	@$(foreach module, $($@.PACKAGES.LOCAL_INSTALLED_STEM_MODULES), \
-		$(call external-auto-prebuilt-boilerplate,$(module),,APPS,optional,,,,,$($@.PACKAGES.$(module).LOCAL_MODULE),$($@.PACKAGES.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.PACKAGES.$(module).LOCAL_CERTIFICATE)))
+		$(call external-auto-prebuilt-boilerplate,$(module),,APPS,optional,,,,,$($@.PACKAGES.$(module).LOCAL_MODULE),$($@.PACKAGES.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.PACKAGES.$(module).LOCAL_CERTIFICATE),,$($@.PACKAGES.$(module).LOCAL_REQUIRED_MODULES)))
 	@$(foreach mk, $($@.extramakefile), \
 		cat $(mk) >> $@;)
 	@$(foreach module, $($@.phony), \
