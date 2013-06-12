@@ -24,3 +24,9 @@ else ifneq (,$(filter lightning_peak,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACK
 COMBO_CHIP_VENDOR:=intel
 COMBO_CHIP:=lightning_peak
 endif
+
+ifneq (,$(filter wifi_bigcore,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+BOARD_WLAN_DEVICE:= wifi-bigcore
+COMBO_CHIP_VENDOR:=
+COMBO_CHIP:=
+endif
