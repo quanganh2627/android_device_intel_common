@@ -36,7 +36,14 @@ $(call add-path-map, stlport:external/stlport/stlport \
         alsa-lib:external/alsa-lib/include \
         libxml2:external/libxml2/include \
         webcore-icu:external/webkit/Source/WebCore/icu \
-        tinyalsa:external/tinyalsa/include)
+        tinyalsa:external/tinyalsa/include \
+        core-jni:frameworks/base/core/jni \
+        vss:frameworks/av/libvideoeditor/vss/inc \
+        vss-common:frameworks/av/libvideoeditor/vss/common/inc \
+        vss-mcs:frameworks/av/libvideoeditor/vss/mcs/inc \
+        vss-stagefrightshells:frameworks/av/libvideoeditor/vss/stagefrightshells/inc \
+        lvpp:frameworks/av/libvideoeditor/lvpp \
+        osal:frameworks/av/libvideoeditor/osal/inc)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
