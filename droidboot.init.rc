@@ -1,4 +1,5 @@
 import /droidboot.init.${ro.hardware}.rc
+import /init.droidboot.debug.rc
 import /init.watchdog.rc
 
 on early-init
