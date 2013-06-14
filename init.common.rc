@@ -15,6 +15,9 @@ on init
     export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/com.intel.multidisplay.jar:/system/framework/com.intel.security.jar
 
 on boot
+    # parameter-framework main XML file location
+    setprop AudioComms.PFW.ConfPath /etc/parameter-framework/ParameterFrameworkConfiguration.xml
+
     chown system system /dev/pvr_sync
     chmod 666 /dev/pvr_sync
 
@@ -75,7 +78,6 @@ on post-fs-data
     setprop persist.service.thermal 1
 
 on charger
-    mount_all /fstab.charger.${ro.hardware}
     chown system system /dev/dri/card0
     chmod 0666 /dev/dri/card0
     symlink /dev/dri/card0 /dev/card0

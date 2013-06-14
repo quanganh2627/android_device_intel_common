@@ -38,6 +38,15 @@
 				"factory",
 				"logs"
 				]
+		},
+
+		"tos": {
+			"fstab_file": "testos/root/fstab.$model",
+			"recovery_fstab_dest_file": "testos/root/system/etc/recovery.fstab",
+			"mount": [
+				"factory",
+				"config"
+				]
 		}
 	}
 }
