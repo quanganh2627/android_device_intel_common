@@ -1,8 +1,10 @@
+LIBBT_CONF_PATH := hardware/broadcom/libbt/conf/intel
+include $(LIBBT_CONF_PATH)/Android.mk
+
 LOCAL_PATH := $(ANDROID_BUILD_TOP)
 
 COMMON := device/intel/common
 BT_COMMON := $(COMMON)/bluetooth
-LIBBT_CONF_PATH := hardware/broadcom/libbt/conf/intel
 
 include $(COMMON)/ComboChipVendor.mk
 
@@ -39,16 +41,6 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
 LOCAL_SRC_FILES := $(BT_COMMON)/init.bt.$(COMBO_CHIP_VENDOR).rc
-include $(BUILD_PREBUILT)
-
-##################################################
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := bt_vendor.conf
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/bluetooth
-LOCAL_SRC_FILES := $(LIBBT_CONF_PATH)/$(REF_PRODUCT_NAME)/bt_vendor.conf
 include $(BUILD_PREBUILT)
 
 ##################################################
