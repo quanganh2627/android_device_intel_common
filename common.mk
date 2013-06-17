@@ -94,6 +94,11 @@ PRODUCT_COPY_FILES += \
         $(PERMISSIONS_PATH)/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
         $(PERMISSIONS_PATH)/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml
 
+# Valgrind for eng build variant
+ifneq ($(filter $(TARGET_BUILD_VARIANT),eng),)
+PRODUCT_PACKAGES += \
+    valgrind_pack
+endif
 
 # Power Debug Tools
 -include vendor/intel/hardware/PRIVATE/platform_test/power-debug/power-debug.mk
