@@ -118,6 +118,7 @@ $(foreach t,$(1), \
   $(call external-echo-makefile, 'LOCAL_MODULE_PATH:=$(strip $(12))') \
   $(call external-echo-makefile, 'LOCAL_REQUIRED_MODULES:=$(strip $(13))') \
   $(call external-echo-makefile, 'LOCAL_SHARED_LIBRARIES:=$(strip $(14))') \
+  $(call external-echo-makefile, 'LOCAL_EXPORT_C_INCLUDE_DIRS:=$$(LOCAL_PATH)/include') \
   $(call external-echo-makefile, 'include $$(BUILD_PREBUILT)') \
  )
 endef
