@@ -90,21 +90,21 @@
 				"fs_mgr": "wait"
 			},
 
-			"spare":
+			"misc":
 			{
 				"id": 4,
 				"label": null,
 				"lba_start": null,
 				"size": 128,
 				"type": "data",
-				"fs_type": "ext4",
+				"fs_type": "emmc",
 				"uuid": "000000000003",
 				"priority": 0,
 				"try": 0,
 				"length": 0,
 				"mount_point": null,
-				"mount_options": "defaults",
-				"fs_mgr": "nosuid,nodev,noatime,barrier=1,data=ordered"
+				"mount_options": null,
+				"fs_mgr": null
 			},
 
 			"config":

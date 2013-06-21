@@ -99,6 +99,11 @@ service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
     oneshot
     user root
 
+service format_misc /system/bin/format_misc
+    class core
+    user root
+    oneshot
+
 service ct_monitor /system/bin/ct_monitor
     class core
     user root
