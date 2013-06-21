@@ -11,7 +11,7 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=            \
     fw_bcmdhd.bin_4334_b2               \
     bcmdhd_aob.cal_4334_b2              \
-    bcmdhd_victoriabay_prx.cal_4334_b2  \
+    bcmdhd_victoriabay_pr1.cal_4334_b2  \
     bcmdhd_bodegabay_pr1.cal_4334_b2
 
 LOCAL_REQUIRED_MODULES +=  \
@@ -38,7 +38,7 @@ include $(BUILD_PREBUILT)
 
 # VictoriaBay PR1
 include $(CLEAR_VARS)
-LOCAL_MODULE := bcmdhd_victoriabay_prx.cal_4334_b2
+LOCAL_MODULE := bcmdhd_victoriabay_pr1.cal_4334_b2
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(FW_TARGET_PATH)
