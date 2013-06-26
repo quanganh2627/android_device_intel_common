@@ -65,7 +65,13 @@ $(call add-path-map, stlport:external/stlport/stlport \
         libnfc-nci_nfc:external/libnfc-nci/src/nfc/include \
         libnfc-nci_nfa:external/libnfc-nci/src/nfa/include \
         libnfc-nci_gki:external/libnfc-nci/src/gki \
-        libc-private:bionic/libc/private)
+        libc-private:bionic/libc/private \
+        icu4c-common:external/icu4c/common \
+        expat-lib:external/expat/lib \
+        libvpx:external/libvpx \
+        protobuf:external/protobuf/src \
+        zlib:external/zlib \
+        openssl:external/openssl/include)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
