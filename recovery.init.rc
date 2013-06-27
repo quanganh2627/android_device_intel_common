@@ -49,6 +49,8 @@ on boot
     # reset counter watchdog at the end of system boot
     write /sys/devices/virtual/misc/watchdog/counter "0"
 
+    setprop sys.usb.config adb
+
 service ueventd /sbin/ueventd
     critical
 

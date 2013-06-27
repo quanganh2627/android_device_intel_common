@@ -53,6 +53,9 @@ $(INSTALLED_RAMDISK_TARGET): build_kernel
 droid: checkapi
 
 flashfiles: bootimage
+ifeq ($(ENABLE_FRU),yes)
+bootimage: build_fru
+endif
 ifneq ($(FLASHFILE_BOOTONLY),true)
 ifeq ($(FLASHFILE_NO_OTA),true)
 flashfiles: firmware recoveryimage
@@ -99,6 +102,7 @@ blank_flashfiles:
 		TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
 		GENERIC_TARGET_NAME=$(GENERIC_TARGET_NAME) \
 		TARGET_USE_DROIDBOOT=$(TARGET_USE_DROIDBOOT) \
+		FRU_CONFIGS=$(FRU_CONFIGS) \
 		$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) 'blankphone' $(FILE_NAME_TAG), \
 		@echo "No IFWI found for this target. No blank flashfile to generate")
 else
