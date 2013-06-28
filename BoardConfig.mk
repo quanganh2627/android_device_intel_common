@@ -43,7 +43,8 @@ $(call add-path-map, stlport:external/stlport/stlport \
         vss-mcs:frameworks/av/libvideoeditor/vss/mcs/inc \
         vss-stagefrightshells:frameworks/av/libvideoeditor/vss/stagefrightshells/inc \
         lvpp:frameworks/av/libvideoeditor/lvpp \
-        osal:frameworks/av/libvideoeditor/osal/inc)
+        osal:frameworks/av/libvideoeditor/osal/inc \
+        frameworks-base-core:frameworks/base/core/jni)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
