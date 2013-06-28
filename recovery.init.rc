@@ -69,6 +69,10 @@ service recovery /sbin/recovery
 service adbd /sbin/adbd recovery
     disabled
 
+service thermald /sbin/thermald
+    class core
+    user root
+
 # Always start adbd on userdebug and eng builds
 on property:ro.debuggable=1
     start console
