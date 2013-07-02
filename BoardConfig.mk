@@ -58,7 +58,8 @@ $(call add-path-map, stlport:external/stlport/stlport \
         libmediaplayerservice:frameworks/av/media/libmediaplayerservice \
         gtest:external/gtest/include \
         frameworks-base-libs:frameworks/base/libs \
-        frameworks-av-services:frameworks/av/services)
+        frameworks-av-services:frameworks/av/services \
+        tinycompress:external/tinycompress/include)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
