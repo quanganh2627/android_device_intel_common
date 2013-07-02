@@ -44,7 +44,11 @@ $(call add-path-map, stlport:external/stlport/stlport \
         vss-stagefrightshells:frameworks/av/libvideoeditor/vss/stagefrightshells/inc \
         lvpp:frameworks/av/libvideoeditor/lvpp \
         osal:frameworks/av/libvideoeditor/osal/inc \
-        frameworks-base-core:frameworks/base/core/jni)
+        frameworks-base-core:frameworks/base/core/jni \
+        frameworks-av:frameworks/av/include \
+        jpeg:external/jpeg \
+        skia:external/skia/include \
+        sqlite:external/sqlite/dist)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
