@@ -53,7 +53,7 @@ ifneq (,$(filter wifi_bcm_4334,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES))
   include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd4334.mk
 endif
 
-ifneq (,$(filter wifi_bcm_4335,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+ifneq (,$(filter wifi_bcm_4335 wifi_bcm_4339,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
   include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd4335.mk
 endif
 
