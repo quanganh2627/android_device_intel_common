@@ -64,7 +64,8 @@ $(call add-path-map, stlport:external/stlport/stlport \
         libnfc-nci_hal:external/libnfc-nci/src/hal/include \
         libnfc-nci_nfc:external/libnfc-nci/src/nfc/include \
         libnfc-nci_nfa:external/libnfc-nci/src/nfa/include \
-        libnfc-nci_gki:external/libnfc-nci/src/gki)
+        libnfc-nci_gki:external/libnfc-nci/src/gki \
+        libc-private:bionic/libc/private)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
