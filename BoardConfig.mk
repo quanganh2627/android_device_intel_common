@@ -51,7 +51,10 @@ $(call add-path-map, stlport:external/stlport/stlport \
         sqlite:external/sqlite/dist \
         opencv-cv:external/opencv/cv/include \
         opencv-cxcore:external/opencv/cxcore/include \
-        opencv-ml:external/opencv/ml/include)
+        opencv-ml:external/opencv/ml/include \
+        libstagefright:frameworks/av/media/libstagefright/include \
+        libstagefright-rtsp:frameworks/av/media/libstagefright/rtsp \
+        libmediaplayerservice:frameworks/av/media/libmediaplayerservice)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
