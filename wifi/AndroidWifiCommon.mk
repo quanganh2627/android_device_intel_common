@@ -18,12 +18,6 @@ LOCAL_REQUIRED_MODULES :=          \
     dhcp6c.wlan0.stateless.conf    \
     dhcp6c.wlan0.stateful.conf
 
-ifeq ($(strip $(INTEL_WIDI)),true)
-LOCAL_REQUIRED_MODULES +=  \
-    init.widi.rc           \
-    init.widi.vendor.rc
-endif
-
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 LOCAL_REQUIRED_MODULES += wifi_wfa
 endif
@@ -48,26 +42,6 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
 LOCAL_SRC_FILES := $(WIFI_COMMON)/init.wifi.$(COMBO_CHIP_VENDOR).rc
-include $(BUILD_PREBUILT)
-
-##################################################
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := init.widi.rc
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
-LOCAL_SRC_FILES := $(WIFI_COMMON)/$(LOCAL_MODULE)
-include $(BUILD_PREBUILT)
-
-##################################################
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := init.widi.vendor.rc
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
-LOCAL_SRC_FILES := $(WIFI_COMMON)/init.widi.$(COMBO_CHIP_VENDOR).rc
 include $(BUILD_PREBUILT)
 
 ##################################################

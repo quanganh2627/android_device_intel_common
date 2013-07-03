@@ -1,9 +1,0 @@
-on boot
-    setprop widi.interface "wlan0"
-
-service widi_supplicant /system/bin/wpa_supplicant -Dnl80211 -d
-    class main
-    socket wpa_wlan0 dgram 660 wifi wifi
-    group system wifi inet
-    disabled
-    oneshot
