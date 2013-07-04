@@ -2,6 +2,8 @@ LOCAL_PATH := $(ANDROID_BUILD_TOP)
 WIFI_COMMON := device/intel/common/wifi
 COMMON := device/intel/common
 
+ifeq ($(strip $(BOARD_HAVE_WIFI)),true)
+
 include $(COMMON)/ComboChipVendor.mk
 
 ##################################################
@@ -83,3 +85,5 @@ LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/dhcp6c
 LOCAL_SRC_FILES := $(WIFI_COMMON)/dhcp6c.wlan0.stateful.conf
 include $(BUILD_PREBUILT)
+
+endif
