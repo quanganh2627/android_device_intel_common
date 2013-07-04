@@ -48,7 +48,10 @@ $(call add-path-map, stlport:external/stlport/stlport \
         frameworks-av:frameworks/av/include \
         jpeg:external/jpeg \
         skia:external/skia/include \
-        sqlite:external/sqlite/dist)
+        sqlite:external/sqlite/dist \
+        opencv-cv:external/opencv/cv/include \
+        opencv-cxcore:external/opencv/cxcore/include \
+        opencv-ml:external/opencv/ml/include)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
