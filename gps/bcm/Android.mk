@@ -17,6 +17,7 @@ LOCAL_MODULE := gps_bcm_4752
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     gps_common \
+    gpscerd \
     gpsd \
     gpslogd \
     gps.conf \
