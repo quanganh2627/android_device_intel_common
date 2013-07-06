@@ -76,6 +76,10 @@ on post-fs-data
 
     # Set this property to enable Thermal service
     setprop persist.service.thermal 1
+    # Properties for Thermal Service
+    setprop persist.thermal.shutdown.msg 1
+    setprop persist.thermal.shutdown.vibra 1
+    setprop persist.thermal.shutdown.tone 1
 
 on charger
     chown system system /dev/dri/card0
