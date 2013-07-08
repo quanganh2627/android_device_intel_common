@@ -16,7 +16,8 @@ LOCAL_REQUIRED_MODULES := \
 	init.bt.rc \
 	init.bt.vendor.rc \
 	libbt-vendor \
-	bt_vendor.conf
+	bt_vendor.conf \
+	rfkill_bt.sh
 
 include $(BUILD_PHONY_PACKAGE)
 
@@ -48,6 +49,16 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/bluetooth
 LOCAL_SRC_FILES := $(LIBBT_CONF_PATH)/$(REF_PRODUCT_NAME)/bt_vendor.conf
+include $(BUILD_PREBUILT)
+
+##################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := rfkill_bt.sh
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
+LOCAL_SRC_FILES := $(BT_COMMON)/rfkill_bt.sh
 include $(BUILD_PREBUILT)
 
 ##################################################
