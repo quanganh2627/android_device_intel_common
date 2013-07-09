@@ -22,3 +22,21 @@ on property:dev.log.cws.bt.dump=ON
 on property:dev.log.cws.bt.dump=OFF
     setprop BtSnoopLogOutput false
     write /logs/stats/cws.bt.dump_trigger ""
+
+service bootcharton /system/xbin/bootchart.sh on
+    class core
+    user root
+    oneshot
+    disabled
+
+service bootchartoff /system/xbin/bootchart.sh off
+    class core
+    user root
+    oneshot
+    disabled
+
+on property:dev.log.bootchart=ON
+    start bootcharton
+
+on property:dev.log.bootchart=OFF
+    start bootchartoff
