@@ -127,7 +127,7 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 endif
 
 # network (wifi, bt) data dump (tcpdump is present only in eng. builds)
-ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng"))
+ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
  PRODUCT_COPY_FILES += \
      $(COMMON_PATH)/init.dump.rc:root/init.dump.rc
 endif
