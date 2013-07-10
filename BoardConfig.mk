@@ -100,6 +100,10 @@ ifeq ($(TARGET_BUILD_VARIANT),eng)
 BUILD_INIT_EXEC := true
 endif
 
+ifeq ($(TARGET_BUILD_VARIANT),user)
+cmdline_extra += watchdog.watchdog_thresh=60
+endif
+
 TARGET_MAKE_NO_DEFAULT_BOOTIMAGE ?= true
 TARGET_MAKE_INTEL_BOOTIMAGE ?= true
 
