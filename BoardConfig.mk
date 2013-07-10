@@ -55,7 +55,10 @@ $(call add-path-map, stlport:external/stlport/stlport \
         opencv-ml:external/opencv/ml/include \
         libstagefright:frameworks/av/media/libstagefright/include \
         libstagefright-rtsp:frameworks/av/media/libstagefright/rtsp \
-        libmediaplayerservice:frameworks/av/media/libmediaplayerservice)
+        libmediaplayerservice:frameworks/av/media/libmediaplayerservice \
+        gtest:external/gtest/include \
+        frameworks-base-libs:frameworks/base/libs \
+        frameworks-av-services:frameworks/av/services)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
