@@ -71,7 +71,9 @@ $(call add-path-map, stlport:external/stlport/stlport \
         libvpx:external/libvpx \
         protobuf:external/protobuf/src \
         zlib:external/zlib \
-        openssl:external/openssl/include)
+        openssl:external/openssl/include \
+        libnl-headers:external/libnl-headers \
+        system-security:system/security/keystore)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
