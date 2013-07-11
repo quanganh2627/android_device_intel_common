@@ -93,7 +93,8 @@ $(call add-path-map, stlport:external/stlport/stlport \
         libc-kernel:bionic/libc/kernel \
         libc-x86:bionic/libc/arch-x86/include \
         strace:external/strace \
-        bionic:bionic)
+        bionic:bionic \
+        opengl:frameworks/native/opengl/include)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
