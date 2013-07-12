@@ -10,6 +10,7 @@ TARGET_PRELINK_MODULE := false
 TARGET_PROVIDES_INIT_RC := true
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_RIL_DISABLE_STATUS_POLLING := true
+TARGET_BOARD_KERNEL_HEADERS := device/intel/common/kernel-headers
 KERNEL_SRC_DIR ?= linux/kernel
 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
@@ -48,7 +49,16 @@ $(call add-path-map, stlport:external/stlport/stlport \
         frameworks-av:frameworks/av/include \
         jpeg:external/jpeg \
         skia:external/skia/include \
-        sqlite:external/sqlite/dist)
+        sqlite:external/sqlite/dist \
+        opencv-cv:external/opencv/cv/include \
+        opencv-cxcore:external/opencv/cxcore/include \
+        opencv-ml:external/opencv/ml/include \
+        libstagefright:frameworks/av/media/libstagefright/include \
+        libstagefright-rtsp:frameworks/av/media/libstagefright/rtsp \
+        libmediaplayerservice:frameworks/av/media/libmediaplayerservice \
+        gtest:external/gtest/include \
+        frameworks-base-libs:frameworks/base/libs \
+        frameworks-av-services:frameworks/av/services)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds

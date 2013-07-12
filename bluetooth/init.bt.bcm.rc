@@ -4,7 +4,8 @@
 
 on init
     insmod /lib/modules/bcm_bt_lpm.ko
-    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/state
-    chmod 0660 /sys/class/rfkill/rfkill0/state
-    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
 
+service rfkill_bt /system/bin/sh /rfkill_bt.sh
+    class core
+    user root
+    oneshot

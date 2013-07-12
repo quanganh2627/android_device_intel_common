@@ -31,7 +31,7 @@ ifeq (multi_prebuilt,$(_metatarget))
 # call CLEAR_VARS
  $(foreach var, LIBS EXECUTABLES LIBRARIES STATIC_JAVA_LIBRARIES,\
    $(if $(LOCAL_PREBUILT_$(var)),\
-     $(if $(IS_HOST_MODULE),\
+     $(if $(LOCAL_IS_HOST_MODULE),\
        $(eval SAVED_HOST_$(var) := $(LOCAL_PREBUILT_$(var))),\
        $(eval SAVED_$(var) := $(LOCAL_PREBUILT_$(var)))\
      ))\
