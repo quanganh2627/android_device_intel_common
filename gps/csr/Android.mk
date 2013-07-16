@@ -41,6 +41,7 @@ LOCAL_MODULE := gps_csr_gsd4t
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     gps_common \
+    gpscerd \
     gps.conf
 include $(BUILD_PHONY_PACKAGE)
 
@@ -51,6 +52,7 @@ LOCAL_MODULE := gps_csr_gsd4t_cpd
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     gps_common \
+    gpscerd \
     gps.conf \
     gps_csr_cpdaemon
 include $(BUILD_PHONY_PACKAGE)
@@ -62,6 +64,7 @@ LOCAL_MODULE := gps_csr_gsd5t
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     gps_common \
+    gpscerd \
     gps.conf
 include $(BUILD_PHONY_PACKAGE)
 
@@ -72,6 +75,7 @@ LOCAL_MODULE := gps_csr_gsd5t_cpd
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     gps_common \
+    gpscerd \
     gps.conf \
     gps_csr_cpdaemon
 include $(BUILD_PHONY_PACKAGE)
