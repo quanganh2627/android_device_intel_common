@@ -1,2 +1,0 @@
-on boot
-    setprop widi.interface "p2p0"

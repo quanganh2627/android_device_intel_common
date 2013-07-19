@@ -1,6 +1,7 @@
 # Enable by default android java wakelock logging
 on init
     mkdir /logs
+    write /proc/sys/kernel/kptr_restrict 2
 
 on early-boot
     chown system log /logs

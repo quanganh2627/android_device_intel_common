@@ -58,7 +58,14 @@ $(call add-path-map, stlport:external/stlport/stlport \
         libmediaplayerservice:frameworks/av/media/libmediaplayerservice \
         gtest:external/gtest/include \
         frameworks-base-libs:frameworks/base/libs \
-        frameworks-av-services:frameworks/av/services)
+        frameworks-av-services:frameworks/av/services \
+        tinycompress:external/tinycompress/include \
+        libnfc-nci:external/libnfc-nci/src/include \
+        libnfc-nci_hal:external/libnfc-nci/src/hal/include \
+        libnfc-nci_nfc:external/libnfc-nci/src/nfc/include \
+        libnfc-nci_nfa:external/libnfc-nci/src/nfa/include \
+        libnfc-nci_gki:external/libnfc-nci/src/gki \
+        libc-private:bionic/libc/private)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
@@ -97,6 +104,10 @@ endif
 
 ifeq ($(TARGET_BUILD_VARIANT),eng)
 BUILD_INIT_EXEC := true
+endif
+
+ifeq ($(TARGET_BUILD_VARIANT),user)
+cmdline_extra += watchdog.watchdog_thresh=60
 endif
 
 TARGET_MAKE_NO_DEFAULT_BOOTIMAGE ?= true
