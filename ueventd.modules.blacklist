@@ -1,3 +1,2 @@
 blacklist rmi4
 blacklist atomisp
-blacklist atmel_mxt_1664S
