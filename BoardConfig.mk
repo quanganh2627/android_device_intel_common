@@ -206,7 +206,10 @@ SPID ?= "xxxx:xxxx:xxxx:xxxx:xxxx:xxxx"
 
 cmdline_extra += androidboot.spid=$(SPID)
 
-cmdline_extra += androidboot.serialno=01234567890123456789012345678901
+USE_BL_SERIALNO ?= false
+ifeq ($(USE_BL_SERIALNO), false)
+	cmdline_extra += androidboot.serialno=01234567890123456789012345678901
+endif
 
 STORAGE_CFLAGS ?= -DSTORAGE_BASE_PATH=\"/dev/block/mmcblk0\" -DSTORAGE_PARTITION_FORMAT=\"%sp%d\"
 COMMON_GLOBAL_CFLAGS += $(STORAGE_CFLAGS)
