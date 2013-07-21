@@ -1,3 +1,6 @@
 blacklist rmi4
-blacklist atomisp
 blacklist atmel_mxt_ts
+blacklist atomisp-css2300
+blacklist atomisp-css2400
+blacklist atomisp-css2400_v2
+blacklist atomisp-css2400b0_v2
