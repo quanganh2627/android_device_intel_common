@@ -71,7 +71,7 @@ $(call add-path-map, stlport:external/stlport/stlport \
         zlib:external/zlib \
         openssl:external/openssl/include \
         libnl-headers:external/libnl-headers \
-        system-security:system/security/keystore \
+        system-security:system/security/keystore/include/keystore \
         libpcap:external/libpcap \
         libsensorhub:vendor/intel/hardware/libsensorhub/src/include)
 
