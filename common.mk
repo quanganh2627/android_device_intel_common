@@ -1,6 +1,10 @@
 PRODUCT_MANUFACTURER := intel
 override PRODUCT_BRAND := intel
 
+#Add Fromat Misk
+PRODUCT_PACKAGES += \
+    format_misc
+
 #Add SensorCal App
 PRODUCT_PACKAGES += \
     SensorCal
