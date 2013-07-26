@@ -42,3 +42,5 @@ mod:bcm4334		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware
 uevent:sdio:c*v02D0d*   setprop wlan.driver.vendor bcm
 # ti
 uevent:sdio:c*v0097d*   setprop wlan.driver.vendor ti
+# mtk
+uevent:sdio:c*v037Ad*   setprop wlan.driver.vendor mtk
