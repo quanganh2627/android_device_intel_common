@@ -148,3 +148,5 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
      $(COMMON_PATH)/init.dump.rc:root/init.dump.rc
 endif
 
+# AMTL unified configuration
+-include vendor/intel/tools/log_capture/amtl/src/com/intel/amtl/config_catalog/amtl.mk
