@@ -8,6 +8,15 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := \
     audio.audience.firmware.es305b \
     audio.audience.presets.es305b
+
+# Audience streamer & proxy are debug tools which shall not be copied
+# on a user build: there are for engineering purpose only.
+ifneq ($(TARGET_BUILD_VARIANT),user)
+LOCAL_REQUIRED_MODULES += \
+    ad_streamer \
+    ad_proxy
+endif
+
 include $(BUILD_PHONY_PACKAGE)
 
 include $(CLEAR_VARS)
