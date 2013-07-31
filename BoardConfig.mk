@@ -86,7 +86,8 @@ $(call add-path-map, stlport:external/stlport/stlport \
         astl:external/astl/include \
         libusb:external/libusb/libusb \
         libc-kernel:bionic/libc/kernel \
-        libc-x86:bionic/libc/arch-x86/include)
+        libc-x86:bionic/libc/arch-x86/include \
+        strace:external/strace)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
