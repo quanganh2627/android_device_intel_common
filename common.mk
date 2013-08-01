@@ -53,20 +53,22 @@ PRODUCT_PACKAGES += \
     sign_target_files_apks
 
 #Houdini prebuilt
-HOUDINI_ARM_PREBUILTS_DIR := device/intel/PRIVATE/houdini-armlibs
+HOUDINI_ARM_PREBUILTS_DIR := device/intel/houdini/arm/
 houdini_prebuilt_stamp := $(HOUDINI_ARM_PREBUILTS_DIR)/stamp-prebuilt-done
 houdini_prebuilt_done := $(wildcard $(houdini_prebuilt_stamp))
 ifneq ($(houdini_prebuilt_done),)
 INTEL_HOUDINI := true
 #Houdini
-PRODUCT_PACKAGES += \
-    libhoudini \
+PRODUCT_PACKAGES += libhoudini \
     houdini \
     enable_houdini \
     disable_houdini \
     check.xml \
     cpuinfo \
     cpuinfo.neon
+
+#houdini arm libraries
+-include device/intel/houdini/houdini.mk
 endif
 
 #GMS package
