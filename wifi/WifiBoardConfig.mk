@@ -34,3 +34,7 @@ WIFI_DRIVER_4335_FW_PATH_AP      := "/system/etc/firmware/fw_bcmdhd_4335_apsta.b
 
 endif
 
+ifeq (intel,$(findstring intel,$(COMBO_CHIP_VENDOR)))
+BOARD_WLAN_DEVICE     := iwlwifi
+BOARD_HOSTAPD_DRIVER  := NL80211
+endif

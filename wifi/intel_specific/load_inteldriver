@@ -1,0 +1,4 @@
+#!/system/bin/sh
+
+sleep 3
+/system/bin/insmod /lib/modules/iwlwifi.ko
