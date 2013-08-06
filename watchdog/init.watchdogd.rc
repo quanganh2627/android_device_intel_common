@@ -2,3 +2,16 @@ service watchdogd /sbin/watchdogd
     class core
     user root
     oneshot
+
+# Reset the watchdog counter once boot is completed
+on property:sys.boot_completed=1
+    write /sys/firmware/osnib/clean_osnib 1
+
+on property:init.svc.droidboot=running
+    write /sys/firmware/osnib/clean_osnib 1
+
+on property:init.svc.charger_app=running
+    write /sys/firmware/osnib/clean_osnib 1
+
+on property:init.svc.recovery=running
+    write /sys/firmware/osnib/clean_osnib 1

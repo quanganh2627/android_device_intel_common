@@ -91,9 +91,6 @@ on charger
     #default setting to enable charging in COS
     setprop sys.usb.config charging
 
-    # reset counter watchdog at the end of system boot
-    write /sys/devices/virtual/misc/watchdog/counter "0"
-
     # atomisp needs to be loaded to power down camera so that device can enter
     # s0i3 in COS mode. The modules depended by atomisp driver are loaded on
     # "on init" trigger from init.avc.rc". atomisp driver can be loaded only
@@ -154,6 +151,3 @@ on property:sys.shutdown.requested=1recovery
 on property:sys.shutdown.requested=1bootloader
     write /sys/devices/virtual/misc/watchdog/reboot_ongoing 1
 
-# Clear counter watchdog when boot is completed
-on property:sys.boot_completed=1
-    write /sys/devices/virtual/misc/watchdog/counter "0"
