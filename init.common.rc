@@ -94,8 +94,6 @@ on charger
     #default setting to enable charging in COS
     setprop sys.usb.config charging
 
-    # reset counter watchdog at the end of system boot
-    write /sys/devices/virtual/misc/watchdog/counter "0"
 
 service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
     class core
@@ -147,6 +145,3 @@ on property:sys.shutdown.requested=1recovery
 on property:sys.shutdown.requested=1bootloader
     write /sys/devices/virtual/misc/watchdog/reboot_ongoing 1
 
-# Clear counter watchdog when boot is completed
-on property:sys.boot_completed=1
-    write /sys/devices/virtual/misc/watchdog/counter "0"
