@@ -121,6 +121,11 @@ endif
 -include vendor/intel/tools/PRIVATE/log_infra/crashinfo/crashinfo.mk
 
 #crash report
+PRODUCT_COPY_FILES += \
+vendor/intel/tools/log_capture/crashlog/monitor_crashenv:system/bin/monitor_crashenv \
+vendor/intel/tools/log_capture/crashlog/del_hist.sh:system/bin/del_hist.sh \
+vendor/intel/tools/log_capture/crashlog/del_log.sh:system/bin/del_log.sh \
+vendor/intel/tools/log_capture/crashlog/dumpstate_dropbox.sh:system/bin/dumpstate_dropbox.sh
 
 #Bring in camera media effects
 $(call inherit-product-if-exists, frameworks/base/data/videos/VideoPackage2.mk)
