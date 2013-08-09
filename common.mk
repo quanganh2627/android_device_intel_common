@@ -1,6 +1,8 @@
 PRODUCT_MANUFACTURER := intel
 override PRODUCT_BRAND := intel
 
+COMMON_PATH := device/intel/common
+
 #Add SensorCal App
 PRODUCT_PACKAGES += \
     SensorCal
@@ -28,9 +30,12 @@ PRODUCT_PACKAGES += \
     CC3
 
 # copy boot animation resources
-BOOTANIMATION_RESOURCE_PATH := device/intel/common/
 PRODUCT_COPY_FILES += \
-    $(BOOTANIMATION_RESOURCE_PATH)/bootanimation.zip:system/media/bootanimation.zip
+    $(COMMON_PATH)/bootanimation.zip:system/media/bootanimation.zip
+
+# Copy sar manager resources
+PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/sarconfig.xml:system/etc/sarconfig.xml
 
 # Target image build tools.
 # These are defined in libintelprov/Android.mk
@@ -67,7 +72,6 @@ endif
 #GMS package
 -include vendor/google/PRIVATE/gms/products/gms.mk
 
-COMMON_PATH := device/intel/common
 ifneq ($(strip $(TARGET_BUILD_VARIANT)),user)
 PRODUCT_COPY_FILES += \
         $(COMMON_PATH)/atproxy_usbreset:system/bin/atproxy_usbreset
