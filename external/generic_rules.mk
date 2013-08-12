@@ -174,7 +174,7 @@ $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(call several-files-deps, $($(LOCAL_MODULE_P
 # For other modules like static or host classes, which are not installable, we store the prebuilt makefile to a single variable.
 # This is the same for copy_headers metatarget which does not define a module.
 # We use the sort function to remove duplicates from dependencies list.
-ifneq ($(filter shared_library executable raw_executable package java_library native_test prebuilt multi_prebuilt,$(_metatarget)),)
+ifneq ($(filter shared_library executable raw_executable package java_library native_test prebuilt multi_prebuilt phony_package,$(_metatarget)),)
     ifndef LOCAL_UNINSTALLABLE_MODULE
         ALL_MODULES.$(LOCAL_INSTALLED_MODULE).PREBUILT_MAKEFILE := \
             $(sort $(strip $(ALL_MODULES.$(LOCAL_INSTALLED_MODULE).PREBUILT_MAKEFILE)) $(LOCAL_MODULE_PREBUILT_MAKEFILE))
