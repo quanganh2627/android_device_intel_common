@@ -136,6 +136,12 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
      PSI_Recorder
 endif
 
+# AudioToolBox (for eng builds)
+ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng"))
+ PRODUCT_PACKAGES += \
+     AudioToolBox
+endif
+
 # network (wifi, bt) data dump (tcpdump is present only in eng. builds)
 ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
  PRODUCT_COPY_FILES += \
