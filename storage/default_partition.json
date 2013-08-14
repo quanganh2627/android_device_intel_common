@@ -29,6 +29,26 @@
 				"\t",
 				"length=0",
 				"\n" ]
+			},
+
+			"usbcard": {
+				"used": 1,
+				"fstab_entry" : [ "*/block/sd",
+				"\t",
+				"/storage/usbcard",
+				"\t",
+				"vfat",
+				"\t",
+				"None\twait,voldmanaged=usbcard:auto",
+				"\n" ],
+				"recovery_entry": [ "*/block/sd",
+				"\t",
+				"/storage/usbcard",
+				"\t",
+				"vfat",
+				"\t",
+				"None\twait,voldmanaged=usbcard:auto",
+				"\n" ]
 			}
 	},
 
