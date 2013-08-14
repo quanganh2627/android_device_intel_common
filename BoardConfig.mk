@@ -74,8 +74,7 @@ $(call add-path-map, stlport:external/stlport/stlport \
         openssl:external/openssl/include \
         libnl-headers:external/libnl-headers \
         system-security:system/security/keystore \
-        libpcap:external/libpcap \
-        libsensorhub:vendor/intel/hardware/libsensorhub/src/include)
+        libpcap:external/libpcap)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
