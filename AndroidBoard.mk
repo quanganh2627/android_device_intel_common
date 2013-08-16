@@ -200,9 +200,6 @@ ifeq (, $(findstring next, $(TARGET_PRODUCT)))
 -include $(TOP)/linux/modules/debug_tools/vtunedk/src/vtsspp/AndroidVTSSPP.mk
 
 # KCT Crashtool kernel module
-ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 -include $(TOP)/vendor/intel/hardware/PRIVATE/monitor/ksrc/AndroidKCT.mk
-endif
-
 endif
 endif

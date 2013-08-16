@@ -15,6 +15,9 @@ on init
     export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/com.intel.multidisplay.jar:/system/framework/com.intel.asf.jar
 
 on boot
+    # parameter-framework main XML file location
+    setprop AudioComms.PFW.ConfPath /etc/parameter-framework/ParameterFrameworkConfiguration.xml
+
     chown system system /dev/pvr_sync
     chmod 666 /dev/pvr_sync
 
