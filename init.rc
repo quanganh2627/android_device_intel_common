@@ -272,6 +272,7 @@ on boot
     # Tweak background writeout
     write /proc/sys/vm/dirty_expire_centisecs 15
     write /proc/sys/vm/dirty_background_ratio  5
+    write /proc/sys/vm/dirty_background_bytes 8388608
 
     # Permissions for System Server and daemons.
     chown radio system /sys/android_power/state

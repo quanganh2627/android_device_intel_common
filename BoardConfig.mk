@@ -73,7 +73,8 @@ $(call add-path-map, stlport:external/stlport/stlport \
         zlib:external/zlib \
         openssl:external/openssl/include \
         libnl-headers:external/libnl-headers \
-        system-security:system/security/keystore)
+        system-security:system/security/keystore \
+        libpcap:external/libpcap)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
@@ -96,6 +97,7 @@ endif
 
 ifeq ($(TARGET_BUILD_VARIANT),eng)
 ADDITIONAL_DEFAULT_PROPERTIES += persist.service.profile.enable=1
+ADDITIONAL_DEFAULT_PROPERTIES += persist.service.kdumpd.enable=0
 endif
 
 # This will be replaced by the OEM/carrier with a string like android-<carrier>-us

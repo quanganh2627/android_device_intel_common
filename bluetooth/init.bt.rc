@@ -6,8 +6,7 @@ on post-fs
     chmod 0770 /config/bt
     start bd_prov
 
-on boot
-    wait /config/bt/bd_addr.conf 1
+on early-boot
     chmod 0644 /config/bt/bd_addr.conf
     setprop ro.bt.bdaddr_path "/config/bt/bd_addr.conf"
 
