@@ -16737,4 +16737,34 @@
       port="8080"
       type="default"
   />
+
+  <apn carrier="Coriolis Internet"
+      mcc="208"
+      mnc="10"
+      apn="fnetcoriolis"
+      type="default,supl"
+      mvno_match_data="CORIOLIS"
+      mvno_type="spn"
+  />
+
+  <apn carrier="Coriolis Data"
+      mcc="208"
+      mnc="10"
+      apn="internetcoriolis"
+      type="default,supl"
+      mvno_match_data="CORIOLIS"
+      mvno_type="spn"
+  />
+
+  <apn carrier="Coriolis MMS"
+      mcc="208"
+      mnc="10"
+      mmsc="http://mmscoriolis"
+      mmsproxy="10.143.156.6"
+      mmsport="8080"
+      apn="mmscoriolis"
+      type="mms"
+      mvno_match_data="CORIOLIS"
+      mvno_type="spn"
+  />
 </apns>
