@@ -16767,4 +16767,19 @@
       mvno_match_data="CORIOLIS"
       mvno_type="spn"
   />
+
+  <apn carrier="Spirent"
+      mcc="001"
+      mnc="01"
+      apn="spirent-lcs.com"
+      user="none"
+      server="*"
+      password="none"
+  />
+
+  <apn carrier="CMW500"
+      mcc="001"
+      mnc="01"
+      apn="cmw500.rohde-schwarz.com.mnc01.mcc001.gprs"
+  />
 </apns>
