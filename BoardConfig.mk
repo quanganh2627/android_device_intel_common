@@ -24,7 +24,7 @@ FLASHFILE_NO_OTA := true
 INTEL_CRASHLOGD := false
 INTEL_INGREDIENTS_VERSIONS := true
 INTEL_CAMERA := false
-INTEL_TEST_CAMERA := false
+INTEL_TEST_CAMERA := true
 
 ifneq ($(wildcard $(TOP)/vendor/intel/PRIVATE/cert/testkey*),)
 PRODUCT_DEFAULT_DEV_CERTIFICATE :=  $(TOP)/vendor/intel/PRIVATE/cert/testkey
