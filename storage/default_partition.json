@@ -16,7 +16,14 @@
 
 			"sdcard": {
 				"used": 1,
-				"fstab_entry" : null,
+				"fstab_entry" : [ "*/block/mmcblk1",
+				"\t",
+				"/storage/sdcard_ext",
+				"\t",
+				"vfat",
+				"\t",
+				"None\twait,voldmanaged=sdcard_ext:auto",
+				"\n" ],
 				"recovery_entry": [ "#size_hint=-1",
 				"\n",
 				"/dev/block/mmcblk1p1",
