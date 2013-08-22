@@ -1,0 +1,11 @@
+The shim key pair is used by the uefi_shim security services to
+verify the second-stage loader (Gummiboot). It will also be used
+to sign and verify the AOSP boot images. The keys provided here
+are for testing only and were generated with this command:
+
+openssl req -new -x509 -newkey rsa:2048 \
+    -subj "/CN=Android-IA UEFI shim test-key, NOT INTENDED FOR PRODUCTION USE./" \
+    -keyout shim.key -out shim.crt -days 36500 -nodes -sha256
+
+If we provide any signed binary to customers (official released binaries),
+these test keys shall NOT be used.

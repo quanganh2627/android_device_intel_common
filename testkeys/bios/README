@@ -1,0 +1,30 @@
+The PK, KEK and DB key pairs are required by UEFI BIOS for security
+boot. The 1st UEFI boot loader should be signed with DB key pairs. and
+certificates of PK, KEK and DB should be enrolled into BIOS with the
+help either from UEFI applications in installer or operations in BIOS
+setup menu by the user.
+
+These key pairs are generated for test purposes (security boot,
+OTA...) only with these commands.
+
+ openssl req -new -x509 -newkey rsa:2048 -subj "/CN=PK/" -keyout PK.key \
+     -out PK.crt -days 36500 -nodes -sha256
+ openssl req -new -x509 -newkey rsa:2048 -subj "/CN=KEK/" -keyout KEK.key \
+     -out KEK.crt -days 36500 -nodes -sha256
+ openssl req -new -x509 -newkey rsa:2048 -subj "/CN=DB/" -keyout DB.key \
+     -out DB.crt -days 36500 -nodes -sha256
+
+Certificates (*.DER) in binary format are generated with:
+
+openssl x509 -in DB.crt -outform der -out DB.DER
+openssl x509 -in KEK.crt -outform der -out KEK.DER
+openssl x509 -in PK.crt -outform der -out PK.DER
+
+Developers and OEMs should provide their own key pairs if they want to
+use their own private keys to sign 1st UEFI boot loader and enroll the
+certificates into BIOS. They shall have their own approach to manage
+their keys as well.
+
+If we provide any signed binary to customers (official released binaries),
+these test keys shall NOT be used.
+

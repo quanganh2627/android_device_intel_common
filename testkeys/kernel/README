@@ -1,0 +1,21 @@
+Provide static keys to sign kernel modules for several reasons:
+
+(1) make dual-boot users happier because Windows takes BIOS time as local time
+which is GMT in Linux. The automatically generated certificates from kbuild will
+not be valid earlier than the build time (GMT). Kernel can not load signed modules
+if Windows set the local time (even the time looks correct to user) in BIOS when
+that time is earlier then the build time of certificate.
+
+Note: static keys cannot stop Windows set an unsuitable time into BIOS anyway.
+This solution with static keys will fail if Windows set a time too early. A fix
+or a workaround at Windows side is the way to go.
+
+(2) Reduce the image delta size in OTA package
+
+The two keys will be copied into kbuild output directory when compiling kernel.
+
+THE KEY ARE GENERATED WITH INVALID IDENTITIES AND ONLY FOR TEST PURPOSES.
+REPLACE THEM WITH YOUR OWN PROTECTED KEYS IN FORMAL DISTRIBUTIONS AND RELEASES.
+
+(The intended workflow is to replace with the real keys using Android's
+sign_target_files_apks, and not to replace the keys in the build system.)
