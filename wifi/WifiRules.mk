@@ -106,35 +106,52 @@ define clean_conf_file
 	$(MV) $1.tmp $1
 endef
 
-####################################
-# Rules and targets
-####################################
-
-# targets names
-WIFI_CONF_TARGET = wifi_conf
-WIFI_RC_TARGET   = wifi_rc
-
-# common targets and rules
-$(PRODUCT_OUT)/$(STA_CONF_PATH_ON_TARGET):
-	$(MKDIR) -p $(PRODUCT_OUT)/$(CONF_PATH_ON_TARGET)
-	$(CAT) $(STA_CONF_FILES) > $(PRODUCT_OUT)/$(STA_CONF_PATH_ON_TARGET)
-	$(call set_def_regdom,$(PRODUCT_OUT)/$(STA_CONF_PATH_ON_TARGET))
-	$(call clean_conf_file,$(PRODUCT_OUT)/$(STA_CONF_PATH_ON_TARGET))
-
-$(PRODUCT_OUT)/$(P2P_CONF_PATH_ON_TARGET):
-	$(MKDIR) -p $(PRODUCT_OUT)/$(CONF_PATH_ON_TARGET)
-	$(CAT) $(P2P_CONF_FILES) > $(PRODUCT_OUT)/$(P2P_CONF_PATH_ON_TARGET)
-	$(call set_def_regdom,$(PRODUCT_OUT)/$(P2P_CONF_PATH_ON_TARGET))
-	$(call clean_conf_file,$(PRODUCT_OUT)/$(P2P_CONF_PATH_ON_TARGET))
-
-$(PRODUCT_OUT)/$(HOSTAPD_CONF_PATH_ON_TARGET):
-	$(MKDIR) -p $(PRODUCT_OUT)/$(CONF_PATH_ON_TARGET)
-	$(CAT) $(HOSTAPD_CONF_FILES) > $(PRODUCT_OUT)/$(HOSTAPD_CONF_PATH_ON_TARGET)
-
-$(WIFI_CONF_TARGET): $(PRODUCT_OUT)/$(STA_CONF_PATH_ON_TARGET)  \
-           $(PRODUCT_OUT)/$(P2P_CONF_PATH_ON_TARGET)  \
-           $(PRODUCT_OUT)/$(HOSTAPD_CONF_PATH_ON_TARGET)
-
-$(TARGET_SYSTEM): $(WIFI_CONF_TARGET)
-
 endif
+
+##################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := wpa_supplicant.conf
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/wifi
+include $(BUILD_SYSTEM)/base_rules.mk
+
+$(LOCAL_BUILT_MODULE): $(STA_CONF_FILES)
+	@echo "Building $@"
+	$(hide) mkdir -p $(dir $@)
+	$(hide) cat $(STA_CONF_FILES) > $@
+	$(hide) $(call set_def_regdom,$@)
+	$(hide) $(call clean_conf_file,$@)
+
+##################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := p2p_supplicant.conf
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/wifi
+include $(BUILD_SYSTEM)/base_rules.mk
+
+$(LOCAL_BUILT_MODULE): $(P2P_CONF_FILES)
+	@echo "Building $@"
+	$(hide) mkdir -p $(dir $@)
+	$(hide) cat $(P2P_CONF_FILES) > $@
+	$(hide) $(call set_def_regdom,$@)
+	$(hide) $(call clean_conf_file,$@)
+
+##################################################
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := hostapd.conf
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/wifi
+include $(BUILD_SYSTEM)/base_rules.mk
+
+$(LOCAL_BUILT_MODULE): $(HOSTAPD_CONF_FILES)
+	@echo "Building $@"
+	$(hide) mkdir -p $(dir $@)
+	$(hide) cat $(HOSTAPD_CONF_FILES) > $@
+
+##################################################
