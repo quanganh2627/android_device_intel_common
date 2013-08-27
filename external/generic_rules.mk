@@ -178,6 +178,20 @@ ifneq ($(filter shared_library executable raw_executable package java_library na
     ifndef LOCAL_UNINSTALLABLE_MODULE
         ALL_MODULES.$(LOCAL_INSTALLED_MODULE).PREBUILT_MAKEFILE := \
             $(sort $(strip $(ALL_MODULES.$(LOCAL_INSTALLED_MODULE).PREBUILT_MAKEFILE)) $(LOCAL_MODULE_PREBUILT_MAKEFILE))
+
+        # For multi_prebuilt, make sure the dependency is set for all modules
+        # We know there is no need to worry about LOCAL_MODULE_PATH or LOCAL_MODULE_STEM
+        ifeq (multi_prebuilt,$(_metatarget))
+            _preb := $($(my).LIBS.MULTI_PREBUILTS)
+            # TODO: Add other prebuilts: EXECUTABLES, etc. and their HOST variants: HOST_EXECUTABLES etc.
+            $(foreach m, $(_preb), \
+                $(eval _m := $(basename $(notdir $(m)))) \
+                $(foreach _installed, $(ALL_MODULES.$(_m).INSTALLED), \
+                    $(eval ALL_MODULES.$(_installed).PREBUILT_MAKEFILE := \
+                        $(sort $(strip $(ALL_MODULES.$(_installed).PREBUILT_MAKEFILE)) $(LOCAL_MODULE_PREBUILT_MAKEFILE))) \
+                ) \
+            )
+        endif
     else
         INTEL_PREBUILTS_MAKEFILE := $(sort $(strip $(INTEL_PREBUILTS_MAKEFILE)) $(LOCAL_MODULE_PREBUILT_MAKEFILE))
     endif
