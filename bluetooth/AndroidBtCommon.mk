@@ -2,7 +2,7 @@ LOCAL_PATH := $(ANDROID_BUILD_TOP)
 
 COMMON := device/intel/common
 BT_COMMON := $(COMMON)/bluetooth
-LIBBT_CONF_PATH := device/common/libbt/conf/intel
+LIBBT_CONF_PATH := hardware/broadcom/libbt/conf/intel
 
 include $(COMMON)/ComboChipVendor.mk
 

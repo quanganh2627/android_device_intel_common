@@ -50,6 +50,7 @@ PRODUCT_PACKAGES += \
     edify_generator \
     lfstk_wrapper \
     mfld_osimage \
+    product_name_mapping \
     sign_target_files_apks
 
 #Houdini prebuilt
@@ -93,6 +94,11 @@ PRODUCT_COPY_FILES += \
         $(PERMISSIONS_PATH)/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
         $(PERMISSIONS_PATH)/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml
 
+# Valgrind for eng build variant
+ifneq ($(filter $(TARGET_BUILD_VARIANT),eng),)
+PRODUCT_PACKAGES += \
+    valgrind_pack
+endif
 
 # Power Debug Tools
 -include vendor/intel/hardware/PRIVATE/platform_test/power-debug/power-debug.mk
@@ -116,10 +122,10 @@ endif
 
 #crash report
 PRODUCT_COPY_FILES += \
-        vendor/intel/tools/log_capture/crashlog/monitor_crashenv:system/bin/monitor_crashenv \
-        vendor/intel/tools/log_capture/crashlog/del_hist.sh:system/bin/del_hist.sh \
-        vendor/intel/tools/log_capture/crashlog/del_log.sh:system/bin/del_log.sh \
-        vendor/intel/tools/log_capture/crashlog/dumpstate_dropbox.sh:system/bin/dumpstate_dropbox.sh
+vendor/intel/tools/log_capture/crashlog/monitor_crashenv:system/bin/monitor_crashenv \
+vendor/intel/tools/log_capture/crashlog/del_hist.sh:system/bin/del_hist.sh \
+vendor/intel/tools/log_capture/crashlog/del_log.sh:system/bin/del_log.sh \
+vendor/intel/tools/log_capture/crashlog/dumpstate_dropbox.sh:system/bin/dumpstate_dropbox.sh
 
 #Bring in camera media effects
 $(call inherit-product-if-exists, frameworks/base/data/videos/VideoPackage2.mk)

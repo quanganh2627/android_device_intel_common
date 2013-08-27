@@ -68,9 +68,16 @@ $(INSTALLED_RAMDISK_TARGET): build_kernel
 
 # checkapi is only called if droid is among the cmd goals, or no cmd goal is given
 # We add it here to be called for other targets as well
-droid: checkapi
+#droid: checkapi
 
 flashfiles: bootimage
+
+ifeq ($(TARGET_USERIMAGES_SPARSE_EXT_DISABLED),true)
+TARGET_SYSTEM := systemimg_gz
+else
+TARGET_SYSTEM := systemimage
+endif
+
 ifeq ($(ENABLE_FRU),yes)
 bootimage: build_fru
 endif
@@ -83,7 +90,7 @@ endif
 ifeq ($(TARGET_USE_DROIDBOOT),true)
 flashfiles: droidbootimage
 endif
-flashfiles: systemimg_gz
+flashfiles: $(TARGET_SYSTEM)
 endif
 
 ifeq ($(USE_GMS_ALL),true)
@@ -107,6 +114,7 @@ flashfiles:
 	SKIP_NVM=$(BOARD_SKIP_NVM) \
 	FLASH_MODEM_DICO=$(BOARD_MODEM_DICO) \
 	ULPMC_BINARY=$(ULPMC_BINARY) \
+	SPARSE_DISABLED=$(TARGET_USERIMAGES_SPARSE_EXT_DISABLED) \
 	$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG)
 
 ifneq ($(FLASHFILE_BOOTONLY),true)
