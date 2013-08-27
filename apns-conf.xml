@@ -3187,7 +3187,7 @@
   <apn carrier="T-Mobile Internet"
       mcc="262"
       mnc="01"
-      apn="internet.t-mobile"
+      apn="internet.telekom"
       user="t-mobile"
       password="tm"
       mmsc="http://mms.t-mobile.de/servlets/mms"
