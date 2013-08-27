@@ -21,13 +21,6 @@ $(strip \
   $(BUILD_SYSTEM)/$(notdir $(_LOCAL_BUILD_MAKEFILE)))
 endef
 
-# $(1) : LOCAL_PREBUILT_* suffix
-# $(2) : are we in host mode
-define external-echo-prebuilt
-$(if $($@.$(2)$(1).MULTI_PREBUILTS),
-       echo 'LOCAL_PREBUILT_$(1):=$($@.$(2)$(1).MULTI_PREBUILTS)' >> $@;,)
-endef
-
 # $(1) : line to echo to the makefile
 define external-echo-makefile
        echo $(1) >>$@;
@@ -38,6 +31,8 @@ endef
 # $(3) : LOCAL_BUILT_MODULE suffix variable
 # do not use ifdef with variables inside the function. Use $(if) instead.
 # .LOCAL_STRIP_MODULE is forced to false
+# For a built module, file copied to prebuilt out is LOCAL_INSTALLED_MODULE_STEM
+# For a prebuilt module, file copied to prebuilt out is LOCAL_SRC_FILES
 define external-gather-files
 $(if $(filter $(1),$(_metatarget)), \
     $(eval $(my).$(2).LOCAL_INSTALLED_STEM_MODULES := $($(my).$(2).LOCAL_INSTALLED_STEM_MODULES) $(LOCAL_INSTALLED_MODULE_STEM)) \
@@ -54,21 +49,20 @@ $(if $(filter $(1),$(_metatarget)), \
     $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_INSTALLED_MODULE_STEM := $(strip $(LOCAL_INSTALLED_MODULE_STEM))) \
     $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_CERTIFICATE := $(strip $(notdir $(LOCAL_CERTIFICATE)))) \
     $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(LOCAL_MODULE_PATH))))) \
-    $(eval $(my).copyfiles := $($(my).copyfiles) $(LOCAL_BUILT_MODULE)$(3):$(dir $(my))$(LOCAL_INSTALLED_MODULE_STEM))) \
-$(if $(filter multi_prebuilt,$(_metatarget)), \
-    $(if $(strip $(SAVED_$(2))), \
-        $(eval $(my).$(2).MULTI_PREBUILTS := $($(my).$(2).MULTI_PREBUILTS) $(foreach h,$(SAVED_$(2)),$(notdir $(h)))) \
-        $(eval $(my).copyfiles := $($(my).copyfiles) $(foreach h,$(SAVED_$(2)),$(LOCAL_PATH)/$(h):$(dir $(my))$(notdir $(h)))) \
-        $(if $(findstring HOST,$(2)), \
-            $(eval $(my).MULTI_PREBUILTS.hashosts := yes)) \
-        $(eval SAVED_$(2) :=)))
+    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_SRC_FILES := $(notdir $(LOCAL_SRC_FILES))) \
+    $(if $(filter prebuilt,$(_metatarget)), \
+        $(eval $(my).copyfiles := $($(my).copyfiles) $(foreach h,$(LOCAL_SRC_FILES),$(LOCAL_PATH)/$(LOCAL_SRC_FILES):$(dir $(my))$(notdir $(h)))), \
+        $(eval $(my).copyfiles := $($(my).copyfiles) $(LOCAL_BUILT_MODULE)$(3):$(dir $(my))$(LOCAL_INSTALLED_MODULE_STEM)) \
+    ) \
+)
 endef
 
 define external-phony-package-boilerplate
+  $(call external-echo-makefile, '') \
   $(call external-echo-makefile,'include $$(CLEAR_VARS)') \
-  $(call external-echo-makefile,'LOCAL_MODULE:=$(1)') \
+  $(call external-echo-makefile,'LOCAL_MODULE:=$(strip $(1))') \
   $(call external-echo-makefile,'LOCAL_MODULE_TAGS:=optional') \
-  $(call external-echo-makefile,'LOCAL_REQUIRED_MODULES:=$(2)') \
+  $(call external-echo-makefile,'LOCAL_REQUIRED_MODULES:=$(strip $(2))') \
   $(call external-echo-makefile,'include $$(BUILD_PHONY_PACKAGE)')
 endef
 
@@ -91,25 +85,26 @@ define external-auto-prebuilt-boilerplate
 $(if $(filter %: :%,$(1)), \
   $(error $(LOCAL_PATH): Leading or trailing colons in "$(1)")) \
 $(foreach t,$(1), \
+  $(call external-echo-makefile, '') \
   $(call external-echo-makefile, 'include $$(CLEAR_VARS)') \
-  $(call external-echo-makefile, 'LOCAL_IS_HOST_MODULE:=$(2)') \
-  $(call external-echo-makefile, 'LOCAL_MODULE_CLASS:=$(3)') \
-  $(call external-echo-makefile, 'LOCAL_MODULE_TAGS:=$(4)') \
-  $(call external-echo-makefile, 'OVERRIDE_BUILT_MODULE_PATH:=$(5)') \
-  $(call external-echo-makefile, 'LOCAL_UNINSTALLABLE_MODULE:=$(6)') \
-  $(call external-echo-makefile, 'LOCAL_SRC_FILES:=$(t)') \
+  $(call external-echo-makefile, 'LOCAL_IS_HOST_MODULE:=$(strip $(2))') \
+  $(call external-echo-makefile, 'LOCAL_MODULE_CLASS:=$(strip $(3))') \
+  $(call external-echo-makefile, 'LOCAL_MODULE_TAGS:=$(strip $(4))') \
+  $(call external-echo-makefile, 'OVERRIDE_BUILT_MODULE_PATH:=$(strip $(5))') \
+  $(call external-echo-makefile, 'LOCAL_UNINSTALLABLE_MODULE:=$(strip $(6))') \
+  $(call external-echo-makefile, 'LOCAL_SRC_FILES:=$(strip $(t))') \
   $(if $(7), \
-    $(call external-echo-makefile, 'LOCAL_BUILT_MODULE_STEM:=$(7)') \
+    $(call external-echo-makefile, 'LOCAL_BUILT_MODULE_STEM:=$(strip $(7))') \
    , \
-    $(call external-echo-makefile, 'LOCAL_BUILT_MODULE_STEM:=$(notdir $(t))') \
+    $(call external-echo-makefile, 'LOCAL_BUILT_MODULE_STEM:=$(strip $(notdir $(t)))') \
    ) \
-  $(call external-echo-makefile, 'LOCAL_STRIP_MODULE:=$(8)') \
-  $(call external-echo-makefile, 'LOCAL_MODULE:=$(9)') \
-  $(call external-echo-makefile, 'LOCAL_MODULE_STEM:=$(10)') \
-  $(call external-echo-makefile, 'LOCAL_CERTIFICATE:=$(11)') \
-  $(call external-echo-makefile, 'LOCAL_MODULE_PATH:=$(12)') \
-  $(call external-echo-makefile, 'LOCAL_REQUIRED_MODULES:=$(13)') \
-  $(call external-echo-makefile, 'LOCAL_SHARED_LIBRARIES:=$(14)') \
+  $(call external-echo-makefile, 'LOCAL_STRIP_MODULE:=$(strip $(8))') \
+  $(call external-echo-makefile, 'LOCAL_MODULE:=$(strip $(9))') \
+  $(call external-echo-makefile, 'LOCAL_MODULE_STEM:=$(strip $(10))') \
+  $(call external-echo-makefile, 'LOCAL_CERTIFICATE:=$(strip $(11))') \
+  $(call external-echo-makefile, 'LOCAL_MODULE_PATH:=$(strip $(12))') \
+  $(call external-echo-makefile, 'LOCAL_REQUIRED_MODULES:=$(strip $(13))') \
+  $(call external-echo-makefile, 'LOCAL_SHARED_LIBRARIES:=$(strip $(14))') \
   $(call external-echo-makefile, 'include $$(BUILD_PREBUILT)') \
  )
 endef
