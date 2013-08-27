@@ -103,9 +103,9 @@ $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(ACP) $(EXTERNAL_BUILD_SYSTEM)/generic_rules
 			$(call external-echo-makefile, 'LOCAL_COPY_HEADERS_TO:=$(_to_)') \
 			$(call external-echo-makefile, 'include $$(BUILD_COPY_HEADERS)')))
 	@$(foreach module, $($@.prebuilt), \
-		$(call external-auto-prebuilt-boilerplate,$($@.prebuilt.$(module).LOCAL_SRC_FILES),$($@.prebuilt.$(module).LOCAL_IS_HOST_MODULE),$($@.prebuilt.$(module).LOCAL_MODULE_CLASS),$($@.prebuilt.$(module).LOCAL_MODULE_TAGS),$($@.prebuilt.$(module).OVERRIDE_BUILT_MODULE_PATH),$($@.prebuilt.$(module).LOCAL_UNINSTALLABLE_MODULE),$($@.prebuilt.$(module).LOCAL_BUILT_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_STRIP_MODULE),$(module),$($@.prebuilt.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_CERTIFICATE),$($@.prebuilt.$(module).LOCAL_MODULE_PATH),$($@.prebuilt.$(module).LOCAL_REQUIRED_MODULES),$($@.$(class).$(module).LOCAL_SHARED_LIBRARIES)))
+		$(call external-auto-prebuilt-boilerplate,$($@.prebuilt.$(module).LOCAL_SRC_FILES),$($@.prebuilt.$(module).LOCAL_IS_HOST_MODULE),$($@.prebuilt.$(module).LOCAL_MODULE_CLASS),$($@.prebuilt.$(module).LOCAL_MODULE_TAGS),$($@.prebuilt.$(module).OVERRIDE_BUILT_MODULE_PATH),$($@.prebuilt.$(module).LOCAL_UNINSTALLABLE_MODULE),$($@.prebuilt.$(module).LOCAL_BUILT_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_STRIP_MODULE),$(module),$($@.prebuilt.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_CERTIFICATE),$($@.prebuilt.$(module).LOCAL_MODULE_PATH),$($@.prebuilt.$(module).LOCAL_REQUIRED_MODULES),$($@.prebuilt.$(module).LOCAL_SHARED_LIBRARIES)))
 	@$(foreach module, $($@.PACKAGES.LOCAL_INSTALLED_STEM_MODULES), \
-		$(call external-auto-prebuilt-boilerplate,$(module),,APPS,optional,,,,,$($@.PACKAGES.$(module).LOCAL_MODULE),$($@.PACKAGES.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.PACKAGES.$(module).LOCAL_CERTIFICATE),,$($@.PACKAGES.$(module).LOCAL_REQUIRED_MODULES),$($@.$(class).$(module).LOCAL_SHARED_LIBRARIES)))
+		$(call external-auto-prebuilt-boilerplate,$(module),,APPS,optional,,,,,$($@.PACKAGES.$(module).LOCAL_MODULE),$($@.PACKAGES.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.PACKAGES.$(module).LOCAL_CERTIFICATE),,$($@.PACKAGES.$(module).LOCAL_REQUIRED_MODULES),$($@.PACKAGES.$(module).LOCAL_SHARED_LIBRARIES)))
 	@$(foreach mk, $($@.extramakefile), \
 		cat $(mk) >> $@;)
 	@$(foreach module, $($@.phony), \
@@ -153,6 +153,7 @@ ifneq ($(filter prebuilt,$(_metatarget)),)
    $(my).prebuilt.$(LOCAL_MODULE).LOCAL_INSTALLED_MODULE_STEM := $(strip $(LOCAL_INSTALLED_MODULE_STEM))
    $(my).prebuilt.$(LOCAL_MODULE).LOCAL_CERTIFICATE := $(strip $(notdir $(LOCAL_CERTIFICATE)))
    $(my).prebuilt.$(LOCAL_MODULE).LOCAL_REQUIRED_MODULES := $(strip $(LOCAL_REQUIRED_MODULES))
+   $(my).prebuilt.$(LOCAL_MODULE).LOCAL_SHARED_LIBRARIES := $(strip $(LOCAL_SHARED_LIBRARIES))
    $(my).prebuilt.$(LOCAL_MODULE).LOCAL_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$(PRODUCT_OUT),$(LOCAL_MODULE_PATH))))
 endif
 ifneq ($(filter custom_external,$(_metatarget)),)
