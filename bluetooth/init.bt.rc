@@ -18,13 +18,13 @@ on early-boot
     chmod 0644 /config/bt/bd_addr.conf
     setprop ro.bt.bdaddr_path "/config/bt/bd_addr.conf"
 
-service dhcpcd_bnep0 /system/bin/logwrapper /system/bin/dhcpcd -ABKL
+service dhcpcd_bt-pan /system/bin/logwrapper /system/bin/dhcpcd -ABKL
     class main
     group bluetooth wifi system dhcp
     disabled
     oneshot
 
-service iprenew_bnep0 /system/bin/logwrapper /system/bin/dhcpcd -n
+service iprenew_bt-pan /system/bin/logwrapper /system/bin/dhcpcd -n
     group bluetooth system dhcp
     disabled
     oneshot
