@@ -20,7 +20,7 @@ ifneq (,$(_need_prebuilts))
 # i.e. in multi_prebuilts, you can set LOCAL_PREBUILT_LIBS := <MODULE1>:<file1> <MODULE2>:<file2>
 # this complexifies the implementation too much, so we fallback on the prebuilt backend we already implement
 ifeq (multi_prebuilt,$(_metatarget))
- $(foreach var, LIBS EXECUTABLES LIBRARIES STATIC_JAVA_LIBRARIES,\
+ $(foreach var, LIBS EXECUTABLES JAVA_LIBRARIES STATIC_JAVA_LIBRARIES,\
    $(if $(findstring :,$(LOCAL_PREBUILT_$(var))),\
 	$(eval _metatarget:=)\
 	))
@@ -29,7 +29,7 @@ endif
 ifeq (multi_prebuilt,$(_metatarget))
 # if multi_prebuilt, we need to save the variables, because the original metatarget will
 # call CLEAR_VARS
- $(foreach var, LIBS EXECUTABLES LIBRARIES STATIC_JAVA_LIBRARIES,\
+ $(foreach var, LIBS EXECUTABLES JAVA_LIBRARIES STATIC_JAVA_LIBRARIES,\
    $(if $(LOCAL_PREBUILT_$(var)),\
      $(if $(LOCAL_IS_HOST_MODULE),\
        $(eval SAVED_HOST_$(var) := $(LOCAL_PREBUILT_$(var))),\
