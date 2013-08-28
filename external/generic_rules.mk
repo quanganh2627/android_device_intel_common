@@ -92,7 +92,7 @@ $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(ACP) $(EXTERNAL_BUILD_SYSTEM)/generic_rules
 		$(call external-echo-makefile, 'include $$(BUILD_MULTI_PREBUILT)'))
 	@$(foreach class, LIBS EXECUTABLES JAVA_LIBRARIES STATIC_JAVA_LIBRARIES HOST_LIBS HOST_EXECUTABLES HOST_JAVA_LIBRARIES HOST_STATIC_JAVA_LIBRARIES, \
 		$(foreach module, $($@.$(class).LOCAL_INSTALLED_STEM_MODULES), \
-			$(call external-auto-prebuilt-boilerplate,$(module),$($@.$(class).$(module).LOCAL_IS_HOST_MODULE),$($@.$(class).$(module).LOCAL_MODULE_CLASS),$($@.$(class).$(module).LOCAL_MODULE_TAGS),$($@.$(class).$(module).OVERRIDE_BUILT_MODULE_PATH),$($@.$(class).$(module).LOCAL_UNINSTALLABLE_MODULE),$($@.$(class).$(module).LOCAL_BUILT_MODULE_STEM),$($@.$(class).$(module).LOCAL_STRIP_MODULE),$($@.$(class).$(module).LOCAL_MODULE),$($@.$(class).$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.$(class).$(module).LOCAL_CERTIFICATE),$($@.$(class).$(module).LOCAL_MODULE_PATH),$($@.$(class).$(module).LOCAL_REQUIRED_MODULES))))
+			$(call external-auto-prebuilt-boilerplate,$(module),$($@.$(class).$(module).LOCAL_IS_HOST_MODULE),$($@.$(class).$(module).LOCAL_MODULE_CLASS),$($@.$(class).$(module).LOCAL_MODULE_TAGS),$($@.$(class).$(module).OVERRIDE_BUILT_MODULE_PATH),$($@.$(class).$(module).LOCAL_UNINSTALLABLE_MODULE),$($@.$(class).$(module).LOCAL_BUILT_MODULE_STEM),$($@.$(class).$(module).LOCAL_STRIP_MODULE),$($@.$(class).$(module).LOCAL_MODULE),$($@.$(class).$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.$(class).$(module).LOCAL_CERTIFICATE),$($@.$(class).$(module).LOCAL_MODULE_PATH),$($@.$(class).$(module).LOCAL_REQUIRED_MODULES),$($@.$(class).$(module).LOCAL_SHARED_LIBRARIES))))
 	@$(foreach to, $($@.headers_to), \
 		$(if $(filter _none_,$(to)), \
 			$(eval _to_:=),\
@@ -103,9 +103,9 @@ $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(ACP) $(EXTERNAL_BUILD_SYSTEM)/generic_rules
 			$(call external-echo-makefile, 'LOCAL_COPY_HEADERS_TO:=$(_to_)') \
 			$(call external-echo-makefile, 'include $$(BUILD_COPY_HEADERS)')))
 	@$(foreach module, $($@.prebuilt), \
-		$(call external-auto-prebuilt-boilerplate,$($@.prebuilt.$(module).LOCAL_SRC_FILES),$($@.prebuilt.$(module).LOCAL_IS_HOST_MODULE),$($@.prebuilt.$(module).LOCAL_MODULE_CLASS),$($@.prebuilt.$(module).LOCAL_MODULE_TAGS),$($@.prebuilt.$(module).OVERRIDE_BUILT_MODULE_PATH),$($@.prebuilt.$(module).LOCAL_UNINSTALLABLE_MODULE),$($@.prebuilt.$(module).LOCAL_BUILT_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_STRIP_MODULE),$(module),$($@.prebuilt.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_CERTIFICATE),$($@.prebuilt.$(module).LOCAL_MODULE_PATH),$($@.prebuilt.$(module).LOCAL_REQUIRED_MODULES)))
+		$(call external-auto-prebuilt-boilerplate,$($@.prebuilt.$(module).LOCAL_SRC_FILES),$($@.prebuilt.$(module).LOCAL_IS_HOST_MODULE),$($@.prebuilt.$(module).LOCAL_MODULE_CLASS),$($@.prebuilt.$(module).LOCAL_MODULE_TAGS),$($@.prebuilt.$(module).OVERRIDE_BUILT_MODULE_PATH),$($@.prebuilt.$(module).LOCAL_UNINSTALLABLE_MODULE),$($@.prebuilt.$(module).LOCAL_BUILT_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_STRIP_MODULE),$(module),$($@.prebuilt.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.prebuilt.$(module).LOCAL_CERTIFICATE),$($@.prebuilt.$(module).LOCAL_MODULE_PATH),$($@.prebuilt.$(module).LOCAL_REQUIRED_MODULES),$($@.$(class).$(module).LOCAL_SHARED_LIBRARIES)))
 	@$(foreach module, $($@.PACKAGES.LOCAL_INSTALLED_STEM_MODULES), \
-		$(call external-auto-prebuilt-boilerplate,$(module),,APPS,optional,,,,,$($@.PACKAGES.$(module).LOCAL_MODULE),$($@.PACKAGES.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.PACKAGES.$(module).LOCAL_CERTIFICATE),,$($@.PACKAGES.$(module).LOCAL_REQUIRED_MODULES)))
+		$(call external-auto-prebuilt-boilerplate,$(module),,APPS,optional,,,,,$($@.PACKAGES.$(module).LOCAL_MODULE),$($@.PACKAGES.$(module).LOCAL_INSTALLED_MODULE_STEM),$($@.PACKAGES.$(module).LOCAL_CERTIFICATE),,$($@.PACKAGES.$(module).LOCAL_REQUIRED_MODULES),$($@.$(class).$(module).LOCAL_SHARED_LIBRARIES)))
 	@$(foreach mk, $($@.extramakefile), \
 		cat $(mk) >> $@;)
 	@$(foreach module, $($@.phony), \
