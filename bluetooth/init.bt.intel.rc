@@ -1,3 +1,12 @@
 ########################################################
 #  BLUETOOTH CONFIGURATION - INTEL CWS SPECIFIC
 ########################################################
+# currently keep another driver, for Power On/Off GPIO handling
+########################################################
+on init
+    insmod /lib/modules/bcm_bt_lpm.ko
+
+service rfkill_bt /system/bin/sh /rfkill_bt.sh
+    class core
+    user root
+    oneshot

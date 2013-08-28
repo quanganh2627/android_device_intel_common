@@ -8,6 +8,12 @@ BT_COMMON := $(COMMON)/bluetooth
 
 include $(COMMON)/ComboChipVendor.mk
 
+ifeq ($(COMBO_CHIP_VENDOR), intel) # Intel chip compilation flag
+BOARD_USES_WCS := true
+else
+BOARD_USES_WCS := false
+endif
+
 ##################################################
 
 include $(CLEAR_VARS)
