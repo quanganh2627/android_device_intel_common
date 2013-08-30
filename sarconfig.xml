@@ -4,7 +4,7 @@
     <input name="wifi" class="com.intel.internal.telephony.SARManager.WifiInput"></input>
 
     <!--  3 backoffs levels: 0, 1, 2 -->
-    <output name="cell" class="com.intel.internal.telephony.SARManager.CellOutput"></output>
+    <output name="cell" class="com.intel.internal.telephony.SARManager.CellOutput" notifications="false"></output>
 
     <policy name="default">
         <state name="router">

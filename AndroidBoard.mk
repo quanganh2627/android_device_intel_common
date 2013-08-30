@@ -115,7 +115,7 @@ flashfiles:
 	FLASH_MODEM_DICO=$(BOARD_MODEM_DICO) \
 	ULPMC_BINARY=$(ULPMC_BINARY) \
 	SPARSE_DISABLED=$(TARGET_USERIMAGES_SPARSE_EXT_DISABLED) \
-	$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG)
+	$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
 
 ifneq ($(FLASHFILE_BOOTONLY),true)
 blank_flashfiles: firmware
@@ -125,15 +125,13 @@ else
 blank_flashfiles: recoveryimage
 endif
 blank_flashfiles:
-	$(if $(IFWI_PREBUILT_PATHS), \
-		PUBLISH_PATH=$(PUBLISH_PATH) \
-		TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
-		GENERIC_TARGET_NAME=$(GENERIC_TARGET_NAME) \
-		TARGET_USE_DROIDBOOT=$(TARGET_USE_DROIDBOOT) \
-		FRU_CONFIGS=$(FRU_CONFIGS) \
-		ULPMC_BINARY=$(ULPMC_BINARY) \
-		$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) 'blankphone' $(FILE_NAME_TAG), \
-		@echo "No IFWI found for this target. No blank flashfile to generate")
+	PUBLISH_PATH=$(PUBLISH_PATH) \
+	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
+	GENERIC_TARGET_NAME=$(GENERIC_TARGET_NAME) \
+	TARGET_USE_DROIDBOOT=$(TARGET_USE_DROIDBOOT) \
+	FRU_CONFIGS=$(FRU_CONFIGS) \
+	ULPMC_BINARY=$(ULPMC_BINARY) \
+	$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) 'blankphone' $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
 else
 blank_flashfiles:
 	@echo "No blank_flashfiles for this target - FLASHFILE_BOOTONLY set to TRUE"
@@ -159,7 +157,7 @@ publish_modem:
 	FLASH_MODEM_DICO=$(BOARD_MODEM_DICO) \
 	BOARD_MODEM_FLASHLESS=$(BOARD_MODEM_FLASHLESS) \
 	SKIP_NVM=$(BOARD_SKIP_NVM) \
-	$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) 'modem' $(FILE_NAME_TAG)
+	$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) 'modem' $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
 
 publish_system_symbols: systemtarball
 	@ echo "Publish system symbols"

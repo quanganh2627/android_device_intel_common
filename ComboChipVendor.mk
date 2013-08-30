@@ -28,10 +28,11 @@ COMBO_CHIP_VENDOR:=bcm
     ifneq (,$(filter wifi_bcm_4334x,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
     COMBO_CHIP:=bcm4334x
     endif
+endif
 
-else ifneq (,$(filter lightning_peak,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+ifneq (,$(filter wifi_lightning_peak,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
 COMBO_CHIP_VENDOR:=intel
-COMBO_CHIP:=lightning_peak
+COMBO_CHIP:=xmm
 endif
 
 ifneq (,$(filter wifi_bigcore,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))

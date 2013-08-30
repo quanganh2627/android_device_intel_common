@@ -25,10 +25,6 @@ PRODUCT_PACKAGES += \
     SpeechRecorder
 endif
 
-#Add ccf App
-PRODUCT_PACKAGES += \
-    CC3
-
 # copy boot animation resources
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/bootanimation.zip:system/media/bootanimation.zip
@@ -136,9 +132,17 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
      PSI_Recorder
 endif
 
+# AudioToolBox (for eng builds)
+ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng"))
+ PRODUCT_PACKAGES += \
+     AudioToolBox
+endif
+
 # network (wifi, bt) data dump (tcpdump is present only in eng. builds)
 ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
  PRODUCT_COPY_FILES += \
      $(COMMON_PATH)/init.dump.rc:root/init.dump.rc
 endif
 
+# AMTL unified configuration
+-include vendor/intel/tools/log_capture/amtl/src/com/intel/amtl/config_catalog/amtl.mk

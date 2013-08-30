@@ -55,6 +55,10 @@ ifneq (,$(filter wifi_bcm_4334x,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)
   include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd4334x.mk
 endif
 
+ifneq (,$(filter wifi_lightning_peak,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+  include $(TOP)/vendor/intel/hardware/PRIVATE/intel_cws/iwlwifi/iwl-stack-dev/Androidiwlwifi.mk
+endif
+
 ####################################
 # Configuration files
 ####################################
