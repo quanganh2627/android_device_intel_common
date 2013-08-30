@@ -25,10 +25,6 @@ PRODUCT_PACKAGES += \
     SpeechRecorder
 endif
 
-#Add ccf App
-PRODUCT_PACKAGES += \
-    CC3
-
 # copy boot animation resources
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/bootanimation.zip:system/media/bootanimation.zip
