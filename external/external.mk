@@ -29,30 +29,37 @@ endef
 # $(1) : metatarget
 # $(2) : MULTI_PREBUILT variable
 # $(3) : LOCAL_BUILT_MODULE suffix variable
-# do not use ifdef with variables inside the function. Use $(if) instead.
+#
 # .LOCAL_STRIP_MODULE is forced to false
+#
 # For a built module, file copied to prebuilt out is LOCAL_INSTALLED_MODULE_STEM
 # For a prebuilt module, file copied to prebuilt out is LOCAL_SRC_FILES
+#
+# Two modules can have identical LOCAL_MODULE (e.g. target and host modules)
+# or same LOCAL_MODULE_STEM with 2 different LOCAL_MODULE.
+# To be sure to use a unique key when gathering files,
+# the key used is $(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM)
+#
 define external-gather-files
 $(if $(filter $(1),$(_metatarget)), \
-    $(eval $(my).$(2).LOCAL_INSTALLED_STEM_MODULES := $($(my).$(2).LOCAL_INSTALLED_STEM_MODULES) $(LOCAL_INSTALLED_MODULE_STEM)) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE := $(strip $(LOCAL_MODULE))) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_IS_HOST_MODULE := $(strip $(LOCAL_IS_HOST_MODULE))) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_CLASS := $(strip $(LOCAL_MODULE_CLASS))) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_TAGS := $(strip $(LOCAL_MODULE_TAGS))) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).OVERRIDE_BUILT_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(OVERRIDE_BUILT_MODULE_PATH))))) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_UNINSTALLABLE_MODULE := $(strip $(LOCAL_UNINSTALLABLE_MODULE))) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_BUILT_MODULE_STEM := $(strip $(LOCAL_BUILT_MODULE_STEM))) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_STRIP_MODULE := ) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_REQUIRED_MODULES := $(strip $(LOCAL_REQUIRED_MODULES))) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_SHARED_LIBRARIES := $(strip $(LOCAL_SHARED_LIBRARIES))) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_INSTALLED_MODULE_STEM := $(strip $(LOCAL_INSTALLED_MODULE_STEM))) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_CERTIFICATE := $(strip $(notdir $(LOCAL_CERTIFICATE)))) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(LOCAL_MODULE_PATH))))) \
-    $(eval $(my).$(2).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_SRC_FILES := $(notdir $(LOCAL_SRC_FILES))) \
+    $(eval $(my).$(module_type).$(2).LOCAL_INSTALLED_STEM_MODULES := $($(my).$(module_type).$(2).LOCAL_INSTALLED_STEM_MODULES) $(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM)) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE := $(strip $(LOCAL_MODULE))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_IS_HOST_MODULE := $(strip $(LOCAL_IS_HOST_MODULE))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_CLASS := $(strip $(LOCAL_MODULE_CLASS))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_TAGS := $(strip $(LOCAL_MODULE_TAGS))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).OVERRIDE_BUILT_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(OVERRIDE_BUILT_MODULE_PATH))))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_UNINSTALLABLE_MODULE := $(strip $(LOCAL_UNINSTALLABLE_MODULE))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_BUILT_MODULE_STEM := $(strip $(LOCAL_BUILT_MODULE_STEM))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_STRIP_MODULE := ) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_REQUIRED_MODULES := $(strip $(LOCAL_REQUIRED_MODULES))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_SHARED_LIBRARIES := $(strip $(LOCAL_SHARED_LIBRARIES))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_INSTALLED_MODULE_STEM := $(strip $(LOCAL_INSTALLED_MODULE_STEM))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_CERTIFICATE := $(strip $(notdir $(LOCAL_CERTIFICATE)))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(LOCAL_MODULE_PATH))))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_SRC_FILES := $(notdir $(LOCAL_SRC_FILES))) \
     $(if $(filter prebuilt,$(_metatarget)), \
-        $(eval $(my).copyfiles := $($(my).copyfiles) $(foreach h,$(LOCAL_SRC_FILES),$(LOCAL_PATH)/$(LOCAL_SRC_FILES):$(dir $(my))$(notdir $(h)))), \
-        $(eval $(my).copyfiles := $($(my).copyfiles) $(LOCAL_BUILT_MODULE)$(3):$(dir $(my))$(LOCAL_INSTALLED_MODULE_STEM)) \
+        $(eval $(my).copyfiles := $($(my).copyfiles) $(foreach h,$(LOCAL_SRC_FILES),$(LOCAL_PATH)/$(LOCAL_SRC_FILES):$(dir $(my))$(module_type)/$(notdir $(h)))), \
+        $(eval $(my).copyfiles := $($(my).copyfiles) $(LOCAL_BUILT_MODULE)$(3):$(dir $(my))$(module_type)/$(LOCAL_INSTALLED_MODULE_STEM)) \
     ) \
 )
 endef

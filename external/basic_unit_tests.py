@@ -47,10 +47,15 @@ class TestExternalPrebuiltFramework(unittest.TestCase):
             expectedExternalFiles = f.readlines()
         self.assertTrue(expectedExternalFiles)
         expectedExternalFiles = [f.strip() for f in expectedExternalFiles]
-        generatedFiles = glob.glob(os.path.join(prebuiltOut, "*"))
+        generatedFiles = []
+        for root, _, filenames in os.walk(prebuiltOut):
+            for filename in filenames:
+                generatedFiles.append(os.path.join(root, filename))
+        # generatedFiles contains absolute path. Removing prebuiltOut from generatedFiles
+        # for doing the check:
+        generatedFiles = [filename.replace(prebuiltOut, '') for filename in generatedFiles]
         self.assertTrue(generatedFiles)
-        generatedFiles = [os.path.basename(f) for f in generatedFiles]
-        self.assertEqual(set(generatedFiles), set(expectedExternalFiles))
+        self.assertEqual(set(expectedExternalFiles), set(generatedFiles))
 
         # Check generated Android.mk in prebuilt out
         generatedMakefile = os.path.join(prebuiltOut,
@@ -71,21 +76,30 @@ class TestExternalPrebuiltFramework(unittest.TestCase):
         testPath = "vendor/intel/hardware/PRIVATE/platform_test/external/testNominal/"
         self.checkOnePath(testPath)
 
-    def testExternalSameModuleNamePass(self):
+    def testExternalSameModuleNameSharedStatic(self):
         # shared and static livraries with same name
-        testPath = "vendor/intel/hardware/PRIVATE/platform_test/external/testSameModulePass/"
+        testPath = "vendor/intel/hardware/PRIVATE/platform_test/external/testSameModuleSharedStatic/"
         self.checkOnePath(testPath)
 
-    def testExternalSameModuleNameFail(self):
-        # shared and host libraries with same name are curerntly not supported.
-        # An error must be raised by the framework
-        testPath = "vendor/intel/hardware/PRIVATE/platform_test/external/testSameModuleFail/"
-        try:
-            self.checkOnePath(testPath)
-        except Exception:
-            pass
-        else:
-            self.fail("Test should fail")
+    def testExternalSameModuleNameTargetHost(self):
+        # shared and host libraries with same name
+        testPath = "vendor/intel/hardware/PRIVATE/platform_test/external/testSameModuleTargetHost/"
+        self.checkOnePath(testPath)
+
+    def testExternalPhony(self):
+        # test phony package
+        testPath = "vendor/intel/hardware/PRIVATE/platform_test/external/testPhony/"
+        self.checkOnePath(testPath)
+
+    def testExternalCopyFiles(self):
+        # test copy files metatarget
+        testPath = "vendor/intel/hardware/PRIVATE/platform_test/external/testCopyFiles/"
+        self.checkOnePath(testPath)
+
+    def testExternalCustom(self):
+        # test inclusion of external extra makefile
+        testPath = "vendor/intel/hardware/PRIVATE/platform_test/external/testCustomMakefile/"
+        self.checkOnePath(testPath)
 
 
 def main():
