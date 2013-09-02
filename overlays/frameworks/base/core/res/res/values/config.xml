@@ -44,4 +44,6 @@
     <string-array translatable="false" name="config_tether_bluetooth_regexs">
         <item>"bt-pan"</item>
     </string-array>
+    <!-- Controls whether window orientation should use non-polling mode accelerometer. -->
+    <bool name="config_nonPollingWindowOrientation">true</bool>
 </resources>
