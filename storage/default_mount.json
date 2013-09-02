@@ -5,12 +5,12 @@
 			"fstab_file": "root/fstab.$model",
 			"recovery_fstab_dest_file": null,
 			"mount": [
-				"factory",
 				"system",
 				"cache",
 				"config",
 				"data",
-				"logs"
+				"logs",
+				"factory"
 				]
 		},
 
