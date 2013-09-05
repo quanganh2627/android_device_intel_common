@@ -39,7 +39,10 @@ include $(BUILD_PREBUILT)
 # MKBOOTIMG is the tool that is used by AOSP build system to
 # stitch kernel. We overide the default script to
 # adapt to out own IAFW format.
+ifeq ($(TARGET_PARTITIONING_SCHEME),"osip-gpt")
 MKBOOTIMG := vendor/intel/support/mkbootimg
+endif
+
 # Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
 # Add dependancy on ISU packages only if ISU method is used as ISU might not be delivered.
 ifeq ($(TARGET_OS_SIGNING_METHOD),ISU)
