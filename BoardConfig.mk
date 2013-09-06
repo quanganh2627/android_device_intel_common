@@ -75,7 +75,11 @@ $(call add-path-map, stlport:external/stlport/stlport \
         libpcap:external/libpcap \
         libsensorhub:vendor/intel/hardware/libsensorhub/src/include \
         icu4c-i18n:external/icu4c/i18n \
-        bt-bluez:system/bluetooth/bluez-clean-headers)
+        bt-bluez:system/bluetooth/bluez-clean-headers \
+        astl:external/astl/include \
+        libusb:external/libusb/libusb \
+        libc-kernel:bionic/libc/kernel \
+        libc-x86:bionic/libc/arch-x86/include)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
