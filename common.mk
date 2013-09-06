@@ -25,6 +25,10 @@ PRODUCT_PACKAGES += \
     SpeechRecorder
 endif
 
+#Add ccf App
+PRODUCT_PACKAGES += \
+    CC3
+
 # copy boot animation resources
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/bootanimation.zip:system/media/bootanimation.zip
@@ -144,5 +148,3 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
      $(COMMON_PATH)/init.dump.rc:root/init.dump.rc
 endif
 
-# AMTL unified configuration
--include vendor/intel/tools/log_capture/amtl/src/com/intel/amtl/config_catalog/amtl.mk
