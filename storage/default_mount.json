@@ -47,6 +47,15 @@
 				"factory",
 				"config"
 				]
+		},
+
+		"ramconsole": {
+			"fstab_file": "root/fstab.ramconsole.$model",
+			"recovery_fstab_dest_file": null,
+			"mount": [
+				"system",
+				"logs"
+				]
 		}
 	}
 }
