@@ -39,25 +39,6 @@ ifneq (,$(filter wifi_ti,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
   include $(TOP)/hardware/ti/wlan/wl12xx-compat/AndroidWl12xxCompat.mk
 endif
 
-ifneq ($(BOARD_HAVE_KNEXT),true)
-ifneq (,$(filter wifi_bcm_43241,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd43241.mk
-endif
-
-ifneq (,$(filter wifi_bcm_4334,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd4334.mk
-endif
-
-ifneq (,$(filter wifi_bcm_4335 wifi_bcm_4339,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd4335.mk
-endif
-
-ifneq (,$(filter wifi_bcm_4334x,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd4334x.mk
-endif
-
-endif
-
 ifneq (,$(filter wifi_lightning_peak,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
   include $(TOP)/vendor/intel/hardware/PRIVATE/intel_cws/iwlwifi/iwl-stack-dev/Androidiwlwifi.mk
 endif
