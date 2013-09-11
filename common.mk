@@ -62,7 +62,7 @@ HOUDINI_ARM_PREBUILTS_DIR := vendor/intel/houdini/arm
 houdini_prebuilt_stamp := $(HOUDINI_ARM_PREBUILTS_DIR)/stamp-prebuilt-done
 houdini_prebuilt_done := $(wildcard $(houdini_prebuilt_stamp))
 ifneq ($(houdini_prebuilt_done),)
-INTEL_HOUDINI := true
+INTEL_HOUDINI := false
 #Houdini
 PRODUCT_PACKAGES += libhoudini \
     houdini \
