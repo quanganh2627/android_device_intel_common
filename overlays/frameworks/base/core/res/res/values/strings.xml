@@ -76,4 +76,72 @@
     <!-- Text for message for an unknown external media state [CHAR LIMIT=NONE] -->
     <string name="media_unknown_state">External media in unknown state.</string>
 
+    <string name="tethered_notification_title">Tethering active</string>
+
+    <!-- When the lock screen is showing, the phone is plugged in, but the phone is not charging, say that it is not charging. -->
+    <add-resource type="string" name="lockscreen_not_charging" />
+    <string name="lockscreen_not_charging">Plugged in, not charging</string>
+    <!-- When the phone is network PUK locked -->
+    <add-resource type="string" name="lockscreen_network_puk_locked_message" />
+    <string name="lockscreen_network_puk_locked_message">Network PUK locked, Please contact Customer Care</string>
+
+    <add-resource type="string" name="lockscreen_network_puk_locked_instructions" />
+    <string name="lockscreen_network_puk_locked_instructions">Please contact Customer Care.</string>
+
+    <!-- Message of notification shown when errors happened on USB -->
+    <add-resource type="string" name="usb_warn_device_not_support" />
+    <string name="usb_warn_device_not_support">Warning: USB Device is not supported</string>
+
+    <add-resource type="string" name="usb_warn_device_not_responding" />
+    <string name="usb_warn_device_not_responding">Warning: USB Device is not responding</string>
+
+    <add-resource type="string" name="usb_warn_device_vbus_invalid_title" />
+    <string name="usb_warn_device_vbus_invalid_title">Warning: Overcurrent on USB port</string>
+
+    <add-resource type="string" name="usb_warn_device_vbus_invalid_message" />
+    <string name="usb_warn_device_vbus_invalid_message">Pls replug USB cable with high battery level to recover</string>
+
+    <add-resource type="string" name="usb_warn_hub_max_tier" />
+    <string name="usb_warn_hub_max_tier">Warning: USB Hub nested too deep</string>
+
+    <add-resource type="string" name="usb_warn_insufficient_power_title" />
+    <string name="usb_warn_insufficient_power_title">Warning: Insufficient power on USB Bus</string>
+
+    <add-resource type="string" name="usb_warn_insufficient_power_message" />
+    <string name="usb_warn_insufficient_power_message">Please use USB self power hub to avoid this issue</string>
+
+    <add-resource type="string" name="usb_warn_host_onemore_ums_device_title" />
+    <string name="usb_warn_host_onemore_ums_device_title">Warning: One more MSC devices attached</string>
+
+    <add-resource type="string" name="usb_warn_host_onemore_ums_device_message" />
+    <string name="usb_warn_host_onemore_ums_device_message">Warning: only one USB Mass Storage device can be used</string>
+
+    <add-resource type="string" name="usb_warn_usb_not_work_title" />
+    <string name="usb_warn_usb_not_work_title">Warning: Insufficient battery for plugged USB device</string>
+
+    <add-resource type="string" name="usb_warn_usb_not_work_message" />
+    <string name="usb_warn_usb_not_work_message">Please charge the device to high battery level and try again</string>
+
+    <add-resource type="string" name="usb_warn_usb_vbus_warn_title" />
+    <string name="usb_warn_usb_vbus_warn_title">Warning: Shorten battery life</string>
+
+    <add-resource type="string" name="usb_warn_usb_vbus_warn_message" />
+    <string name="usb_warn_usb_vbus_warn_message">Plugged USB device will Shorten battery life</string>
+
+    <add-resource type="string" name="hotspot_active" />
+    <string name="hotspot_active">"Hotspot active"</string>
+
+    <add-resource type="string" name="hotspot_no_connections" />
+    <string name="hotspot_no_connections">"No hotspot devices connected"</string>
+
+    <add-resource type="string" name="hotspot_multiple_devices_connected" />
+    <string name="hotspot_multiple_devices_connected">%d devices connected</string>
+
+    <add-resource type="string" name="hotspot_device_connected" />
+    <string name="hotspot_device_connected">Device connected to hotspot</string>
+
+    <add-resource type="string" name="hotspot_device_disconnected" />
+    <string name="hotspot_device_disconnected">Device disconnected from hotspot</string>
+
+
 </resources>
