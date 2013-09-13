@@ -26,6 +26,8 @@ INTEL_INGREDIENTS_VERSIONS := true
 INTEL_CAMERA := false
 INTEL_TEST_CAMERA := true
 
+BOARD_GPFLAG := 0x80000045
+
 ifneq ($(wildcard $(TOP)/vendor/intel/PRIVATE/cert/testkey*),)
 PRODUCT_DEFAULT_DEV_CERTIFICATE :=  $(TOP)/vendor/intel/PRIVATE/cert/testkey
 endif
@@ -133,10 +135,13 @@ ifeq ($(TARGET_MAKE_INTEL_BOOTIMAGE),true)
 INSTALLED_BOOTIMAGE_TARGET := $(PRODUCT_OUT)/boot.img
 
 MAKE_NO_DEFAULT_BOOTIMAGE_ITEMS = $(MKBOOTIMG) \
-	$(INTERNAL_BOOTIMAGE_FILES)
+	$(INTERNAL_BOOTIMAGE_FILES) \
+	$(PRODUCT_OUT)/bootstub
+
 # CAUTION: DO NOT CHANGE the flavor of COMMON_BOOTIMAGE_ARGS.  It must remain
 # a recursively-expanded variable, i.e., it must be defined using the '=' sign.
-COMMON_BOOTIMAGE_ARGS = --sign-with $(TARGET_OS_SIGNING_METHOD)
+COMMON_BOOTIMAGE_ARGS = --sign-with $(TARGET_OS_SIGNING_METHOD) \
+	--bootstub $(PRODUCT_OUT)/bootstub
 MAKE_NO_DEFAULT_BOOTIMAGE = $(MKBOOTIMG) \
 	$(COMMON_BOOTIMAGE_ARGS) \
 	$(INTERNAL_BOOTIMAGE_ARGS) \

@@ -233,11 +233,20 @@ struct atomisp_de_config {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int c2_coring_threshold;
 };
+#ifdef ATOMISP_CSS2
 struct atomisp_ce_config {
- unsigned char uv_level_min;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+ unsigned char uv_level_min;
  unsigned char uv_level_max;
 };
+#else
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+struct atomisp_ce_config {
+ unsigned int uv_level_min;
+ unsigned int uv_level_max;
+};
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+#endif
 struct atomisp_dp_config {
  unsigned int threshold;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
