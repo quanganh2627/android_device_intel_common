@@ -94,12 +94,6 @@ on charger
     # reset counter watchdog at the end of system boot
     write /sys/devices/virtual/misc/watchdog/counter "0"
 
-    # atomisp needs to be loaded to power down camera so that device can enter
-    # s0i3 in COS mode. The modules depended by atomisp driver are loaded on
-    # "on init" trigger from init.avc.rc". atomisp driver can be loaded only
-    # after file system is ready so that load firmware call succeeds.
-    insmod /lib/modules/atomisp.ko
-
 service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
     class core
     oneshot
