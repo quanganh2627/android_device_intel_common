@@ -16,23 +16,6 @@ on post-fs-data
     mkdir /logs/modemcrash 0775 system system
     mkdir /logs/aplogs 0775 system log
 
-    # Collect emmc ipanic data, free resources and re-arm trigger
-    copy /proc/emmc_ipanic_console /data/dontpanic/emmc_ipanic_console
-    chown root log /data/dontpanic/emmc_ipanic_console
-    chmod 0640 /data/dontpanic/emmc_ipanic_console
-
-    copy /proc/emmc_ipanic_threads /data/dontpanic/emmc_ipanic_threads
-    chown root log /data/dontpanic/emmc_ipanic_threads
-    chmod 0640 /data/dontpanic/emmc_ipanic_threads
-
-    #you must enable next line when you don`t use crashlogd
-    #write /proc/emmc_ipanic_console 1
-
-    # Collect fabric error data, free resources and re-arm trigger
-    copy /proc/ipanic_fabric_err /data/dontpanic/ipanic_fabric_err
-    chown root log /data/dontpanic/ipanic_fabric_err
-    chmod 0640 /data/dontpanic/ipanic_fabric_err
-
 on charger
     # basic networking for "adb root"
     ifup lo
