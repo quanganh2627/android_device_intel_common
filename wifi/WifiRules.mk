@@ -39,7 +39,7 @@ ifneq (,$(filter wifi_ti,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
   include $(TOP)/hardware/ti/wlan/wl12xx-compat/AndroidWl12xxCompat.mk
 endif
 
-ifeq (, $(filter %_next, $(TARGET_PRODUCT)))
+ifneq ($(BOARD_HAVE_KNEXT),true)
 ifneq (,$(filter wifi_bcm_43241,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
   include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd43241.mk
 endif

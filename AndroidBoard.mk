@@ -185,7 +185,7 @@ endif
 
 # Add sepdk driver
 ifneq ($(BOARD_USE_64BIT_KERNEL),true)
-ifeq (, $(findstring next, $(TARGET_PRODUCT)))
+ifneq ($(BOARD_HAVE_KNEXT),true)
 #only build if the target is not kernel-next based
 # sepdk and vTunes
 -include $(TOP)/vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
