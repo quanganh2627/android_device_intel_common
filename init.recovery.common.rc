@@ -1,4 +1,5 @@
-# Common init.rc directives that apply for *ALL* Intel projects.
+# Common init.rc directives that apply for *ALL* Intel projects
+# inside the Recovery Console environment.
 # Be very careful what you put in here; it may more
 # properly belong in a platform or product-specifc
 # init.rc, or a mix-in
@@ -7,10 +8,6 @@
 # explaining why it is necessary
 
 on init
-	# Contains unit-specific data provided during device provisioning.
-	# This includes factory.prop which is automatically read by init
-	mkdir /factory 0770 system system
-
 	# Android creates by-name disk links with the disk controller
 	# in the generated path, so that the names pulled out of the GPT
 	# can be associated with the correct disk. Create a shortcut to
@@ -20,16 +17,4 @@ on init
 	# Associate the specific device node use for the SD card with
 	# the stable symlink 'sdcard'. If this isn't set nothing happens.
 	symlink /dev/block/${ro.boot.sdcard} /dev/block/sdcard
-
-on fs
-	# ro.boot.hardware = TARGET_PRODUCT (set in kernel command line
-	# as androidboot.hardware). Mount all the filesystems as specified
-	# in the fstab.
-	mount_all /fstab.${ro.boot.hardware}
-
-on post-fs
-	# trigger block devices uevents to fire some "add" uevents to poke ueventd to
-	# start deferred module loading. System partition must be ready prior to
-	# this point. The correct sequence should be guaranteed by this rc file.
-	coldboot /sys/block
 

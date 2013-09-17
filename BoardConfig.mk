@@ -5,6 +5,8 @@
 
 LOCAL_PATH := device/intel/common
 
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery.fstab
+
 # Location of kernel headers for all Intel projects
 TARGET_BOARD_KERNEL_HEADERS := $(LOCAL_PATH)/kernel-headers
 
