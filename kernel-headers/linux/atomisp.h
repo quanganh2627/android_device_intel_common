@@ -357,6 +357,9 @@ struct atomisp_gamma_table {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define ATOMISP_MORPH_TABLE_NUM_PLANES 6
 struct atomisp_morph_table {
+#ifdef ATOMISP_CSS2
+ unsigned int enabled;
+#endif
  unsigned int height;
  unsigned int width;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
