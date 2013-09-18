@@ -185,6 +185,8 @@ endif
 
 # Add sepdk driver
 ifneq ($(BOARD_USE_64BIT_KERNEL),true)
+ifeq (, $(findstring next, $(TARGET_PRODUCT)))
+#only build if the target is not kernel-next based
 # sepdk and vTunes
 -include $(TOP)/vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
 -include $(TOP)/linux/modules/debug_tools/vtunedk/src/pax/AndroidPAX.mk
@@ -198,4 +200,5 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 -include $(TOP)/vendor/intel/hardware/PRIVATE/monitor/ksrc/AndroidKCT.mk
 endif
 
+endif
 endif
