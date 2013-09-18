@@ -5,10 +5,16 @@
 
 # Note: we use by-name symlinks here. You need to set androidboot.disk and
 # androidboot.sdcard in your kernel command line so that the right symlinks
-# in init.common.rc and init.recovery.common.rc are created.
+# in init.common.rc and init.recovery.common.rc are created. If you use the
+# Iago installer & Gummiboot this is already done for you.
 
-/dev/block/by-name/android_system       /system     ext4    ro                wait
-/dev/block/by-name/android_cache        /cache      ext4    nosuid,nodev      wait
-/dev/block/by-name/android_data         /data       ext4    nosuid,nodev      wait,encryptable=footer
-/dev/block/by-name/android_factory      /factory    ext4    ro                wait
+/dev/block/by-name/android_system       /system         ext4    ro                                                          wait
+/dev/block/by-name/android_factory      /factory        ext4    ro                                                          wait
+/dev/block/by-name/android_cache        /cache          ext4    noatime,nosuid,nodev,nomblk_io_submit,errors=panic          wait,check
+/dev/block/by-name/android_data         /data           ext4    noatime,nosuid,nodev,nomblk_io_submit,errors=panic          wait,check,encryptable=/dev/block/by-name/metadata
+/dev/block/by-name/android_boot         /boot           emmc    defaults                                                    defaults
+/dev/block/by-name/android_recovery     /recovery       emmc    defaults                                                    defaults
+/dev/block/by-name/android_misc         /misc           emmc    defaults                                                    defaults
+/dev/block/by-name/android_bootloader   /bootloader     vfat    defaults                                                    defaults
+/dev/block/by-name/android_bootloader2  /bootloader2    vfat    defaults                                                    defaults
 
