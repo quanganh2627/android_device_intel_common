@@ -47,4 +47,4 @@ service gpscerd /system/bin/gpscerd /data/gps/gps.cer
 service gpsd /system/bin/gpsd -c /system/etc/gps.xml
     class main
     user gps
-    group system inet sdcard_rw
+    group system inet radio sdcard_rw
