@@ -148,3 +148,15 @@ endif
 
 # AMTL unified configuration
 -include vendor/intel/tools/log_capture/amtl/src/com/intel/amtl/config_catalog/amtl.mk
+
+# Arkham
+PRODUCT_PACKAGES += \
+    com.intel.config \
+    com.intel.config.xml \
+    com.intel.arkham.services \
+    com.intel.arkham.services.xml \
+    ContainerDeviceAdmin \
+    ContainerLauncher \
+    MDM_Test
+PRODUCT_PACKAGES_ENG += \
+    cm

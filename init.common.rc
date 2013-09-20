@@ -12,7 +12,7 @@ on init
     write /sys/class/android_usb/android0/iSerial ${ro.serialno}
 
 # setup the global environment
-    export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/com.intel.multidisplay.jar:/system/framework/com.intel.asf.jar
+    export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/com.intel.multidisplay.jar:/system/framework/com.intel.config.jar:/system/framework/com.intel.asf.jar
 
 on boot
     chown system system /dev/pvr_sync
@@ -76,6 +76,9 @@ on post-fs-data
     setprop persist.thermal.shutdown.vibra 1
     setprop persist.thermal.shutdown.tone 1
 
+    # for Arkham
+    mkdir /data/containers 0771 system system
+
 on charger
     chown system system /dev/dri/card0
     chmod 0666 /dev/dri/card0
@@ -93,12 +96,6 @@ on charger
 
     # reset counter watchdog at the end of system boot
     write /sys/devices/virtual/misc/watchdog/counter "0"
-
-    # atomisp needs to be loaded to power down camera so that device can enter
-    # s0i3 in COS mode. The modules depended by atomisp driver are loaded on
-    # "on init" trigger from init.avc.rc". atomisp driver can be loaded only
-    # after file system is ready so that load firmware call succeeds.
-    insmod /lib/modules/atomisp.ko
 
 service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
     class core

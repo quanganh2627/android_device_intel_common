@@ -18,7 +18,10 @@ LOCAL_REQUIRED_MODULES :=          \
     android.conf                   \
     dhcp_lease_evt.sh              \
     dhcp6c.wlan0.stateless.conf    \
-    dhcp6c.wlan0.stateful.conf
+    dhcp6c.wlan0.stateful.conf     \
+    wpa_supplicant.conf            \
+    p2p_supplicant.conf            \
+    hostapd.conf
 
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 LOCAL_REQUIRED_MODULES += wifi_wfa
