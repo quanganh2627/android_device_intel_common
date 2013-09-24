@@ -8,6 +8,8 @@ $(call add-mixin-basedir, device/intel/mixins)
 
 LOCAL_PATH := device/intel/common
 
+PRODUCT_MANUFACTURER := Intel
+
 PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/bootanimation.zip:system/media/bootanimation.zip \
 	$(LOCAL_PATH)/init.common.rc:root/init.common.rc \
