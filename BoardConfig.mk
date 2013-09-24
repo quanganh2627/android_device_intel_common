@@ -195,9 +195,11 @@ include device/intel/common/gps/GpsBoardConfig.mk
 #
 # SPID format :
 #        vend:cust:manu:plat:prod:hard
-SPID ?= "xxxx:xxxx:xxxx:xxxx:xxxx:xxxx"
-
-cmdline_extra += androidboot.spid=$(SPID)
+USE_SPID ?= true
+ifeq ($(USE_SPID), true)
+	SPID ?= "xxxx:xxxx:xxxx:xxxx:xxxx:xxxx"
+	cmdline_extra += androidboot.spid=$(SPID)
+endif
 
 USE_BL_SERIALNO ?= false
 ifeq ($(USE_BL_SERIALNO), false)
