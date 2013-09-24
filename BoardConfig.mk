@@ -20,6 +20,8 @@ BOARD_KERNEL_CMDLINE += \
 	loglevel=$(KERNEL_LOGLEVEL) \
 	androidboot.hardware=$(TARGET_PRODUCT)
 
+TARGET_CPU_SMP := true
+
 # If signing kernel modules, use the testing BIOS DB key
 # Production builds will re-sign them via sign_target_files_apks
 TARGET_MODULE_PRIVATE_KEY := device/intel/common/testkeys/bios/DB.key
