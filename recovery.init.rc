@@ -1,5 +1,6 @@
 import /recovery.init.${ro.hardware}.rc
-import init.recovery.debug.rc
+import /recovert.init.next.rc
+import /init.recovery.debug.rc
 import /init.watchdog.rc
 
 on early-init
