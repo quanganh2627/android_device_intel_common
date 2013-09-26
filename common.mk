@@ -167,3 +167,9 @@ PRODUCT_PACKAGES += \
     ContainerLauncher
 PRODUCT_PACKAGES_ENG += \
     cm
+
+# CAM
+PRODUCT_PACKAGES += \
+    cam_mandatory
+
+
