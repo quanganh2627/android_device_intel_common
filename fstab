@@ -15,6 +15,7 @@
 /dev/block/by-name/android_boot         /boot           emmc    defaults                                   defaults
 /dev/block/by-name/android_recovery     /recovery       emmc    defaults                                   defaults
 /dev/block/by-name/android_misc         /misc           emmc    defaults                                   defaults
-/dev/block/by-name/android_bootloader   /bootloader     vfat    defaults                                   defaults
-/dev/block/by-name/android_bootloader2  /bootloader2    vfat    defaults                                   defaults
+/dev/block/by-name/android_bootloader   /bootloader     vfat    defaults                                   recoveryonly
+/dev/block/by-name/android_bootloader2  /bootloader2    vfat    defaults                                   recoveryonly
+/dev/block/by-name/android_fastboot     /fastboot       emmc    defaults                                   defaults
 
