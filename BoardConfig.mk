@@ -115,6 +115,11 @@ ifeq ($(TARGET_BUILD_VARIANT),eng)
 ADDITIONAL_DEFAULT_PROPERTIES += persist.core.enabled=1
 endif
 
+# Enabling collecting of additional information into tombstone file for eng and user debug builds
+ifneq ($(TARGET_BUILD_VARIANT),user)
+ADDITIONAL_BUILD_PROPERTIES += system.debug.plugins=libcrash.so
+endif
+
 ifeq ($(TARGET_RIL_DISABLE_STATUS_POLLING),true)
 ADDITIONAL_BUILD_PROPERTIES += ro.ril.status.polling.enable=0
 endif

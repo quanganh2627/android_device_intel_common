@@ -513,29 +513,6 @@
       mvno_type="spn"
   />
 
-  <apn carrier="Coriolis WAP"
-      mcc="208"
-      mnc="10"
-      proxy="192.168.21.6"
-      port="8080"
-      apn="wapcoriolis"
-      type="default,supl"
-      mvno_match_data="12"
-      mvno_type="gid"
-  />
-
-  <apn carrier="Coriolis MMS"
-      mcc="208"
-      mnc="10"
-      mmsc="http://mmscoriolis"
-      mmsproxy="10.143.156.6"
-      mmsport="8080"
-      apn="mmscoriolis"
-      type="mms"
-      mvno_match_data="12"
-      mvno_type="gid"
-  />
-
   <apn carrier="Keyyo Mobile Internet"
       mcc="208"
       mnc="10"

@@ -22,7 +22,7 @@
     <PreferenceCategory android:title="@string/emergency_alert_settings_title"
                         android:key="category_alert_settings">
 
-        <CheckBoxPreference android:defaultValue="true"
+        <CheckBoxPreference android:defaultValue="false"
                             android:key="enable_emergency_alerts"
                             android:summary="@string/enable_emergency_alerts_summary"
                             android:title="@string/enable_emergency_alerts_title" />
@@ -33,6 +33,18 @@
                         android:entryValues="@array/alert_sound_duration_values"
                         android:defaultValue="4"
                         android:dialogTitle="@string/alert_sound_duration_title" />
+
+        <ListPreference android:key="alert_reminder_interval"
+                        android:title="@string/alert_reminder_interval_title"
+                        android:entries="@array/alert_reminder_interval_entries"
+                        android:entryValues="@array/alert_reminder_interval_values"
+                        android:defaultValue="0"
+                        android:dialogTitle="@string/alert_reminder_interval_title" />
+
+        <CheckBoxPreference android:defaultValue="true"
+                            android:key="enable_alert_vibrate"
+                            android:summary="@string/enable_alert_vibrate_summary"
+                            android:title="@string/enable_alert_vibrate_title" />
 
         <CheckBoxPreference android:defaultValue="true"
                             android:key="enable_alert_speech"
@@ -91,10 +103,10 @@
     <PreferenceCategory android:title="@string/category_dev_settings_title"
                         android:key="category_dev_settings">
 
-        <CheckBoxPreference android:defaultValue="false"
-                            android:key="enable_cmas_test_alerts"
-                            android:summary="@string/enable_cmas_test_alerts_summary"
-                            android:title="@string/enable_cmas_test_alerts_title" />
+        <CheckBoxPreference android:defaultValue="true"
+                            android:key="show_cmas_opt_out_dialog"
+                            android:summary="@string/show_cmas_opt_out_summary"
+                            android:title="@string/show_cmas_opt_out_title" />
 
     </PreferenceCategory>
 
