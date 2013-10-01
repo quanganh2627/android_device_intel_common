@@ -28,3 +28,7 @@ TARGET_MODULE_PRIVATE_KEY := device/intel/common/testkeys/bios/DB.key
 TARGET_MODULE_CERTIFICATE := device/intel/common/testkeys/bios/DB.DER
 TARGET_MODULE_GENKEY := device/intel/common/testkeys/kernel/x509.genkey
 
+# customize the malloced address to be 16-byte aligned.
+# Copied from the generic_x86 config.
+BOARD_MALLOC_ALIGNMENT := 16
+
