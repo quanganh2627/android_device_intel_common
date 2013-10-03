@@ -32,6 +32,9 @@ WIFI_DRIVER_4335_FW_PATH_STA     := "/system/etc/firmware/fw_bcmdhd_4335.bin"
 WIFI_DRIVER_4335_FW_PATH_P2P     := "/system/etc/firmware/fw_bcmdhd_4335.bin"
 WIFI_DRIVER_4335_FW_PATH_AP      := "/system/etc/firmware/fw_bcmdhd_4335_apsta.bin"
 
+# Enable workarounds to make JB MR2 compatible with Kernel 3.10.
+K310_MR2_COMPATIBILITY := true
+
 endif
 
 ifeq (intel,$(findstring intel,$(COMBO_CHIP_VENDOR)))
