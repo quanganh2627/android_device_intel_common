@@ -1,5 +1,6 @@
 import /recovery.init.${ro.hardware}.rc
-import init.recovery.debug.rc
+import /recovert.init.next.rc
+import /init.recovery.debug.rc
 import /init.watchdog.rc
 
 on early-init
@@ -52,9 +53,6 @@ on boot
 
     class_start default
     class_start core
-
-    # reset counter watchdog at the end of system boot
-    write /sys/devices/virtual/misc/watchdog/counter "0"
 
     setprop sys.usb.config adb
 

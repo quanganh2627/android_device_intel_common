@@ -70,7 +70,7 @@ $(INSTALLED_RAMDISK_TARGET): build_kernel
 # We add it here to be called for other targets as well
 #droid: checkapi
 
-flashfiles: bootimage
+fastboot_flashfile: bootimage
 
 ifeq ($(TARGET_USERIMAGES_SPARSE_EXT_DISABLED),true)
 TARGET_SYSTEM := systemimg_gz
@@ -82,15 +82,11 @@ ifeq ($(ENABLE_FRU),yes)
 bootimage: build_fru
 endif
 ifneq ($(FLASHFILE_BOOTONLY),true)
-ifeq ($(FLASHFILE_NO_OTA),true)
-flashfiles: firmware recoveryimage
-else
-flashfiles: firmware otapackage recoveryimage
-endif
+fastboot_flashfile: firmware recoveryimage
 ifeq ($(TARGET_USE_DROIDBOOT),true)
-flashfiles: droidbootimage
+fastboot_flashfile: droidbootimage
 endif
-flashfiles: $(TARGET_SYSTEM)
+fastboot_flashfile: $(TARGET_SYSTEM)
 endif
 
 ifeq ($(USE_GMS_ALL),true)
@@ -102,7 +98,11 @@ endif
 TARGET_PUBLISH_PATH ?= $(shell echo $(TARGET_PRODUCT) | tr '[:lower:]' '[:upper:]')
 GENERIC_TARGET_NAME ?= $(TARGET_PRODUCT)
 
-flashfiles:
+.PHONY: flashfiles
+flashfiles: fastboot_flashfile ota_flashfile
+
+.PHONY: fastboot_flashfile
+fastboot_flashfile:
 	PUBLISH_PATH=$(PUBLISH_PATH) \
 	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
 	GENERIC_TARGET_NAME=$(GENERIC_TARGET_NAME) \
@@ -113,7 +113,28 @@ flashfiles:
 	SKIP_NVM=$(BOARD_SKIP_NVM) \
 	ULPMC_BINARY=$(ULPMC_BINARY) \
 	SPARSE_DISABLED=$(TARGET_USERIMAGES_SPARSE_EXT_DISABLED) \
-	$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
+	$(SUPPORT_PATH)/publish_build.py '$@' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
+
+.PHONY: ota_flashfile
+ifneq (,$(filter true,$(FLASHFILE_NO_OTA) $(FLASHFILE_BOOTONLY)))
+ota_flashfile:
+	@echo "Do not generate ota_flashfile"
+else
+ota_flashfile: otapackage
+	PUBLISH_PATH=$(PUBLISH_PATH) \
+	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
+	GENERIC_TARGET_NAME=$(GENERIC_TARGET_NAME) \
+	TARGET_USE_DROIDBOOT=$(TARGET_USE_DROIDBOOT) \
+	FLASHFILE_BOOTONLY=$(FLASHFILE_BOOTONLY) \
+	FLASHFILE_NO_OTA=$(FLASHFILE_NO_OTA) \
+	FLASH_MODEM=$(BOARD_HAVE_MODEM) \
+	BOARD_MODEM_FLASHLESS=$(BOARD_MODEM_FLASHLESS) \
+	SKIP_NVM=$(BOARD_SKIP_NVM) \
+	FLASH_MODEM_DICO=$(BOARD_MODEM_DICO) \
+	ULPMC_BINARY=$(ULPMC_BINARY) \
+	SPARSE_DISABLED=$(TARGET_USERIMAGES_SPARSE_EXT_DISABLED) \
+	$(SUPPORT_PATH)/publish_build.py '$@' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
+endif #$(FLASHFILE_NO_OTA) || $(FLASHFILE_BOOTONLY)
 
 ifneq ($(FLASHFILE_BOOTONLY),true)
 blank_flashfiles: firmware
@@ -122,6 +143,7 @@ blank_flashfiles: droidbootimage
 else
 blank_flashfiles: recoveryimage
 endif
+.PHONY: blank_flashfiles
 blank_flashfiles:
 	PUBLISH_PATH=$(PUBLISH_PATH) \
 	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
@@ -130,7 +152,7 @@ blank_flashfiles:
 	FRU_CONFIGS=$(FRU_CONFIGS) \
 	ULPMC_BINARY=$(ULPMC_BINARY) \
 	BOARD_GPFLAG=$(BOARD_GPFLAG) \
-	$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) 'blankphone' $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
+	$(SUPPORT_PATH)/publish_build.py 'blankphone' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
 else
 blank_flashfiles:
 	@echo "No blank_flashfiles for this target - FLASHFILE_BOOTONLY set to TRUE"
@@ -147,7 +169,7 @@ publish_modem:
 	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
 	BOARD_HAVE_MODEM=$(BOARD_HAVE_MODEM) \
 	SKIP_NVM=$(BOARD_SKIP_NVM) \
-	$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) 'modem' $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
+	$(SUPPORT_PATH)/publish_build.py 'modem' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
 
 publish_system_symbols: systemtarball
 	@ echo "Publish system symbols"
@@ -185,8 +207,6 @@ endif
 
 # Add sepdk driver
 ifneq ($(BOARD_USE_64BIT_KERNEL),true)
-ifneq ($(BOARD_HAVE_KNEXT),true)
-#only build if the target is not kernel-next based
 # sepdk and vTunes
 -include $(TOP)/vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
 -include $(TOP)/linux/modules/debug_tools/vtunedk/src/pax/AndroidPAX.mk
@@ -200,5 +220,4 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 -include $(TOP)/vendor/intel/hardware/PRIVATE/monitor/ksrc/AndroidKCT.mk
 endif
 
-endif
 endif
