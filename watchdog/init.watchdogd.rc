@@ -2,3 +2,22 @@ service watchdogd /sbin/watchdogd
     class core
     user root
     oneshot
+
+service wdogcounter /system/bin/sh /init.watchdog.sh
+    class core
+    user root
+    oneshot
+    disabled
+
+# Reset the watchdog counter once boot is completed
+on property:sys.boot_completed=1
+    start wdogcounter
+
+on property:init.svc.droidboot=running
+    start wdogcounter
+
+on property:init.svc.charger_app=running
+    start wdogcounter
+
+on property:init.svc.recovery=running
+    start wdogcounter
