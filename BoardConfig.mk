@@ -5,7 +5,14 @@
 export PDK_FUSION_PLATFORM_ZIP=vendor/pdk/mini_x86/mini_x86-userdebug/platform/platform.zip
 LOCAL_PATH := device/intel/common
 
+# New-style fstab which is read by fs_mgr library and used to
+# mount partitions for Android and also the recovery console.
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/fstab
+
+# Common recovert library containing useful edify commands and
+# library functions. Additional commands implemented in platform-
+# specific libraries
+TARGET_RECOVERY_UPDATER_LIBS += libcommon_recovery
 
 # Location of kernel headers for all Intel projects
 TARGET_BOARD_KERNEL_HEADERS := $(LOCAL_PATH)/kernel-headers
@@ -31,4 +38,5 @@ TARGET_MODULE_GENKEY := device/intel/common/testkeys/kernel/x509.genkey
 # customize the malloced address to be 16-byte aligned.
 # Copied from the generic_x86 config.
 BOARD_MALLOC_ALIGNMENT := 16
+
 
