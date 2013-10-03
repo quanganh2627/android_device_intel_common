@@ -3,7 +3,12 @@
 # it may be more appropriate to make your change in a board
 # or product level file.
 
-$(call inherit-product, build/target/product/generic_no_telephony.mk)
+# Base AOSP configuration. Phone products will want to also
+# inherit aosp_base_telephony.mk. At the moment we can't do
+# this from a mix-in.
+$(call inherit-product, build/target/product/aosp_base.mk)
+
+# Base directory for mixin implementations
 $(call add-mixin-basedir, device/intel/mixins)
 
 LOCAL_PATH := device/intel/common
