@@ -91,6 +91,9 @@ fastboot_flashfile: droidbootimage
 endif
 fastboot_flashfile: $(TARGET_SYSTEM)
 endif
+ifeq ($(TARGET_BIOS_TYPE),"uefi")
+fastboot_flashfile: espimage
+endif
 
 ifeq ($(USE_GMS_ALL),true)
 PUBLISH_TARGET_BUILD_VARIANT := $(TARGET_BUILD_VARIANT)_gms
@@ -115,6 +118,7 @@ fastboot_flashfile:
 	FLASH_MODEM=$(BOARD_HAVE_MODEM) \
 	SKIP_NVM=$(BOARD_SKIP_NVM) \
 	ULPMC_BINARY=$(ULPMC_BINARY) \
+	TARGET_BIOS_TYPE=$(TARGET_BIOS_TYPE) \
 	SPARSE_DISABLED=$(TARGET_USERIMAGES_SPARSE_EXT_DISABLED) \
 	$(SUPPORT_PATH)/publish_build.py '$@' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
 
@@ -123,6 +127,9 @@ ifneq (,$(filter true,$(FLASHFILE_NO_OTA) $(FLASHFILE_BOOTONLY)))
 ota_flashfile:
 	@echo "Do not generate ota_flashfile"
 else
+ifeq ($(TARGET_BIOS_TYPE),"uefi")
+ota_flashfile: espimage
+endif
 ota_flashfile: otapackage
 	PUBLISH_PATH=$(PUBLISH_PATH) \
 	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
@@ -134,6 +141,7 @@ ota_flashfile: otapackage
 	BOARD_MODEM_FLASHLESS=$(BOARD_MODEM_FLASHLESS) \
 	SKIP_NVM=$(BOARD_SKIP_NVM) \
 	FLASH_MODEM_DICO=$(BOARD_MODEM_DICO) \
+	TARGET_BIOS_TYPE=$(TARGET_BIOS_TYPE) \
 	ULPMC_BINARY=$(ULPMC_BINARY) \
 	SPARSE_DISABLED=$(TARGET_USERIMAGES_SPARSE_EXT_DISABLED) \
 	$(SUPPORT_PATH)/publish_build.py '$@' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
@@ -146,6 +154,9 @@ blank_flashfiles: droidbootimage
 else
 blank_flashfiles: recoveryimage
 endif
+ifeq ($(TARGET_BIOS_TYPE),"uefi")
+blank_flashfiles: espimage
+endif
 .PHONY: blank_flashfiles
 blank_flashfiles:
 	PUBLISH_PATH=$(PUBLISH_PATH) \
@@ -153,6 +164,7 @@ blank_flashfiles:
 	GENERIC_TARGET_NAME=$(GENERIC_TARGET_NAME) \
 	TARGET_USE_DROIDBOOT=$(TARGET_USE_DROIDBOOT) \
 	FRU_CONFIGS=$(FRU_CONFIGS) \
+	TARGET_BIOS_TYPE=$(TARGET_BIOS_TYPE) \
 	ULPMC_BINARY=$(ULPMC_BINARY) \
 	BOARD_GPFLAG=$(BOARD_GPFLAG) \
 	$(SUPPORT_PATH)/publish_build.py 'blankphone' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)

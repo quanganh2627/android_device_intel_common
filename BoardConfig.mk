@@ -249,5 +249,10 @@ ifeq ($(TARGET_PARTITIONING_SCHEME), "osip-gpt")
 		$(ADDITIONAL_BOOTIMAGE_ARGS)
 endif
 
+# BIOS TYPE
+# - iafw
+# - uefi
+TARGET_BIOS_TYPE ?= "iafw"
+
 # external release
 include device/intel/common/external/external.mk
