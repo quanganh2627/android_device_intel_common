@@ -170,6 +170,9 @@ USE_CAMERA_HAL2 := true
 # Set USE_VIDEO_EFFECT to 'false' to unsupport live face effect. And Set OMX Component Input Buffer Count to 2.
 USE_VIDEO_EFFECT := true
 
+# Do not use shared object of ia_face by default
+USE_SHARED_IA_FACE := false
+
 # Turn on GR_STATIC_RECT_VB flag in skia to boost performance
 TARGET_USE_GR_STATIC_RECT_VB := true
 
