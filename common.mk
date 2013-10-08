@@ -3,6 +3,10 @@ override PRODUCT_BRAND := intel
 
 COMMON_PATH := device/intel/common
 
+#Add Format Misc
+PRODUCT_PACKAGES += \
+    format_misc
+
 #Add SensorCal App
 PRODUCT_PACKAGES += \
     SensorCal
