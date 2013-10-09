@@ -39,7 +39,7 @@ ifneq (,$(filter wifi_ti,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
   include $(TOP)/hardware/ti/wlan/wl12xx-compat/AndroidWl12xxCompat.mk
 endif
 
-ifneq (,$(filter wifi_lightning_peak,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+ifneq (,$(filter wifi_intel_wkp,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
   -include $(TOP)/vendor/intel/hardware/PRIVATE/intel_cws/iwlwifi/iwl-stack-dev/Androidiwlwifi.mk
 endif
 
