@@ -30,7 +30,7 @@ COMBO_CHIP_VENDOR:=bcm
     endif
 endif
 
-ifneq (,$(filter wifi_lightning_peak bt_lightning_peak,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+ifneq (,$(filter wifi_intel_wkp bt_lightning_peak,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
 COMBO_CHIP_VENDOR:=intel
 COMBO_CHIP:=xmm
 endif
