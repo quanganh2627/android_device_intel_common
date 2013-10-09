@@ -49,5 +49,5 @@ uevent:sdio:c*v02D0d*   setprop wlan.driver.vendor bcm
 uevent:sdio:c*v0097d*   setprop wlan.driver.vendor ti
 # mtk
 uevent:sdio:c*v037Ad*   setprop wlan.driver.vendor mtk
-# lnp
-uevent:sdio:c*v0089d*   setprop wlan.driver.vendor lnp
+# intel
+uevent:sdio:c*v0089d*   setprop wlan.driver.vendor intel
