@@ -5,10 +5,6 @@
 export PDK_FUSION_PLATFORM_ZIP=vendor/pdk/mini_x86/mini_x86-userdebug/platform/platform.zip
 LOCAL_PATH := device/intel/common
 
-# New-style fstab which is read by fs_mgr library and used to
-# mount partitions for Android and also the recovery console.
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/fstab
-
 # Common recovert library containing useful edify commands and
 # library functions. Additional commands implemented in platform-
 # specific libraries
