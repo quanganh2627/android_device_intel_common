@@ -2,7 +2,7 @@ import /init.watchdog.rc
 
 on early-init
     # set permission for charger-mode
-    chmod 0770 /charger
+    chmod 0750 /charger
     chown system system /dev/dri/card0
     chmod 0666 /dev/dri/card0
     symlink /dev/dri/card0 /dev/card0

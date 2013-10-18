@@ -44,6 +44,60 @@
     <string-array translatable="false" name="config_tether_bluetooth_regexs">
         <item>"bt-pan"</item>
     </string-array>
-    <!-- Controls whether window orientation should use non-polling mode accelerometer. -->
+
+    <add-resource type="bool" name="config_button_automatic_brightness_available" />
+    <bool name="config_button_automatic_brightness_available">false</bool>
+
+    <add-resource type="bool" name="config_button_led_brightness_available" />
+    <bool name="config_button_led_brightness_available">false</bool>
+
+    <add-resource type="bool" name="config_proximityScreenOffAvailable" />
+    <bool name="config_proximityScreenOffAvailable">true</bool>
+
+    <add-resource type="bool" name="config_nonPollingWindowOrientation" />
     <bool name="config_nonPollingWindowOrientation">true</bool>
+
+    <!-- Boolean indicating if current platform is using NXP PN547 for clf -->
+    <add-resource type="bool" name="clf_is_pn547" />
+    <bool name="clf_is_pn547">false</bool>
+
+    <!-- Boolean indicating if current platform is using NXP PN544PC for clf -->
+    <add-resource type="bool" name="clf_is_pn544pc" />
+    <bool name="clf_is_pn544pc">false</bool>
+
+    <bool name="config_useDevInputEventForAudioJack">true</bool>
+    <!-- Flag indicating whether the current device supports
+         CAT aka STK handling. If true, this means that the
+         device supports handling of CAT messages from UICC.
+         Set to false if the device do not want to support CAT
+         aka STK feature -->
+    <add-resource type="bool" name="config_cat_support" />
+    <bool name="config_cat_support">true</bool>
+
+    <!-- set to true if oem hooks are supported by framework -->
+    <!-- set to true if telephony oem hooks are supported by framework -->
+    <add-resource type="bool" name="config_usage_oem_hooks_supported" />
+    <bool name="config_usage_oem_hooks_supported">false</bool>
+
+    <!-- set the oemhook data state reporting property -->
+    <!-- OEM Hook specific overlay config items -->
+    <!-- Intel Telephony OEM Hook supports data state reporting property -->
+    <add-resource type="string" name="oemhook_datastate_property" />
+    <string name="oemhook_datastate_property"></string>
+
+    <!-- Intel Telephony oemhook supports flag indicating concurrent data property -->
+    <add-resource type="string" name="oemhook_concurrentdata_property" />
+    <string name="oemhook_concurrentdata_property"></string>
+
+    <!-- When set to false, the call status polling is disabled -->
+    <add-resource type="bool" name="gsm_call_status_polling_enable" />
+    <bool name="gsm_call_status_polling_enable">true</bool>
+
+    <!-- Flag indicating whether the operator should be part of the unique Identifier used to track
+         requests associated with a poll. If true, this means that the operator query is part of
+         the unique identifier used to track requests associated with a poll. If false, this means
+         that the operator query is not part of the unique identifier used to track requests. -->
+    <add-resource type="bool" name="config_track_get_operator_polling" />
+    <bool name="config_track_get_operator_polling">true</bool>
+
 </resources>

@@ -43,4 +43,24 @@
     <string name="media_removed" msgid="7001526905057952097">"移动存储设备已移除。"</string>
     <string name="media_shared" msgid="5706130568133540435">"目前有计算机正在使用移动存储设备。"</string>
     <string name="media_unknown_state" msgid="729192782197290385">"外部媒体处于未知状态。"</string>
+
+    <string name="usb_warn_device_not_support">警告: 不支持该USB 设备</string>
+    <string name="usb_warn_device_not_responding">警告: USB 设备没有响应</string>
+    <string name="usb_warn_device_vbus_invalid_title">警告: USB 供电不足 </string>
+    <string name="usb_warn_device_vbus_invalid_message">警告:  请确保电池电量并尝试重插USB 线</string>
+    <string name="usb_warn_hub_max_tier">警告: USB 集线器层数过多 </string>
+    <string name="usb_warn_insufficient_power_title">警告: USB 供电能力不足</string>
+    <string name="usb_warn_insufficient_power_message">警告: 请使用USB 自供电集线器供电 </string>
+    <string name="usb_warn_host_onemore_ums_device_title">警告: 连接了多个USB大容量存储设备</string>
+    <string name="usb_warn_host_onemore_ums_device_message">警告: 请仅连接一个USB大容量存储设备</string>
+    <string name="usb_warn_usb_not_work_title">警告: 电量不足，插入的USB设备不能工作</string>
+    <string name="usb_warn_usb_not_work_message">请给电池充电后再试一次</string>
+    <string name="usb_warn_usb_vbus_warn_title">警告: 电池使用时间会缩短</string>
+    <string name="usb_warn_usb_vbus_warn_message">插入的USB设备会消耗电力，缩短电池的使用时间</string>
+    <string name="hotspot_active">"热点已启用"</string>
+    <string name="hotspot_no_connections">"没有链接的设备"</string>
+    <string name="hotspot_multiple_devices_connected">"%d 已链接到热点"</string>
+    <string name="hotspot_device_connected">"设备已链接到热点"</string>
+    <string name="hotspot_device_disconnected">"设备已断开链接"</string>
+
 </resources>
