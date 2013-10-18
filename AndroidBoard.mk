@@ -51,7 +51,7 @@ endif
 $(MKBOOTIMG): xfstk-stitcher
 
 #Kernel rules (build from source, or from tarball
--include $(KERNEL_SRC_DIR)/AndroidKernel.mk
+-include $(COMMON_PATH)/AndroidKernel.mk
 
 .PHONY: build_kernel
 ifeq ($(TARGET_KERNEL_SOURCE_IS_PRESENT),true)
