@@ -50,11 +50,16 @@ $(MKBOOTIMG): isu isu_stream
 endif
 $(MKBOOTIMG): xfstk-stitcher
 
-#Kernel rules (build from source, or from tarball
--include $(COMMON_PATH)/AndroidKernel.mk
+# If the kernel source is present, AndroidBoard.mk will perform a kernel build.
+# otherwise, AndroidBoard.mk will find the kernel binaries in a tarball.
+ifneq ($(wildcard $(KERNEL_SRC_DIR)/Makefile),)
+TARGET_KERNEL_SOURCE_IS_PRESENT ?= true
+endif
 
 .PHONY: build_kernel
 ifeq ($(TARGET_KERNEL_SOURCE_IS_PRESENT),true)
+#Kernel rules (build from source, or from tarball
+include $(COMMON_PATH)/AndroidKernel.mk
 build_kernel: get_kernel_from_source
 else
 build_kernel: get_kernel_from_tarball

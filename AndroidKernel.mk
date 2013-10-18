@@ -1,14 +1,8 @@
-# This makefile is included from vendor/intel/*/AndroidBoard.mk.
-# If the kernel source is present, AndroidBoard.mk will perform a kernel build
-# otherise, AndroidBoard.mk will find the kernel binaries in a tarball.
+# This makefile is included from vendor/intel/common/AndroidBoard.mk.
 
-# This can be overridden on the make command line.
-TARGET_KERNEL_SOURCE_IS_PRESENT ?= true
 # Force using bash as a shell, otherwise, on Ubuntu, dash will break some
 # dependency due to its bad handling of echo \1
 MAKE += SHELL=/bin/bash
-
-ifeq ($(TARGET_KERNEL_SOURCE_IS_PRESENT),true)
 
 .PHONY: menuconfig xconfig gconfig get_kernel_from_source
 .PHONY: build_bzImage copy_modules_to_root
@@ -80,8 +74,7 @@ KERNEL_FAKE_DEPMOD := $(KERNEL_OUT_DIR)/fakedepmod/lib/modules
 
 KERNEL_DEFCONFIG := $(KERNEL_SRC_DIR)/arch/x86/configs/$(KERNEL_ARCH)_$(KERNEL_SOC)_defconfig
 KERNEL_DEFCONFIG_KDUMP := $(KERNEL_DEFCONFIG)
-KERNEL_DIFFCONFIG_DIR ?= $(TARGET_DEVICE_DIR)
-KERNEL_DIFFCONFIG ?= $(KERNEL_DIFFCONFIG_DIR)/$(TARGET_DEVICE)_diffconfig
+KERNEL_DIFFCONFIG ?= $(TARGET_DEVICE_DIR)/$(TARGET_DEVICE)_diffconfig
 KERNEL_VERSION_FILE := $(KERNEL_OUT_DIR)/include/config/kernel.release
 KERNEL_VERSION_FILE_KDUMP := $(KERNEL_OUT_DIR_KDUMP)/include/config/kernel.release
 
@@ -132,10 +125,17 @@ $(PRODUCT_OUT)/ramdisk.img: copy_modules_to_root
 
 menuconfig xconfig gconfig: $(KERNEL_CONFIG)
 	@$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS) $@
-	@./$(KERNEL_SRC_DIR)/scripts/diffconfig -m $(KERNEL_DEFCONFIG) $(KERNEL_OUT_DIR)/.config > $(KERNEL_DIFFCONFIG)
+ifeq ($(wildcard $(KERNEL_DIFFCONFIG)),)
+	@cp -f $(KERNEL_CONFIG) $(KERNEL_DEFCONFIG)
+	@echo ===========
+	@echo $(KERNEL_DEFCONFIG) has been modified !
+	@echo ===========
+else
+	@./$(KERNEL_SRC_DIR)/scripts/diffconfig -m $(KERNEL_DEFCONFIG) $(KERNEL_CONFIG) > $(KERNEL_DIFFCONFIG)
 	@echo ===========
 	@echo $(KERNEL_DIFFCONFIG) has been modified !
 	@echo ===========
+endif
 
 TAGS_files := TAGS
 tags_files := tags
@@ -182,4 +182,4 @@ copy_modules_to_root: $(2)_install
 clean_kernel: $(2)_clean
 
 endef
-endif #TARGET_KERNEL_SOURCE_IS_PRESENT
+
