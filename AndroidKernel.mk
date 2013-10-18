@@ -183,3 +183,24 @@ clean_kernel: $(2)_clean
 
 endef
 
+#save variables to rebuild the kernel
+KVAR_LIST := TARGET_BOARD_PLATFORM \
+        PRODUCT_OUT \
+        KERNEL_SRC_DIR \
+        BOARD_USE_64BIT_KERNEL \
+        TARGET_TOOLS_PREFIX \
+        TARGET_CC \
+        CCACHE_SLOPPINESS \
+        TARGET_DEVICE_DIR \
+        TARGET_DEVICE
+
+KAND_CONFIG := $(foreach v,$(KVAR_LIST),$(v):="$($(v))")
+
+$(KERNEL_OUT_DIR)/android_config.mk: $(KERNEL_CONFIG)
+	@rm -f $@
+	@for v in $(KAND_CONFIG) ; do echo  $${v} >> $@ ; done
+
+build_bzImage: $(KERNEL_OUT_DIR)/android_config.mk
+
+
+
