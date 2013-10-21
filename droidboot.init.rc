@@ -103,6 +103,9 @@ on property:persist.service.apklogfs.enable=0
 on property:sys.partitioning=1
     stop apk_logfs
 
+on property:sys.powerctl=*
+    powerctl ${sys.powerctl}
+
 on property:sys.partitioning=0
     mkdir /logs
     mkdir /factory 0775 system system

@@ -74,6 +74,9 @@ service thermald /sbin/thermald
     class core
     user root
 
+on property:sys.powerctl=*
+    powerctl ${sys.powerctl}
+
 # Always start adbd on userdebug and eng builds
 on property:ro.debuggable=1
     start console
