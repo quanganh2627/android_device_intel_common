@@ -35,6 +35,7 @@
   <java-symbol type="xml" name="thermal_sensor_config" />
   <java-symbol type="xml" name="thermal_throttle_config" />
   <java-symbol type="bool" name="config_nonPollingWindowOrientation" />
+  <java-symbol type="bool" name="config_TerminalDetectWindowOrientation" />
   <java-symbol type="string" name="lockscreen_not_charging"/>
   <java-symbol type="string" name="lockscreen_network_puk_locked_message" />
   <java-symbol type="string" name="lockscreen_network_puk_locked_instructions" />
