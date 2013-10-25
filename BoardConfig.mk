@@ -1,6 +1,5 @@
 TARGET_ARCH := x86
 TARGET_ARCH_VARIANT := x86-atom
-TARGET_BOOTIMAGE_USE_EXT2 := true
 TARGET_CPU_ABI := x86
 TARGET_CPU_SMP := true
 TARGET_NO_BOOTLOADER := true
@@ -134,31 +133,6 @@ ifeq ($(TARGET_BUILD_VARIANT),user)
 cmdline_extra += watchdog.watchdog_thresh=60
 endif
 
-TARGET_MAKE_NO_DEFAULT_BOOTIMAGE ?= true
-TARGET_MAKE_INTEL_BOOTIMAGE ?= true
-
-# Enable to use Intel boot.img
-ifeq ($(TARGET_MAKE_INTEL_BOOTIMAGE),true)
-INSTALLED_BOOTIMAGE_TARGET := $(PRODUCT_OUT)/boot.img
-
-MAKE_NO_DEFAULT_BOOTIMAGE_ITEMS = $(MKBOOTIMG) \
-	$(INTERNAL_BOOTIMAGE_FILES) \
-	$(PRODUCT_OUT)/bootstub
-
-# CAUTION: DO NOT CHANGE the flavor of COMMON_BOOTIMAGE_ARGS.  It must remain
-# a recursively-expanded variable, i.e., it must be defined using the '=' sign.
-COMMON_BOOTIMAGE_ARGS = --sign-with $(TARGET_OS_SIGNING_METHOD) \
-	--bootstub $(PRODUCT_OUT)/bootstub
-MAKE_NO_DEFAULT_BOOTIMAGE = $(MKBOOTIMG) \
-	$(COMMON_BOOTIMAGE_ARGS) \
-	$(INTERNAL_BOOTIMAGE_ARGS) \
-	--product $(REF_DEVICE_NAME) \
-	--type mos \
-	--output $(INSTALLED_BOOTIMAGE_TARGET) \
-	$(ADDITIONAL_BOOTIMAGE_ARGS)
-
-endif # TARGET_MAKE_INTEL_BOOTIMAGE
-
 ifeq ($(BOARD_BOOTMEDIA),)
 BOARD_BOOTMEDIA := sdcard
 endif
@@ -196,6 +170,9 @@ USE_CAMERA_HAL2 := true
 # Set USE_VIDEO_EFFECT to 'false' to unsupport live face effect. And Set OMX Component Input Buffer Count to 2.
 USE_VIDEO_EFFECT := true
 
+# Do not use shared object of ia_face by default
+USE_SHARED_IA_FACE := false
+
 # Turn on GR_STATIC_RECT_VB flag in skia to boost performance
 TARGET_USE_GR_STATIC_RECT_VB := true
 
@@ -221,9 +198,11 @@ include device/intel/common/gps/GpsBoardConfig.mk
 #
 # SPID format :
 #        vend:cust:manu:plat:prod:hard
-SPID ?= "xxxx:xxxx:xxxx:xxxx:xxxx:xxxx"
-
-cmdline_extra += androidboot.spid=$(SPID)
+USE_SPID ?= true
+ifeq ($(USE_SPID), true)
+	SPID ?= "xxxx:xxxx:xxxx:xxxx:xxxx:xxxx"
+	cmdline_extra += androidboot.spid=$(SPID)
+endif
 
 USE_BL_SERIALNO ?= false
 ifeq ($(USE_BL_SERIALNO), false)
@@ -232,6 +211,53 @@ endif
 
 STORAGE_CFLAGS ?= -DSTORAGE_BASE_PATH=\"/dev/block/mmcblk0\" -DSTORAGE_PARTITION_FORMAT=\"%sp%d\"
 COMMON_GLOBAL_CFLAGS += $(STORAGE_CFLAGS)
+
+# partitioning scheme
+# osip-gpt:
+# 	- osip used by iafw
+# 	- gpt used by kernel
+# full-gpt:
+# 	- gpt used by iafw
+# 	- gpt used by kernel
+TARGET_PARTITIONING_SCHEME ?= "osip-gpt"
+
+ifeq ($(TARGET_PARTITIONING_SCHEME),"full-gpt")
+	TARGET_MAKE_NO_DEFAULT_BOOTIMAGE := false
+	TARGET_MAKE_INTEL_BOOTIMAGE := false
+	TARGET_BOOTIMAGE_USE_EXT2 ?= false
+	BOARD_KERNEL_PAGESIZE ?= 2048
+	BOARD_KERNEL_BASE ?= 0x80000000
+endif
+
+ifeq ($(TARGET_PARTITIONING_SCHEME), "osip-gpt")
+	TARGET_MAKE_NO_DEFAULT_BOOTIMAGE := true
+	TARGET_MAKE_INTEL_BOOTIMAGE := true
+	TARGET_BOOTIMAGE_USE_EXT2 ?= true
+
+
+	INSTALLED_BOOTIMAGE_TARGET := $(PRODUCT_OUT)/boot.img
+
+	MAKE_NO_DEFAULT_BOOTIMAGE_ITEMS = $(MKBOOTIMG) \
+		$(INTERNAL_BOOTIMAGE_FILES) \
+		$(PRODUCT_OUT)/bootstub
+
+	# CAUTION: DO NOT CHANGE the flavor of COMMON_BOOTIMAGE_ARGS.  It must remain
+	# a recursively-expanded variable, i.e., it must be defined using the '=' sign.
+	COMMON_BOOTIMAGE_ARGS = --sign-with $(TARGET_OS_SIGNING_METHOD) \
+	--bootstub $(PRODUCT_OUT)/bootstub
+	MAKE_NO_DEFAULT_BOOTIMAGE = $(MKBOOTIMG) \
+		$(COMMON_BOOTIMAGE_ARGS) \
+		$(INTERNAL_BOOTIMAGE_ARGS) \
+		--product $(REF_DEVICE_NAME) \
+		--type mos \
+		--output $(INSTALLED_BOOTIMAGE_TARGET) \
+		$(ADDITIONAL_BOOTIMAGE_ARGS)
+endif
+
+# BIOS TYPE
+# - iafw
+# - uefi
+TARGET_BIOS_TYPE ?= "iafw"
 
 # external release
 include device/intel/common/external/external.mk

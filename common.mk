@@ -104,8 +104,8 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 # memmonitor (not for user builds)
 -include vendor/intel/tools/PRIVATE/log_infra/monitor/memmonitor/memmonitor.mk
 
-# Kratos (not for user builds)
--include vendor/intel/apps/PRIVATE/Kratos/products/Kratos.mk
+# MPM (formely Kratos) (not for user builds)
+-include vendor/intel/apps/PRIVATE/Kratos/products/MPM.mk
 
 # vTunes binaires (not for user builds)
 -include vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/bin/sepbin.mk

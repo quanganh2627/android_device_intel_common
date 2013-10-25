@@ -39,7 +39,10 @@ include $(BUILD_PREBUILT)
 # MKBOOTIMG is the tool that is used by AOSP build system to
 # stitch kernel. We overide the default script to
 # adapt to out own IAFW format.
+ifeq ($(TARGET_PARTITIONING_SCHEME),"osip-gpt")
 MKBOOTIMG := vendor/intel/support/mkbootimg
+endif
+
 # Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
 # Add dependancy on ISU packages only if ISU method is used as ISU might not be delivered.
 ifeq ($(TARGET_OS_SIGNING_METHOD),ISU)
@@ -47,11 +50,16 @@ $(MKBOOTIMG): isu isu_stream
 endif
 $(MKBOOTIMG): xfstk-stitcher
 
-#Kernel rules (build from source, or from tarball
--include $(KERNEL_SRC_DIR)/AndroidKernel.mk
+# If the kernel source is present, AndroidBoard.mk will perform a kernel build.
+# otherwise, AndroidBoard.mk will find the kernel binaries in a tarball.
+ifneq ($(wildcard $(KERNEL_SRC_DIR)/Makefile),)
+TARGET_KERNEL_SOURCE_IS_PRESENT ?= true
+endif
 
 .PHONY: build_kernel
 ifeq ($(TARGET_KERNEL_SOURCE_IS_PRESENT),true)
+#Kernel rules (build from source, or from tarball
+include $(COMMON_PATH)/AndroidKernel.mk
 build_kernel: get_kernel_from_source
 else
 build_kernel: get_kernel_from_tarball
@@ -88,6 +96,9 @@ fastboot_flashfile: droidbootimage
 endif
 fastboot_flashfile: $(TARGET_SYSTEM)
 endif
+ifeq ($(TARGET_BIOS_TYPE),"uefi")
+fastboot_flashfile: espimage
+endif
 
 ifeq ($(USE_GMS_ALL),true)
 PUBLISH_TARGET_BUILD_VARIANT := $(TARGET_BUILD_VARIANT)_gms
@@ -112,6 +123,7 @@ fastboot_flashfile:
 	FLASH_MODEM=$(BOARD_HAVE_MODEM) \
 	SKIP_NVM=$(BOARD_SKIP_NVM) \
 	ULPMC_BINARY=$(ULPMC_BINARY) \
+	TARGET_BIOS_TYPE=$(TARGET_BIOS_TYPE) \
 	SPARSE_DISABLED=$(TARGET_USERIMAGES_SPARSE_EXT_DISABLED) \
 	$(SUPPORT_PATH)/publish_build.py '$@' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
 
@@ -120,6 +132,9 @@ ifneq (,$(filter true,$(FLASHFILE_NO_OTA) $(FLASHFILE_BOOTONLY)))
 ota_flashfile:
 	@echo "Do not generate ota_flashfile"
 else
+ifeq ($(TARGET_BIOS_TYPE),"uefi")
+ota_flashfile: espimage
+endif
 ota_flashfile: otapackage
 	PUBLISH_PATH=$(PUBLISH_PATH) \
 	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
@@ -131,6 +146,7 @@ ota_flashfile: otapackage
 	BOARD_MODEM_FLASHLESS=$(BOARD_MODEM_FLASHLESS) \
 	SKIP_NVM=$(BOARD_SKIP_NVM) \
 	FLASH_MODEM_DICO=$(BOARD_MODEM_DICO) \
+	TARGET_BIOS_TYPE=$(TARGET_BIOS_TYPE) \
 	ULPMC_BINARY=$(ULPMC_BINARY) \
 	SPARSE_DISABLED=$(TARGET_USERIMAGES_SPARSE_EXT_DISABLED) \
 	$(SUPPORT_PATH)/publish_build.py '$@' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
@@ -143,6 +159,9 @@ blank_flashfiles: droidbootimage
 else
 blank_flashfiles: recoveryimage
 endif
+ifeq ($(TARGET_BIOS_TYPE),"uefi")
+blank_flashfiles: espimage
+endif
 .PHONY: blank_flashfiles
 blank_flashfiles:
 	PUBLISH_PATH=$(PUBLISH_PATH) \
@@ -150,6 +169,7 @@ blank_flashfiles:
 	GENERIC_TARGET_NAME=$(GENERIC_TARGET_NAME) \
 	TARGET_USE_DROIDBOOT=$(TARGET_USE_DROIDBOOT) \
 	FRU_CONFIGS=$(FRU_CONFIGS) \
+	TARGET_BIOS_TYPE=$(TARGET_BIOS_TYPE) \
 	ULPMC_BINARY=$(ULPMC_BINARY) \
 	BOARD_GPFLAG=$(BOARD_GPFLAG) \
 	$(SUPPORT_PATH)/publish_build.py 'blankphone' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)

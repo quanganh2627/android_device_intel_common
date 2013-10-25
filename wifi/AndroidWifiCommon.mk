@@ -12,6 +12,8 @@ LOCAL_MODULE := wifi_common
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=          \
     libwpa_client                  \
+    wpa_supplicant                 \
+    hostapd                        \
     iw                             \
     init.wifi.rc                   \
     init.wifi.vendor.rc            \
@@ -24,7 +26,9 @@ LOCAL_REQUIRED_MODULES :=          \
     hostapd.conf
 
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
-LOCAL_REQUIRED_MODULES += wifi_wfa
+LOCAL_REQUIRED_MODULES += \
+    wifi_wfa \
+    wpa_cli
 endif
 
 include $(BUILD_PHONY_PACKAGE)
