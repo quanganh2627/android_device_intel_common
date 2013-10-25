@@ -55,7 +55,7 @@
     <bool name="config_proximityScreenOffAvailable">true</bool>
 
     <add-resource type="bool" name="config_nonPollingWindowOrientation" />
-    <bool name="config_nonPollingWindowOrientation">true</bool>
+    <bool name="config_nonPollingWindowOrientation">false</bool>
 
     <!-- Boolean indicating if current platform is using NXP PN547 for clf -->
     <add-resource type="bool" name="clf_is_pn547" />
