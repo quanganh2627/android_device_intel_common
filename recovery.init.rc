@@ -1,6 +1,7 @@
 import /recovery.init.${ro.hardware}.rc
 import /init.recovery.debug.rc
 import /init.watchdog.rc
+import /init.partlink.rc
 
 on early-init
     start ueventd
@@ -60,9 +61,6 @@ on boot
     class_start core
 
     setprop sys.usb.config adb
-
-service partlink /system/bin/partlink
-    oneshot
 
 service ueventd /sbin/ueventd
     critical

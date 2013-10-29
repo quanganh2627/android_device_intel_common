@@ -21,7 +21,11 @@ PRODUCT_PACKAGES += \
 
 #for burst capture
 PRODUCT_PACKAGES += \
-	fast_click.pcm
+    fast_click.pcm
+
+#Use partlink block devices
+PRODUCT_PACKAGES += \
+    partlink
 
 # SpeechRecorder for eng build variant
 ifneq ($(filter $(TARGET_BUILD_VARIANT),eng),)
@@ -83,7 +87,8 @@ PRODUCT_COPY_FILES += \
         $(COMMON_PATH)/init.rc:root/init.rc \
         $(COMMON_PATH)/init.common.rc:root/init.common.rc \
         $(COMMON_PATH)/props.rc:root/props.rc \
-        $(COMMON_PATH)/ueventd.modules.blacklist:root/ueventd.modules.blacklist
+        $(COMMON_PATH)/ueventd.modules.blacklist:root/ueventd.modules.blacklist \
+        $(COMMON_PATH)/init.partlink.rc:root/init.partlink.rc
 
 PERMISSIONS_PATH := frameworks/native/data/etc
 PRODUCT_COPY_FILES += \

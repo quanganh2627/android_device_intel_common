@@ -1,6 +1,7 @@
 import /droidboot.init.${ro.hardware}.rc
 import /init.droidboot.debug.rc
 import /init.watchdog.rc
+import /init.partlink.rc
 
 on early-init
     start ueventd
@@ -83,9 +84,6 @@ on property:sys.usb.config=ptp,adb
 
 service ueventd /sbin/ueventd
     critical
-
-service partlink /system/bin/partlink
-    oneshot
 
 service droidboot /system/bin/droidboot
     critical
