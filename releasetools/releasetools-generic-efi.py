@@ -142,6 +142,13 @@ def swap_entries(info):
     info.script.script.append('swap_entries("%s", "android_bootloader", "android_bootloader2");' %
             (fstab['/bootloader'].device,))
 
+
+def finalize_esp(info):
+    info.script.script.append('copy_shim();')
+    info.script.script.append('unmount("/bootloader");')
+    swap_entries(info)
+
+
 def IncrementalOTA_InstallEnd(info):
     if fastboot["updating"]:
         target_boot = fastboot["target"]
@@ -181,8 +188,7 @@ def IncrementalOTA_InstallEnd(info):
         info.script.Print("Adding new bootloader files...")
         info.script.UnpackPackageDir("bootloader", "/bootloader")
 
-    info.script.script.append('unmount("/bootloader");')
-    swap_entries(info)
+    finalize_esp(info)
 
 def FullOTA_Assertions(info):
     EspUpdateInit(info, False)
@@ -200,7 +206,6 @@ def FullOTA_InstallEnd(info):
 
     info.script.Print("Copying updated bootloader files...")
     info.script.UnpackPackageDir("bootloader", "/bootloader")
-    info.script.script.append('unmount("/bootloader");')
-    swap_entries(info)
+    finalize_esp(info)
 
 
