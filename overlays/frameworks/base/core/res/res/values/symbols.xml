@@ -77,5 +77,5 @@
   <java-symbol type="string" name="container_unlock_message" />
   <!-- ARKHAM-620 -->
   <java-symbol type="string" name="unlock_container_notification"/>
-
+  <java-symbol type="string" name="forbid_shutdown_when_encrypt"/>
 </resources>
