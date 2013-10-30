@@ -26,4 +26,6 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/emu_houdini.mk
+    $(LOCAL_DIR)/emu_houdini/emu_houdini.mk \
+    $(LOCAL_DIR)/pc_generic/pc_generic.mk \
+
