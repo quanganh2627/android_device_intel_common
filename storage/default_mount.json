@@ -3,7 +3,7 @@
 
 		"mos": {
 			"fstab_file": "root/fstab.$model",
-			"recovery_fstab_dest_file": null,
+			"recovery_fstab_dest_file": "system/etc/recovery.fstab",
 			"mount": [
 				"factory",
 				"system",
@@ -46,6 +46,15 @@
 			"mount": [
 				"factory",
 				"config"
+				]
+		},
+
+		"ramconsole": {
+			"fstab_file": "root/fstab.ramconsole.$model",
+			"recovery_fstab_dest_file": null,
+			"mount": [
+				"system",
+				"logs"
 				]
 		}
 	}

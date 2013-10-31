@@ -57,6 +57,9 @@
     <add-resource type="bool" name="config_nonPollingWindowOrientation" />
     <bool name="config_nonPollingWindowOrientation">true</bool>
 
+    <add-resource type="bool" name="config_TerminalDetectWindowOrientation" />
+    <bool name="config_TerminalDetectWindowOrientation">false</bool>
+
     <!-- Boolean indicating if current platform is using NXP PN547 for clf -->
     <add-resource type="bool" name="clf_is_pn547" />
     <bool name="clf_is_pn547">false</bool>
