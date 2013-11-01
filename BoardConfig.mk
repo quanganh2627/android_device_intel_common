@@ -2,7 +2,7 @@
 # Be very careful what you put in here; it may more
 # properly belong in a platform or product-specifc
 # BoardConfig.mk, or a mix-in
-export PDK_FUSION_PLATFORM_ZIP=vendor/pdk/mini_x86/mini_x86-userdebug/platform/platform.zip
+
 LOCAL_PATH := device/intel/common
 
 # Common recovert library containing useful edify commands and
