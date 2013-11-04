@@ -383,17 +383,6 @@
         <item>@drawable/ic_sce_off</item>
         <item>@drawable/ic_sce_sunset</item>
         <item>@drawable/ic_sce_party</item>
-        <item>@drawable/ic_sce_portrait</item> <!-- intel -->
-        <item>@drawable/ic_sce_landscape</item> <!-- intel -->
-        <item>@drawable/ic_sce_night_portrait</item> <!-- intel -->
-        <item>@drawable/ic_sce_theatre</item> <!-- intel -->
-        <item>@drawable/ic_sce_beach</item> <!-- intel -->
-        <item>@drawable/ic_sce_snow</item> <!-- intel -->
-        <item>@drawable/ic_sce_steadyphoto</item> <!-- intel -->
-        <item>@drawable/ic_sce_fireworks</item> <!-- intel -->
-        <item>@drawable/ic_sce_sports</item> <!-- intel -->
-        <item>@drawable/ic_sce_candlelight</item> <!-- intel -->
-        <item>@drawable/ic_sce_barcode</item> <!-- intel -->
     </array>
 
     <string-array name="pref_camera_scenemode_entryvalues" translatable="false">
