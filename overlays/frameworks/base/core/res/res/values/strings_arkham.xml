@@ -3,7 +3,7 @@
 
     <!-- Arkham Error Messages -->
     <add-resource type="string" name="container_err_unknown" />
-    <string name="container_err_unknown">Could not access container. Unkown error occured!</string>
+    <string name="container_err_unknown">Could not access container. An unknown error occurred!</string>
 
     <add-resource type="string" name="container_err_no_service" />
     <string name="container_err_no_service">Could not access container. Connection to service failed!</string>
@@ -40,4 +40,18 @@
     <!-- ARKHAM-676 -->
     <add-resource type="string" name="container_unlock_message" />
     <string name="container_unlock_message">Unlock %1$s container</string>
+
+    <!-- ARKHAM-545 Container keyguard dialog messages -->
+    <add-resource type="string" name="kg_failed_attempts_almost_at_wipe_container" />
+    <string name="kg_failed_attempts_almost_at_wipe_container">
+       You have incorrectly attempted to unlock the container <xliff:g id="number">%d</xliff:g> times.
+       After <xliff:g id="number">%d</xliff:g> more unsuccessful attempts,
+       the container will be <xliff:g id="name">%s</xliff:g>.
+    </string>
+
+    <add-resource type="string" name="kg_failed_attempts_now_wiping_container" />
+    <string name="kg_failed_attempts_now_wiping_container">
+       You have incorrectly attempted to unlock the container <xliff:g id="number">%d</xliff:g> times.
+       The container will now be <xliff:g id="name">%s</xliff:g>.
+    </string>
 </resources>
