@@ -180,9 +180,11 @@ $(addprefix $(2)_,TAGS tags gtags cscope): $(KERNEL_CONFIG)
 	@rm -f $(1)/$$($$(subst $(2)_,,$$@)_files)
 	@cp -fs $$(addprefix `pwd`/$(KERNEL_OUT_DIR)/,$$($$(subst $(2)_,,$$@)_files)) $(1)/
 
+ifneq ($(NO_KERNEL_EXT_MODULES),true)
 copy_modules_to_root: $(2)_install
 
 clean_kernel: $(2)_clean
+endif
 endef
 
 .PHONY: menuconfig xconfig gconfig get_kernel_from_source
