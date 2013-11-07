@@ -142,7 +142,7 @@ on property:sys.usb.config=ptp,adb
     write /sys/class/android_usb/android0/functions $sys.usb.config
     write /sys/class/android_usb/android0/enable 1
 
-service apk_logfs /sbin/logcat -b system -b events -b main -b radio -b kernel -n 20 -r 5000 -v threadtime -f /logs/aplog
+service apk_logfs /sbin/logcat -b system -b events -b main -b radio -b kernel -n 20 -r5000 -v threadtime -f /logs/aplog
     disabled
 
 on property:persist.service.apklogfs.enable=1
