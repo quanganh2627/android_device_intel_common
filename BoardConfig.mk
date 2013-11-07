@@ -212,6 +212,11 @@ endif
 STORAGE_CFLAGS ?= -DSTORAGE_BASE_PATH=\"/dev/block/mmcblk0\" -DSTORAGE_PARTITION_FORMAT=\"%sp%d\"
 COMMON_GLOBAL_CFLAGS += $(STORAGE_CFLAGS)
 
+# OS images signing
+TARGET_BOOT_IMAGE_KEYS_PATH ?=  vendor/intel/PRIVATE/cert
+TARGET_BOOT_IMAGE_PRIV_KEY ?= $(TARGET_BOOT_IMAGE_KEYS_PATH)/OS_priv.pem
+TARGET_BOOT_IMAGE_PUB_KEY ?= $(TARGET_BOOT_IMAGE_KEYS_PATH)/OS_pub.pub
+
 # partitioning scheme
 # osip-gpt:
 # 	- osip used by iafw
@@ -227,6 +232,14 @@ ifeq ($(TARGET_PARTITIONING_SCHEME),"full-gpt")
 	TARGET_BOOTIMAGE_USE_EXT2 ?= false
 	BOARD_KERNEL_PAGESIZE ?= 2048
 	BOARD_KERNEL_BASE ?= 0x80000000
+
+	ifeq ($(TARGET_OS_SIGNING_METHOD),isu)
+		BOARD_MKBOOTIMG_ARGS += --signsize 1024 --signexec "isu_wrapper.sh isu $(TARGET_BOOT_IMAGE_PRIV_KEY) $(TARGET_BOOT_IMAGE_PUB_KEY)"
+	endif
+
+	ifeq ($(TARGET_OS_SIGNING_METHOD),uefi)
+		BOARD_MKBOOTIMG_ARGS += --signsize 256 --signexec "openssl dgst -sha256 -sign $(TARGET_BOOT_IMAGE_PRIV_KEY)"
+	endif
 endif
 
 ifeq ($(TARGET_PARTITIONING_SCHEME), "osip-gpt")
