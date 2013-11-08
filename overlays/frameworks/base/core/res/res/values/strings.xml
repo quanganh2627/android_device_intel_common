@@ -143,5 +143,7 @@
     <add-resource type="string" name="hotspot_device_disconnected" />
     <string name="hotspot_device_disconnected">Device disconnected from hotspot</string>
 
+    <add-resource type="string" name="forbid_shutdown_when_encrypt" />
+    <string name="forbid_shutdown_when_encrypt">Shutdown is forbidden because system is encrypting</string>
 
 </resources>

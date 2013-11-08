@@ -21,7 +21,11 @@ PRODUCT_PACKAGES += \
 
 #for burst capture
 PRODUCT_PACKAGES += \
-	fast_click.pcm
+    fast_click.pcm
+
+#Use partlink block devices
+PRODUCT_PACKAGES += \
+    partlink
 
 # SpeechRecorder for eng build variant
 ifneq ($(filter $(TARGET_BUILD_VARIANT),eng),)
@@ -83,17 +87,15 @@ PRODUCT_COPY_FILES += \
         $(COMMON_PATH)/init.rc:root/init.rc \
         $(COMMON_PATH)/init.common.rc:root/init.common.rc \
         $(COMMON_PATH)/props.rc:root/props.rc \
-        $(COMMON_PATH)/ueventd.modules.blacklist:root/ueventd.modules.blacklist
+        $(COMMON_PATH)/ueventd.modules.blacklist:root/ueventd.modules.blacklist \
+        $(COMMON_PATH)/init.partlink.rc:root/init.partlink.rc
 
 PERMISSIONS_PATH := frameworks/native/data/etc
 PRODUCT_COPY_FILES += \
         $(PERMISSIONS_PATH)/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
         $(PERMISSIONS_PATH)/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
         $(PERMISSIONS_PATH)/android.hardware.touchscreen.xml:system/etc/permissions/android.hardware.touchscreen.xml \
-        $(PERMISSIONS_PATH)/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml \
-        $(PERMISSIONS_PATH)/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
-        $(PERMISSIONS_PATH)/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
-        $(PERMISSIONS_PATH)/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml
+        $(PERMISSIONS_PATH)/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml
 
 # Valgrind for eng build variant
 ifneq ($(filter $(TARGET_BUILD_VARIANT),eng),)

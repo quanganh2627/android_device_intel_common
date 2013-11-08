@@ -62,5 +62,5 @@
     <string name="hotspot_multiple_devices_connected">"%d 已链接到热点"</string>
     <string name="hotspot_device_connected">"设备已链接到热点"</string>
     <string name="hotspot_device_disconnected">"设备已断开链接"</string>
-
+    <string name="forbid_shutdown_when_encrypt">加密过程中禁止关机</string>
 </resources>
