@@ -1,12 +1,18 @@
+include $(COMMON)/ComboChipVendor.mk
+
+ifeq ($(COMBO_CHIP_VENDOR),bcm)
 LIBBT_CONF_PATH := hardware/broadcom/libbt/conf/intel
 include $(LIBBT_CONF_PATH)/Android.mk
+endif
+
+ifeq ($(COMBO_CHIP_VENDOR),rtl)
+BOARD_HAVE_BLUETOOTH_RTK := true
+endif
 
 LOCAL_PATH := $(ANDROID_BUILD_TOP)
 
 COMMON := device/intel/common
 BT_COMMON := $(COMMON)/bluetooth
-
-include $(COMMON)/ComboChipVendor.mk
 
 ifeq ($(COMBO_CHIP_VENDOR), intel) # Intel chip compilation flag
 BOARD_USES_WCS := false
