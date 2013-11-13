@@ -200,6 +200,9 @@ include device/intel/common/wifi/WifiBoardConfig.mk
 # Gps
 include device/intel/common/gps/GpsBoardConfig.mk
 
+# Bluetooth
+include device/intel/common/bluetooth/BtBoardConfig.mk
+
 # SPID
 #
 # Can be customized for each board simply defining "SPID=" in local BoardConfig.mk
