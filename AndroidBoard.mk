@@ -36,6 +36,7 @@ LOCAL_MODULE_CLASS := SHARED_LIBRARIES
 LOCAL_MODULE_PATH := $(TARGET_OUT_KEYLAYOUT)
 include $(BUILD_PREBUILT)
 
+ifeq ($(TARGET_MAKE_NO_DEFAULT_BOOTIMAGE),true)
 # MKBOOTIMG is the tool that is used by AOSP build system to
 # stitch kernel. We overide the default script to
 # adapt to out own IAFW format.
@@ -49,6 +50,7 @@ ifneq ($(findstring isu,$(TARGET_OS_SIGNING_METHOD)),)
 $(MKBOOTIMG): isu isu_stream isu_wrapper
 endif
 $(MKBOOTIMG): xfstk-stitcher
+endif
 
 # If the kernel source is present, AndroidBoard.mk will perform a kernel build.
 # otherwise, AndroidBoard.mk will find the kernel binaries in a tarball.
