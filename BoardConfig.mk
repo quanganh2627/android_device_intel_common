@@ -35,4 +35,7 @@ TARGET_MODULE_GENKEY := device/intel/common/testkeys/kernel.x509.genkey
 # Copied from the generic_x86 config.
 BOARD_MALLOC_ALIGNMENT := 16
 
+$(call add-path-map, stlport:external/stlport/stlport \
+       libxml2:external/libxml2/include \
+       tinyalsa:external/tinyalsa/include)
 
