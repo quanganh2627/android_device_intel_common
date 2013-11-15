@@ -115,6 +115,13 @@ $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(ACP) $(EXTERNAL_BUILD_SYSTEM)/generic_rules
 	@echo 'endif' >> $@
 endif
 
+# with odex, non optimized libraries are saved with a .dex suffix
+ifdef LOCAL_DEX_PREOPT
+EXT_JAVALIB_SUFFIX := .dex
+else
+EXT_JAVALIB_SUFFIX :=
+endif
+
 # this implement mapping between metatarget names, and what prebuilt is waiting for
 $(call external-gather-files,executable,EXECUTABLES)
 $(call external-gather-files,shared_library,LIBS)
@@ -122,7 +129,7 @@ $(call external-gather-files,static_library,LIBS)
 $(call external-gather-files,host_executable,HOST_EXECUTABLES)
 $(call external-gather-files,host_shared_library,HOST_LIBS)
 $(call external-gather-files,host_static_library,HOST_LIBS)
-$(call external-gather-files,java_library,JAVA_LIBRARIES,.dex)
+$(call external-gather-files,java_library,JAVA_LIBRARIES,$(EXT_JAVALIB_SUFFIX))
 $(call external-gather-files,static_java_library,STATIC_JAVA_LIBRARIES)
 $(call external-gather-files,package,PACKAGES,.dex)
 $(call external-gather-files,prebuilt,PREBUILT)
