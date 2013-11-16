@@ -245,7 +245,9 @@ ifeq ($(TARGET_PARTITIONING_SCHEME), "osip-gpt")
 	# a recursively-expanded variable, i.e., it must be defined using the '=' sign.
 	COMMON_BOOTIMAGE_ARGS = --sign-with $(TARGET_OS_SIGNING_METHOD) \
 	--bootstub $(PRODUCT_OUT)/bootstub
-	MAKE_NO_DEFAULT_BOOTIMAGE = $(MKBOOTIMG) \
+	MAKE_NO_DEFAULT_BOOTIMAGE = \
+		LOCAL_SIGN=$(LOCAL_SIGN) \
+		$(MKBOOTIMG) \
 		$(COMMON_BOOTIMAGE_ARGS) \
 		$(INTERNAL_BOOTIMAGE_ARGS) \
 		--product $(REF_DEVICE_NAME) \

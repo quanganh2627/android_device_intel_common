@@ -45,7 +45,7 @@ endif
 
 # Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
 # Add dependancy on ISU packages only if ISU method is used as ISU might not be delivered.
-ifeq ($(TARGET_OS_SIGNING_METHOD),ISU)
+ifeq ($(TARGET_OS_SIGNING_METHOD),isu)
 $(MKBOOTIMG): isu isu_stream
 endif
 $(MKBOOTIMG): xfstk-stitcher
@@ -241,3 +241,26 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 endif
 
 endif
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := init.common.rc
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
+include $(BUILD_SYSTEM)/base_rules.mk
+intel_common_rc := $(TOP)/device/intel/common/init.common.rc
+#These jars should have the same order as in build/core/dex_preopt.mk
+intel_jars :=
+ifeq ($(strip $(INTEL_FEATURE_ASF)),true)
+intel_jars:=$(intel_jars):/system/framework/com.intel.asf.jar
+endif
+ifeq ($(strip $(INTEL_FEATURE_ARKHAM)),true)
+intel_jars := $(intel_jars):/system/framework/com.intel.arkham.services.jar
+endif
+ifdef DOLBY_DAP
+intel_jars := $(intel_jars):/system/framework/dolby_ds.jar
+endif
+$(LOCAL_BUILT_MODULE): $(intel_common_rc) | $(ACP)
+	@echo "Copy: $(PRIVATE_MODULE) ($@)"
+	$(copy-file-to-new-target)
+	$(hide) sed -i '/BOOTCLASSPATH/ s#$$#$(intel_jars)#' $@

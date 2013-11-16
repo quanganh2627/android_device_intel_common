@@ -112,7 +112,7 @@ clean_kernel:
 copy_modules_to_root: modules_install
 	@$(RM) -rf $(KERNEL_MODULES_ROOT)
 	@mkdir -p $(KERNEL_MODULES_ROOT)
-	@find $(KERNEL_OUT_MODINSTALL) -name "*.ko" -exec cp -f {} $(KERNEL_MODULES_ROOT)/ \;
+	@find $(KERNEL_OUT_MODINSTALL)/lib/modules/`cat $(KERNEL_VERSION_FILE)` -name "*.ko" -exec cp -f {} $(KERNEL_MODULES_ROOT)/ \;
 	@mkdir -p $(KERNEL_FAKE_DEPMOD)
 	@echo "  DEPMOD `cat $(KERNEL_VERSION_FILE)`"
 	@ln -fns $(ANDROID_BUILD_TOP)/$(KERNEL_MODULES_ROOT) $(KERNEL_FAKE_DEPMOD)/`cat $(KERNEL_VERSION_FILE)`

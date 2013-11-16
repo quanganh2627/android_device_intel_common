@@ -85,7 +85,6 @@ PRODUCT_COPY_FILES += \
 endif
 PRODUCT_COPY_FILES += \
         $(COMMON_PATH)/init.rc:root/init.rc \
-        $(COMMON_PATH)/init.common.rc:root/init.common.rc \
         $(COMMON_PATH)/props.rc:root/props.rc \
         $(COMMON_PATH)/ueventd.modules.blacklist:root/ueventd.modules.blacklist \
         $(COMMON_PATH)/init.partlink.rc:root/init.partlink.rc
@@ -154,14 +153,17 @@ endif
 # AMTL unified configuration
 -include vendor/intel/tools/log_capture/amtl/src/com/intel/amtl/config_catalog/amtl.mk
 
+PRODUCT_PACKAGES += \
+    init.common.rc
+
 # Arkham
 PRODUCT_PACKAGES += \
+    init.intel.features.rc \
     com.intel.config \
     com.intel.config.xml \
     com.intel.arkham.services \
     com.intel.arkham.services.xml \
     ContainerDeviceAdmin \
-    ContainerLauncher \
-    MDM_Test
+    ContainerLauncher
 PRODUCT_PACKAGES_ENG += \
     cm

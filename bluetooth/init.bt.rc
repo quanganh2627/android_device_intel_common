@@ -4,10 +4,6 @@ import init.bt.vendor.rc
 on property:ro.product.name=*
     setprop ro.bt.conf_file /system/etc/bluetooth/bt_${ro.product.name}.conf
 
-# It will only succeed if ro.spid.wifi.nvram exists
-on early-boot
-    setprop ro.bt.vnd.FwPatchFilePath /etc/firmware/bt/${ro.spid.wifi.nvram}/
-
 on post-fs
     mkdir /config/bt
     chown system bluetooth /config/bt
