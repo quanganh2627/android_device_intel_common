@@ -16,8 +16,8 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 
 # By default, signing is performed using ISU (Intel Signing Utility).  Can be
 # overridden on specific target BoardConfig.mk.  Currently supported values for
-# the signing method are 'none' and 'isu'.
-TARGET_OS_SIGNING_METHOD := isu
+# the signing method are 'xfstk', 'xfstk_no_xml', 'isu', 'isu_plat2'.
+TARGET_OS_SIGNING_METHOD ?= isu
 
 FLASHFILE_NO_OTA := true
 INTEL_CRASHLOGD := false
@@ -250,7 +250,6 @@ ifeq ($(TARGET_PARTITIONING_SCHEME), "osip-gpt")
 		$(MKBOOTIMG) \
 		$(COMMON_BOOTIMAGE_ARGS) \
 		$(INTERNAL_BOOTIMAGE_ARGS) \
-		--product $(REF_DEVICE_NAME) \
 		--type mos \
 		--output $(INSTALLED_BOOTIMAGE_TARGET) \
 		$(ADDITIONAL_BOOTIMAGE_ARGS)
