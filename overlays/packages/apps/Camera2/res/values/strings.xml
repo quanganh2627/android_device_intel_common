@@ -370,6 +370,18 @@
     <string name="pref_camera_scenemode_entry_sunset">Sunset</string>
     <!-- Scene mode optimized for taking indoor low-lights pictures. [CHAR LIMIT=16] -->
     <string name="pref_camera_scenemode_entry_party">Party</string>
+    <!-- Scene mode Added by Intel -->
+    <string name="pref_camera_scenemode_entry_portrait">Portrait</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_entry_landscape">Landscape</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_entry_night_portrait">Night-portrait</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_entry_theatre">Theatre</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_entry_beach">beach</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_entry_snow">Snow</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_entry_steadyphoto">Steadyphoto</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_entry_fireworks">Fireworks</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_entry_sports">Sports</string><!-- Intel -->
+    <string name="pref_camera_scenemode_entry_candlelight">Candlelight</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_entry_barcode">Barcode</string> <!-- Intel -->
 
     <!-- Settings menu, scene mode labels [CHAR LIMIT=50] -->
     <string name="pref_camera_scenemode_label_auto">NONE</string>
@@ -381,6 +393,18 @@
     <string name="pref_camera_scenemode_label_sunset">SUNSET</string>
     <!-- Scene mode optimized for taking indoor low-lights pictures. [CHAR LIMIT=50] -->
     <string name="pref_camera_scenemode_label_party">PARTY</string>
+    <!-- Scene mode labels Added by Intel -->
+    <string name="pref_camera_scenemode_label_portrait">PORTRAIT</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_label_landscape">LANDSCAPE</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_label_night_portrait">NIGHT-PROTRAIT</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_label_theatre">THEATRE</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_label_beach">BEACH</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_label_snow">SNOW</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_label_steadyphoto">STEADYPHOTO</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_label_fireworks">FIREWORKS</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_label_sports">SPORTS</string><!-- Intel -->
+    <string name="pref_camera_scenemode_label_candlelight">CANDLELIGHT</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_label_barcode">BARCODE</string> <!-- Intel -->
 
     <!-- Settings menu countdown timer off [CHAR LIMIT=50] -->
     <string name="pref_camera_countdown_label_off">TIMER OFF</string>

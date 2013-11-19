@@ -345,6 +345,17 @@
         <item>@string/pref_camera_scenemode_entry_auto</item>
         <item>@string/pref_camera_scenemode_entry_sunset</item>
         <item>@string/pref_camera_scenemode_entry_party</item>
+        <item>@string/pref_camera_scenemode_entry_portrait</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_landscape</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_night_portrait</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_theatre</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_beach</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_snow</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_steadyphoto</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_fireworks</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_sports</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_candlelight</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_entry_barcode</item> <!-- Intel -->
     </string-array>
 
     <string-array name="pref_camera_scenemode_labels">
@@ -353,6 +364,17 @@
         <item>@string/pref_camera_scenemode_label_auto</item>
         <item>@string/pref_camera_scenemode_label_sunset</item>
         <item>@string/pref_camera_scenemode_label_party</item>
+        <item>@string/pref_camera_scenemode_label_portrait</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_label_landscape</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_label_night_portrait</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_label_theatre</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_label_beach</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_label_snow</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_label_steadyphoto</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_label_fireworks</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_label_sports</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_label_candlelight</item> <!-- Intel -->
+        <item>@string/pref_camera_scenemode_label_barcode</item> <!-- Intel -->
     </string-array>
 
     <array name="pref_camera_scenemode_icons">
@@ -361,6 +383,17 @@
         <item>@drawable/ic_sce_off</item>
         <item>@drawable/ic_sce_sunset</item>
         <item>@drawable/ic_sce_party</item>
+        <item>@drawable/ic_sce_portrait</item> <!-- intel -->
+        <item>@drawable/ic_sce_landscape</item> <!-- intel -->
+        <item>@drawable/ic_sce_night_portrait</item> <!-- intel -->
+        <item>@drawable/ic_sce_theatre</item> <!-- intel -->
+        <item>@drawable/ic_sce_beach</item> <!-- intel -->
+        <item>@drawable/ic_sce_snow</item> <!-- intel -->
+        <item>@drawable/ic_sce_steadyphoto</item> <!-- intel -->
+        <item>@drawable/ic_sce_fireworks</item> <!-- intel -->
+        <item>@drawable/ic_sce_sports</item> <!-- intel -->
+        <item>@drawable/ic_sce_candlelight</item> <!-- intel -->
+        <item>@drawable/ic_sce_barcode</item> <!-- intel -->
     </array>
 
     <string-array name="pref_camera_scenemode_entryvalues" translatable="false">
@@ -369,6 +402,17 @@
         <item>auto</item>
         <item>sunset</item>
         <item>party</item>
+        <item>portrait</item> <!-- Intel -->
+        <item>landscape</item> <!-- Intel -->
+        <item>night-portrait</item> <!-- Intel -->
+        <item>theatre</item> <!-- Intel -->
+        <item>beach</item> <!-- Intel -->
+        <item>snow</item> <!-- Intel -->
+        <item>steadyphoto</item> <!-- Intel -->
+        <item>fireworks</item> <!-- Intel -->
+        <item>sports</item> <!-- Intel -->
+        <item>candlelight</item> <!-- Intel -->
+        <item>barcode</item> <!-- Intel -->
     </string-array>
 
     <array name="camera_id_entries" translatable="false">
