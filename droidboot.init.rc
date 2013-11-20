@@ -13,6 +13,9 @@ on init
 
     symlink /system/etc /etc
 
+    start partlink
+    wait /dev/block/platform/intel/by-label/data 1
+
     mount /tmp /tmp tmpfs
     mount /data /data tmpfs
 

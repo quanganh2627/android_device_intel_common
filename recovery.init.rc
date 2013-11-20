@@ -25,6 +25,9 @@ on init
     mkdir /factory 0775 system system
     mkdir /config 0775 system system
 
+    start partlink
+    wait /dev/block/platform/intel/by-label/data 1
+
     mount_all /fstab.${ro.hardware}
 
     mkdir /factory/telephony 0770 system radio
