@@ -40,19 +40,19 @@ ifneq (,$(filter wifi_ti,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
 endif
 
 ifneq (,$(filter wifi_bcm_43241,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd43241.mk
+  include $(TOP)/linux/modules/wlan/PRIVATE/bcm43xx/AndroidBcmdhd43241.mk
 endif
 
 ifneq (,$(filter wifi_bcm_4334,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd4334.mk
+  include $(TOP)/linux/modules/wlan/PRIVATE/bcm43xx/AndroidBcmdhd4334.mk
 endif
 
 ifneq (,$(filter wifi_bcm_4335 wifi_bcm_4339,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd4335.mk
+  include $(TOP)/linux/modules/wlan/PRIVATE/bcm43xx/AndroidBcmdhd4335.mk
 endif
 
 ifneq (,$(filter wifi_bcm_4334x,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  include $(TOP)/hardware/broadcom/wlan_driver/bcm4334/AndroidBcmdhd4334x.mk
+  include $(TOP)/linux/modules/wlan/PRIVATE/bcm43xx/AndroidBcmdhd4334x.mk
 endif
 
 ####################################
