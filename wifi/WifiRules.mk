@@ -35,24 +35,34 @@ HOSTAPD_CONF_PATH_ON_TARGET   = $(CONF_PATH_ON_TARGET)/$(HOSTAPD_CONF_FILE_NAME)
 
 include $(COMMON)/ComboChipVendor.mk
 
+BCM43xx_BASEDIR:=linux/modules/wlan/PRIVATE/bcm43xx
+define include-bcm-wifi-src-or-prebuilt
+  BCM43xx_CHIP:=$(1)
+  ifneq ($(wildcard $(TOP)/$(BCM43xx_BASEDIR)),$(empty))
+    include $(TOP)/$(BCM43xx_BASEDIR)/AndroidBcm.mk
+  else
+    include $(TOP)/$(call prebuilt-path,$(BCM43xx_BASEDIR))/AndroidBcm.mk
+  endif
+endef
+
 ifneq (,$(filter wifi_ti,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
   include $(TOP)/hardware/ti/wlan/wl12xx-compat/AndroidWl12xxCompat.mk
 endif
 
 ifneq (,$(filter wifi_bcm_43241,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  include $(TOP)/linux/modules/wlan/PRIVATE/bcm43xx/AndroidBcmdhd43241.mk
+  $(eval $(call include-bcm-wifi-src-or-prebuilt,43241))
 endif
 
 ifneq (,$(filter wifi_bcm_4334,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  include $(TOP)/linux/modules/wlan/PRIVATE/bcm43xx/AndroidBcmdhd4334.mk
+  $(eval $(call include-bcm-wifi-src-or-prebuilt,4334))
 endif
 
 ifneq (,$(filter wifi_bcm_4335 wifi_bcm_4339,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  include $(TOP)/linux/modules/wlan/PRIVATE/bcm43xx/AndroidBcmdhd4335.mk
+  $(eval $(call include-bcm-wifi-src-or-prebuilt,4335))
 endif
 
 ifneq (,$(filter wifi_bcm_4334x,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  include $(TOP)/linux/modules/wlan/PRIVATE/bcm43xx/AndroidBcmdhd4334x.mk
+  $(eval $(call include-bcm-wifi-src-or-prebuilt,4334x))
 endif
 
 ifneq (,$(filter wifi_intel_wkp,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
