@@ -13,6 +13,9 @@ on init
 
     symlink /system/etc /etc
 
+    start partlink
+    wait /dev/block/platform/intel/by-label/data 1
+
     mount /tmp /tmp tmpfs
     mount /data /data tmpfs
 
@@ -102,6 +105,9 @@ on property:persist.service.apklogfs.enable=0
 
 on property:sys.partitioning=1
     stop apk_logfs
+
+on property:sys.powerctl=*
+    powerctl ${sys.powerctl}
 
 on property:sys.partitioning=0
     mkdir /logs

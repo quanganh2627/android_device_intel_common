@@ -33,6 +33,8 @@ include $(BUILD_PHONY_PACKAGE)
 
 ##################################################
 
+ifeq ($(TARGET_BUILD_VARIANT),eng)
+
 include $(CLEAR_VARS)
 LOCAL_MODULE := parameter
 LOCAL_MODULE_TAGS := optional
@@ -40,6 +42,18 @@ LOCAL_MODULE_CLASS := SYSTEM
 LOCAL_MODULE_PATH := $(TARGET_OUT_EXECUTABLES)
 LOCAL_SRC_FILES := SCRIPTS/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
+
+else
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := parameter
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := SYSTEM
+LOCAL_MODULE_PATH := $(TARGET_OUT_EXECUTABLES)
+LOCAL_SRC_FILES := SCRIPTS/$(LOCAL_MODULE).user_debug
+include $(BUILD_PREBUILT)
+
+endif
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := vibrator

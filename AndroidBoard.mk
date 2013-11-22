@@ -45,7 +45,7 @@ endif
 
 # Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
 # Add dependancy on ISU packages only if ISU method is used as ISU might not be delivered.
-ifeq ($(TARGET_OS_SIGNING_METHOD),isu)
+ifneq ($(findstring isu,$(TARGET_OS_SIGNING_METHOD)),)
 $(MKBOOTIMG): isu isu_stream
 endif
 $(MKBOOTIMG): xfstk-stitcher
@@ -100,11 +100,11 @@ ifeq ($(TARGET_BIOS_TYPE),"uefi")
 fastboot_flashfile: espimage
 endif
 
-ifeq ($(USE_GMS_ALL),true)
-PUBLISH_TARGET_BUILD_VARIANT := $(TARGET_BUILD_VARIANT)_gms
-else
+#ifeq ($(USE_GMS_ALL),true)
+#PUBLISH_TARGET_BUILD_VARIANT := $(TARGET_BUILD_VARIANT)_gms
+#else
 PUBLISH_TARGET_BUILD_VARIANT := $(TARGET_BUILD_VARIANT)
-endif
+#endif
 
 TARGET_PUBLISH_PATH ?= $(shell echo $(TARGET_PRODUCT) | tr '[:lower:]' '[:upper:]')
 GENERIC_TARGET_NAME ?= $(TARGET_PRODUCT)

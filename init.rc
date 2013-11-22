@@ -1,20 +1,10 @@
-# STOP!
-# DO NOT ADD TO THIS FILE
-#
-# This is the base system "init.rc" file. This file is largely rewritten by Google with each major
-# release. We don't want to add to it - instead, we add to our own init.<whatever>.rc files. We catenate
-# our init.*.rc files to this one via use of the Android.mk PRODUCT_INIT_RC_FILES variable. See AndroidBoard
-#
-# Even though we don't want to add to or modify lines of this file, we DO often need to change lines
-# that Google has placed there. To accomplish this, we comment the lines out in this file and ADD the correc
-# lines to init.<whatever>.rc. A good example is the init.mfld.rc file in this directory.
-
 # Copyright (C) 2012 The Android Open Source Project
 #
 # IMPORTANT: Do not create world writable files or directories.
 # This is a common source of Android security bugs.
 #
 
+import /init.environ.rc
 import /init.usb.rc
 import /init.${ro.hardware}.rc
 import /init.trace.rc
@@ -38,18 +28,6 @@ sysclktz 0
 
 loglevel 3
 
-# setup the global environment
-    export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
-    export LD_LIBRARY_PATH /vendor/lib:/system/lib:/system/lib/arm
-    export ANDROID_BOOTLOGO 1
-    export ANDROID_ROOT /system
-    export ANDROID_ASSETS /system/app
-    export ANDROID_DATA /data
-    export ANDROID_STORAGE /storage
-    export ASEC_MOUNTPOINT /mnt/asec
-    export LOOP_MOUNTPOINT /mnt/obb
-#    export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/telephony-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar
-
 # Backward compatibility
     symlink /system/etc /etc
     symlink /sys/kernel/debug /d
@@ -62,6 +40,19 @@ loglevel 3
     mkdir /acct
     mount cgroup none /acct cpuacct
     mkdir /acct/uid
+
+# Create cgroup mount point for memory
+    mount tmpfs none /sys/fs/cgroup
+    mkdir /sys/fs/cgroup/memory
+    mount cgroup none /sys/fs/cgroup/memory memory
+    write /sys/fs/cgroup/memory/memory.move_charge_at_immigrate 1
+    chown root system /sys/fs/cgroup/memory/tasks
+    chmod 0660 /sys/fs/cgroup/memory/tasks
+    mkdir /sys/fs/cgroup/memory/sw
+    write /sys/fs/cgroup/memory/sw/memory.swappiness 100
+    write /sys/fs/cgroup/memory/sw/memory.move_charge_at_immigrate 1
+    chown root system /sys/fs/cgroup/memory/sw/tasks
+    chmod 0660 /sys/fs/cgroup/memory/sw/tasks
 
     mkdir /system
     mkdir /data 0771 system system
@@ -142,14 +133,6 @@ loglevel 3
 # This is needed by any process that uses socket tagging.
     chmod 0644 /dev/xt_qtaguid
 
-on fs
-# mount mtd partitions
-    # Mount /system rw first to give the filesystem a chance to save a checkpoint
-#    mount yaffs2 mtd@system /system
-#    mount yaffs2 mtd@system /system ro remount
-#    mount yaffs2 mtd@userdata /data nosuid nodev
-#    mount yaffs2 mtd@cache /cache nosuid nodev
-
 on post-fs
     # once everything is setup, no need to modify /
     mount rootfs rootfs / ro remount
@@ -217,6 +200,7 @@ on post-fs-data
     mkdir /data/misc/bluetooth 0770 system system
     mkdir /data/misc/keystore 0700 keystore keystore
     mkdir /data/misc/keychain 0771 system system
+    mkdir /data/misc/radio 0770 system radio
     mkdir /data/misc/sms 0770 system radio
     mkdir /data/misc/zoneinfo 0775 system system
     mkdir /data/misc/vpn 0770 system vpn
@@ -254,11 +238,15 @@ on post-fs-data
     # the following directory.
     mkdir /data/drm 0770 drm drm
 
+    # create directory for MediaDrm plug-ins - give drm the read/write access to
+    # the following directory.
+    mkdir /data/mediadrm 0770 mediadrm mediadrm
+
     # symlink to bugreport storage location
     symlink /data/data/com.android.shell/files/bugreports /data/bugreports
 
     # Separate location for storing security policy files on data
-    mkdir /data/security 0700 system system
+    mkdir /data/security 0711 system system
 
     # If there is no fs-post-data action in the init.<device>.rc file, you
     # must uncomment this line, otherwise encrypted filesystems
@@ -288,7 +276,6 @@ on boot
     # Tweak background writeout
     write /proc/sys/vm/dirty_expire_centisecs 200
     write /proc/sys/vm/dirty_background_ratio  5
-    write /proc/sys/vm/dirty_background_bytes 8388608
 
     # Permissions for System Server and daemons.
     chown radio system /sys/android_power/state
@@ -344,12 +331,6 @@ on boot
     chown system system /sys/class/leds/red/device/grpfreq
     chown system system /sys/class/leds/red/device/grppwm
     chown system system /sys/class/leds/red/device/blink
-    chown system system /sys/class/leds/red/brightness
-    chown system system /sys/class/leds/green/brightness
-    chown system system /sys/class/leds/blue/brightness
-    chown system system /sys/class/leds/red/device/grpfreq
-    chown system system /sys/class/leds/red/device/grppwm
-    chown system system /sys/class/leds/red/device/blink
     chown system system /sys/class/timed_output/vibrator/enable
     chown system system /sys/module/sco/parameters/disable_esco
     chown system system /sys/kernel/ipv4/tcp_wmem_min
@@ -381,9 +362,6 @@ on boot
     class_start core
     class_start main
 
-
-    setprop system_init.startsurfaceflinger 0
-
 on nonencrypted
     class_start late_start
 
@@ -410,12 +388,29 @@ on property:vold.decrypt=trigger_shutdown_framework
     class_reset late_start
     class_reset main
 
+on property:sys.powerctl=*
+    powerctl ${sys.powerctl}
+
+# system server cannot write to /proc/sys files, so proxy it through init
+on property:sys.sysctl.extra_free_kbytes=*
+    write /proc/sys/vm/extra_free_kbytes ${sys.sysctl.extra_free_kbytes}
+
 ## Daemon processes to be run by init.
 ##
 service ueventd /sbin/ueventd
     class core
     critical
     seclabel u:r:ueventd:s0
+
+service healthd /sbin/healthd
+    class core
+    critical
+    seclabel u:r:healthd:s0
+
+service healthd-charger /sbin/healthd -n
+    class charger
+    critical
+    seclabel u:r:healthd:s0
 
 on property:selinux.reload_policy=1
     restart ueventd
@@ -430,7 +425,6 @@ service console /system/bin/sh
 
 on property:ro.debuggable=1
     start console
-    write /proc/sys/kernel/randomize_va_space 0
 
 # adbd is controlled via property triggers in init.<platform>.usb.rc
 service adbd /sbin/adbd
@@ -448,6 +442,7 @@ service servicemanager /system/bin/servicemanager
     user system
     group system
     critical
+    onrestart restart healthd
     onrestart restart zygote
     onrestart restart media
     onrestart restart surfaceflinger
@@ -496,7 +491,7 @@ service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-sys
 #service media /system/bin/mediaserver
 #    class main
 #    user media
-#    group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc
+#    group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc mediadrm
 #    ioprio rt 4
 
 service bootanim /system/bin/bootanimation
@@ -534,7 +529,6 @@ service keystore /system/bin/keystore /data/misc/keystore
     class main
     user keystore
     group keystore drmrpc
-    socket keystore stream 666
 
 service dumpstate /system/bin/dumpstate -s
     class main

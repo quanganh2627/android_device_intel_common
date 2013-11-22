@@ -383,6 +383,17 @@
         <item>@drawable/ic_sce_off</item>
         <item>@drawable/ic_sce_sunset</item>
         <item>@drawable/ic_sce_party</item>
+        <item>@drawable/ic_sce_portrait</item> <!-- intel -->
+        <item>@drawable/ic_sce_landscape</item> <!-- intel -->
+        <item>@drawable/ic_sce_night_portrait</item> <!-- intel -->
+        <item>@drawable/ic_sce_theatre</item> <!-- intel -->
+        <item>@drawable/ic_sce_beach</item> <!-- intel -->
+        <item>@drawable/ic_sce_snow</item> <!-- intel -->
+        <item>@drawable/ic_sce_steadyphoto</item> <!-- intel -->
+        <item>@drawable/ic_sce_fireworks</item> <!-- intel -->
+        <item>@drawable/ic_sce_sports</item> <!-- intel -->
+        <item>@drawable/ic_sce_candlelight</item> <!-- intel -->
+        <item>@drawable/ic_sce_barcode</item> <!-- intel -->
     </array>
 
     <string-array name="pref_camera_scenemode_entryvalues" translatable="false">
@@ -462,6 +473,27 @@
         <item>@drawable/ic_video_effects_background_fields_of_wheat_holo</item>
         <item>@drawable/ic_video_effects_background_normal_holo_dark</item>
     </array>
+
+    <string-array name="pref_camera_hdr_plus_entries" translatable="false">
+        <item>@string/setting_off</item>
+        <item>@string/setting_on</item>
+    </string-array>
+
+    <string-array name="pref_camera_hdr_plus_labels" translatable="false">
+        <item>@string/pref_camera_scenemode_entry_hdr_plus</item>
+        <item>@string/pref_camera_scenemode_entry_hdr_plus</item>
+    </string-array>
+
+    <string-array name="pref_camera_hdr_plus_icons" translatable="false">
+        <item>@drawable/ic_hdr_plus_disabled</item>
+        <item>@drawable/ic_hdr_plus_normal</item>
+    </string-array>
+
+    <string-array name="pref_camera_hdr_plus_entryvalues" translatable="false">
+        <item>@string/setting_off_value</item>
+        <item>@string/setting_on_value</item>
+    </string-array>
+
 
     <string-array name="pref_camera_hdr_entries" translatable="false">
         <item>@string/setting_off</item>
