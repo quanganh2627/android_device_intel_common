@@ -13,6 +13,32 @@ on init
     # set usb serial number
     write /sys/class/android_usb/android0/iSerial ${ro.serialno}
 
+    mkdir /storage/emulated 0555 root root
+
+    mkdir /mnt/shell/emulated 0700 shell shell
+
+    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
+    mkdir /mnt/media_rw/usbcard1 0700 media_rw media_rw
+
+    export EXTERNAL_STORAGE /storage/emulated/legacy
+    export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
+    export EMULATED_STORAGE_TARGET /storage/emulated
+    # Disable SECONDARY_STORAGE in common
+    # Shall enable it in product
+    #export SECONDARY_STORAGE /storage/sdcard1
+
+    # Support legacy paths
+    symlink /storage/emulated/legacy /sdcard
+    symlink /storage/emulated/legacy /mnt/sdcard
+    symlink /storage/emulated/legacy /storage/sdcard0
+    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
+
+    # Support external SD card
+    mkdir /storage/sdcard1 0700 root root
+
+    # Support USB Disk
+    mkdir /storage/usbcard1 0700 root root
+
 on boot
     chown system system /dev/pvr_sync
     chmod 666 /dev/pvr_sync
@@ -52,6 +78,21 @@ on fs
     mkdir /config/wifi
     chown system wifi /config/wifi
     chmod 0770 /config/wifi
+
+on post-fs
+# create virtual SD card at /mnt/sdcard, based on the /data/media directory
+# daemon will drop to user/group system/media_rw after initializing
+# underlying files in /data/media will be created with user and group media_rw (1023)
+service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
+    class late_start
+
+service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
+    class late_start
+    disabled
+
+service fuse_usbcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/usbcard1 /storage/usbcard1
+    class late_start
+    disabled
 
 on post-fs-data
     mkdir /data/system/ 0770 system system
