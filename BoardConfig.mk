@@ -178,6 +178,9 @@ USE_VIDEO_EFFECT := true
 # Do not use shared object of ia_face by default
 USE_SHARED_IA_FACE := false
 
+# Use panorama v1.0 by default
+IA_PANORAMA_VERSION := 1.0
+
 # Turn on GR_STATIC_RECT_VB flag in skia to boost performance
 TARGET_USE_GR_STATIC_RECT_VB := true
 
