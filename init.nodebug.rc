@@ -26,6 +26,9 @@ on charger
     mkdir /logs/aplogs 0775 system log
     setprop sys.usb.config iadb
 
+on ramconsole
+    powerctl reboot
+
 # crash and log services
 #service crashlogd /system/bin/crashmonitor
 #    class late_start
