@@ -10,6 +10,7 @@ endif
 ## Small and mid ram device definition
 
 ifneq (,$(filter true,$(BOARD_HAVE_MID_RAM) $(BOARD_HAVE_SMALL_RAM)))
+  MINIMIZE_MALLOC_ALIGNMENT := true
   BOARD_HAVE_KSM := true
   BOARD_HAVE_ZRAM := true
   LIMIT_READAHEAD := true
