@@ -305,10 +305,20 @@ struct atomisp_dp_config {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int threshold;
  unsigned int gain;
+#ifdef ATOMISP_CSS21
+ unsigned int gr;
+ unsigned int r;
+ unsigned int b;
+ unsigned int gb;
+#endif
 };
 struct atomisp_xnr_config {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+#ifdef ATOMISP_CSS21
+ __u16 threshold;
+#else
  unsigned int threshold;
+#endif
 };
 struct atomisp_parm {
  struct atomisp_grid_info info;
