@@ -20,3 +20,8 @@ ifneq (,$(filter gps_bcm_4752%,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES))
 GPS_CHIP_VENDOR := bcm
 GPS_CHIP := 4752
 endif
+
+ifneq (,$(filter gps_bcm_47521%,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+GPS_CHIP_VENDOR := bcm
+GPS_CHIP := 47521
+endif
