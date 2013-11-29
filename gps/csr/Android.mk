@@ -7,7 +7,7 @@ LOCAL_MODULE := init.gps.rc
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
-LOCAL_SRC_FILES := $(PLATFORM_PATH)/gps/$(GPS_CHIP_VENDOR)/init.gps.rc
+LOCAL_PREBUILT_MODULE_FILE := $(PLATFORM_CONF_PATH)/gps/$(GPS_CHIP_VENDOR)/init.gps.rc
 include $(BUILD_PREBUILT)
 
 ##################################################

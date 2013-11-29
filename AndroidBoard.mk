@@ -46,7 +46,7 @@ endif
 # Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
 # Add dependancy on ISU packages only if ISU method is used as ISU might not be delivered.
 ifneq ($(findstring isu,$(TARGET_OS_SIGNING_METHOD)),)
-$(MKBOOTIMG): isu isu_stream
+$(MKBOOTIMG): isu isu_stream isu_wrapper
 endif
 $(MKBOOTIMG): xfstk-stitcher
 

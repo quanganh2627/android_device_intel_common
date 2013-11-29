@@ -84,4 +84,6 @@
 
   <java-symbol type="string" name="ims_creator_jar_file_property" />
   <java-symbol type="string" name="ims_creator_class_property" />
+  <!---Ciphering icon -->
+  <java-symbol type="drawable" name="stat_sys_ciphering_disable" />
 </resources>

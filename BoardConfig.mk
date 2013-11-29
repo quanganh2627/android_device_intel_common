@@ -14,6 +14,10 @@ KERNEL_SRC_DIR ?= linux/kernel
 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 
+# Customization of BOOTCLASSPATH and init.environ.rc
+PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.multidisplay:com.intel.config
+TARGET_ENVIRON_RC_IN := device/intel/common/init.environ.rc.in
+
 # By default, signing is performed using ISU (Intel Signing Utility).  Can be
 # overridden on specific target BoardConfig.mk.  Currently supported values for
 # the signing method are 'xfstk', 'xfstk_no_xml', 'isu', 'isu_plat2'.
@@ -82,7 +86,8 @@ $(call add-path-map, stlport:external/stlport/stlport \
         astl:external/astl/include \
         libusb:external/libusb/libusb \
         libc-kernel:bionic/libc/kernel \
-        libc-x86:bionic/libc/arch-x86/include)
+        libc-x86:bionic/libc/arch-x86/include \
+        strace:external/strace)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
@@ -212,6 +217,11 @@ endif
 STORAGE_CFLAGS ?= -DSTORAGE_BASE_PATH=\"/dev/block/mmcblk0\" -DSTORAGE_PARTITION_FORMAT=\"%sp%d\"
 COMMON_GLOBAL_CFLAGS += $(STORAGE_CFLAGS)
 
+# OS images signing
+TARGET_BOOT_IMAGE_KEYS_PATH ?=  vendor/intel/PRIVATE/cert
+TARGET_BOOT_IMAGE_PRIV_KEY ?= $(TARGET_BOOT_IMAGE_KEYS_PATH)/OS_priv.pem
+TARGET_BOOT_IMAGE_PUB_KEY ?= $(TARGET_BOOT_IMAGE_KEYS_PATH)/OS_pub.pub
+
 # partitioning scheme
 # osip-gpt:
 # 	- osip used by iafw
@@ -227,6 +237,14 @@ ifeq ($(TARGET_PARTITIONING_SCHEME),"full-gpt")
 	TARGET_BOOTIMAGE_USE_EXT2 ?= false
 	BOARD_KERNEL_PAGESIZE ?= 2048
 	BOARD_KERNEL_BASE ?= 0x80000000
+
+	ifeq ($(TARGET_OS_SIGNING_METHOD),isu)
+		BOARD_MKBOOTIMG_ARGS += --signsize 1024 --signexec "isu_wrapper.sh isu $(TARGET_BOOT_IMAGE_PRIV_KEY) $(TARGET_BOOT_IMAGE_PUB_KEY)"
+	endif
+
+	ifeq ($(TARGET_OS_SIGNING_METHOD),uefi)
+		BOARD_MKBOOTIMG_ARGS += --signsize 256 --signexec "openssl dgst -sha256 -sign $(TARGET_BOOT_IMAGE_PRIV_KEY)"
+	endif
 endif
 
 ifeq ($(TARGET_PARTITIONING_SCHEME), "osip-gpt")
