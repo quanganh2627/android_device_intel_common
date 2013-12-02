@@ -52,6 +52,7 @@ $(call add-path-map, stlport:external/stlport/stlport \
         osal:frameworks/av/libvideoeditor/osal/inc \
         frameworks-base-core:frameworks/base/core/jni \
         frameworks-av:frameworks/av/include \
+        frameworks-openmax:frameworks/native/include/media/openmax \
         jpeg:external/jpeg \
         skia:external/skia/include \
         sqlite:external/sqlite/dist \
