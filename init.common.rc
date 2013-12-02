@@ -33,6 +33,10 @@ on fs
 	# in the fstab.
 	mount_all /fstab.${ro.boot.hardware}
 
+on post-fs-data
+	# Set indication (checked by vold) that we have finished this action
+	setprop vold.post_fs_data_done 1
+
 on post-fs
 	# trigger block devices uevents to fire some "add" uevents to poke ueventd to
 	# start deferred module loading. System partition must be ready prior to
