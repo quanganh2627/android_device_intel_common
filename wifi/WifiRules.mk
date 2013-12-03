@@ -41,7 +41,7 @@ define include-bcm-wifi-src-or-prebuilt
   ifneq ($(wildcard $(TOP)/$(BCM43xx_BASEDIR)),$(empty))
     include $(TOP)/$(BCM43xx_BASEDIR)/AndroidBcm.mk
   else
-    include $(TOP)/$(call prebuilt-path,$(BCM43xx_BASEDIR))/AndroidBcm.mk
+    include $(TOP)/$(call intel-prebuilts-path,$(BCM43xx_BASEDIR))/AndroidBcm.mk
   endif
 endef
 
