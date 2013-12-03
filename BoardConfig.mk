@@ -92,7 +92,7 @@ $(call add-path-map, stlport:external/stlport/stlport \
         libusb:external/libusb/libusb \
         libc-kernel:bionic/libc/kernel \
         libc-x86:bionic/libc/arch-x86/include \
-        strace:external/strace) \
+        strace:external/strace \
         bionic:bionic)
 
 #Platform
