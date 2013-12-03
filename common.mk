@@ -163,3 +163,12 @@ PRODUCT_PACKAGES += \
     ContainerLauncher
 PRODUCT_PACKAGES_ENG += \
     cm
+
+# This library is required for Intel's implementation of Dalvik
+# libpcgdvmjit is a part of Dalvik JIT compiler
+PRODUCT_PACKAGES += libpcgdvmjit
+
+# This library is required for Intel's implementation of Dalvik
+# libcrash is a library which provides recorded state of an applications
+# which crashed while running on Dalvik VM
+PRODUCT_PACKAGES += libcrash
