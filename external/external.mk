@@ -4,6 +4,10 @@ ifneq (,$(findstring intel_prebuilts,$(MAKECMDGOALS)))
 # so intel_prebuilts should be used only for one variant anyway.
 ifneq (,$(findstring userdebug,$(TARGET_BUILD_VARIANT)))
 
+# GENERATE_INTEL_PREBUILTS is used to indicate we are generating intel_prebuilts
+# so that the tests above are not duplicated in different portions of the code.
+GENERATE_INTEL_PREBUILTS:=true
+
 # for easy porting to legacy branches, we setup REF_PRODUCT_NAME
 ifeq ($(REF_PRODUCT_NAME),)
 REF_PRODUCT_NAME:=$(TARGET_PRODUCT)
@@ -169,3 +173,12 @@ BUILD_CUSTOM_EXTERNAL := $(EXTERNAL_BUILD_SYSTEM)/symlinks/custom_external.mk
 
 endif # userdebug
 endif # intel_prebuilt
+
+# Convenient function to translate the path from internal to external.
+# It's available regardless of the prebuilt generation.
+#
+# $(1) : Local path to be translated in prebuilt
+#
+define prebuilt-path
+prebuilts/intel/vendor/intel/$(subst PRIVATE,prebuilts/$(TARGET_PRODUCT),$(1))
+endef

@@ -15,7 +15,7 @@ KERNEL_SRC_DIR ?= linux/kernel
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 
 # Customization of BOOTCLASSPATH and init.environ.rc
-override PRODUCT_BOOTCLASSPATH := /system/framework/core.jar:/system/framework/conscrypt.jar:/system/framework/okhttp.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/framework2.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/mms-common.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/webviewchromium.jar:/system/framework/com.intel.multidisplay.jar:/system/framework/com.intel.config.jar
+PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.multidisplay:com.intel.config
 TARGET_ENVIRON_RC_IN := device/intel/common/init.environ.rc.in
 
 # By default, signing is performed using ISU (Intel Signing Utility).  Can be
@@ -87,7 +87,8 @@ $(call add-path-map, stlport:external/stlport/stlport \
         libusb:external/libusb/libusb \
         libc-kernel:bionic/libc/kernel \
         libc-x86:bionic/libc/arch-x86/include \
-        strace:external/strace)
+        strace:external/strace) \
+        bionic:bionic)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
@@ -177,6 +178,9 @@ USE_VIDEO_EFFECT := true
 
 # Do not use shared object of ia_face by default
 USE_SHARED_IA_FACE := false
+
+# Use panorama v1.0 by default
+IA_PANORAMA_VERSION := 1.0
 
 # Turn on GR_STATIC_RECT_VB flag in skia to boost performance
 TARGET_USE_GR_STATIC_RECT_VB := true
