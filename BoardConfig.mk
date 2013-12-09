@@ -110,7 +110,9 @@ $(call add-path-map, stlport:external/stlport/stlport \
         strace:external/strace \
         bionic:bionic \
         opengl:frameworks/native/opengl/include \
-        libstagefright-wifi-display:frameworks/av/media/libstagefright/wifi-display)
+        libstagefright-wifi-display:frameworks/av/media/libstagefright/wifi-display \
+        libffi:external/libffi/include \
+        libffi-x86:external/libffi/linux-x86)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
