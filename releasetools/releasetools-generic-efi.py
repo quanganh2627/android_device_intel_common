@@ -88,10 +88,18 @@ def MountEsp(info):
 
 fastboot = {}
 
+def GetBootableImage(name, prebuilt_name, unpack_dir, tree_subdir,
+                     info_dict=None):
+    if (not os.path.exists(os.path.join(unpack_dir, "BOOTABLE_IMAGES", prebuilt_name)) and
+                not os.path.exists(os.path.join(unpack_dir, tree_subdir))):
+        return None
+    return common.GetBootableImage(name, prebuilt_name, unpack_dir, tree_subdir, info_dict)
+
+
 def IncrementalOTA_Assertions(info):
-    fastboot["source"] = common.GetBootableImage("/tmp/fastboot.img", "fastboot.img",
+    fastboot["source"] = GetBootableImage("/tmp/fastboot.img", "fastboot.img",
             OPTIONS.source_tmp, "FASTBOOT", OPTIONS.source_info_dict)
-    fastboot["target"] = common.GetBootableImage("/tmp/fastboot.img", "fastboot.img",
+    fastboot["target"] = GetBootableImage("/tmp/fastboot.img", "fastboot.img",
             OPTIONS.target_tmp, "FASTBOOT")
     # Policy: if both exist, try to do a patch update
     # if target but not source, write out the target verbatim
@@ -196,7 +204,7 @@ def FullOTA_Assertions(info):
 
 
 def FullOTA_InstallEnd(info):
-    fastboot_img = common.GetBootableImage("fastboot.img", "fastboot.img",
+    fastboot_img = GetBootableImage("fastboot.img", "fastboot.img",
                                      OPTIONS.input_tmp, "FASTBOOT")
     if fastboot_img:
         common.ZipWriteStr(info.output_zip, "fastboot.img", fastboot_img.data)
