@@ -16,6 +16,10 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 
 # Customization of BOOTCLASSPATH and init.environ.rc
 PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.multidisplay:com.intel.config
+ifeq ($(strip $(INTEL_FEATURE_AWARESERVICE)),true)
+PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.aware.awareservice
+endif
+
 TARGET_ENVIRON_RC_IN := device/intel/common/init.environ.rc.in
 
 # By default, signing is performed using ISU (Intel Signing Utility).  Can be
