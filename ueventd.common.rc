@@ -31,6 +31,8 @@
 # Android sync framework sw driver
 /dev/sw_sync                            0660   system     system
 
+# NFCC devices
+/dev/pn544                              0660   nfc        nfc
 
 # HSIC interfaces should only be readable for other
 /sys/devices/pci* hsic_enable           0664   root       system
