@@ -410,12 +410,12 @@ service ueventd /sbin/ueventd
     critical
     seclabel u:r:ueventd:s0
 
-service healthd /sbin/healthd -p
+service healthd /sbin/healthd -p -w
     class core
     critical
     seclabel u:r:healthd:s0
 
-service healthd-charger /sbin/healthd -p -n
+service healthd-charger /sbin/healthd -p -w -n
     class charger
     critical
     seclabel u:r:healthd:s0
