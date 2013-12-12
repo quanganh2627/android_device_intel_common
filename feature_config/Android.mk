@@ -1,7 +1,8 @@
 # Add features to the list as new features are supported in the build tree
 INTEL_SUPPORTED_FEATURES := \
 	INTEL_FEATURE_ARKHAM \
-	INTEL_FEATURE_AWARESERVICE
+	INTEL_FEATURE_AWARESERVICE \
+	INTEL_FEATURE_LPAL
 
 LOCAL_PATH := $(call my-dir)
 
