@@ -1,0 +1,5 @@
+on boot
+    start intel_fw_props
+
+service intel_fw_props /sbin/intel_fw_props
+    oneshot

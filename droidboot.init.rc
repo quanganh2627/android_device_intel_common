@@ -2,6 +2,7 @@ import /droidboot.init.${ro.hardware}.rc
 import /init.droidboot.debug.rc
 import /init.watchdog.rc
 import /init.partlink.rc
+import /init.firmware.rc
 
 on early-init
     start ueventd

@@ -1,4 +1,5 @@
 import /init.watchdog.rc
+import /init.firmware.rc
 import /init.partlink.rc
 import /init.intel.features.rc
 
