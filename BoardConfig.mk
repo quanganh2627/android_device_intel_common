@@ -259,7 +259,7 @@ ifeq ($(TARGET_PARTITIONING_SCHEME),"full-gpt")
 	BOARD_KERNEL_PAGESIZE ?= 2048
 	BOARD_KERNEL_BASE ?= 0x80000000
 
-	ifeq ($(TARGET_OS_SIGNING_METHOD),isu)
+	ifneq (, $(findstring isu,$(TARGET_OS_SIGNING_METHOD)))
 		BOARD_MKBOOTIMG_ARGS += --signsize 1024 --signexec "isu_wrapper.sh isu $(TARGET_BOOT_IMAGE_PRIV_KEY) $(TARGET_BOOT_IMAGE_PUB_KEY)"
 	endif
 
