@@ -41,7 +41,7 @@ define include-bcm-wifi-src-or-prebuilt
   ifneq ($(wildcard $(TOP)/$(BCM43xx_BASEDIR)),$(empty))
     include $(TOP)/$(BCM43xx_BASEDIR)/AndroidBcm.mk
   else
-    include $(TOP)/$(call prebuilt-path,$(BCM43xx_BASEDIR))/AndroidBcm.mk
+    include $(TOP)/$(call intel-prebuilts-path,$(BCM43xx_BASEDIR))/AndroidBcm.mk
   endif
 endef
 
@@ -67,6 +67,10 @@ endif
 
 ifneq (,$(filter wifi_intel_wkp,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
   -include $(TOP)/vendor/intel/hardware/PRIVATE/intel_cws/iwlwifi/iwl-stack-dev/Android.mk
+endif
+
+ifneq (,$(filter wifi_rtl_8723,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+  -include $(TOP)/linux/modules/wlan/realtek/AndroidRtl8723bs.mk
 endif
 
 ####################################

@@ -219,7 +219,7 @@
 				"try": 0,
 				"length": -16384,
 				"mount_point": null,
-				"mount_options": "nosuid,nodev,noatime,barrier=1,data=ordered,noauto_da_alloc",
+				"mount_options": "nosuid,nodev,noatime,discard,barrier=1,data=ordered,noauto_da_alloc",
 				"fs_mgr": "wait,check,encryptable=/factory/userdata_footer"
 			}
 		}

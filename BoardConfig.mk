@@ -16,6 +16,10 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 
 # Customization of BOOTCLASSPATH and init.environ.rc
 PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.multidisplay:com.intel.config
+ifeq ($(strip $(INTEL_FEATURE_AWARESERVICE)),true)
+PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.aware.awareservice
+endif
+
 TARGET_ENVIRON_RC_IN := device/intel/common/init.environ.rc.in
 
 # By default, signing is performed using ISU (Intel Signing Utility).  Can be
@@ -52,6 +56,7 @@ $(call add-path-map, stlport:external/stlport/stlport \
         osal:frameworks/av/libvideoeditor/osal/inc \
         frameworks-base-core:frameworks/base/core/jni \
         frameworks-av:frameworks/av/include \
+        frameworks-openmax:frameworks/native/include/media/openmax \
         jpeg:external/jpeg \
         skia:external/skia/include \
         sqlite:external/sqlite/dist \
@@ -87,7 +92,7 @@ $(call add-path-map, stlport:external/stlport/stlport \
         libusb:external/libusb/libusb \
         libc-kernel:bionic/libc/kernel \
         libc-x86:bionic/libc/arch-x86/include \
-        strace:external/strace) \
+        strace:external/strace \
         bionic:bionic)
 
 #Platform
@@ -199,6 +204,9 @@ include device/intel/common/wifi/WifiBoardConfig.mk
 
 # Gps
 include device/intel/common/gps/GpsBoardConfig.mk
+
+# Bluetooth
+include device/intel/common/bluetooth/BtBoardConfig.mk
 
 # SPID
 #

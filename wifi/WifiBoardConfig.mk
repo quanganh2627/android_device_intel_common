@@ -3,6 +3,7 @@ COMMON := device/intel/common
 include $(COMMON)/ComboChipVendor.mk
 
 BOARD_WPA_SUPPLICANT_DRIVER    := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB      :=
 
 ifeq (ti,$(findstring ti,$(COMBO_CHIP_VENDOR)))
 WPA_SUPPLICANT_VERSION := VER_0_8_X
@@ -14,7 +15,7 @@ BOARD_WLAN_DEVICE := bcmdhd
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
 BOARD_HOSTAPD_DRIVER        := NL80211
-BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_bcmdhd
+BOARD_HOSTAPD_PRIVATE_LIB   += lib_driver_cmd_bcmdhd
 WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
 
 # These hardcoded path are also defined in
@@ -38,13 +39,20 @@ K310_MR2_COMPATIBILITY := true
 
 endif
 
+ifneq (,$(filter wifi_rtl%,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB += lib_driver_cmd_rtl
+endif
+
 ifeq (intel,$(findstring intel,$(COMBO_CHIP_VENDOR)))
 BOARD_WLAN_DEVICE     := iwlwifi
 BOARD_HOSTAPD_DRIVER  := NL80211
-#WPA_SUPPLICANT_VERSION := VER_2_1_DEVEL_WCS
 WPA_SUPPLICANT_VERSION := VER_0_8_X
+#WPA_SUPPLICANT_VERSION := VER_2_1_DEVEL_WCS
+PRIVATE_WPA_SUPPLICANT_CONF := y
 
 # Used to compile Driver
 BOARD_USING_INTEL_IWL := true
 INTEL_IWL_BOARD_CONFIG := xmm6321
+INTEL_IWL_USE_COMPAT_INSTALL := y
+INTEL_IWL_USE_RM_MAC_CFG := y
 endif

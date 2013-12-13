@@ -1,6 +1,7 @@
 # Add features to the list as new features are supported in the build tree
 INTEL_SUPPORTED_FEATURES := \
-	INTEL_FEATURE_ARKHAM
+	INTEL_FEATURE_ARKHAM \
+	INTEL_FEATURE_AWARESERVICE
 
 LOCAL_PATH := $(call my-dir)
 
@@ -33,5 +34,7 @@ LOCAL_GENERATED_SOURCES := $(GEN)
 
 # The build system requires at least one sourcefile
 LOCAL_SRC_FILES := Comments.java
+LOCAL_JAVA_LIBRARIES := core
+LOCAL_NO_STANDARD_LIBRARIES := true
 
 include $(BUILD_JAVA_LIBRARY)

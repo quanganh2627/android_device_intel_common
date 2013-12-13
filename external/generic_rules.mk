@@ -48,7 +48,7 @@ endif
 # transform the name of output dir,
 # e.g. device/intel/PRIVATE/ipp -> device/intel/prebuilts/blackbay/ipp
 # src makefile is renamed Android.mk in prebuilts out directory
-LOCAL_MODULE_PREBUILT_MAKEFILE := $(TARGET_OUT_prebuilts)/$(subst /PRIVATE/,/prebuilts/$(REF_PRODUCT_NAME)/,$(dir $(LOCAL_MODULE_MAKEFILE)))Android.mk
+LOCAL_MODULE_PREBUILT_MAKEFILE := $(PRODUCT_OUT)/$(call intel-prebuilts-path,$(dir $(LOCAL_MODULE_MAKEFILE)))Android.mk
 # local shortcut
 my := $(LOCAL_MODULE_PREBUILT_MAKEFILE)
 

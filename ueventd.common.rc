@@ -42,6 +42,8 @@ mod:bcm43241		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmwar
 mod:bcm4334x		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
 mod:bcm4334		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
 
+mod:8723bs		ifname=wlan0 if2name=p2p0 rtw_power_mgnt=2 rtw_hwpwrp_detect=1
+
 # Define wlan.driver.vendor for different vendors
 # bcm
 uevent:sdio:c*v02D0d*   setprop wlan.driver.vendor bcm
@@ -51,3 +53,5 @@ uevent:sdio:c*v0097d*   setprop wlan.driver.vendor ti
 uevent:sdio:c*v037Ad*   setprop wlan.driver.vendor mtk
 # intel
 uevent:sdio:c*v0089d*   setprop wlan.driver.vendor intel
+# realtek
+uevent:sdio:c*v024Cd*	setprop wlan.driver.vendor rtl

@@ -257,7 +257,7 @@ endif
 ifeq ($(strip $(INTEL_FEATURE_ARKHAM)),true)
 intel_jars := $(intel_jars):/system/framework/com.intel.arkham.services.jar
 endif
-ifdef DOLBY_DAP
+ifeq ($(strip $(DOLBY_DAP)),true)
 intel_jars := $(intel_jars):/system/framework/dolby_ds.jar
 endif
 $(LOCAL_BUILT_MODULE): $(intel_common_rc) | $(ACP)

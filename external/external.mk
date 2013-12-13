@@ -179,6 +179,6 @@ endif # intel_prebuilt
 #
 # $(1) : Local path to be translated in prebuilt
 #
-define prebuilt-path
-prebuilts/intel/vendor/intel/$(subst PRIVATE,prebuilts/$(TARGET_PRODUCT),$(1))
+define intel-prebuilts-path
+prebuilts/intel/$(subst /PRIVATE/,/prebuilts/$(REF_PRODUCT_NAME)/,$(1))
 endef

@@ -40,3 +40,9 @@ BOARD_WLAN_DEVICE:= wifi-bigcore
 COMBO_CHIP_VENDOR:=
 COMBO_CHIP:=
 endif
+
+ifneq (,$(filter bt_rtl8723a bt_rtl8723b bt_rtl8821a wifi_rtl_8723,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+BOARD_WLAN_DEVICE:=rtl
+COMBO_CHIP_VENDOR:=rtl
+COMBO_CHIP:=rtl8723
+endif
