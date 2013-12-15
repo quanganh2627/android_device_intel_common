@@ -105,6 +105,9 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 # memmonitor (not for user builds)
 -include vendor/intel/tools/PRIVATE/log_infra/monitor/memmonitor/memmonitor.mk
 
+# thermal debug tools/scripts (not for user builds)
+-include vendor/intel/tools/PRIVATE/debug_internal_tools/thermal/thermal.mk
+
 # MPM (formely Kratos) (not for user builds)
 -include vendor/intel/apps/PRIVATE/Kratos/products/MPM.mk
 
