@@ -19,7 +19,15 @@ PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.multidisplay:com.intel.confi
 ifeq ($(strip $(INTEL_FEATURE_AWARESERVICE)),true)
 PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.aware.awareservice
 endif
-
+ifeq ($(strip $(INTEL_FEATURE_ASF)),true)
+PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.asf
+endif
+ifeq ($(strip $(INTEL_FEATURE_ARKHAM)),true)
+PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.arkham.services
+endif
+ifeq ($(strip $(DOLBY_DAP)),true)
+PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):dolby_ds
+endif
 TARGET_ENVIRON_RC_IN := device/intel/common/init.environ.rc.in
 
 # By default, signing is performed using ISU (Intel Signing Utility).  Can be

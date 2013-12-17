@@ -152,8 +152,8 @@ endif
 # AMTL unified configuration
 -include vendor/intel/tools/log_capture/amtl/src/com/intel/amtl/config_catalog/amtl.mk
 
-PRODUCT_PACKAGES += \
-    init.common.rc
+PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/init.common.rc:root/init.common.rc
 
 # Arkham
 PRODUCT_PACKAGES += \
