@@ -21,3 +21,7 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/init.recovery.common.rc:root/init.recovery.common.rc \
 	$(LOCAL_PATH)/keylayout/AT_Translated_Set_2_keyboard.kl:system/usr/keylayout/AT_Translated_Set_2_keyboard.kl \
 
+#Adding AndoridTerm app and shared library for debugging
+ifneq ($(TARGET_BUILD_VARIANT),user)
+    PRODUCT_PACKAGES += AndroidTerm libjackpal-androidterm4
+endif
