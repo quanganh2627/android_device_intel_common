@@ -21,7 +21,6 @@
        SDK.  Instead, put them here. -->
   <private-symbols package="com.android.internal" />
 
-  <java-symbol type="bool" name="clf_is_pn547" />
   <java-symbol type="bool" name="config_cat_support"/>
   <java-symbol type="bool" name="config_usage_oem_hooks_supported"/>
   <java-symbol type="bool" name="gsm_call_status_polling_enable" />
@@ -58,7 +57,6 @@
   <java-symbol type="string" name="usb_warn_usb_vbus_warn_title" />
   <java-symbol type="string" name="usb_warn_usb_vbus_warn_message" />
 
-  <java-symbol type="bool" name="clf_is_pn544pc" />
   <java-symbol type="string" name="container_err_unknown"/>
   <java-symbol type="string" name="container_err_no_service"/>
   <java-symbol type="string" name="container_err_permission_denied"/>

@@ -84,14 +84,6 @@
     <add-resource type="bool" name="config_TerminalDetectWindowOrientation" />
     <bool name="config_TerminalDetectWindowOrientation">false</bool>
 
-    <!-- Boolean indicating if current platform is using NXP PN547 for clf -->
-    <add-resource type="bool" name="clf_is_pn547" />
-    <bool name="clf_is_pn547">false</bool>
-
-    <!-- Boolean indicating if current platform is using NXP PN544PC for clf -->
-    <add-resource type="bool" name="clf_is_pn544pc" />
-    <bool name="clf_is_pn544pc">false</bool>
-
     <bool name="config_useDevInputEventForAudioJack">true</bool>
     <!-- Flag indicating whether the current device supports
          CAT aka STK handling. If true, this means that the
