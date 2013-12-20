@@ -679,15 +679,6 @@
       mvno_type="gid"
   />
 
-  <apn carrier="Coriolis Data"
-      mcc="208"
-      mnc="10"
-      apn="internetcoriolis"
-      type="default,supl"
-      mvno_match_data="12"
-      mvno_type="gid"
-  />
-
   <apn carrier="Coriolis MMS"
       mcc="208"
       mnc="10"
