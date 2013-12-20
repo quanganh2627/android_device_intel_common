@@ -60,6 +60,7 @@ KERNEL_BLD_FLAGS := \
     ARCH=$(KERNEL_ARCH) \
     INSTALL_MOD_PATH=$(KERNEL_MODINSTALL) \
     INSTALL_MOD_STRIP=1 \
+    DEPMOD=$(shell which true) \
     $(KERNEL_EXTRA_FLAGS)
 
 KERNEL_BLD_FLAGS_KDUMP := $(KERNEL_BLD_FLAGS) \
@@ -152,9 +153,6 @@ TAGS tags gtags cscope: $(KERNEL_CONFIG)
 #used to build out-of-tree kernel modules
 #$(1) is source path relative Android top, $(2) is module name
 #$(3) is extra flags
-# use PREV_MODINSTALL to define a dependency chain, and avoid to call modules_install in parallel
-
-PREV_MODINSTALL := modules_install
 
 define build_kernel_module
 .PHONY: $(2)
@@ -164,7 +162,7 @@ $(2): build_bzImage
 	@mkdir -p $(KERNEL_OUT_DIR)/../../$(1)
 	@+$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS) M=../../$(1) $(3)
 
-$(2)_install: $(2) $(PREV_MODINSTALL)
+$(2)_install: $(2)
 	@+$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS) M=../../$(1) $(3) modules_install
 
 $(2)_clean:
@@ -175,8 +173,6 @@ $(addprefix $(2)_,TAGS tags gtags cscope): $(KERNEL_CONFIG)
 	@$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS) M=../../$(1) $$(subst $(2)_,,$$@)
 	@rm -f $(1)/$$($$(subst $(2)_,,$$@)_files)
 	@cp -fs $$(addprefix `pwd`/$(KERNEL_OUT_DIR)/,$$($$(subst $(2)_,,$$@)_files)) $(1)/
-
-PREV_MODINSTALL := $(2)_install
 
 copy_modules_to_root: $(2)_install
 

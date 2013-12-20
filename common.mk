@@ -105,6 +105,9 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 # memmonitor (not for user builds)
 -include vendor/intel/tools/PRIVATE/log_infra/monitor/memmonitor/memmonitor.mk
 
+# thermal debug tools/scripts (not for user builds)
+-include vendor/intel/tools/PRIVATE/debug_internal_tools/thermal/thermal.mk
+
 # MPM (formely Kratos) (not for user builds)
 -include vendor/intel/apps/PRIVATE/Kratos/products/MPM.mk
 
@@ -163,3 +166,12 @@ PRODUCT_PACKAGES += \
     ContainerLauncher
 PRODUCT_PACKAGES_ENG += \
     cm
+
+# This library is required for Intel's implementation of Dalvik
+# libpcgdvmjit is a part of Dalvik JIT compiler
+PRODUCT_PACKAGES += libpcgdvmjit
+
+# This library is required for Intel's implementation of Dalvik
+# libcrash is a library which provides recorded state of an applications
+# which crashed while running on Dalvik VM
+PRODUCT_PACKAGES += libcrash

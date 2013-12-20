@@ -10,34 +10,19 @@ on init
     export PATH /sbin:/system/bin
     export LD_LIBRARY_PATH /system/lib
     export ANDROID_ROOT /system
-    export ANDROID_DATA /data
     export EXTERNAL_STORAGE /sdcard
 
     symlink /system/etc /etc
 
     mkdir /sdcard
     mkdir /system
-    mkdir /data
-    mkdir /logs
-    mkdir /cache
+
     mount /tmp /tmp tmpfs
 
-    mkdir /factory 0775 system system
-    mkdir /config 0775 system system
-
     start partlink
-    wait /dev/block/platform/intel/by-label/data 1
-
-    mount_all /fstab.${ro.hardware}
-
-    mkdir /factory/telephony 0770 system radio
-    mkdir /config/telephony 0770 system radio
 
     chown root shell /tmp
     chmod 0775 /tmp
-
-    chown system system /logs
-    chmod 777 /logs
 
     write /proc/sys/kernel/panic_on_oops 1
     write /sys/module/intel_mid/parameters/force_cold_boot 1
@@ -77,7 +62,12 @@ service thermald /sbin/thermald
     class core
     user root
 
-on property:sys.powerctl=*
+on property:sys.powerctl=reboot,
+    mkdir /logs
+    mount_all /fstab.${ro.hardware}
+    start apk_logfs
+
+on property:sys.realpowerctl=1
     powerctl ${sys.powerctl}
 
 # Always start adbd on userdebug and eng builds
@@ -142,14 +132,9 @@ on property:sys.usb.config=ptp,adb
     write /sys/class/android_usb/android0/functions $sys.usb.config
     write /sys/class/android_usb/android0/enable 1
 
-service apk_logfs /sbin/logcat -b system -b events -b main -b radio -b kernel -n 20 -r5000 -v threadtime -f /logs/aplog
+
+service apk_logfs /system/bin/sh /etc/retrieve_aplogs.sh
     disabled
-
-on property:persist.service.apklogfs.enable=1
-    start apk_logfs
-
-on property:persist.service.apklogfs.enable=0
-    stop apk_logfs
 
 # Add Proxy service for Modem provisionning
 service proxy /sbin/proxy -d none -m /dev/ttyIFX0 -p /dev/ttyGS0 -t on

@@ -13,7 +13,7 @@ include $(BUILD_PREBUILT)
 ##################################################
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := gps_bcm_4752
+LOCAL_MODULE := gps_bcm_$(GPS_CHIP)
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     gps_common \
@@ -28,10 +28,10 @@ include $(BUILD_PHONY_PACKAGE)
 ##################################################
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := gps_bcm_4752_extlna
+LOCAL_MODULE := gps_bcm_$(GPS_CHIP)_extlna
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
-    gps_bcm_4752
+    gps_bcm_$(GPS_CHIP)
 
 include $(BUILD_PHONY_PACKAGE)
 
