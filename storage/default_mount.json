@@ -27,8 +27,7 @@
 			"fstab_file": "recovery/root/fstab.$model",
 			"recovery_fstab_dest_file": "recovery/root/etc/recovery.fstab",
 			"mount": [
-				"logs",
-				"config"
+				"logs"
 				]
 		},
 
