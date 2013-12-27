@@ -19,7 +19,15 @@ PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.multidisplay:com.intel.confi
 ifeq ($(strip $(INTEL_FEATURE_AWARESERVICE)),true)
 PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.aware.awareservice
 endif
-
+ifeq ($(strip $(INTEL_FEATURE_ASF)),true)
+PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.asf
+endif
+ifeq ($(strip $(INTEL_FEATURE_ARKHAM)),true)
+PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.arkham.services
+endif
+ifeq ($(strip $(DOLBY_DAP)),true)
+PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):dolby_ds
+endif
 TARGET_ENVIRON_RC_IN := device/intel/common/init.environ.rc.in
 
 # By default, signing is performed using ISU (Intel Signing Utility).  Can be
@@ -94,7 +102,8 @@ $(call add-path-map, stlport:external/stlport/stlport \
         libc-x86:bionic/libc/arch-x86/include \
         strace:external/strace \
         bionic:bionic \
-        opengl:frameworks/native/opengl/include)
+        opengl:frameworks/native/opengl/include \
+        libstagefright-wifi-display:frameworks/av/media/libstagefright/wifi-display)
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
@@ -251,7 +260,7 @@ ifeq ($(TARGET_PARTITIONING_SCHEME),"full-gpt")
 	BOARD_KERNEL_PAGESIZE ?= 2048
 	BOARD_KERNEL_BASE ?= 0x80000000
 
-	ifeq ($(TARGET_OS_SIGNING_METHOD),isu)
+	ifneq (, $(findstring isu,$(TARGET_OS_SIGNING_METHOD)))
 		BOARD_MKBOOTIMG_ARGS += --signsize 1024 --signexec "isu_wrapper.sh isu $(TARGET_BOOT_IMAGE_PRIV_KEY) $(TARGET_BOOT_IMAGE_PUB_KEY)"
 	endif
 

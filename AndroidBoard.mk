@@ -125,7 +125,7 @@ fastboot_flashfile:
 	ULPMC_BINARY=$(ULPMC_BINARY) \
 	TARGET_BIOS_TYPE=$(TARGET_BIOS_TYPE) \
 	SPARSE_DISABLED=$(TARGET_USERIMAGES_SPARSE_EXT_DISABLED) \
-	$(SUPPORT_PATH)/publish_build.py '$@' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
+	$(SUPPORT_PATH)/publish_build.py '$@' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC) $(TARGET_USE_XEN)
 
 .PHONY: ota_flashfile
 ifneq (,$(filter true,$(FLASHFILE_NO_OTA) $(FLASHFILE_BOOTONLY)))
@@ -149,7 +149,7 @@ ota_flashfile: otapackage
 	TARGET_BIOS_TYPE=$(TARGET_BIOS_TYPE) \
 	ULPMC_BINARY=$(ULPMC_BINARY) \
 	SPARSE_DISABLED=$(TARGET_USERIMAGES_SPARSE_EXT_DISABLED) \
-	$(SUPPORT_PATH)/publish_build.py '$@' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
+	$(SUPPORT_PATH)/publish_build.py '$@' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC) $(TARGET_USE_XEN)
 endif #$(FLASHFILE_NO_OTA) || $(FLASHFILE_BOOTONLY)
 
 ifneq ($(FLASHFILE_BOOTONLY),true)
@@ -172,7 +172,7 @@ blank_flashfiles:
 	TARGET_BIOS_TYPE=$(TARGET_BIOS_TYPE) \
 	ULPMC_BINARY=$(ULPMC_BINARY) \
 	BOARD_GPFLAG=$(BOARD_GPFLAG) \
-	$(SUPPORT_PATH)/publish_build.py 'blankphone' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
+	$(SUPPORT_PATH)/publish_build.py 'blankphone' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC) $(TARGET_USE_XEN)
 else
 blank_flashfiles:
 	@echo "No blank_flashfiles for this target - FLASHFILE_BOOTONLY set to TRUE"
@@ -189,7 +189,7 @@ publish_modem:
 	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
 	BOARD_HAVE_MODEM=$(BOARD_HAVE_MODEM) \
 	SKIP_NVM=$(BOARD_SKIP_NVM) \
-	$(SUPPORT_PATH)/publish_build.py 'modem' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC)
+	$(SUPPORT_PATH)/publish_build.py 'modem' `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC) $(TARGET_USE_XEN)
 
 publish_system_symbols: systemtarball
 	@ echo "Publish system symbols"
@@ -241,26 +241,3 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 endif
 
 endif
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := init.common.rc
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := ETC
-LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
-include $(BUILD_SYSTEM)/base_rules.mk
-intel_common_rc := $(TOP)/device/intel/common/init.common.rc
-#These jars should have the same order as in build/core/dex_preopt.mk
-intel_jars :=
-ifeq ($(strip $(INTEL_FEATURE_ASF)),true)
-intel_jars:=$(intel_jars):/system/framework/com.intel.asf.jar
-endif
-ifeq ($(strip $(INTEL_FEATURE_ARKHAM)),true)
-intel_jars := $(intel_jars):/system/framework/com.intel.arkham.services.jar
-endif
-ifeq ($(strip $(DOLBY_DAP)),true)
-intel_jars := $(intel_jars):/system/framework/dolby_ds.jar
-endif
-$(LOCAL_BUILT_MODULE): $(intel_common_rc) | $(ACP)
-	@echo "Copy: $(PRIVATE_MODULE) ($@)"
-	$(copy-file-to-new-target)
-	$(hide) sed -i '/BOOTCLASSPATH/ s#$$#$(intel_jars)#' $@

@@ -158,7 +158,6 @@ struct psb_validate_req {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t buffer_handle;
  uint32_t presumed_flags;
- uint32_t group;
  uint32_t pad64;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t unfence_flag;
@@ -172,8 +171,8 @@ struct psb_validate_rep {
 #define PSB_USE_PRESUMED (1 << 0)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct psb_validate_arg {
- int handled;
- int ret;
+ uint64_t handled;
+ uint64_t ret;
  union {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct psb_validate_req req;
@@ -234,7 +233,7 @@ typedef enum {
  IMG_VIDEO_IED_STATE
 } lnc_getparam_key_t;
 struct drm_lnc_video_getparam_arg {
- lnc_getparam_key_t key;
+ uint64_t key;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint64_t arg;
  uint64_t value;

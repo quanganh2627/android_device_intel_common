@@ -41,6 +41,8 @@ endif
 
 ifneq (,$(filter wifi_rtl%,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB += lib_driver_cmd_rtl
+BOARD_HOSTAPD_DRIVER        := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB   += lib_driver_cmd_rtl
 endif
 
 ifeq (intel,$(findstring intel,$(COMBO_CHIP_VENDOR)))
