@@ -5,6 +5,7 @@
 <system-whitelist type="array">
   <package>com.google.android.inputmethod.latin</package>
   <package>com.google.android.inputmethod.latin.dictionarypack</package>
+  <package>com.google.android.gms</package>
   <package>com.android.providers.applications</package>
   <package>com.android.providers.calendar</package>
   <package>com.android.providers.contacts</package>
