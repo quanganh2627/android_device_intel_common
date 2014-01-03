@@ -81,6 +81,7 @@
   <!-- ARKHAM-545 -->
   <java-symbol type="string" name="kg_failed_attempts_almost_at_wipe_container" />
   <java-symbol type="string" name="kg_failed_attempts_now_wiping_container" />
+  <java-symbol type="string" name="reboot_device_confirmation" />
 
   <java-symbol type="string" name="ims_creator_jar_file_property" />
   <java-symbol type="string" name="ims_creator_class_property" />
