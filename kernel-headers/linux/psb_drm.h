@@ -158,6 +158,7 @@ struct psb_validate_req {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t buffer_handle;
  uint32_t presumed_flags;
+ uint32_t group;
  uint32_t pad64;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t unfence_flag;
