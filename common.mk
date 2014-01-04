@@ -31,4 +31,6 @@ endif
 ifneq ($(TARGET_BUILD_VARIANT),user)
 $(call inherit-mixin, superuser, cyanogen)
 PRODUCT_PACKAGES += AndroidTerm libjackpal-androidterm4
+# Crash Report
+$(call inherit-mixin, crashreport, ap_only)
 endif
