@@ -19,5 +19,9 @@
 <resources>
     <!-- Boolean to specify whether or not NFC should be default
          enabled -->
+    <add-resource type="bool" name="nfc_on_default"></add-resource>
     <bool name="nfc_on_default">false</bool>
+    <add-resource type="bool" name="clf_is_pn547"></add-resource>
+    <bool name="clf_is_pn547">false</bool>
+
 </resources>
