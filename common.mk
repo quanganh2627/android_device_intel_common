@@ -23,6 +23,6 @@ PRODUCT_COPY_FILES += \
 
 #Adding AndroidTerm app and shared library for debugging
 ifneq ($(TARGET_BUILD_VARIANT),user)
-    CUSTOM_SUPERUSER = Superuser
-    PRODUCT_PACKAGES += AndroidTerm libjackpal-androidterm4
+$(call inherit-mixin, superuser, cyanogen)
+PRODUCT_PACKAGES += AndroidTerm libjackpal-androidterm4
 endif
