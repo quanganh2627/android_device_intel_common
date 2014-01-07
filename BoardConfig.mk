@@ -302,5 +302,9 @@ endif
 # - uefi
 TARGET_BIOS_TYPE ?= "iafw"
 
+ifeq ($(TARGET_BIOS_TYPE),"uefi")
+INSTALLED_ESPIMAGE_TARGET := $(PRODUCT_OUT)/esp.img
+endif
+
 # external release
 include device/intel/common/external/external.mk
