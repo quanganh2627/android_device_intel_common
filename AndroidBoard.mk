@@ -110,7 +110,7 @@ TARGET_PUBLISH_PATH ?= $(shell echo $(TARGET_PRODUCT) | tr '[:lower:]' '[:upper:
 GENERIC_TARGET_NAME ?= $(TARGET_PRODUCT)
 
 .PHONY: flashfiles
-flashfiles: fastboot_flashfile
+flashfiles: fastboot_flashfile ota_flashfile
 
 .PHONY: fastboot_flashfile
 fastboot_flashfile:
