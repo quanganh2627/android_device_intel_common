@@ -232,8 +232,3 @@ endif
 # Add vtunedk: sep3_xx, vtsspp drivers. PAX driver will be used from sepdk.
 -include $(TOP)/linux/modules/debug_tools/vtunedk/src/AndroidSEP.mk
 -include $(TOP)/linux/modules/debug_tools/vtunedk/src/vtsspp/AndroidVTSSPP.mk
-
-# KCT Crashtool kernel module
-ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
--include $(TOP)/vendor/intel/hardware/PRIVATE/monitor/ksrc/AndroidKCT.mk
-endif
