@@ -54,6 +54,4 @@
        You have incorrectly attempted to unlock the container <xliff:g id="number">%d</xliff:g> times.
        The container will now be <xliff:g id="name">%s</xliff:g>.
     </string>
-    <add-resource type="string" name="reboot_device_confirmation" />
-    <string name="reboot_device_confirmation">Container data is not encrypted and a reboot is necessary for security reasons. Do you want to reboot the device now?</string>
 </resources>
