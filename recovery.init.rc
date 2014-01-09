@@ -63,13 +63,24 @@ service thermald /sbin/thermald
     class core
     user root
 
+on property:sys.powerctl=reboot,bootloader
+    setprop sys.start_apklogfs 1
+
+on property:sys.powerctl=reboot,recovery
+    setprop sys.start_apklogfs 1
+
 on property:sys.powerctl=reboot,
-    mkdir /logs
-    mount_all /fstab.${ro.hardware}
-    start apk_logfs
+    setprop sys.start_apklogfs 1
 
 on property:sys.realpowerctl=1
     powerctl ${sys.powerctl}
+
+on property:sys.start_apklogfs=1
+    mkdir /logs
+    chown system system /logs
+    chmod 777 /logs
+    mount_all /fstab.${ro.hardware}
+    start apk_logfs
 
 # Always start adbd on userdebug and eng builds
 on property:ro.debuggable=1
