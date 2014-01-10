@@ -259,12 +259,16 @@
     <string name="pref_camera_picturesize_entry_13mp">13M pixels</string>
     <!-- Settings screen, dialog choice for 8 megapixels picture size [CHAR LIMIT=20] -->
     <string name="pref_camera_picturesize_entry_8mp">8M pixels</string>
+    <!-- Settings screen, dialog choice for 6 megapixels picture size [CHAR LIMIT=20] -->
+    <string name="pref_camera_picturesize_entry_6mp_wide">6M pixels (16:9)</string>
     <!-- Settings screen, dialog choice for 5 megapixels picture size [CHAR LIMIT=20] -->
     <string name="pref_camera_picturesize_entry_5mp">5M pixels</string>
     <!-- Settings screen, dialog choice for 4 megapixels picture size [CHAR LIMIT=20] -->
     <string name="pref_camera_picturesize_entry_4mp">4M pixels</string>
     <!-- Settings screen, dialog choice for 3 megapixels picture size [CHAR LIMIT=20] -->
     <string name="pref_camera_picturesize_entry_3mp">3M pixels</string>
+    <!-- Settings screen, dialog choice for 2.1 megapixels picture size [CHAR LIMIT=20] -->
+    <string name="pref_camera_picturesize_entry_2_1mp">2.1M pixels</string>
     <!-- Settings screen, dialog choice for 2 megapixels picture size [CHAR LIMIT=20] -->
     <string name="pref_camera_picturesize_entry_2mp">2M pixels</string>
     <!-- Settings screen, dialog choice for 2 megapixels picture size [CHAR LIMIT=20] -->
@@ -273,6 +277,8 @@
     <string name="pref_camera_picturesize_entry_1_3mp">1.3M pixels</string>
     <!-- Settings screen, dialog choice for 1 megapixels picture size [CHAR LIMIT=20] -->
     <string name="pref_camera_picturesize_entry_1mp">1M pixels</string>
+    <!-- Settings screen, dialog choice for 0.9 megapixels picture size [CHAR LIMIT=20] -->
+    <string name="pref_camera_picturesize_entry_0_9mp_wide">0.9M pixels (16:9)</string>
     <!-- Settings screen, dialog choice for VGA picture size [CHAR LIMIT=20] -->
     <string name="pref_camera_picturesize_entry_vga">VGA</string>
     <!-- Settings screen, dialog choice for QVGA picture size [CHAR LIMIT=20] -->
