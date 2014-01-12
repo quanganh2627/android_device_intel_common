@@ -80,16 +80,33 @@ KERNEL_DIFFCONFIG ?= $(TARGET_DEVICE_DIR)/$(TARGET_DEVICE)_diffconfig
 KERNEL_VERSION_FILE := $(KERNEL_OUT_DIR)/include/config/kernel.release
 KERNEL_VERSION_FILE_KDUMP := $(KERNEL_OUT_DIR_KDUMP)/include/config/kernel.release
 
-$(KERNEL_CONFIG): $(KERNEL_DEFCONFIG) $(wildcard $(KERNEL_DIFFCONFIG))
+TARGET_MODULE_KEY_PAIR ?= build/target/product/security/testkey
+kernel_key_dir := $(call intermediates-dir-for,PACKAGING,module-keys)
+kernel_private_key := $(kernel_key_dir)/signing_key.priv
+kernel_public_key := $(kernel_key_dir)/signing_key.x509
+
+$(kernel_public_key): $(TARGET_MODULE_KEY_PAIR).x509.pem
+	$(hide) mkdir -p $(dir $@)
+	$(hide) openssl x509 -inform PEM -outform DER -in $(TARGET_MODULE_KEY_PAIR).x509.pem -out $@
+
+$(kernel_private_key): $(TARGET_MODULE_KEY_PAIR).pk8
+	$(hide) mkdir -p $(dir $@)
+	$(hide) openssl pkcs8 -nocrypt -inform DER -outform PEM -in $(TARGET_MODULE_KEY_PAIR).pk8 -out $@
+
+$(KERNEL_CONFIG): $(kernel_public_key) $(kernel_private_key) $(KERNEL_DEFCONFIG) $(wildcard $(KERNEL_DIFFCONFIG))
 	@echo Regenerating kernel config $(KERNEL_OUT_DIR)
 	@mkdir -p $(KERNEL_OUT_DIR)
 	@cat $^ > $@
+	@cp $(kernel_private_key) $(KERNEL_OUT_DIR)/signing_key.priv
+	@cp $(kernel_public_key) $(KERNEL_OUT_DIR)/signing_key.x509
 	@$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS) defoldconfig
 
-$(KERNEL_CONFIG_KDUMP): $(KERNEL_DEFCONFIG_KDUMP) $(wildcard $(KERNEL_DIFFCONFIG))
+$(KERNEL_CONFIG_KDUMP): $(kernel_public_key) $(kernel_private_key) $(KERNEL_DEFCONFIG_KDUMP) $(wildcard $(KERNEL_DIFFCONFIG))
 	@echo Regenerating kdump kernel config $(KERNEL_OUT_DIR_KDUMP)
 	@mkdir -p $(KERNEL_OUT_DIR_KDUMP)
 	@cat $^ > $@
+	@cp $(kernel_private_key) $(KERNEL_OUT_DIR_KDUMP)/signing_key.priv
+	@cp $(kernel_public_key) $(KERNEL_OUT_DIR_KDUMP)/signing_key.x509
 	@$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS_KDUMP) defoldconfig
 
 build_bzImage: $(KERNEL_CONFIG) openssl $(MINIGZIP)
