@@ -3,6 +3,10 @@ override PRODUCT_BRAND := intel
 
 COMMON_PATH := device/intel/common
 
+#Add Power HAL Package
+PRODUCT_PACKAGES += \
+    power.$(PRODUCT_DEVICE)
+
 #Add SensorCal App
 PRODUCT_PACKAGES += \
     SensorCal
