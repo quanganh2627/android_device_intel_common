@@ -21,6 +21,11 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/init.recovery.common.rc:root/init.recovery.common.rc \
 	$(LOCAL_PATH)/keylayout/AT_Translated_Set_2_keyboard.kl:system/usr/keylayout/AT_Translated_Set_2_keyboard.kl \
 
+#For user build, enable the adb secure feature
+ifeq ($(TARGET_BUILD_VARIANT),user)
+ADDITIONAL_DEFAULT_PROPERTIES += ro.adb.secure=1
+endif
+
 #Adding AndroidTerm app and shared library for debugging
 ifneq ($(TARGET_BUILD_VARIANT),user)
 $(call inherit-mixin, superuser, cyanogen)
