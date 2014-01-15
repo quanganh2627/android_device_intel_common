@@ -24,6 +24,7 @@ KERNEL_SOC_cherrytrail := cht
 KERNEL_SOC_moorefield := moor
 KERNEL_SOC_morganfield := morg
 KERNEL_SOC_carboncanyon := crc
+KERNEL_SOC_braswell := bsw
 
 KERNEL_SOC := $(KERNEL_SOC_$(TARGET_BOARD_PLATFORM))
 
