@@ -402,7 +402,7 @@
     <!-- Scene mode labels Added by Intel -->
     <string name="pref_camera_scenemode_label_portrait">PORTRAIT</string> <!-- Intel -->
     <string name="pref_camera_scenemode_label_landscape">LANDSCAPE</string> <!-- Intel -->
-    <string name="pref_camera_scenemode_label_night_portrait">NIGHT-PROTRAIT</string> <!-- Intel -->
+    <string name="pref_camera_scenemode_label_night_portrait">NIGHT-PORTRAIT</string> <!-- Intel -->
     <string name="pref_camera_scenemode_label_theatre">THEATRE</string> <!-- Intel -->
     <string name="pref_camera_scenemode_label_beach">BEACH</string> <!-- Intel -->
     <string name="pref_camera_scenemode_label_snow">SNOW</string> <!-- Intel -->
