@@ -117,6 +117,9 @@ WITH_DEXPREOPT := true
 WITH_DEXPREOPT_PREBUILT := true
 endif
 
+# Set ro.arch to x86 for Intel devices, used for HAL.
+ADDITIONAL_DEFAULT_PROPERTIES += ro.arch=x86
+
 # Enabling logs into file system for eng and user debug builds
 ifeq ($(PRODUCT_MANUFACTURER),intel)
 ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
