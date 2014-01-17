@@ -10,12 +10,14 @@
   <package>com.android.providers.calendar</package>
   <package>com.android.providers.contacts</package>
   <package>com.android.providers.downloads</package>
+  <package>com.android.providers.downloads.documents</package>
   <package>com.android.providers.downloads.ui</package>
   <package>com.android.providers.drm</package>
   <package>com.android.providers.media</package>
   <package>com.android.providers.settings</package>
   <package>com.android.providers.telephony</package>
   <package>com.android.providers.userdictionary</package>
+  <package>com.android.documentsui</package>
   <package>com.android.settings</package>
   <package>com.android.keychain</package>
   <package>com.android.certinstaller</package>

@@ -159,468 +159,469 @@ struct psb_validate_req {
  uint32_t buffer_handle;
  uint32_t presumed_flags;
  uint32_t pad64;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t unfence_flag;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
 struct psb_validate_rep {
  uint64_t gpu_offset;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t placement;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t fence_type_mask;
 };
 #define PSB_USE_PRESUMED (1 << 0)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct psb_validate_arg {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint64_t handled;
  uint64_t ret;
  union {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct psb_validate_req req;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct psb_validate_rep rep;
  } d;
 };
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define DRM_PSB_FENCE_NO_USER (1 << 0)
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct psb_ttm_fence_rep {
  uint32_t handle;
  uint32_t fence_class;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t fence_type;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t signaled_types;
  uint32_t error;
 };
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 typedef struct drm_psb_cmdbuf_arg {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint64_t buffer_list;
  uint64_t fence_arg;
  uint32_t cmdbuf_handle;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t cmdbuf_offset;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t cmdbuf_size;
  uint32_t reloc_handle;
  uint32_t reloc_offset;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t num_relocs;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t fence_flags;
  uint32_t engine;
 } drm_psb_cmdbuf_arg_t;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 typedef struct drm_psb_pageflip_arg {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t flip_offset;
  uint32_t stride;
 } drm_psb_pageflip_arg_t;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 typedef enum {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  LNC_VIDEO_DEVICE_INFO,
  LNC_VIDEO_GETPARAM_IMR_INFO,
  LNC_VIDEO_GETPARAM_CI_INFO,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  LNC_VIDEO_FRAME_SKIP,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  IMG_VIDEO_DECODE_STATUS,
  IMG_VIDEO_NEW_CONTEXT,
  IMG_VIDEO_RM_CONTEXT,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  IMG_VIDEO_UPDATE_CONTEXT,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  IMG_VIDEO_MB_ERROR,
  IMG_VIDEO_SET_DISPLAYING_FRAME,
  IMG_VIDEO_GET_DISPLAYING_FRAME,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  IMG_VIDEO_GET_HDMI_STATE,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  IMG_VIDEO_SET_HDMI_STATE,
  PNW_VIDEO_QUERY_ENTRY,
  IMG_DISPLAY_SET_WIDI_EXT_STATE,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  IMG_VIDEO_IED_STATE
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } lnc_getparam_key_t;
 struct drm_lnc_video_getparam_arg {
  uint64_t key;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint64_t arg;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint64_t value;
 };
 struct drm_video_displaying_frameinfo {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t buf_handle;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t width;
  uint32_t height;
  uint32_t size;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t format;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t luma_stride;
  uint32_t chroma_u_stride;
  uint32_t chroma_v_stride;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t luma_offset;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t chroma_u_offset;
  uint32_t chroma_v_offset;
  uint32_t reserved;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct drm_psb_vistest {
  uint32_t vt[8];
 };
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct drm_psb_sizes_arg {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t ta_mem_size;
  uint32_t mmu_size;
  uint32_t pds_size;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t rastgeom_size;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t tt_size;
  uint32_t vram_size;
 };
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct drm_psb_hist_status_arg {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t buf[32];
 };
 struct drm_psb_dpst_lut_arg {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t lut[256];
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  int output_id;
 };
 struct mrst_timing_info {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t pixel_clock;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t hactive_lo;
  uint8_t hblank_lo;
  uint8_t hblank_hi:4;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t hactive_hi:4;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t vactive_lo;
  uint8_t vblank_lo;
  uint8_t vblank_hi:4;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t vactive_hi:4;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t hsync_offset_lo;
  uint8_t hsync_pulse_width_lo;
  uint8_t vsync_pulse_width_lo:4;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t vsync_offset_lo:4;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t vsync_pulse_width_hi:2;
  uint8_t vsync_offset_hi:2;
  uint8_t hsync_pulse_width_hi:2;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t hsync_offset_hi:2;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t width_mm_lo;
  uint8_t height_mm_lo;
  uint8_t height_mm_hi:4;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t width_mm_hi:4;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t hborder;
  uint8_t vborder;
  uint8_t unknown0:1;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t hsync_positive:1;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t vsync_positive:1;
  uint8_t separate_sync:2;
  uint8_t stereo:1;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t unknown6:1;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t interlaced:1;
 } __attribute__((packed));
 struct gct_r10_timing_info {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t pixel_clock;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t hactive_lo:8;
  uint32_t hactive_hi:4;
  uint32_t hblank_lo:8;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t hblank_hi:4;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t hsync_offset_lo:8;
  uint16_t hsync_offset_hi:2;
  uint16_t hsync_pulse_width_lo:8;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t hsync_pulse_width_hi:2;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t hsync_positive:1;
  uint16_t rsvd_1:3;
  uint8_t vactive_lo:8;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t vactive_hi:4;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t vblank_lo:8;
  uint16_t vblank_hi:4;
  uint16_t vsync_offset_lo:4;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t vsync_offset_hi:2;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t vsync_pulse_width_lo:4;
  uint16_t vsync_pulse_width_hi:2;
  uint16_t vsync_positive:1;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t rsvd_2:3;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __attribute__((packed));
 struct mrst_panel_descriptor_v1 {
  uint32_t Panel_Port_Control;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t Panel_Power_On_Sequencing;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t Panel_Power_Off_Sequencing;
  uint32_t Panel_Power_Cycle_Delay_and_Reference_Divisor;
  struct mrst_timing_info DTD;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t Panel_Backlight_Inverter_Descriptor;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t Panel_MIPI_Display_Descriptor;
 } __attribute__((packed));
 struct mrst_panel_descriptor_v2 {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t Panel_Port_Control;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t Panel_Power_On_Sequencing;
  uint32_t Panel_Power_Off_Sequencing;
  uint8_t Panel_Power_Cycle_Delay_and_Reference_Divisor;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct mrst_timing_info DTD;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t Panel_Backlight_Inverter_Descriptor;
  uint8_t Panel_Initial_Brightness;
  uint16_t Panel_MIPI_Display_Descriptor;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __attribute__((packed));
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 union mrst_panel_rx {
  struct {
  uint16_t NumberOfLanes:2;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t MaxLaneFreq:3;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t SupportedVideoTransferMode:2;
  uint16_t HSClkBehavior:1;
  uint16_t DuoDisplaySupport:1;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t ECC_ChecksumCapabilities:1;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t BidirectionalCommunication:1;
  uint16_t Rsvd:5;
  } panelrx;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t panel_receiver;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __attribute__((packed));
 struct gct_ioctl_arg {
  uint8_t bpi;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t pt;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct mrst_timing_info DTD;
  uint32_t Panel_Port_Control;
  uint32_t PP_On_Sequencing;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t PP_Off_Sequencing;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t PP_Cycle_Delay;
  uint16_t Panel_Backlight_Inverter_Descriptor;
  uint16_t Panel_MIPI_Display_Descriptor;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __attribute__((packed));
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct gct_timing_desc_block {
  uint16_t clock;
  uint16_t hactive:12;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t hblank:12;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t hsync_start:10;
  uint16_t hsync_end:10;
  uint16_t hsync_polarity:1;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t h_reversed:3;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t vactive:12;
  uint16_t vblank:12;
  uint16_t vsync_start:6;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t vsync_end:6;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t vsync_polarity:1;
  uint16_t v_reversed:3;
 } __packed;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct gct_display_desc_block {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t type:2;
  uint8_t pxiel_format:4;
  uint8_t mode:2;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t frame_rate:6;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t reserved:2;
 } __attribute__((packed));
 struct gct_dsi_desc_block {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t lane_count:2;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t lane_frequency:3;
  uint8_t transfer_mode:2;
  uint8_t hs_clock_behavior:1;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t duo_display_support:1;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t ecc_caps:1;
  uint8_t bdirect_support:1;
  uint8_t reversed:5;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __packed;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct gct_bkl_desc_block {
  uint16_t frequency;
  uint8_t max_brightness:7;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t polarity:1;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __packed;
 struct gct_r20_clock_desc {
  uint8_t pre_divisor:2;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t divisor:9;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t post_divisor:4;
  uint8_t pll_bypass:1;
  uint8_t cck_clock_divisor:1;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t reserved:7;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __packed;
 struct gct_r20_panel_info {
  uint16_t width;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t height;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __packed;
 struct gct_r20_panel_mode {
  uint8_t mode:1;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t reserved:15;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __packed;
 struct gct_r20_dsi_desc {
  uint8_t num_dsi_lanes:2;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t reserved:14;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __packed;
 struct gct_r20_panel_desc {
  uint8_t panel_name[16];
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct gct_timing_desc_block timing;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct gct_r20_clock_desc clock_desc;
  struct gct_r20_panel_info panel_info;
  struct gct_r20_panel_mode panel_mode;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct gct_r20_dsi_desc dsi_desc;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t early_init_seq;
  uint32_t late_init_seq;
 } __packed;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct gct_r11_panel_desc {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t panel_name[16];
  struct gct_timing_desc_block timing;
  struct gct_display_desc_block display;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct gct_dsi_desc_block dsi;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct gct_bkl_desc_block bkl;
  uint32_t early_init_seq;
  uint32_t late_init_seq;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __packed;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct gct_r10_panel_desc {
  struct gct_timing_desc_block timing;
  struct gct_display_desc_block display;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct gct_dsi_desc_block dsi;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct gct_bkl_desc_block bkl;
  uint32_t early_init_seq;
  uint32_t late_init_seq;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t reversed[4];
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __packed;
 struct intel_mid_vbt {
  char signature[4];
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t revision;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t checksum;
  uint16_t size;
  uint8_t num_of_panel_desc;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t primary_panel_idx;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t secondary_panel_idx;
  uint8_t splash_flag;
  uint8_t reserved[4];
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  void *panel_descs;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __packed;
 struct mrst_vbt {
  char Signature[4];
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t Revision;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t Size;
  uint8_t Checksum;
  void *mrst_gct;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __attribute__ ((packed));
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct mrst_gct_v1 {
  union {
  struct {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t PanelType:4;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t BootPanelIndex:2;
  uint8_t BootMIPI_DSI_RxIndex:2;
  } PD;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t PanelDescriptor;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  };
  struct mrst_panel_descriptor_v1 panel[4];
  union mrst_panel_rx panelrx[4];
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __attribute__((packed));
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct mrst_gct_v2 {
  union {
  struct {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t PanelType:4;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t BootPanelIndex:2;
  uint8_t BootMIPI_DSI_RxIndex:2;
  } PD;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t PanelDescriptor;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  };
  struct mrst_panel_descriptor_v2 panel[4];
  union mrst_panel_rx panelrx[4];
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } __attribute__((packed));
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define PSB_DC_CRTC_SAVE 0x01
 #define PSB_DC_CRTC_RESTORE 0x02
 #define PSB_DC_OUTPUT_SAVE 0x04
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define PSB_DC_OUTPUT_RESTORE 0x08
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define PSB_DC_CRTC_MASK 0x03
 #define PSB_DC_OUTPUT_MASK 0x0C
 struct drm_psb_dc_state_arg {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t flags;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t obj_id;
 };
 struct drm_psb_mode_operation_arg {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t obj_id;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint16_t operation;
  struct drm_mode_modeinfo mode;
  void *data;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct drm_psb_stolen_memory_arg {
  uint32_t base;
  uint32_t size;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define REGRWBITS_PFIT_CONTROLS (1 << 0)
 #define REGRWBITS_PFIT_AUTOSCALE_RATIOS (1 << 1)
 #define REGRWBITS_PFIT_PROGRAMMED_SCALE_RATIOS (1 << 2)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define REGRWBITS_PIPEASRC (1 << 3)
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define REGRWBITS_PIPEBSRC (1 << 4)
 #define REGRWBITS_VTOTAL_A (1 << 5)
 #define REGRWBITS_VTOTAL_B (1 << 6)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define REGRWBITS_DSPACNTR (1 << 8)
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define REGRWBITS_DSPBCNTR (1 << 9)
 #define REGRWBITS_DSPCCNTR (1 << 10)
 #define REGRWBITS_SPRITE_UPDATE (1 << 11)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define REGRWBITS_PIPEASTAT (1 << 12)
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define REGRWBITS_INT_MASK (1 << 13)
 #define REGRWBITS_INT_ENABLE (1 << 14)
 #define REGRWBITS_DISPLAY_ALL (1 << 15)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define OV_REGRWBITS_OVADD (1 << 0)
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define OV_REGRWBITS_OGAM_ALL (1 << 1)
 #define OVC_REGRWBITS_OVADD (1 << 2)
 #define OVC_REGRWBITS_OGAM_ALL (1 << 3)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define OV_REGRWBITS_WAIT_FLIP (1 << 4)
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define OVC_REGRWBITS_WAIT_FLIP (1 << 5)
 #define OVSTATUS_REGRBIT_OVR_UPDT (1 << 6)
 #define SPRITE_UPDATE_SURFACE (0x00000001UL)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define SPRITE_UPDATE_CONTROL (0x00000002UL)
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define SPRITE_UPDATE_POSITION (0x00000004UL)
 #define SPRITE_UPDATE_SIZE (0x00000008UL)
 #define SPRITE_UPDATE_WAIT_VBLANK (0X00000010UL)
+#define SPRITE_UPDATE_CONSTALPHA (0x00000020UL)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define SPRITE_UPDATE_ALL (0x0000001fUL)
+#define SPRITE_UPDATE_ALL (0x0000003fUL)
 #define VSYNC_ENABLE (1 << 0)
 #define VSYNC_DISABLE (1 << 1)
 #define VSYNC_WAIT (1 << 2)
@@ -1070,76 +1071,79 @@ typedef enum intel_dc_plane_types {
  DC_OVERLAY_PLANE,
  DC_PRIMARY_PLANE,
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+ DC_PLANE_MAX,
 } DC_MRFLD_PLANE_TYPE;
 #define SPRITE_UPDATE_SURFACE (0x00000001UL)
 #define SPRITE_UPDATE_CONTROL (0x00000002UL)
-#define SPRITE_UPDATE_POSITION (0x00000004UL)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+#define SPRITE_UPDATE_POSITION (0x00000004UL)
 #define SPRITE_UPDATE_SIZE (0x00000008UL)
 #define SPRITE_UPDATE_WAIT_VBLANK (0X00000010UL)
-#define SPRITE_UPDATE_ALL (0x0000001fUL)
-#define MRFLD_PRIMARY_COUNT 3
+#define SPRITE_UPDATE_CONSTALPHA (0x00000020UL)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+#define SPRITE_UPDATE_ALL (0x0000003fUL)
+#define MRFLD_PRIMARY_COUNT 3
 typedef struct intel_dc_overlay_ctx {
  uint32_t index;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t pipe;
  uint32_t ovadd;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } DC_MRFLD_OVERLAY_CONTEXT;
 typedef struct intel_dc_sprite_ctx {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t update_mask;
  uint32_t index;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t pipe;
  uint32_t cntr;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t linoff;
  uint32_t stride;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t pos;
  uint32_t size;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t keyminval;
  uint32_t keymask;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t surf;
  uint32_t keymaxval;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t tileoff;
  uint32_t contalpa;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } DC_MRFLD_SPRITE_CONTEXT;
 typedef struct intel_dc_primary_ctx {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t update_mask;
  uint32_t index;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t pipe;
  uint32_t cntr;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t linoff;
  uint32_t stride;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t pos;
  uint32_t size;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t keyminval;
  uint32_t keymask;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t surf;
  uint32_t keymaxval;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t tileoff;
  uint32_t contalpa;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } DC_MRFLD_PRIMARY_CONTEXT;
 typedef struct intel_dc_plane_zorder {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t forceBottom[3];
  uint32_t abovePrimary;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } DC_MRFLD_DC_PLANE_ZORDER;
 typedef struct intel_dc_plane_ctx {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  enum intel_dc_plane_types type;
  struct intel_dc_plane_zorder zorder;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  union {
  struct intel_dc_overlay_ctx ov_ctx;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct intel_dc_sprite_ctx sp_ctx;
  struct intel_dc_primary_ctx prim_ctx;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  } ctx;
 } DC_MRFLD_SURF_CUSTOM;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #endif

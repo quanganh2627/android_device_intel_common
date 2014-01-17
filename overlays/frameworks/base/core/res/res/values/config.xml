@@ -84,14 +84,6 @@
     <add-resource type="bool" name="config_TerminalDetectWindowOrientation" />
     <bool name="config_TerminalDetectWindowOrientation">false</bool>
 
-    <!-- Boolean indicating if current platform is using NXP PN547 for clf -->
-    <add-resource type="bool" name="clf_is_pn547" />
-    <bool name="clf_is_pn547">false</bool>
-
-    <!-- Boolean indicating if current platform is using NXP PN544PC for clf -->
-    <add-resource type="bool" name="clf_is_pn544pc" />
-    <bool name="clf_is_pn544pc">false</bool>
-
     <bool name="config_useDevInputEventForAudioJack">true</bool>
     <!-- Flag indicating whether the current device supports
          CAT aka STK handling. If true, this means that the
@@ -133,5 +125,8 @@
     <!-- set the IMS phone creator class property -->
     <add-resource type="string" name="ims_creator_class_property" />
     <string name="ims_creator_class_property">com.intel.internal.telephony.ims.PhoneCreator</string>
+    <!-- Set to true this config item, audio path opening sequence will be well triggered
+         by framework in case of incoming call. -->
+    <bool name="config_speed_up_audio_on_mt_calls">true</bool>
 
 </resources>
