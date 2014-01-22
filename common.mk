@@ -28,6 +28,9 @@ ifneq ($(filter $(TARGET_BUILD_VARIANT),eng),)
 PRODUCT_PACKAGES += \
     SpeechRecorder
 endif
+#AESNI for bouncycastle
+PRODUCT_PACKAGES += \
+        libaesni
 
 # copy boot animation resources
 PRODUCT_COPY_FILES += \

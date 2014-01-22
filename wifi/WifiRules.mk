@@ -65,6 +65,10 @@ ifneq (,$(filter wifi_bcm_4334x,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)
   $(eval $(call include-bcm-wifi-src-or-prebuilt,4334x))
 endif
 
+ifneq (,$(filter wifi_bcm_4354,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+  $(eval $(call include-bcm-wifi-src-or-prebuilt,4354))
+endif
+
 ifneq (,$(filter wifi_intel_wkp,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
   -include $(TOP)/vendor/intel/hardware/PRIVATE/wlan/iwlwifi/Android.mk
 endif
