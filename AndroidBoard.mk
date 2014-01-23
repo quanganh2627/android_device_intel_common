@@ -125,15 +125,13 @@ else
 blank_flashfiles: recoveryimage
 endif
 blank_flashfiles:
-	$(if $(IFWI_PREBUILT_PATHS), \
-		PUBLISH_PATH=$(PUBLISH_PATH) \
-		TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
-		GENERIC_TARGET_NAME=$(GENERIC_TARGET_NAME) \
-		TARGET_USE_DROIDBOOT=$(TARGET_USE_DROIDBOOT) \
-		FRU_CONFIGS=$(FRU_CONFIGS) \
-		ULPMC_BINARY=$(ULPMC_BINARY) \
-		$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) 'blankphone' $(FILE_NAME_TAG), \
-		@echo "No IFWI found for this target. No blank flashfile to generate")
+	PUBLISH_PATH=$(PUBLISH_PATH) \
+	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
+	GENERIC_TARGET_NAME=$(GENERIC_TARGET_NAME) \
+	TARGET_USE_DROIDBOOT=$(TARGET_USE_DROIDBOOT) \
+	FRU_CONFIGS=$(FRU_CONFIGS) \
+	ULPMC_BINARY=$(ULPMC_BINARY) \
+	$(SUPPORT_PATH)/publish_build.py `pwd` $(REF_PRODUCT_NAME) $(TARGET_DEVICE) 'blankphone' $(FILE_NAME_TAG)
 else
 blank_flashfiles:
 	@echo "No blank_flashfiles for this target - FLASHFILE_BOOTONLY set to TRUE"
