@@ -324,6 +324,10 @@ on boot
     chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
     chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
 
+    # Give media permissions for audio related parameters
+    chown media media /sys/devices/platform/sst-platform/deep_buffer_threshold
+    chown media media /sys/devices/platform/sst-platform/low_latency_threshold
+
     # Assume SMP uses shared cpufreq policy for all CPUs
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
     chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq

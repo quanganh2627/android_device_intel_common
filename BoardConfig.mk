@@ -117,6 +117,9 @@ WITH_DEXPREOPT := true
 WITH_DEXPREOPT_PREBUILT := true
 endif
 
+# Set ro.arch to x86 for Intel devices, used for HAL.
+ADDITIONAL_DEFAULT_PROPERTIES += ro.arch=x86
+
 # Enabling logs into file system for eng and user debug builds
 ifeq ($(PRODUCT_MANUFACTURER),intel)
 ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
@@ -257,7 +260,7 @@ TARGET_PARTITIONING_SCHEME ?= "osip-gpt"
 
 ifeq ($(TARGET_PARTITIONING_SCHEME),"full-gpt")
 	TARGET_MAKE_NO_DEFAULT_BOOTIMAGE := false
-	TARGET_MAKE_INTEL_BOOTIMAGE := false
+	TARGET_MAKE_INTEL_BOOTIMAGE := true
 	TARGET_BOOTIMAGE_USE_EXT2 ?= false
 	BOARD_KERNEL_PAGESIZE ?= 2048
 	BOARD_KERNEL_BASE ?= 0x80000000
@@ -301,6 +304,10 @@ endif
 # - iafw
 # - uefi
 TARGET_BIOS_TYPE ?= "iafw"
+
+ifeq ($(TARGET_BIOS_TYPE),"uefi")
+INSTALLED_ESPIMAGE_TARGET := $(PRODUCT_OUT)/esp.img
+endif
 
 # external release
 include device/intel/common/external/external.mk
