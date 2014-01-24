@@ -191,6 +191,10 @@ USE_INTEL_CAMERA_EXTRAS := true
 # select libcamera2 as the camera HAL
 USE_CAMERA_HAL2 := true
 
+# disable the new V3 HAL by default so it can be added to the tree without conflicts
+# it will be enabled in selected platforms
+USE_CAMERA_HAL_3 := false
+
 # Set USE_VIDEO_EFFECT to 'false' to unsupport live face effect. And Set OMX Component Input Buffer Count to 2.
 USE_VIDEO_EFFECT := true
 
