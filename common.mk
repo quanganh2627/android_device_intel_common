@@ -20,6 +20,7 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/init.common.rc:root/init.common.rc \
 	$(LOCAL_PATH)/init.recovery.common.rc:root/init.recovery.common.rc \
 	$(LOCAL_PATH)/keylayout/AT_Translated_Set_2_keyboard.kl:system/usr/keylayout/AT_Translated_Set_2_keyboard.kl \
+	$(LOCAL_PATH)/preferred-apps/browser.xml:system/etc/preferred-apps/browser.xml \
 
 #For user build, enable the adb secure feature
 ifeq ($(TARGET_BUILD_VARIANT),user)

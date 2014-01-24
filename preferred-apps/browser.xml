@@ -1,0 +1,12 @@
+<preferred-activities>
+    <item name="com.android.browser/.BrowserActivity" match="200000" always="true" set="2">
+        <set name="com.android.browser/.BrowserActivity" />
+        <set name="com.android.chrome/com.google.android.apps.chrome.Main" />
+        <filter>
+            <action name="android.intent.action.VIEW" />
+            <cat name="android.intent.category.DEFAULT" />
+            <scheme name="http" />
+            <scheme name="https" />
+        </filter>
+    </item>
+</preferred-activities>
