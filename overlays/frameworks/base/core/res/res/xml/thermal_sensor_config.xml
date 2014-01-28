@@ -16,8 +16,8 @@
         <ZoneName>CPU</ZoneName>
         <!--If 1, supports UEvent, otherwise poll-->
         <SupportsUEvent>0</SupportsUEvent>
-        <!--1 AND logic, 0 OR Logic-->
-        <SensorLogic>0</SensorLogic>
+        <!--ZoneLogic is a mandatory tag and should be placed after ZoneID and ZoneName-->
+        <ZoneLogic>Raw</ZoneLogic>
         <!--Debounce Interval for this Zone. In milli degrees-->
         <DebounceInterval>2000</DebounceInterval>
         <PollDelay>
@@ -27,9 +27,17 @@
             <DelayAlert>30000</DelayAlert>
             <DelayCritical>30000</DelayCritical>
         </PollDelay>
+        <!--Temperature thresholds for various states in milli degree celsius-->
+        <ZoneThreshold>
+            <ZoneThresholdTOff>0</ZoneThresholdTOff>
+            <ZoneThresholdNormal>90000</ZoneThresholdNormal>
+            <ZoneThresholdWarning>90000</ZoneThresholdWarning>
+            <ZoneThresholdAlert>90000</ZoneThresholdAlert>
+            <ZoneThresholdCritical>95000</ZoneThresholdCritical>
+        </ZoneThreshold>
         <Sensor>
             <SensorID>1</SensorID>
-            <SensorName>DTS</SensorName>
+            <SensorName>Core 0</SensorName>
             <!--Sysfs path to read Temperature. "auto" means the path is standard
                 (/sys/class/thermal/thermal_zoneX/) and enumerated at run time-->
             <SensorPath>/sys/devices/platform/coretemp.0/</SensorPath>
@@ -37,15 +45,7 @@
             <InputTemp>temp2_input</InputTemp>
             <HighTemp>temp2_threshold2</HighTemp>
             <LowTemp>temp2_threshold1</LowTemp>
-            <UEventDevPath>none</UEventDevPath>
-            <!--Temperature thresholds for various states in milli degree celsius-->
-            <Threshold>
-                <ThresholdTOff>0</ThresholdTOff>
-                <ThresholdNormal>90000</ThresholdNormal>
-                <ThresholdWarning>90000</ThresholdWarning>
-                <ThresholdAlert>90000</ThresholdAlert>
-                <ThresholdCritical>95000</ThresholdCritical>
-            </Threshold>
+            <UEventDevPath>DEVPATH=/devices/platform/coretemp.0</UEventDevPath>
         </Sensor>
   </Zone>
 </thermalconfig>
