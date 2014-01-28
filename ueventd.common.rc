@@ -23,6 +23,9 @@
 /dev/ttyMFD0                            0660   bluetooth  net_bt_stack
 /dev/ttyS1                              0660   bluetooth  bluetooth
 
+# Device needed by FM
+/dev/radio0                             0666   bluetooth  bluetooth
+
 # Device needed by security functionalities
 /dev/sep_sec_driver                     0660   system     system
 /dev/mei                                0660   system     system
