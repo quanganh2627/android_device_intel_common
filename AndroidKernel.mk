@@ -86,13 +86,14 @@ $(KERNEL_CONFIG): $(KERNEL_DEFCONFIG) $(wildcard $(KERNEL_DIFFCONFIG))
 	@echo Regenerating kernel config $(KERNEL_OUT_DIR)
 	@mkdir -p $(KERNEL_OUT_DIR)
 	@cat $^ > $@
-	@$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS) defoldconfig
+	@! $(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS) listnewconfig | grep -q CONFIG_ ||  \
+		(echo "There are errors in defconfig $^, please run cd $(KERNEL_SRC_DIR) && ./scripts/updatedefconfigs.sh" ; exit 1)
 
 $(KERNEL_CONFIG_KDUMP): $(KERNEL_DEFCONFIG_KDUMP) $(wildcard $(KERNEL_DIFFCONFIG))
 	@echo Regenerating kdump kernel config $(KERNEL_OUT_DIR_KDUMP)
 	@mkdir -p $(KERNEL_OUT_DIR_KDUMP)
 	@cat $^ > $@
-	@$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS_KDUMP) defoldconfig
+	@$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS_KDUMP) oldconfig
 
 build_bzImage: $(KERNEL_CONFIG) openssl $(MINIGZIP)
 	@$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS)
