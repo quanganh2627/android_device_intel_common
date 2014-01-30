@@ -39,3 +39,4 @@ $(call add-path-map, stlport:external/stlport/stlport \
        libxml2:external/libxml2/include \
        tinyalsa:external/tinyalsa/include)
 
+include device/intel/common/external/external.mk
