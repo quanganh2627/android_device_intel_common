@@ -40,3 +40,4 @@ $(call add-path-map, stlport:external/stlport/stlport \
        tinyalsa:external/tinyalsa/include)
 
 DEVICE_PACKAGE_OVERLAYS += device/intel/common/overlay
+include device/intel/common/external/external.mk
