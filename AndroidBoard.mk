@@ -127,6 +127,11 @@ fastboot_flashfile:
 	SPARSE_DISABLED=$(TARGET_USERIMAGES_SPARSE_EXT_DISABLED) \
 	$(SUPPORT_PATH)/publish_build.py '$@' $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC) $(TARGET_USE_XEN)
 
+# Buildbot override to force OTA on UI demand (maintainers/engineering builds)
+ifeq ($(FORCE_OTA),true)
+override FLASHFILE_NO_OTA:=false
+endif
+
 .PHONY: ota_flashfile
 ifneq (,$(filter true,$(FLASHFILE_NO_OTA) $(FLASHFILE_BOOTONLY)))
 ota_flashfile:
