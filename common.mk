@@ -176,6 +176,7 @@ PRODUCT_PACKAGES_ENG += \
 
 # Android Security Framework
 PRODUCT_PACKAGES += \
+        init.intel.feature.asf.rc \
         com.intel.asf \
         com.intel.asf.xml \
         securityfileservice \
