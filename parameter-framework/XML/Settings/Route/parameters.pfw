@@ -428,3 +428,14 @@ supDomain: Parameter
 		conf: Unmuted
 			component: /Route/ROUTEMGR/CRITERIA/MIC_MUTE/
 				STATE = Off
+
+	domain: BtHeadsetNrEc
+		conf: Available
+			BtHeadsetNrEc Is True
+
+			component: /Route/ROUTEMGR/CRITERIA/BT_HEADSET_NREC_CRITERIA/
+				BOOLEAN = True
+
+		conf: NotAvailable
+			component: /Route/ROUTEMGR/CRITERIA/BT_HEADSET_NREC_CRITERIA/
+				BOOLEAN = False
