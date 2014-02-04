@@ -21,7 +21,13 @@ GPS_CHIP_VENDOR := bcm
 GPS_CHIP := 4752
 endif
 
+# Make sure to place 47521 filter after 4752 to override 4752 values.
 ifneq (,$(filter gps_bcm_47521%,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
 GPS_CHIP_VENDOR := bcm
 GPS_CHIP := 47521
+endif
+
+ifneq (,$(filter gps_bcm_47531%,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+GPS_CHIP_VENDOR := bcm
+GPS_CHIP := 47531
 endif
