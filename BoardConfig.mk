@@ -28,7 +28,7 @@ TARGET_CPU_SMP := true
 # If signing kernel modules, use the testing BIOS DB key
 # Production builds will re-sign them via sign_target_files_apks.
 # Just use the testkey that AOSP provides
-TARGET_MODULE_KEY_PAIR := build/target/product/security/testkey
+TARGET_MODULE_KEY_PAIR := device/intel/common/testkeys/DB
 TARGET_MODULE_GENKEY := device/intel/common/testkeys/kernel.x509.genkey
 
 # customize the malloced address to be 16-byte aligned.

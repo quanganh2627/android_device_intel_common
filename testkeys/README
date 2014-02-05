@@ -16,6 +16,9 @@ use their own private keys to sign the 1st UEFI boot loader and enroll the
 certificates into BIOS. They shall have their own approach to manage
 their keys as well.
 
+Currently, the DB key pair provided here is identical to the Google
+testkey found in build/target/product/security.
+
 Various tools may want the keys in PEM or DER format. Right now the
 private .pk8 key is in DER and the .x509.pem is in PEM.
 
