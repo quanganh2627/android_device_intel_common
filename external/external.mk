@@ -65,6 +65,10 @@ $(if $(filter $(1),$(_metatarget)), \
         $(eval $(my).copyfiles := $($(my).copyfiles) $(foreach h,$(LOCAL_SRC_FILES),$(LOCAL_PATH)/$(LOCAL_SRC_FILES):$(dir $(my))$(module_type)/$(notdir $(h)))), \
         $(eval $(my).copyfiles := $($(my).copyfiles) $(LOCAL_BUILT_MODULE)$(3):$(dir $(my))$(module_type)/$(LOCAL_INSTALLED_MODULE_STEM)) \
     ) \
+    $(eval ### for java libraries, also keep jar with classes) \
+    $(if $(filter java_library,$(_metatarget)), \
+        $(eval $(my).copyfiles := $($(my).copyfiles) $(full_classes_jar):$(dir $(my))$(module_type)/$(LOCAL_INSTALLED_MODULE_STEM).classes.jar) \
+    ) \
 )
 endef
 

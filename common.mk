@@ -3,6 +3,10 @@ override PRODUCT_BRAND := intel
 
 COMMON_PATH := device/intel/common
 
+#Add Power HAL Package
+PRODUCT_PACKAGES += \
+    power.$(PRODUCT_DEVICE)
+
 #Add SensorCal App
 PRODUCT_PACKAGES += \
     SensorCal
@@ -178,3 +182,6 @@ PRODUCT_PACKAGES += libpcgdvmjit
 # libcrash is a library which provides recorded state of an applications
 # which crashed while running on Dalvik VM
 PRODUCT_PACKAGES += libcrash
+
+# common firmware scripts
+-include $(COMMON_PATH)/firmware/firmware.mk
