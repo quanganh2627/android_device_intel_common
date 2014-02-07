@@ -12,7 +12,7 @@ make_kernel_tarball: get_kernel_from_source bootimage
 	@echo Building kernel tarball: $(TARGET_KERNEL_TARBALL)
 	@rm -rf $(PRODUCT_OUT)/kerneltarball
 	@mkdir -p $(PRODUCT_OUT)/kerneltarball/root/lib/modules
-	@cp $(PRODUCT_OUT)/root/lib/modules/* $(PRODUCT_OUT)/kerneltarball/lib/modules
+	@cp $(PRODUCT_OUT)/root/lib/modules/* $(PRODUCT_OUT)/kerneltarball/root/lib/modules
 	@cp $(PRODUCT_OUT)/bzImage $(PRODUCT_OUT)/kerneltarball/
 	tar cvzf $(TARGET_KERNEL_TARBALL) -C $(PRODUCT_OUT)/kerneltarball bzImage root/lib/modules
 
