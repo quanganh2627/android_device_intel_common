@@ -494,6 +494,8 @@ service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-sys
     onrestart write /sys/power/state on
     onrestart restart media
     onrestart restart netd
+    # Restart surfaceflinger to recover after a UIWDT due to Gfx hang
+    onrestart restart surfaceflinger
 
 #service drm /system/bin/drmserver
 #    class main
