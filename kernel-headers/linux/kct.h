@@ -37,7 +37,10 @@ enum ct_attchmt_type {
 	CT_ATTCHMT_DATA0,
 	CT_ATTCHMT_DATA1,
 	CT_ATTCHMT_DATA2,
-	/* Always add new types after DATA2 */
+	CT_ATTCHMT_DATA3,
+	CT_ATTCHMT_DATA4,
+	CT_ATTCHMT_DATA5,
+	/* Always add new types after DATA5 */
 	CT_ATTCHMT_BINARY,
 };
 
