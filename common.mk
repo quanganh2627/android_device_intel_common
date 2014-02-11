@@ -190,5 +190,5 @@ PRODUCT_PACKAGES += libpcgdvmjit
 # which crashed while running on Dalvik VM
 PRODUCT_PACKAGES += libcrash
 
-# common firmware scripts
--include $(COMMON_PATH)/firmware/firmware.mk
+# include test suite for eng and userdebug builds
+include $(COMMON_PATH)/test_suites.mk
