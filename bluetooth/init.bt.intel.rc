@@ -5,6 +5,7 @@
 ########################################################
 on init
     insmod /lib/modules/bcm_bt_lpm.ko
+    insmod /lib/modules/lnp_ldisc.ko
 
 service rfkill_bt /system/bin/sh /rfkill_bt.sh
     class core
