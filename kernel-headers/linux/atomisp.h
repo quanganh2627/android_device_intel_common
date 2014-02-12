@@ -245,6 +245,14 @@ struct atomisp_3a_rgby_output {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t y;
 };
+struct atomisp_metadata {
+	void __user *data;
+	uint32_t width;
+	uint32_t height;
+	uint32_t stride; /* in bytes */
+	uint32_t exp_id; /* exposure ID */
+	uint32_t *effective_width; /* mipi packets valid data size */
+};
 #ifdef ATOMISP_CSS2
 struct atomisp_3a_statistics {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -320,6 +328,13 @@ struct atomisp_xnr_config {
  unsigned int threshold;
 #endif
 };
+
+/* metadata config */
+struct atomisp_metadata_config {
+	uint32_t metadata_height;
+	uint32_t metadata_stride;
+};
+
 struct atomisp_parm {
  struct atomisp_grid_info info;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -339,6 +354,7 @@ struct atomisp_parm {
  struct atomisp_ee_config ee_config;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct atomisp_tnr_config tnr_config;
+ struct atomisp_metadata_config metadata_config;
 };
 
 struct dvs2_bq_resolution {
@@ -749,6 +765,13 @@ struct v4l2_private_int_data {
 #define ATOMISP_IOC_G_ISP_GAMMA   _IOR('v', BASE_VIDIOC_PRIVATE + 20, struct atomisp_gamma_table)
 #define ATOMISP_IOC_S_ISP_GAMMA   _IOW('v', BASE_VIDIOC_PRIVATE + 21, struct atomisp_gamma_table)
 #define ATOMISP_IOC_G_ISP_GDC_TAB   _IOR('v', BASE_VIDIOC_PRIVATE + 22, struct atomisp_morph_table)
+/*
+ * FIXME: BZ:172549
+ * Now the ATOMISP_IOC_G_ISP_GDC_TAB isn't used in current camera system and all
+ * private ioctl ID are used. so ATOMISP_IOC_G_METADATA is temporary to use
+ * private ID 22.
+ */
+#define ATOMISP_IOC_G_METADATA   _IOWR('v', BASE_VIDIOC_PRIVATE + 22, struct atomisp_metadata)
 #define ATOMISP_IOC_S_ISP_GDC_TAB   _IOW('v', BASE_VIDIOC_PRIVATE + 23, struct atomisp_morph_table)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define ATOMISP_IOC_ISP_MAKERNOTE   _IOWR('v', BASE_VIDIOC_PRIVATE + 24, struct atomisp_makernote_info)
@@ -848,6 +871,7 @@ struct v4l2_private_int_data {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define V4L2_BUF_TYPE_VIDEO_CAPTURE_ION (V4L2_BUF_TYPE_PRIVATE + 1024)
 #define V4L2_EVENT_ATOMISP_3A_STATS_READY (V4L2_EVENT_PRIVATE_START + 1)
+#define V4L2_EVENT_ATOMISP_METADATA_READY   (V4L2_EVENT_PRIVATE_START + 2)
 enum {
  V4L2_COLORFX_SKIN_WHITEN_LOW = 1001,
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
