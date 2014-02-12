@@ -34,9 +34,14 @@ COMBO_CHIP_VENDOR:=bcm
     endif
 endif
 
-ifneq (,$(filter wifi_intel_wkp bt_lightning_peak bt_intel_wkp,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+ifneq (,$(filter wifi_intel_wkp wifi_intel_lnp bt_lightning_peak bt_intel_wkp,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
 COMBO_CHIP_VENDOR:=intel
-COMBO_CHIP:=xmm
+ifneq (,$(filter wifi_intel_wkp,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+COMBO_CHIP:=wkp
+endif
+ifneq (,$(filter wifi_intel_lnp,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+COMBO_CHIP:=lnp
+endif
 endif
 
 ifneq (,$(filter wifi_bigcore,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
