@@ -8,9 +8,7 @@ USE_MOST_RESTRICTIVE_REGDOM=true
 # Paths declaration
 ####################################
 
-COMMON_WIFI_DIR = device/intel/common/wifi
-COMMON = device/intel/common
-LOCAL_COMMON_WIFI_DIR = $(PWD)/$(COMMON_WIFI_DIR)
+COMMON_WIFI_DIR := $(my-dir)
 
 ####################################
 # Configuration filenames
@@ -33,20 +31,18 @@ HOSTAPD_CONF_PATH_ON_TARGET   = $(CONF_PATH_ON_TARGET)/$(HOSTAPD_CONF_FILE_NAME)
 # Manufacturer
 ####################################
 
-include $(COMMON)/ComboChipVendor.mk
-
 BCM43xx_BASEDIR:=linux/modules/wlan/PRIVATE/bcm43xx
 define include-bcm-wifi-src-or-prebuilt
   BCM43xx_CHIP:=$(1)
-  ifneq ($(wildcard $(TOP)/$(BCM43xx_BASEDIR)),$(empty))
-    include $(TOP)/$(BCM43xx_BASEDIR)/AndroidBcm.mk
+  ifneq ($(wildcard $(BCM43xx_BASEDIR)),$(empty))
+    include $(BCM43xx_BASEDIR)/AndroidBcm.mk
   else
-    include $(TOP)/$(call intel-prebuilts-path,$(BCM43xx_BASEDIR))/AndroidBcm.mk
+    include $(call intel-prebuilts-path,$(BCM43xx_BASEDIR))/AndroidBcm.mk
   endif
 endef
 
 ifneq (,$(filter wifi_ti,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  include $(TOP)/hardware/ti/wlan/wl12xx-compat/AndroidWl12xxCompat.mk
+  include hardware/ti/wlan/wl12xx-compat/AndroidWl12xxCompat.mk
 endif
 
 ifneq (,$(filter wifi_bcm_43241,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
@@ -70,15 +66,15 @@ ifneq (,$(filter wifi_bcm_4354,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES))
 endif
 
 ifneq (,$(filter wifi_intel_wkp,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  -include $(TOP)/vendor/intel/hardware/PRIVATE/intel_cws/iwlwifi/iwl-stack-dev/Android.mk
+  -include vendor/intel/hardware/PRIVATE/intel_cws/iwlwifi/iwl-stack-dev/Android.mk
 endif
 
 ifneq (,$(filter wifi_intel_lnp,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  -include $(TOP)/vendor/intel/hardware/PRIVATE/intel_cws/iwlwifi/iwl-stack-dev/Android.mk
+  -include vendor/intel/hardware/PRIVATE/intel_cws/iwlwifi/iwl-stack-dev/Android.mk
 endif
 
 ifneq (,$(filter wifi_rtl_8723,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  -include $(TOP)/linux/modules/wlan/realtek/AndroidRtl8723bs.mk
+  -include linux/modules/wlan/realtek/AndroidRtl8723bs.mk
 endif
 
 ####################################
@@ -87,14 +83,14 @@ endif
 ifneq (,$(COMBO_CHIP_VENDOR))
 
 # common configuration files
-STA_CONF_FILES      += $(LOCAL_COMMON_WIFI_DIR)/$(STA_CONF_FILE_NAME)
-P2P_CONF_FILES      += $(LOCAL_COMMON_WIFI_DIR)/$(P2P_CONF_FILE_NAME)
-HOSTAPD_CONF_FILES  += $(LOCAL_COMMON_WIFI_DIR)/$(HOSTAPD_CONF_FILE_NAME)
+STA_CONF_FILES      += $(COMMON_WIFI_DIR)/$(STA_CONF_FILE_NAME)
+P2P_CONF_FILES      += $(COMMON_WIFI_DIR)/$(P2P_CONF_FILE_NAME)
+HOSTAPD_CONF_FILES  += $(COMMON_WIFI_DIR)/$(HOSTAPD_CONF_FILE_NAME)
 
 # manufacturer specific files
-STA_CONF_FILES      += $(LOCAL_COMMON_WIFI_DIR)/$(COMBO_CHIP_VENDOR)_specific/$(STA_CONF_FILE_NAME)
-P2P_CONF_FILES      += $(LOCAL_COMMON_WIFI_DIR)/$(COMBO_CHIP_VENDOR)_specific/$(P2P_CONF_FILE_NAME)
-HOSTAPD_CONF_FILES  += $(LOCAL_COMMON_WIFI_DIR)/$(COMBO_CHIP_VENDOR)_specific/$(HOSTAPD_CONF_FILE_NAME)
+STA_CONF_FILES      += $(COMMON_WIFI_DIR)/$(COMBO_CHIP_VENDOR)_specific/$(STA_CONF_FILE_NAME)
+P2P_CONF_FILES      += $(COMMON_WIFI_DIR)/$(COMBO_CHIP_VENDOR)_specific/$(P2P_CONF_FILE_NAME)
+HOSTAPD_CONF_FILES  += $(COMMON_WIFI_DIR)/$(COMBO_CHIP_VENDOR)_specific/$(HOSTAPD_CONF_FILE_NAME)
 
 ####################################
 # Locale variables

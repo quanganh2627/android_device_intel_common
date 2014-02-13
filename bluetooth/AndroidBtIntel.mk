@@ -1,4 +1,4 @@
-LOCAL_PATH := $(ANDROID_BUILD_TOP)
+LOCAL_PATH := $(my-dir)
 
 ##################################################
 

@@ -1,6 +1,4 @@
-COMMON := device/intel/common
-
-include $(COMMON)/ComboChipVendor.mk
+include $(COMMON_PATH)/ComboChipVendor.mk
 
 BOARD_WPA_SUPPLICANT_DRIVER    := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB      :=

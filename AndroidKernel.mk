@@ -54,15 +54,15 @@ KERNEL_CCSLOP := $(subst $(space),$(comma),$(KERNEL_CCSLOP))
 KERNEL_OUT_DIR := $(PRODUCT_OUT)/linux/kernel
 KERNEL_OUT_DIR_KDUMP := $(PRODUCT_OUT)/linux/kdump
 KERNEL_MODINSTALL := modules_install
-KERNEL_OUT_MODINSTALL := $(KERNEL_OUT_DIR)/$(KERNEL_MODINSTALL)
+KERNEL_OUT_MODINSTALL := $(PRODUCT_OUT)/linux/$(KERNEL_MODINSTALL)
 KERNEL_MODULES_ROOT := $(PRODUCT_OUT)/root/lib/modules
 KERNEL_CONFIG := $(KERNEL_OUT_DIR)/.config
 KERNEL_CONFIG_KDUMP := $(KERNEL_OUT_DIR_KDUMP)/.config
 KERNEL_BLD_FLAGS := \
     ARCH=$(KERNEL_ARCH) \
-    INSTALL_MOD_PATH=$(KERNEL_MODINSTALL) \
+    INSTALL_MOD_PATH=../$(KERNEL_MODINSTALL) \
     INSTALL_MOD_STRIP=1 \
-    DEPMOD=$(shell which true) \
+    DEPMOD=_fake_does_not_exist_ \
     $(KERNEL_EXTRA_FLAGS)
 
 KERNEL_BLD_FLAGS_KDUMP := $(KERNEL_BLD_FLAGS) \
@@ -120,7 +120,7 @@ copy_modules_to_root: modules_install
 	@find $(KERNEL_OUT_MODINSTALL)/lib/modules/`cat $(KERNEL_VERSION_FILE)` -name "*.ko" -exec cp -f {} $(KERNEL_MODULES_ROOT)/ \;
 	@mkdir -p $(KERNEL_FAKE_DEPMOD)
 	@echo "  DEPMOD `cat $(KERNEL_VERSION_FILE)`"
-	@ln -fns $(ANDROID_BUILD_TOP)/$(KERNEL_MODULES_ROOT) $(KERNEL_FAKE_DEPMOD)/`cat $(KERNEL_VERSION_FILE)`
+	@ln -fns ../../../../../root/lib/modules $(KERNEL_FAKE_DEPMOD)/`cat $(KERNEL_VERSION_FILE)`
 	@/sbin/depmod -b $(KERNEL_OUT_DIR)/fakedepmod `cat $(KERNEL_VERSION_FILE)`
 
 get_kernel_from_source: copy_modules_to_root

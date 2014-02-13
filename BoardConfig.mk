@@ -1,5 +1,8 @@
+COMMON_PATH := device/intel/common
+
 TARGET_ARCH := x86
 TARGET_ARCH_VARIANT := x86-atom
+TARGET_CPU_VARIANT := x86
 TARGET_CPU_ABI := x86
 TARGET_CPU_SMP := true
 TARGET_NO_BOOTLOADER := true
@@ -9,7 +12,7 @@ TARGET_PRELINK_MODULE := false
 TARGET_PROVIDES_INIT_RC := true
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_RIL_DISABLE_STATUS_POLLING := true
-TARGET_BOARD_KERNEL_HEADERS := device/intel/common/kernel-headers
+TARGET_BOARD_KERNEL_HEADERS := $(COMMON_PATH)/kernel-headers
 KERNEL_SRC_DIR ?= linux/kernel
 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
@@ -28,7 +31,7 @@ endif
 ifeq ($(strip $(DOLBY_DAP)),true)
 PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):dolby_ds
 endif
-TARGET_ENVIRON_RC_IN := device/intel/common/init.environ.rc.in
+TARGET_ENVIRON_RC_IN := $(COMMON_PATH)/init.environ.rc.in
 
 # By default, signing is performed using ISU (Intel Signing Utility).  Can be
 # overridden on specific target BoardConfig.mk.  Currently supported values for
@@ -45,8 +48,8 @@ BOARD_GPFLAG := 0x80000045
 
 USE_PRIVATE_LIBM := true
 
-ifneq ($(wildcard $(TOP)/vendor/intel/PRIVATE/cert/testkey*),)
-PRODUCT_DEFAULT_DEV_CERTIFICATE :=  $(TOP)/vendor/intel/PRIVATE/cert/testkey
+ifneq ($(wildcard vendor/intel/PRIVATE/cert/testkey*),)
+PRODUCT_DEFAULT_DEV_CERTIFICATE := vendor/intel/PRIVATE/cert/testkey
 endif
 
 #Extend the AOSP path includes
@@ -217,13 +220,13 @@ BUILD_BT_GAP_TEST := true
 DISPLAY_BUILD_NUMBER := true
 
 # Wi-Fi
-include device/intel/common/wifi/WifiBoardConfig.mk
+include $(COMMON_PATH)/wifi/WifiBoardConfig.mk
 
 # Gps
-include device/intel/common/gps/GpsBoardConfig.mk
+include $(COMMON_PATH)/gps/GpsBoardConfig.mk
 
 # Bluetooth
-include device/intel/common/bluetooth/BtBoardConfig.mk
+include $(COMMON_PATH)/bluetooth/BtBoardConfig.mk
 
 # SPID
 #
@@ -314,4 +317,4 @@ INSTALLED_ESPIMAGE_TARGET := $(PRODUCT_OUT)/esp.img
 endif
 
 # external release
-include device/intel/common/external/external.mk
+include $(COMMON_PATH)/external/external.mk

@@ -5,7 +5,7 @@
 # #   -> common -> platform -> device -> product
 # # $(1): [path/]file_name (can include wildcards)
 define get-all-config-files
- $(wildcard device/intel/common/$(1)) \
+ $(wildcard $(COMMON_PATH)/$(1)) \
      $(wildcard device/intel/$(TARGET_BOARD_PLATFORM)/$(1)) \
      $(wildcard $(TARGET_DEVICE_DIR)/$(1)) \
      $(wildcard $(TARGET_DEVICE_DIR)/$(1).$(TARGET_PRODUCT))

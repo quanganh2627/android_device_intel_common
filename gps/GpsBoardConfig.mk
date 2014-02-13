@@ -1,8 +1,7 @@
-GPS_PATH := device/intel/common/gps
 
 containing = $(strip $(foreach v,$2,$(if $(findstring $1,$v),$v)))
 
-include $(GPS_PATH)/ChipVendor.mk
+include $(COMMON_PATH)/gps/ChipVendor.mk
 
 ifeq (,$(filter none,$(GPS_CHIP_VENDOR) $(GPS_CHIP)))
 

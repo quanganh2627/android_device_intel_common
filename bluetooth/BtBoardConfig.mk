@@ -1,4 +1,4 @@
-include device/intel/common/ComboChipVendor.mk
+include $(COMMON_PATH)/ComboChipVendor.mk
 
 # Realtek
 ifeq ($(COMBO_CHIP_VENDOR),rtl)

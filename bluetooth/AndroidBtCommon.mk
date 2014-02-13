@@ -1,14 +1,4 @@
-include $(COMMON)/ComboChipVendor.mk
-
-ifeq ($(COMBO_CHIP_VENDOR),bcm)
-LIBBT_CONF_PATH := hardware/broadcom/libbt/conf/intel
-include $(LIBBT_CONF_PATH)/Android.mk
-endif
-
-LOCAL_PATH := $(ANDROID_BUILD_TOP)
-
-COMMON := device/intel/common
-BT_COMMON := $(COMMON)/bluetooth
+LOCAL_PATH := $(my-dir)
 
 ifeq ($(COMBO_CHIP_VENDOR), intel) # Intel chip compilation flag
 BOARD_USES_WCS := true
@@ -38,7 +28,7 @@ LOCAL_MODULE := init.bt.rc
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
-LOCAL_SRC_FILES := $(BT_COMMON)/$(LOCAL_MODULE)
+LOCAL_SRC_FILES := $(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 ##################################################
@@ -48,7 +38,7 @@ LOCAL_MODULE := init.bt.vendor.rc
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
-LOCAL_SRC_FILES := $(BT_COMMON)/init.bt.$(COMBO_CHIP_VENDOR).rc
+LOCAL_SRC_FILES := init.bt.$(COMBO_CHIP_VENDOR).rc
 include $(BUILD_PREBUILT)
 
 ##################################################
@@ -58,7 +48,13 @@ LOCAL_MODULE := rfkill_bt.sh
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
-LOCAL_SRC_FILES := $(BT_COMMON)/rfkill_bt.sh
+LOCAL_SRC_FILES := rfkill_bt.sh
 include $(BUILD_PREBUILT)
 
 ##################################################
+
+ifeq ($(COMBO_CHIP_VENDOR),bcm)
+LIBBT_CONF_PATH := hardware/broadcom/libbt/conf/intel
+include $(LIBBT_CONF_PATH)/Android.mk
+endif
+

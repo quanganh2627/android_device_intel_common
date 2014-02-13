@@ -1,10 +1,6 @@
-LOCAL_PATH := $(ANDROID_BUILD_TOP)
-WIFI_COMMON := device/intel/common/wifi
-COMMON := device/intel/common
+LOCAL_PATH := $(my-dir)
 
 ifeq ($(strip $(BOARD_HAVE_WIFI)),true)
-
-include $(COMMON)/ComboChipVendor.mk
 
 ##################################################
 include $(CLEAR_VARS)
@@ -40,7 +36,7 @@ LOCAL_MODULE := init.wifi.rc
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
-LOCAL_SRC_FILES := $(WIFI_COMMON)/$(LOCAL_MODULE)
+LOCAL_SRC_FILES := $(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 ##################################################
@@ -50,7 +46,7 @@ LOCAL_MODULE := init.wifi.vendor.rc
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
-LOCAL_SRC_FILES := $(WIFI_COMMON)/init.wifi.$(COMBO_CHIP_VENDOR).rc
+LOCAL_SRC_FILES := init.wifi.$(COMBO_CHIP_VENDOR).rc
 include $(BUILD_PREBUILT)
 
 ##################################################
@@ -60,7 +56,7 @@ LOCAL_MODULE := android.conf
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/dhcpcd
-LOCAL_SRC_FILES := $(WIFI_COMMON)/android.conf
+LOCAL_SRC_FILES := android.conf
 include $(BUILD_PREBUILT)
 
 ##################################################
@@ -70,7 +66,7 @@ LOCAL_MODULE := dhcp_lease_evt.sh
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(PRODUCT_OUT)/system/bin
-LOCAL_SRC_FILES := $(WIFI_COMMON)/dhcp_lease_evt.sh
+LOCAL_SRC_FILES := dhcp_lease_evt.sh
 include $(BUILD_PREBUILT)
 
 ##################################################
@@ -80,7 +76,7 @@ LOCAL_MODULE := dhcp6c.wlan0.stateless.conf
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/dhcp6c
-LOCAL_SRC_FILES := $(WIFI_COMMON)/dhcp6c.wlan0.stateless.conf
+LOCAL_SRC_FILES := dhcp6c.wlan0.stateless.conf
 include $(BUILD_PREBUILT)
 
 ##################################################
@@ -90,7 +86,7 @@ LOCAL_MODULE := dhcp6c.wlan0.stateful.conf
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/dhcp6c
-LOCAL_SRC_FILES := $(WIFI_COMMON)/dhcp6c.wlan0.stateful.conf
+LOCAL_SRC_FILES := dhcp6c.wlan0.stateful.conf
 include $(BUILD_PREBUILT)
 
 endif

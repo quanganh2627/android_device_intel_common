@@ -1,10 +1,10 @@
 # make file for common
 #
-LOCAL_PATH := $(TOP)/device/intel/common
-COMMON_PATH := $(TOP)/device/intel/common
-SUPPORT_PATH:= $(TOP)/vendor/intel/support
-ACS_BUILDBOT_PATH := $(TOP)/vendor/intel/PRIVATE/buildbot_acs
-PERMISSIONS_PATH := $(TOP)/frameworks/native/data/etc
+
+LOCAL_PATH := $(call my-dir)
+SUPPORT_PATH := vendor/intel/support
+ACS_BUILDBOT_PATH := vendor/intel/PRIVATE/buildbot_acs
+PERMISSIONS_PATH := frameworks/native/data/etc
 
 include $(LOCAL_PATH)/util.mk
 include $(CLEAR_VARS)
@@ -40,7 +40,7 @@ include $(BUILD_PREBUILT)
 # stitch kernel. We overide the default script to
 # adapt to out own IAFW format.
 ifeq ($(TARGET_PARTITIONING_SCHEME),"osip-gpt")
-MKBOOTIMG := vendor/intel/support/mkbootimg
+MKBOOTIMG := $(SUPPORT_PATH)/mkbootimg
 endif
 
 # Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
@@ -231,9 +231,9 @@ publish_acs:
 endif
 
 # Add sepdk driver
--include $(TOP)/vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
--include $(TOP)/linux/modules/debug_tools/vtunedk/src/pax/AndroidPAX.mk
+-include vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
+-include linux/modules/debug_tools/vtunedk/src/pax/AndroidPAX.mk
 
 # Add vtunedk: sep3_xx, vtsspp drivers. PAX driver will be used from sepdk.
--include $(TOP)/linux/modules/debug_tools/vtunedk/src/AndroidSEP.mk
--include $(TOP)/linux/modules/debug_tools/vtunedk/src/vtsspp/AndroidVTSSPP.mk
+-include linux/modules/debug_tools/vtunedk/src/AndroidSEP.mk
+-include linux/modules/debug_tools/vtunedk/src/vtsspp/AndroidVTSSPP.mk
