@@ -174,6 +174,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES_ENG += \
     cm
 
+# Android Security Framework
+PRODUCT_PACKAGES += \
+        com.intel.asf \
+        com.intel.asf.xml \
+        securityfileservice \
+        securitydeviceservice \
+        SecurityManagerService
+
 # This library is required for Intel's implementation of Dalvik
 # libpcgdvmjit is a part of Dalvik JIT compiler
 PRODUCT_PACKAGES += libpcgdvmjit

@@ -78,11 +78,8 @@ $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(ACP) $(EXTERNAL_BUILD_SYSTEM)/generic_rules
 		$(foreach class, PACKAGES PREBUILT LIBS EXECUTABLES JAVA_LIBRARIES STATIC_JAVA_LIBRARIES \
 					HOST_LIBS HOST_EXECUTABLES HOST_JAVA_LIBRARIES HOST_STATIC_JAVA_LIBRARIES, \
 			$(foreach module, $($@.$(type).$(class).LOCAL_INSTALLED_STEM_MODULES), \
-				$(if $(filter PREBUILT, $(class)), \
-					$(eval src_files := $(type)/$($@.$(type).$(class).$(module).LOCAL_SRC_FILES)), \
-					$(eval src_files := $(type)/$($@.$(type).$(class).$(module).LOCAL_INSTALLED_MODULE_STEM))) \
 				$(call external-auto-prebuilt-boilerplate, \
-					$(src_files), \
+					$(type)/$($@.$(type).$(class).$(module).LOCAL_INSTALLED_MODULE_STEM), \
 					$($@.$(type).$(class).$(module).LOCAL_IS_HOST_MODULE), \
 					$($@.$(type).$(class).$(module).LOCAL_MODULE_CLASS), \
 					$($@.$(type).$(class).$(module).LOCAL_MODULE_TAGS), \

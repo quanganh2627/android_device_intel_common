@@ -36,9 +36,6 @@ endef
 #
 # .LOCAL_STRIP_MODULE is forced to false
 #
-# For a built module, file copied to prebuilt out is LOCAL_INSTALLED_MODULE_STEM
-# For a prebuilt module, file copied to prebuilt out is LOCAL_SRC_FILES
-#
 # Two modules can have identical LOCAL_MODULE (e.g. target and host modules)
 # or same LOCAL_MODULE_STEM with 2 different LOCAL_MODULE.
 # To be sure to use a unique key when gathering files,
@@ -60,11 +57,12 @@ $(if $(filter $(1),$(_metatarget)), \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_INSTALLED_MODULE_STEM := $(strip $(LOCAL_INSTALLED_MODULE_STEM))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_CERTIFICATE := $(strip $(notdir $(LOCAL_CERTIFICATE)))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(LOCAL_MODULE_PATH))))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_SRC_FILES := $(notdir $(LOCAL_SRC_FILES))) \
+    $(eval ### prebuilts must copy the original source file as some post-processing may happen on the built file - others copy the built file) \
     $(if $(filter prebuilt,$(_metatarget)), \
-        $(eval $(my).copyfiles := $($(my).copyfiles) $(foreach h,$(LOCAL_SRC_FILES),$(LOCAL_PATH)/$(LOCAL_SRC_FILES):$(dir $(my))$(module_type)/$(notdir $(h)))), \
-        $(eval $(my).copyfiles := $($(my).copyfiles) $(LOCAL_BUILT_MODULE)$(3):$(dir $(my))$(module_type)/$(LOCAL_INSTALLED_MODULE_STEM)) \
+        $(eval _input_file := $(firstword $(LOCAL_PREBUILT_MODULE_FILE) $(LOCAL_PATH)/$(LOCAL_SRC_FILES))), \
+        $(eval _input_file := $(LOCAL_BUILT_MODULE)$(3)) \
     ) \
+    $(eval $(my).copyfiles := $($(my).copyfiles) $(_input_file):$(dir $(my))$(module_type)/$(LOCAL_INSTALLED_MODULE_STEM)) \
     $(eval ### for java libraries, also keep jar with classes) \
     $(if $(filter java_library,$(_metatarget)), \
         $(eval $(my).copyfiles := $($(my).copyfiles) $(full_classes_jar):$(dir $(my))$(module_type)/$(LOCAL_INSTALLED_MODULE_STEM).classes.jar) \
