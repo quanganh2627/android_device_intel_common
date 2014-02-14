@@ -119,6 +119,7 @@ on property:sys.partitioning=0
     mount_all /fstab.${ro.hardware}
     mkdir /factory/telephony 0770 system radio
     mkdir /config/telephony 0770 system radio
+    mkdir /config/telephony/provisioning 0770 system radio
     mkdir /logs/flashing
     write /logs/flashing/blankphone_file ""
     start apk_logfs
