@@ -42,6 +42,7 @@ enum ct_attchmt_type {
 	CT_ATTCHMT_DATA5,
 	/* Always add new types after DATA5 */
 	CT_ATTCHMT_BINARY,
+	CT_ATTCHMT_FILELIST
 };
 
 struct ct_attchmt {
