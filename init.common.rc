@@ -1,6 +1,7 @@
 import /init.watchdog.rc
 import /init.firmware.rc
 import /init.partlink.rc
+import /init.intel.feature.asf.rc
 import /init.intel.features.rc
 
 on early-init
