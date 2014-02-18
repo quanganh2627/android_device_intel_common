@@ -736,94 +736,201 @@ struct v4l2_private_int_data {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  __u32 reserved[2];
 };
-#define ATOMISP_IOC_G_XNR   _IOR('v', BASE_VIDIOC_PRIVATE + 0, int)
-#define ATOMISP_IOC_S_XNR   _IOW('v', BASE_VIDIOC_PRIVATE + 1, int)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_G_NR   _IOR('v', BASE_VIDIOC_PRIVATE + 2, struct atomisp_nr_config)
-#define ATOMISP_IOC_S_NR   _IOW('v', BASE_VIDIOC_PRIVATE + 3, struct atomisp_nr_config)
-#define ATOMISP_IOC_G_TNR   _IOR('v', BASE_VIDIOC_PRIVATE + 4, struct atomisp_tnr_config)
-#define ATOMISP_IOC_S_TNR   _IOW('v', BASE_VIDIOC_PRIVATE + 5, struct atomisp_tnr_config)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_G_HISTOGRAM   _IOWR('v', BASE_VIDIOC_PRIVATE + 6, struct atomisp_histogram)
-#define ATOMISP_IOC_S_HISTOGRAM   _IOW('v', BASE_VIDIOC_PRIVATE + 7, struct atomisp_histogram)
-#define ATOMISP_IOC_G_BLACK_LEVEL_COMP   _IOR('v', BASE_VIDIOC_PRIVATE + 8, struct atomisp_ob_config)
-#define ATOMISP_IOC_S_BLACK_LEVEL_COMP   _IOW('v', BASE_VIDIOC_PRIVATE + 9, struct atomisp_ob_config)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_G_EE   _IOR('v', BASE_VIDIOC_PRIVATE + 12, struct atomisp_ee_config)
-#define ATOMISP_IOC_S_EE   _IOW('v', BASE_VIDIOC_PRIVATE + 13, struct atomisp_ee_config)
-#define ATOMISP_IOC_G_DIS_STAT   _IOWR('v', BASE_VIDIOC_PRIVATE + 14, struct atomisp_dis_statistics)
-#define ATOMISP_IOC_G_DVS2_BQ_RESOLUTIONS   _IOR('v', BASE_VIDIOC_PRIVATE + 14, struct atomisp_dvs2_bq_resolutions)
-#define ATOMISP_IOC_S_DIS_COEFS   _IOW('v', BASE_VIDIOC_PRIVATE + 15, struct atomisp_dis_coefficients)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#ifdef ATOMISP_CSS2
-#define ATOMISP_IOC_S_DIS_VECTOR   _IOW('v', BASE_VIDIOC_PRIVATE + 16, struct atomisp_dvs_6axis_config)
-#else
-#define ATOMISP_IOC_S_DIS_VECTOR   _IOW('v', BASE_VIDIOC_PRIVATE + 16, struct atomisp_dis_vector)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#endif
-#define ATOMISP_IOC_G_3A_STAT   _IOW('v', BASE_VIDIOC_PRIVATE + 17, struct atomisp_3a_statistics)
-#define ATOMISP_IOC_G_ISP_PARM   _IOR('v', BASE_VIDIOC_PRIVATE + 18, struct atomisp_parm)
-#define ATOMISP_IOC_S_ISP_PARM   _IOW('v', BASE_VIDIOC_PRIVATE + 19, struct atomisp_parm)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_G_ISP_GAMMA   _IOR('v', BASE_VIDIOC_PRIVATE + 20, struct atomisp_gamma_table)
-#define ATOMISP_IOC_S_ISP_GAMMA   _IOW('v', BASE_VIDIOC_PRIVATE + 21, struct atomisp_gamma_table)
-#define ATOMISP_IOC_G_ISP_GDC_TAB   _IOR('v', BASE_VIDIOC_PRIVATE + 22, struct atomisp_morph_table)
-/*
- * FIXME: BZ:172549
- * Now the ATOMISP_IOC_G_ISP_GDC_TAB isn't used in current camera system and all
- * private ioctl ID are used. so ATOMISP_IOC_G_METADATA is temporary to use
- * private ID 22.
+
+/*Private IOCTLs for ISP */
+#define ATOMISP_IOC_G_XNR \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 0, int)
+#define ATOMISP_IOC_S_XNR \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 0, int)
+#define ATOMISP_IOC_G_NR \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 1, struct atomisp_nr_config)
+#define ATOMISP_IOC_S_NR \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 1, struct atomisp_nr_config)
+#define ATOMISP_IOC_G_TNR \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 2, struct atomisp_tnr_config)
+#define ATOMISP_IOC_S_TNR \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 2, struct atomisp_tnr_config)
+#define ATOMISP_IOC_G_HISTOGRAM \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 3, struct atomisp_histogram)
+#define ATOMISP_IOC_S_HISTOGRAM \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 3, struct atomisp_histogram)
+#define ATOMISP_IOC_G_BLACK_LEVEL_COMP \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 4, struct atomisp_ob_config)
+#define ATOMISP_IOC_S_BLACK_LEVEL_COMP \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 4, struct atomisp_ob_config)
+#define ATOMISP_IOC_G_EE \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 5, struct atomisp_ee_config)
+#define ATOMISP_IOC_S_EE \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 5, struct atomisp_ee_config)
+/* Digital Image Stabilization:
+ * 1. get dis statistics: reads DIS statistics from ISP (every frame)
+ * 2. set dis coefficients: set DIS filter coefficients (one time)
+ * 3. set dis motion vecotr: set motion vector (result of DIS, every frame)
  */
-#define ATOMISP_IOC_G_METADATA   _IOWR('v', BASE_VIDIOC_PRIVATE + 22, struct atomisp_metadata)
-#define ATOMISP_IOC_S_ISP_GDC_TAB   _IOW('v', BASE_VIDIOC_PRIVATE + 23, struct atomisp_morph_table)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_ISP_MAKERNOTE   _IOWR('v', BASE_VIDIOC_PRIVATE + 24, struct atomisp_makernote_info)
-#define ATOMISP_IOC_G_ISP_MACC   _IOR('v', BASE_VIDIOC_PRIVATE + 25, struct atomisp_macc_config)
-#define ATOMISP_IOC_S_ISP_MACC   _IOW('v', BASE_VIDIOC_PRIVATE + 26, struct atomisp_macc_config)
-#define ATOMISP_IOC_G_ISP_BAD_PIXEL_DETECTION   _IOR('v', BASE_VIDIOC_PRIVATE + 27, struct atomisp_dp_config)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_S_ISP_BAD_PIXEL_DETECTION   _IOW('v', BASE_VIDIOC_PRIVATE + 28, struct atomisp_dp_config)
-#define ATOMISP_IOC_G_ISP_FALSE_COLOR_CORRECTION   _IOR('v', BASE_VIDIOC_PRIVATE + 29, struct atomisp_de_config)
-#define ATOMISP_IOC_S_ISP_FALSE_COLOR_CORRECTION   _IOW('v', BASE_VIDIOC_PRIVATE + 30, struct atomisp_de_config)
-#define ATOMISP_IOC_G_ISP_CTC   _IOR('v', BASE_VIDIOC_PRIVATE + 31, struct atomisp_ctc_table)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_S_ISP_CTC   _IOW('v', BASE_VIDIOC_PRIVATE + 32, struct atomisp_ctc_table)
-#define ATOMISP_IOC_G_ISP_WHITE_BALANCE   _IOR('v', BASE_VIDIOC_PRIVATE + 33, struct atomisp_wb_config)
-#define ATOMISP_IOC_S_ISP_WHITE_BALANCE   _IOW('v', BASE_VIDIOC_PRIVATE + 34, struct atomisp_wb_config)
-#define ATOMISP_IOC_S_ISP_FPN_TABLE   _IOW('v', BASE_VIDIOC_PRIVATE + 35, struct v4l2_framebuffer)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_G_ISP_OVERLAY   _IOWR('v', BASE_VIDIOC_PRIVATE + 36, struct atomisp_overlay)
-#define ATOMISP_IOC_S_ISP_OVERLAY   _IOW('v', BASE_VIDIOC_PRIVATE + 37, struct atomisp_overlay)
-#define ATOMISP_IOC_CAMERA_BRIDGE   _IOWR('v', BASE_VIDIOC_PRIVATE + 38, struct atomisp_bc_video_package)
-#define ATOMISP_IOC_G_SENSOR_MODE_DATA   _IOR('v', BASE_VIDIOC_PRIVATE + 39, struct atomisp_sensor_mode_data)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_S_EXPOSURE   _IOW('v', BASE_VIDIOC_PRIVATE + 40, struct atomisp_exposure)
-#define ATOMISP_IOC_G_SENSOR_CALIBRATION_GROUP   _IOWR('v', BASE_VIDIOC_PRIVATE + 41, struct atomisp_calibration_group)
-#define ATOMISP_IOC_G_3A_CONFIG   _IOR('v', BASE_VIDIOC_PRIVATE + 42, struct atomisp_3a_config)
-#define ATOMISP_IOC_S_3A_CONFIG   _IOW('v', BASE_VIDIOC_PRIVATE + 43, struct atomisp_3a_config)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_ACC_LOAD   _IOWR('v', BASE_VIDIOC_PRIVATE + 44, struct atomisp_acc_fw_load)
-#define ATOMISP_IOC_ACC_UNLOAD   _IOWR('v', BASE_VIDIOC_PRIVATE + 45, unsigned int)
-#define ATOMISP_IOC_ACC_S_ARG   _IOW('v', BASE_VIDIOC_PRIVATE + 46, struct atomisp_acc_fw_arg)
-#define ATOMISP_IOC_ACC_START   _IOW('v', BASE_VIDIOC_PRIVATE + 47, unsigned int)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_ACC_WAIT   _IOW('v', BASE_VIDIOC_PRIVATE + 48, unsigned int)
-#define ATOMISP_IOC_ACC_ABORT   _IOW('v', BASE_VIDIOC_PRIVATE + 49, struct atomisp_acc_fw_abort)
-#define ATOMISP_IOC_G_SENSOR_PRIV_INT_DATA   _IOWR('v', BASE_VIDIOC_PRIVATE + 50, struct v4l2_private_int_data)
-#define ATOMISP_IOC_S_ISP_SHD_TAB   _IOWR('v', BASE_VIDIOC_PRIVATE + 51, struct atomisp_shading_table)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_G_ISP_GAMMA_CORRECTION   _IOR('v', BASE_VIDIOC_PRIVATE + 52, struct atomisp_gc_config)
-#define ATOMISP_IOC_S_ISP_GAMMA_CORRECTION   _IOW('v', BASE_VIDIOC_PRIVATE + 53, struct atomisp_gc_config)
-#define ATOMISP_IOC_ACC_DESTAB   _IOW('v', BASE_VIDIOC_PRIVATE + 54, struct atomisp_acc_fw_arg)
-#define ATOMISP_IOC_G_MOTOR_PRIV_INT_DATA   _IOWR('v', BASE_VIDIOC_PRIVATE + 57, struct v4l2_private_int_data)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_ACC_MAP   _IOWR('v', BASE_VIDIOC_PRIVATE + 58, struct atomisp_acc_map)
-#define ATOMISP_IOC_ACC_UNMAP   _IOW('v', BASE_VIDIOC_PRIVATE + 59, struct atomisp_acc_map)
-#define ATOMISP_IOC_ACC_S_MAPPED_ARG   _IOW('v', BASE_VIDIOC_PRIVATE + 60, struct atomisp_acc_s_mapped_arg)
-#define ATOMISP_IOC_S_PARAMETERS   _IOW('v', BASE_VIDIOC_PRIVATE + 61, struct atomisp_parameters)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define ATOMISP_IOC_S_CONT_CAPTURE_CONFIG   _IOWR('v', BASE_VIDIOC_PRIVATE + 62, struct atomisp_cont_capture_conf)
-#define ATOMISP_IOC_ACC_LOAD_TO_PIPE   _IOWR('v', BASE_VIDIOC_PRIVATE + 63, struct atomisp_acc_fw_load_to_pipe)
+#define ATOMISP_IOC_G_DIS_STAT \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 6, struct atomisp_dis_statistics)
+
+#define ATOMISP_IOC_G_DVS2_BQ_RESOLUTIONS \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 6, struct atomisp_dvs2_bq_resolutions)
+
+#define ATOMISP_IOC_S_DIS_COEFS \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 6, struct atomisp_dis_coefficients)
+
+#ifdef ATOMISP_CSS2
+#define ATOMISP_IOC_S_DIS_VECTOR \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 6, struct atomisp_dvs_6axis_config)
+#else
+#define ATOMISP_IOC_S_DIS_VECTOR \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 6, struct atomisp_dis_vector)
+#endif
+
+#define ATOMISP_IOC_G_3A_STAT \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 7, struct atomisp_3a_statistics)
+#define ATOMISP_IOC_G_ISP_PARM \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 8, struct atomisp_parm)
+#define ATOMISP_IOC_S_ISP_PARM \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 8, struct atomisp_parm)
+#define ATOMISP_IOC_G_ISP_GAMMA \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 9, struct atomisp_gamma_table)
+#define ATOMISP_IOC_S_ISP_GAMMA \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 9, struct atomisp_gamma_table)
+#define ATOMISP_IOC_G_ISP_GDC_TAB \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 10, struct atomisp_morph_table)
+#define ATOMISP_IOC_S_ISP_GDC_TAB \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 10, struct atomisp_morph_table)
+#define ATOMISP_IOC_ISP_MAKERNOTE \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 11, struct atomisp_makernote_info)
+
+/* macc parameter control*/
+#define ATOMISP_IOC_G_ISP_MACC \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 12, struct atomisp_macc_config)
+#define ATOMISP_IOC_S_ISP_MACC \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 12, struct atomisp_macc_config)
+
+/* Defect pixel detection & Correction */
+#define ATOMISP_IOC_G_ISP_BAD_PIXEL_DETECTION \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 13, struct atomisp_dp_config)
+#define ATOMISP_IOC_S_ISP_BAD_PIXEL_DETECTION \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 13, struct atomisp_dp_config)
+
+/* False Color Correction */
+#define ATOMISP_IOC_G_ISP_FALSE_COLOR_CORRECTION \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 14, struct atomisp_de_config)
+#define ATOMISP_IOC_S_ISP_FALSE_COLOR_CORRECTION \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 14, struct atomisp_de_config)
+
+/* ctc parameter control */
+#define ATOMISP_IOC_G_ISP_CTC \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 15, struct atomisp_ctc_table)
+#define ATOMISP_IOC_S_ISP_CTC \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 15, struct atomisp_ctc_table)
+
+/* white balance Correction */
+#define ATOMISP_IOC_G_ISP_WHITE_BALANCE \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 16, struct atomisp_wb_config)
+#define ATOMISP_IOC_S_ISP_WHITE_BALANCE \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 16, struct atomisp_wb_config)
+
+/* fpn table loading */
+#define ATOMISP_IOC_S_ISP_FPN_TABLE \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 17, struct v4l2_framebuffer)
+
+/* overlay image loading */
+#define ATOMISP_IOC_G_ISP_OVERLAY \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 18, struct atomisp_overlay)
+#define ATOMISP_IOC_S_ISP_OVERLAY \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 18, struct atomisp_overlay)
+
+/* bcd driver bridge */
+#define ATOMISP_IOC_CAMERA_BRIDGE \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 19, struct atomisp_bc_video_package)
+
+/* Sensor resolution specific info for AE */
+#define ATOMISP_IOC_G_SENSOR_MODE_DATA \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 20, struct atomisp_sensor_mode_data)
+
+#define ATOMISP_IOC_S_EXPOSURE \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 21, struct atomisp_exposure)
+
+/* sensor calibration registers group */
+#define ATOMISP_IOC_G_SENSOR_CALIBRATION_GROUP \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 22, struct atomisp_calibration_group)
+
+/* white balance Correction */
+#define ATOMISP_IOC_G_3A_CONFIG \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 23, struct atomisp_3a_config)
+#define ATOMISP_IOC_S_3A_CONFIG \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 23, struct atomisp_3a_config)
+
+/* Accelerate ioctls */
+#define ATOMISP_IOC_ACC_LOAD \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 24, struct atomisp_acc_fw_load)
+
+#define ATOMISP_IOC_ACC_UNLOAD \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 24, unsigned int)
+
+/* For CSS 1.0 only */
+#define ATOMISP_IOC_ACC_S_ARG \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 24, struct atomisp_acc_fw_arg)
+
+#define ATOMISP_IOC_ACC_START \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 24, unsigned int)
+
+#define ATOMISP_IOC_ACC_WAIT \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 25, unsigned int)
+
+#define ATOMISP_IOC_ACC_ABORT \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 25, struct atomisp_acc_fw_abort)
+
+#define ATOMISP_IOC_ACC_DESTAB \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 25, struct atomisp_acc_fw_arg)
+
+/* sensor OTP memory read */
+#define ATOMISP_IOC_G_SENSOR_PRIV_INT_DATA \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 26, struct v4l2_private_int_data)
+
+/* LCS (shading) table write */
+#define ATOMISP_IOC_S_ISP_SHD_TAB \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 27, struct atomisp_shading_table)
+
+/* Gamma Correction */
+#define ATOMISP_IOC_G_ISP_GAMMA_CORRECTION \
+	_IOR('v', BASE_VIDIOC_PRIVATE + 28, struct atomisp_gc_config)
+
+#define ATOMISP_IOC_S_ISP_GAMMA_CORRECTION \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 28, struct atomisp_gc_config)
+
+/* motor internal memory read */
+#define ATOMISP_IOC_G_MOTOR_PRIV_INT_DATA \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 29, struct v4l2_private_int_data)
+
+/*
+ * Ioctls to map and unmap user buffers to CSS address space for acceleration.
+ * User fills fields length and user_ptr and sets other fields to zero,
+ * kernel may modify the flags and sets css_ptr.
+ */
+#define ATOMISP_IOC_ACC_MAP \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 30, struct atomisp_acc_map)
+
+/* User fills fields length, user_ptr, and css_ptr and zeroes other fields. */
+#define ATOMISP_IOC_ACC_UNMAP \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 30, struct atomisp_acc_map)
+
+#define ATOMISP_IOC_ACC_S_MAPPED_ARG \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 30, struct atomisp_acc_s_mapped_arg)
+
+#define ATOMISP_IOC_ACC_LOAD_TO_PIPE \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 31, struct atomisp_acc_fw_load_to_pipe)
+
+#define ATOMISP_IOC_S_PARAMETERS \
+	_IOW('v', BASE_VIDIOC_PRIVATE + 32, struct atomisp_parameters)
+
+#define ATOMISP_IOC_S_CONT_CAPTURE_CONFIG \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 33, struct atomisp_cont_capture_conf)
+
+#define ATOMISP_IOC_G_METADATA \
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 34, struct atomisp_metadata)
+
 #define V4L2_CID_ATOMISP_BAD_PIXEL_DETECTION   (V4L2_CID_PRIVATE_BASE + 0)
 #define V4L2_CID_ATOMISP_POSTPROCESS_GDC_CAC   (V4L2_CID_PRIVATE_BASE + 1)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
