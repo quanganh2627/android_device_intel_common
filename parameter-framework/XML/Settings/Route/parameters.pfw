@@ -439,3 +439,14 @@ supDomain: Parameter
 		conf: NotAvailable
 			component: /Route/ROUTEMGR/CRITERIA/BT_HEADSET_NREC_CRITERIA/
 				BOOLEAN = False
+
+	domain: Hac
+		conf: Enabled
+			HacSelected Is True
+
+			component: /Route/ROUTEMGR/CRITERIA/HAC_MODE_CRITERIA/
+				STATE = On
+
+		conf: Disabled
+			component: /Route/ROUTEMGR/CRITERIA/HAC_MODE_CRITERIA/
+				STATE = Off
