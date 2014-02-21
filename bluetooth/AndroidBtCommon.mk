@@ -10,12 +10,6 @@ LOCAL_PATH := $(ANDROID_BUILD_TOP)
 COMMON := device/intel/common
 BT_COMMON := $(COMMON)/bluetooth
 
-ifeq ($(COMBO_CHIP_VENDOR), intel) # Intel chip compilation flag
-BOARD_USES_WCS := true
-else
-BOARD_USES_WCS := false
-endif
-
 ##################################################
 
 include $(CLEAR_VARS)
