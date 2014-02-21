@@ -59,7 +59,7 @@ service recovery /sbin/recovery
 service adbd /sbin/adbd recovery
     disabled
 
-service thermald /sbin/thermald
+service thermald /sbin/thermald ROS
     class core
     user root
 

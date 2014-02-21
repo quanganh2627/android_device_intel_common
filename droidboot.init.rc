@@ -136,6 +136,9 @@ service tmp2factory /system/bin/cp -a /tmp/factory /
     oneshot
     disabled
 
+service thermald /sbin/thermald POS
+    user root
+
 on property:init.svc.tmp2factory=stopped
     setprop sys.backup_factory done
 
