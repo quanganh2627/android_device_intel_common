@@ -211,19 +211,6 @@ publish_linux_tools: $(PUBLISH_LINUX_TOOLS_deps)
 	(cd out/host/ && cp --parents linux-x86/bin/adb $(PUBLISH_TOOLS_PATH))
 	(cd out/host/ && cp --parents linux-x86/bin/fastboot $(PUBLISH_TOOLS_PATH))
 
-publish_acs:
-ifneq ($(wildcard $(ACS_BUILDBOT_PATH)),)
-publish_acs:
-	$(eval ACS_ZIP := $(abspath $(PUBLISH_PATH)/buildbot/acs.zip))
-	$(eval RUN_ACS_ZIP := $(abspath $(PUBLISH_PATH)/buildbot/run_acs.zip))
-	$(eval ACS_CAMPAIGNS_ZIP := $(abspath $(PUBLISH_PATH)/buildbot/campaigns.zip))
-	@ echo "Publish acs tool and buildbot campaigns"
-	@ mkdir -p $(PUBLISH_PATH)/buildbot
-	(cd $(ACS_BUILDBOT_PATH) && zip -qr $(ACS_ZIP) executable/*)
-	(cd $(ACS_BUILDBOT_PATH) && zip -qr $(RUN_ACS_ZIP) run_acs/*)
-	(cd $(ACS_BUILDBOT_PATH)/campaigns && zip -qr $(ACS_CAMPAIGNS_ZIP) ./*)
-endif
-
 # Add sepdk driver
 -include vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
 -include linux/modules/debug_tools/vtunedk/src/pax/AndroidPAX.mk
