@@ -15,13 +15,13 @@
 ** limitations under the License.
 **
 ******************************************************************************/
-
-#define ESIF_TRACE_DEBUG_DISABLED
+#define ESIF_TRACE_ID	ESIF_TRACEMODULE_IPC
 
 #include "esif_uf.h"		/* Upper Framework */
 #include "esif_ipc.h"		/* IPC Abstraction */
 #include "esif_uf_shell.h"	/* Upper Framework Shell */
 #include "esif_dsp.h"		/* Device Support Package */
+#include "esif_version.h"
 
 #ifdef ESIF_ATTR_OS_WINDOWS
 //
@@ -32,14 +32,13 @@
 #include "win\banned.h"
 #endif
 
-extern int g_debug;
-extern FILE *g_debuglog;
+void ipc_disconnect();
 
 int g_timestamp = 0;	// Time Stamp IPC Execute
 int g_ipcmode   = 0;	// IPC Mode
 
 // Time Helper
-int timeval_subtract (
+int timeval_subtract(
 	struct timeval *result,
 	struct timeval *x,
 	struct timeval *y
@@ -71,16 +70,17 @@ int timeval_subtract (
 
 #define SESSION_ID "ESIF"
 extern int g_quit;
+extern int g_disconnectClient;
 extern int g_timestamp;
 
-enum esif_rc ipc_execute (struct esif_ipc *ipc);
+enum esif_rc ipc_execute(struct esif_ipc *ipc);
 
 esif_handle_t g_ipc_handle = ESIF_INVALID_HANDLE;
 
 // String To Short
-u16 convert_string_to_short (char *two_character_string)
+u16 convert_string_to_short(char *two_character_string)
 {
-	return *((short*)(two_character_string));
+	return *((short *)(two_character_string));
 }
 
 
@@ -88,26 +88,51 @@ u16 convert_string_to_short (char *two_character_string)
 // IPC
 ///////////////////////////////////////////////////////////////////////////////
 
-// IPC Connect
-extern char g_esif_kernel_version[64];
+extern char g_esif_kernel_version[64]; // "Kernel Version = XXXXX\n"
 extern char g_out_buf[64 * 1024];
-void ipc_connect ()
+
+// This extracts the Kernel version from the string returned by esif_cmd_info()
+static void extract_kernel_version(char *str, size_t buf_len)
 {
-	g_ipc_handle = esif_ipc_connect((char*)SESSION_ID);
+	char *prefix = "Kernel Version = ";
+	size_t len = esif_ccb_strlen(prefix, buf_len);
+
+	if (str != NULL && esif_ccb_strnicmp(str, "Kernel Version = ", len) == 0) {
+		esif_ccb_strcpy(str, str+len, buf_len);
+		len = esif_ccb_strlen(str, buf_len);
+		if (len > 1 && str[len-1] == '\n') {
+			str[len-1] = 0;
+		}
+	}
+}
+
+// IPC Connect
+void ipc_connect()
+{
+	g_ipc_handle = esif_ipc_connect((char *)SESSION_ID);
 	if (g_ipc_handle != ESIF_INVALID_HANDLE) {
-		// char kern_buf[64];
 		char *kern_str = esif_cmd_info(g_out_buf);
 		ESIF_TRACE_DEBUG("ESIF IPC Kernel Device Opened\n");
 		if (NULL != kern_str) {
-			ESIF_TRACE_DEBUG("%s", kern_str);
-			esif_ccb_sprintf(64, g_esif_kernel_version, "%s", kern_str);
+			// Extract just the Kernel LF Version from the result string
+			extract_kernel_version(kern_str, sizeof(g_out_buf));
+
+			// Validate Kernel LF version is compatible with UF version
+			if (esif_ccb_strcmp(kern_str, ESIF_VERSION) == 0) {
+				ESIF_TRACE_DEBUG("Kernel Version: %s", kern_str);
+				esif_ccb_sprintf(sizeof(g_esif_kernel_version), g_esif_kernel_version, "%s", kern_str);
+			}
+			else {
+				ESIF_TRACE_ERROR("ESIF_LF Version (%s) Incompatible with ESIF_UF Version (%s)\n", kern_str, ESIF_VERSION);
+				ipc_disconnect();
+			}
 		}
 	}
 }
 
 
 // IPC Auto Connect
-void ipc_autoconnect ()
+void ipc_autoconnect()
 {
 	if (g_ipc_handle != ESIF_INVALID_HANDLE) {
 		return;
@@ -124,7 +149,7 @@ void ipc_autoconnect ()
 
 
 // IPC Disconnect
-void ipc_disconnect ()
+void ipc_disconnect()
 {
 	esif_ipc_disconnect(g_ipc_handle);
 	g_ipc_handle = ESIF_INVALID_HANDLE;
@@ -138,7 +163,7 @@ extern struct esif_uf_dm g_dm;
 extern int g_dst;
 
 // IPC Execute
-enum esif_rc ipc_execute (struct esif_ipc *ipc)
+enum esif_rc ipc_execute(struct esif_ipc *ipc)
 {
 	enum esif_rc rc = ESIF_OK;
 	struct timeval start  = {0};

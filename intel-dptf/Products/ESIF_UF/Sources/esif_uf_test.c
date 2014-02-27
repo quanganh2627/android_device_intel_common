@@ -15,8 +15,7 @@
 ** limitations under the License.
 **
 ******************************************************************************/
-
-// #define ESIF_TRACE_DEBUG_DISABLED
+#define ESIF_TRACE_ID ESIF_TRACEMODULE_TEST
 
 #include "esif_uf.h"
 #include "esif_uf_test.h"
@@ -34,10 +33,8 @@
 /* Version */
 const EsifString g_esif_etf_version = ESIF_UF_VERSION;
 
-#define TEST_DEBUG printf
-
 /* Upper and Lower Bound Test */
-static eEsifTestErrorType TestPrimitiveBounds (
+static eEsifTestErrorType TestPrimitiveBounds(
 	const UInt32 ub,
 	const UInt32 lb,
 	const UInt32 value
@@ -55,7 +52,7 @@ static eEsifTestErrorType TestPrimitiveBounds (
 
 
 /* Test Primitive Result */
-eEsifTestErrorType EsifTestPrimitive (
+eEsifTestErrorType EsifTestPrimitive(
 	const UInt32 primitive,
 	const UInt16 qualifier,
 	const UInt8 instance,
@@ -110,7 +107,7 @@ eEsifTestErrorType EsifTestPrimitive (
 
 
 /* Test Binary Primitive Result Compares Result To Reference */
-eEsifTestErrorType EsifTestPrimitiveBinary (
+eEsifTestErrorType EsifTestPrimitiveBinary(
 	const UInt32 primitive,
 	const UInt16 qualifier,
 	const UInt8 instance,
@@ -143,15 +140,13 @@ eEsifTestErrorType EsifTestPrimitiveBinary (
 		switch (option) {
 		case 'b':
 		{
-			char full_path[ESIF_PATH_LEN];
+			char full_path[ESIF_PATH_LEN]={0};
 			FILE *fp_ptr = NULL;
-			// esif_ccb_sprintf(ESIF_PATH_LEN, full_path, "..%sbin%s%s", ESIF_PATH_SEP, ESIF_PATH_SEP, optarg);
-			esif_ccb_sprintf(ESIF_PATH_LEN, full_path, "%s", esif_build_path(full_path, ESIF_PATH_LEN, ESIF_DIR_BIN, optarg));
-
+			esif_build_path(full_path, sizeof(full_path), ESIF_PATHTYPE_BIN, optarg, NULL);
 			ESIF_TRACE_DEBUG("testp_compare: %s to primitive response %u bytes\n",
 							 full_path, dataLen);
 
-			esif_ccb_fopen(&fp_ptr, full_path, (char*)"rb");
+			esif_ccb_fopen(&fp_ptr, full_path, (char *)"rb");
 			if (fp_ptr) {
 				UInt32 ref_size = 0;
 				struct stat ref_file_stat = {0};
@@ -167,7 +162,7 @@ eEsifTestErrorType EsifTestPrimitiveBinary (
 					return ESIF_TEST_E_FILE_SIZE_DIFFER;
 				} else {
 					size_t bytes_read   = 0;
-					UInt8 *ref_file_buf = (UInt8*)esif_ccb_malloc(ref_size);
+					UInt8 *ref_file_buf = (UInt8 *)esif_ccb_malloc(ref_size);
 					if (NULL == ref_file_buf) {
 						fclose(fp_ptr);
 						return ESIF_TEST_E_NO_MEMORY;

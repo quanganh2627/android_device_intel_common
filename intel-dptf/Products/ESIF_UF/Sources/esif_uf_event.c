@@ -15,8 +15,7 @@
 ** limitations under the License.
 **
 ******************************************************************************/
-
-#define ESIF_TRACE_DEBUG_DISABLED
+#define ESIF_TRACE_ID	ESIF_TRACEMODULE_EVENT
 
 #include "esif_uf.h"	/* Upper Framework */
 #include "esif_dsp.h"	/* Device Support Package */
@@ -34,39 +33,37 @@
 #include "win\banned.h"
 #endif
 
-extern int g_debug;
-extern FILE *g_debuglog;
-
 // TODO move these
-void ipc_autoconnect ();
-void ipc_disconnect ();
-void esif_dispatch_event ();
-int esif_send_dsp (char *filename, u8 dst_id);
+void ipc_autoconnect();
+void ipc_disconnect();
+void esif_dispatch_event();
+int esif_send_dsp(char *filename, u8 dst_id);
 
 extern int g_quit;
 extern int g_quit2;
+extern int g_disconnectClient;
 extern int g_autocpc;
 extern esif_handle_t g_ipc_handle;
 
 #define PATH_STR_LEN 128
 
-static char*esif_primitive_domain_str (
+static char *esif_primitive_domain_str(
 	u16 domain,
 	char *str,
 	u8 str_len
 	)
 {
-	u8 *ptr = (u8*)&domain;
+	u8 *ptr = (u8 *)&domain;
 	esif_ccb_sprintf(str_len, str, "%c%c", *(ptr + 1), *ptr);
 	return str;
 }
 
 
 // Dispatch An Event
-void esif_dispatch_event ()
+void esif_dispatch_event()
 {
 	int r_bytes     = 0;
-	int data_len    = 512;
+	int data_len    = 1024;	/* TODO: Change from "magic number" */
 	enum esif_rc rc = ESIF_OK;
 
 
@@ -104,19 +101,19 @@ void esif_dispatch_event ()
 						 r_bytes,
 						 ipc_ptr->data_len);
 
-		event_hdr_ptr = (struct esif_ipc_event_header*)(ipc_ptr + 1);
+		event_hdr_ptr = (struct esif_ipc_event_header *)(ipc_ptr + 1);
 		EsifEventProcess(event_hdr_ptr);
 	}
 	esif_ipc_free(ipc_ptr);
 }
 
 
-void EsifEventProcess (struct esif_ipc_event_header *eventHdrPtr)
+void EsifEventProcess(struct esif_ipc_event_header *eventHdrPtr)
 {
 	char domain_str[8] = "";
 	esif_ccb_time_t now;
 	char guid_str[ESIF_GUID_PRINT_SIZE];
-
+	struct esif_data void_data = {ESIF_DATA_VOID, NULL, 0};
 	UNREFERENCED_PARAMETER(guid_str);
 	UNREFERENCED_PARAMETER(domain_str);
 
@@ -157,48 +154,52 @@ void EsifEventProcess (struct esif_ipc_event_header *eventHdrPtr)
 		EsifString edp_filename_ptr = NULL;
 		EsifString dsp_lookup_result_ptr = NULL;
 
+		if(eventHdrPtr->data_len < sizeof(*data_ptr)) {
+			goto exit;
+		}
+
 		// Event Data
-		data_ptr = (struct esif_ipc_event_data_create_participant*)(eventHdrPtr + 1);
+		data_ptr = (struct esif_ipc_event_data_create_participant *)(eventHdrPtr + 1);
 
 		// Sharkbay
 		if (!strcmp(data_ptr->name, "TFN1")) {
-			edp_filename_ptr = (char*)"sb_tfan";
+			edp_filename_ptr = (char *)"sb_tfan";
 		} else if (!strcmp(data_ptr->name, "TFN2")) {
-			edp_filename_ptr = (char*)"sb_tfan";
+			edp_filename_ptr = (char *)"sb_tfan";
 		} else if (!strcmp(data_ptr->name, "TMEM")) {
-			edp_filename_ptr = (char*)"sb_tmem";
+			edp_filename_ptr = (char *)"sb_tmem";
 		} else if (!strcmp(data_ptr->name, "TAMB")) {
-			edp_filename_ptr = (char*)"sb_temp";
+			edp_filename_ptr = (char *)"sb_fgen";
 		} else if (!strcmp(data_ptr->name, "TEFN")) {
-			edp_filename_ptr = (char*)"sb_temp";
+			edp_filename_ptr = (char *)"sb_fgen";
 		} else if (!strcmp(data_ptr->name, "TSKN")) {
-			edp_filename_ptr = (char*)"sb_temp";
+			edp_filename_ptr = (char *)"sb_fgen";
 		} else if (!strcmp(data_ptr->name, "T_VR")) {
-			edp_filename_ptr = (char*)"sb_temp";
+			edp_filename_ptr = (char *)"sb_fgen";
 		} else if (!strcmp(data_ptr->name, "FGEN")) {
-			edp_filename_ptr = (char*)"sb_fgen";
+			edp_filename_ptr = (char *)"sb_fgen";
 		} else if (!strcmp(data_ptr->name, "DPLY")) {
-			edp_filename_ptr = (char*)"sb_dply";
+			edp_filename_ptr = (char *)"sb_dply";
 		} else if (!strcmp(data_ptr->name, "TPWR")) {
-			edp_filename_ptr = (char*)"sb_tpwr";
+			edp_filename_ptr = (char *)"sb_tpwr";
 		} else if (!strcmp(data_ptr->name, "WIFI")) {
-			edp_filename_ptr = (char*)"sb_wifi";
+			edp_filename_ptr = (char *)"sb_wifi";
 		} else if (!strcmp(data_ptr->name, "WGIG")) {
-			edp_filename_ptr = (char*)"sb_wgig";
+			edp_filename_ptr = (char *)"sb_wgig";
 		} else if (!strcmp(data_ptr->name, "WWAN")) {
-			edp_filename_ptr = (char*)"sb_wwan";
+			edp_filename_ptr = (char *)"sb_wwan";
 		} else if (!strcmp(data_ptr->name, "TINL")) {
-			edp_filename_ptr = (char*)"sb_temp";
+			edp_filename_ptr = (char *)"sb_fgen";
 		} else if (!strcmp(data_ptr->name, "TPCH")) {
-			edp_filename_ptr = (char*)"sb_b0_d1f_f6";
+			edp_filename_ptr = (char *)"sb_b0_d1f_f6";
 		} else if (!strcmp(data_ptr->name, "TCPU")) {
-			edp_filename_ptr = (char*)"sb_b0_d4_f0";
+			edp_filename_ptr = (char *)"sb_b0_d4_f0";
 		} else if (!strcmp(data_ptr->name, "IETM")) {
-			edp_filename_ptr = (char*)"sb_ietm";
+			edp_filename_ptr = (char *)"sb_ietm";
 		} else if (!strcmp(data_ptr->name, "DPTFZ")) {
-			edp_filename_ptr = (char*)"sb_ietm";
+			edp_filename_ptr = (char *)"sb_ietm";
 		} else {
-			edp_filename_ptr = (char*)"sb_fgen";
+			edp_filename_ptr = (char *)"sb_fgen";
 		}
 
 		// PCI
@@ -229,7 +230,7 @@ void EsifEventProcess (struct esif_ipc_event_header *eventHdrPtr)
 				"PCI ProgIF:     0x%02X\n\n",
 				data_ptr->id,
 				data_ptr->version,
-				esif_guid_print((esif_guid_t*)data_ptr->class_guid, guid_str),
+				esif_guid_print((esif_guid_t *)data_ptr->class_guid, guid_str),
 				esif_participant_enum_str(data_ptr->enumerator),
 				data_ptr->enumerator,
 				data_ptr->flags,
@@ -271,7 +272,7 @@ void EsifEventProcess (struct esif_ipc_event_header *eventHdrPtr)
 				"ACPI Scope:     %s\n",
 				data_ptr->id,
 				data_ptr->version,
-				esif_guid_print((esif_guid_t*)&data_ptr->class_guid, guid_str),
+				esif_guid_print((esif_guid_t *)&data_ptr->class_guid, guid_str),
 				esif_participant_enum_str(data_ptr->enumerator),
 				data_ptr->enumerator,
 				data_ptr->flags,
@@ -297,8 +298,9 @@ void EsifEventProcess (struct esif_ipc_event_header *eventHdrPtr)
 
 			{
 				struct esif_uf_dm_query_acpi qry = {0};
-					#define TEMP_LEN 12
-				char temp[TEMP_LEN]    = {0};
+				#define TEMP_LEN 12
+				char temp_type[TEMP_LEN]    = {0};
+				char temp_uid[TEMP_LEN]		= {0};
 
 				EsifString acpi_device = "*";
 				EsifString acpi_type   = "*";
@@ -316,13 +318,13 @@ void EsifEventProcess (struct esif_ipc_event_header *eventHdrPtr)
 				}
 
 				if (type >= 0) {
-					esif_ccb_sprintf(TEMP_LEN, temp, "%d", type);
-					acpi_type = temp;
+					esif_ccb_sprintf(TEMP_LEN, temp_type, "%d", type);
+					acpi_type = temp_type;
 				}
 
 				if (uid >= 0) {
-					esif_ccb_sprintf(TEMP_LEN, temp, "%d", uid);
-					acpi_uid = temp;
+					esif_ccb_sprintf(TEMP_LEN, temp_uid, "%d", uid);
+					acpi_uid = temp_uid;
 				}
 
 				qry.acpi_device = acpi_device;
@@ -371,7 +373,7 @@ void EsifEventProcess (struct esif_ipc_event_header *eventHdrPtr)
 				"Device Path:    %s\n\n",
 				data_ptr->id,
 				data_ptr->version,
-				esif_guid_print((esif_guid_t*)data_ptr->class_guid, guid_str),
+				esif_guid_print((esif_guid_t *)data_ptr->class_guid, guid_str),
 				esif_participant_enum_str(data_ptr->enumerator),
 				data_ptr->enumerator,
 				data_ptr->flags,
@@ -382,16 +384,15 @@ void EsifEventProcess (struct esif_ipc_event_header *eventHdrPtr)
 				data_ptr->device_path);
 		}
 
-		if(EsifUpManagerDoesAvailableParticipantExistByName(data_ptr->name)) {
+		if (EsifUpManagerDoesAvailableParticipantExistByName(data_ptr->name)) {
 			return;
 		}
 
 		if (g_autocpc && NULL != edp_filename_ptr) {
-			char edp_full_path[PATH_STR_LEN];
-			esif_ccb_sprintf(PATH_STR_LEN, edp_full_path, "%s.edp",
-							 esif_build_path(edp_full_path, PATH_STR_LEN, ESIF_DIR_DSP, edp_filename_ptr));
-
+			char edp_full_path[PATH_STR_LEN]={0};
+			esif_build_path(edp_full_path, sizeof(edp_full_path), ESIF_PATHTYPE_DSP, edp_filename_ptr, ".edp");
 			ESIF_TRACE_DEBUG("AutoCPC Selected DSP Delivery Method EDP(CPC): %s\n", edp_full_path);
+
 			if (0 == esif_send_dsp(edp_full_path, eventHdrPtr->src_id)) {
 				EsifUpPtr up_ptr = NULL;
 				ESIF_TRACE_DEBUG("\nCreate Upper Participant: %s\n", data_ptr->name);
@@ -405,7 +406,6 @@ void EsifEventProcess (struct esif_ipc_event_header *eventHdrPtr)
 
 						/* Now offer this participant to each running application */
 						EsifAppMgrCreateCreateParticipantInAllApps(up_ptr);
-
 					} else {
 						ESIF_TRACE_DEBUG("Missed DSP Lookup %s\n", edp_filename_ptr);
 						EsifUpManagerUnregisterParticipant(eParticipantOriginLF, up_ptr);
@@ -422,14 +422,16 @@ void EsifEventProcess (struct esif_ipc_event_header *eventHdrPtr)
 		EsifUpManagerUnregisterParticipant(eParticipantOriginLF, &eventHdrPtr->src_id);
 	} else {
 		// Best Effor Delivery.
-		EsifAppsEvent(eventHdrPtr->dst_id, eventHdrPtr->dst_domain_id, eventHdrPtr->type, NULL);
+		EsifAppsEvent(eventHdrPtr->dst_id, eventHdrPtr->dst_domain_id, eventHdrPtr->type, &void_data);
 	}
+exit:
+	(0);
 }
 
 
 // Event Worker Thread
 // Processes ESIF Events
-void*esif_event_worker_thread (void *ptr)
+void *esif_event_worker_thread(void *ptr)
 {
 	int rc = 0;
 	fd_set rfds = {0};

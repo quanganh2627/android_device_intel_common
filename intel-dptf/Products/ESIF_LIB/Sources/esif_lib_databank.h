@@ -22,15 +22,10 @@
 #include "esif_uf.h"
 #include "esif_lib_datavault.h"
 
-// Temporary Workaround: Implment global Shell lock to troubleshoot mixed output
-#ifdef  BIG_LOCK
-extern esif_ccb_mutex_t g_shellLock;
-#endif
-
 ///////////////////////////////////////////////////
 // DataBank Class
 
-#define ESIF_MAX_NAME_SPACES        5
+#define ESIF_MAX_NAME_SPACES        10
 
 // ESIFDV File Definitions
 #define ESIFDV_FILEEXT              ".dv"				// DataVault File Extension
@@ -41,13 +36,6 @@ extern esif_ccb_mutex_t g_shellLock;
 #define ESIFDV_MINOR_VERSION        0
 #define ESIFDV_REVISION             0
 #define ESIFDV_MAX_REVISION         0xFFFF
-
-// Temporary workaround for UMDF Driver
-#ifdef ESIF_ATTR_OS_WINDOWS
-#define ESIFDV_DIR                  "C:\\Windows\\ServiceProfiles\\LocalService\\AppData\\Local\\Intel\\ESIF\\"
-#else
-# define ESIFDV_DIR					"/etc/esif/"
-#endif
 
 struct DataBank_s;
 typedef struct DataBank_s DataBank, *DataBankPtr, **DataBankPtrLocation;
@@ -61,7 +49,10 @@ struct DataBank_s {
 
 #endif
 
-extern DataBankPtr g_DataBankMgr;	// Global Instance, Dynamically Allocated
+extern DataBankPtr g_DataBankMgr;		// Global Instance, Dynamically Allocated
+extern char g_DataVaultDir[MAX_PATH];	// Global Folder which contains all DataVaults
+extern char g_DataVaultDefault[ESIF_NAME_LEN]; // Global Default DataVault Namespace
+extern char *g_DataVaultStartScript;    // Optional Startup Script, if none specified in Default DataVault or cmd/start script
 
 // object management
 DataBankPtr DataBank_Create ();
@@ -71,6 +62,7 @@ void DataBank_Destroy (DataBankPtr self);
 DataVaultPtr DataBank_GetNameSpace (DataBankPtr self, StringPtr nameSpace);
 DataVaultPtr DataBank_OpenNameSpace (DataBankPtr self, esif_string nameSpace);
 void DataBank_CloseNameSpace (DataBankPtr self, esif_string nameSpace);
+int DataBank_KeyExists (DataBankPtr self, StringPtr nameSpace, StringPtr keyName);
 eEsifError DataBank_LoadDataVaults (DataBankPtr self);
 
 // Backwards compatibility

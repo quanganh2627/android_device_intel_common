@@ -42,9 +42,9 @@ typedef UInt32 esif_thread_t;	/* Windows Thread */
 #endif
 
 /* Work Function */
-typedef void* (*work_func_t)(void*);
+typedef void * (*work_func_t)(void *);
 
-static ESIF_INLINE eEsifError esif_ccb_thread_create (
+static ESIF_INLINE eEsifError esif_ccb_thread_create(
 	esif_thread_t *thread_ptr,
 	work_func_t function_ptr,
 	void *argument_ptr
@@ -59,7 +59,7 @@ static ESIF_INLINE eEsifError esif_ccb_thread_create (
 	if (pthread_create(
 			thread_ptr,						/* Thread                    */
 			&attr,							/* Attributes                */
-			(void* (*)(void*))function_ptr,	/* Function To Start         */
+			(void * (*)(void *))function_ptr,	/* Function To Start         */
 			argument_ptr					/* Function Arguments If Any */
 			) != 0) {
 		rc = ESIF_E_UNSPECIFIED;
@@ -83,6 +83,44 @@ static ESIF_INLINE eEsifError esif_ccb_thread_create (
 				 ESIF_FUNC, thread_ptr, function_ptr, argument_ptr, esif_rc_str(rc), rc);
 
 	return rc;
+}
+
+
+static ESIF_INLINE eEsifError esif_ccb_thread_join (
+	esif_thread_t *thread_ptr
+	)
+{
+	eEsifError rc = ESIF_OK;
+
+#ifdef ESIF_ATTR_OS_LINUX
+	pthread_join(*thread_ptr, NULL);
+#endif /* Linux */
+#ifdef ESIF_ATTR_OS_WINDOWS
+	HANDLE hThread = OpenThread(THREAD_ALL_ACCESS, FALSE, (*(DWORD *)thread_ptr));
+	if (hThread != NULL) {
+		WaitForSingleObject(hThread, INFINITE);
+		CloseHandle(hThread);
+	} else {
+		rc = ESIF_E_UNSPECIFIED;
+	}
+
+#endif
+
+
+	THREAD_DEBUG("joined thread = %p rc=%s(%d)\n",
+				 thread_ptr, esif_rc_str(rc), rc);
+
+	return rc;
+}
+
+
+/* this is a copy of thread_join, using the term destroy for clarity */
+/* we may want to alter it to be a brute force destroy later */
+static ESIF_INLINE eEsifError esif_ccb_thread_destroy (
+	esif_thread_t *thread_ptr
+	)
+{
+	return esif_ccb_thread_join(thread_ptr);
 }
 
 

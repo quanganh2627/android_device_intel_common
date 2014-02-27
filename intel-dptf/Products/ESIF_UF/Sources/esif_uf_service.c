@@ -15,8 +15,7 @@
 ** limitations under the License.
 **
 ******************************************************************************/
-
-// #define ESIF_TRACE_DEBUG_DISABLED
+#define ESIF_TRACE_ID ESIF_TRACEMODULE_SERVICE
 
 #include "esif_uf.h"			/* Upper Framework */
 #include "esif_uf_appmgr.h"		/* Application Manager */
@@ -36,9 +35,7 @@
 #include "win\banned.h"
 #endif
 
-/* DEBUG? */
-#define POST_LOG_PACKAGE "Svc"
-#define POST_LOG_MODULE  "Iface"
+#define MSGBUF_SIZE 1024
 
 typedef enum _t_eCategoryType {
 	eCategoryTypeNone,
@@ -47,7 +44,7 @@ typedef enum _t_eCategoryType {
 	eCategoryTypeDomain
 } eCategoryType;
 
-static ESIF_INLINE eCategoryType Categorize (
+static ESIF_INLINE eCategoryType Categorize(
 	const void *appHandle,
 	const void *participantHandle,
 	const void *domainHandle
@@ -69,7 +66,7 @@ static ESIF_INLINE eCategoryType Categorize (
 
 
 /* Provide read access to ESIF configuration space */
-eEsifError EsifSvcConfigGet (
+eEsifError EsifSvcConfigGet(
 	const void *esifHandle,
 	const void *appHandle,
 	const EsifDataPtr nameSpacePtr,
@@ -113,7 +110,7 @@ eEsifError EsifSvcConfigGet (
 
 
 /* Provide write access to ESIF configuration space */
-eEsifError EsifSvcConfigSet (
+eEsifError EsifSvcConfigSet(
 	const void *esifHandle,
 	const void *appHandle,
 	const EsifDataPtr nameSpacePtr,
@@ -163,7 +160,7 @@ eEsifError EsifSvcConfigSet (
 
 
 /* Lookup participant data for a handle */
-static AppParticipantDataMapPtr find_participant_data_map_from_handle (
+static AppParticipantDataMapPtr find_participant_data_map_from_handle(
 	const EsifAppPtr appPtr,
 	const void *participantHandle
 	)
@@ -171,19 +168,20 @@ static AppParticipantDataMapPtr find_participant_data_map_from_handle (
 	UInt8 i = 0;
 	AppParticipantDataMapPtr participant_data_map_ptr = NULL;
 
-	for (i = 0; i < MAX_PARTICIPANT_ENTRY; i++)
+	for (i = 0; i < MAX_PARTICIPANT_ENTRY; i++) {
 		if (appPtr->fParticipantData[i].fAppParticipantHandle ==
 			participantHandle) {
 			participant_data_map_ptr = &appPtr->fParticipantData[i];
 			break;
 		}
+	}
 
 	return participant_data_map_ptr;
 }
 
 
 /* Lookup domain data for a handle */
-static AppDomainDataMapPtr find_domain_data_from_handle (
+static AppDomainDataMapPtr find_domain_data_from_handle(
 	const AppParticipantDataMapPtr participantPtr,
 	const void *domainHandle
 	)
@@ -191,18 +189,19 @@ static AppDomainDataMapPtr find_domain_data_from_handle (
 	UInt8 i = 0;
 	AppDomainDataMapPtr domain_data_map_ptr = NULL;
 
-	for (i = 0; i < MAX_DOMAIN_ENTRY; i++)
+	for (i = 0; i < MAX_DOMAIN_ENTRY; i++) {
 		if (participantPtr->fDomainData[i].fAppDomainHandle == domainHandle) {
 			domain_data_map_ptr = &participantPtr->fDomainData[i];
 			break;
 		}
+	}
 
 	return domain_data_map_ptr;
 }
 
 
 /* Provide execute action for ESIF primitive */
-eEsifError EsifSvcPrimitiveExec (
+eEsifError EsifSvcPrimitiveExec(
 	const void *esifHandle,
 	const void *appHandle,
 	const void *participantHandle,
@@ -322,9 +321,8 @@ exit:
 	return rc;
 }
 
-
 /* Provide write access to ESIF log object */
-eEsifError EsifSvcWriteLog (
+eEsifError EsifSvcWriteLog(
 	const void *esifHandle,
 	const void *appHandle,
 	const void *participantHandle,
@@ -333,6 +331,8 @@ eEsifError EsifSvcWriteLog (
 	const eLogType logType
 	)
 {
+	char *msg   = NULL;
+
 	UNREFERENCED_PARAMETER(participantHandle);
 	UNREFERENCED_PARAMETER(domainHandle);
 
@@ -371,7 +371,28 @@ eEsifError EsifSvcWriteLog (
 					 esif_log_type_str(logType), logType,
 					 (esif_string)messagePtr->buf_ptr);
 
-	POST_LOG_TYPE(logType, "%s", (esif_string)messagePtr->buf_ptr);
+	msg = (esif_string)messagePtr->buf_ptr;
+	if (msg != NULL && *msg=='\n')
+		msg++;
+
+	// Always Steer Application Messages to Target Routes if DPTF module enabled, regardless of global trace level
+	switch (logType) {
+	case eLogTypeFatal:
+	case eLogTypeError:
+		ESIF_TRACE_IFENABLED(ESIF_TRACEMODULE_DPTF, ESIF_TRACELEVEL_ERROR, "%s", msg);
+		break;
+	case eLogTypeWarning:
+		ESIF_TRACE_IFENABLED(ESIF_TRACEMODULE_DPTF, ESIF_TRACELEVEL_WARN, "%s", msg);
+		break;
+	case eLogTypeInfo:
+		ESIF_TRACE_IFENABLED(ESIF_TRACEMODULE_DPTF, ESIF_TRACELEVEL_INFO, "%s", msg);
+		break;
+	case eLogTypeDebug:
+		ESIF_TRACE_IFENABLED(ESIF_TRACEMODULE_DPTF, ESIF_TRACELEVEL_DEBUG, "%s", msg);
+		break;
+	default:
+		break;
+	}
 	return ESIF_OK;
 }
 
@@ -380,10 +401,10 @@ eEsifError EsifSvcWriteLog (
 ** Event Registration / Unregistration
 */
 
-static ESIF_INLINE void esif_guid_to_ms_guid (esif_guid_t *guid)
+static ESIF_INLINE void esif_guid_to_ms_guid(esif_guid_t *guid)
 {
 #ifdef ESIF_ATTR_OS_WINDOWS
-	u8 *ptr = (u8*)guid;
+	u8 *ptr = (u8 *)guid;
 	u8 b[ESIF_GUID_LEN] = {0};
 
 	ESIF_TRACE_DEBUG("%s:\n", ESIF_FUNC);
@@ -402,9 +423,9 @@ static ESIF_INLINE void esif_guid_to_ms_guid (esif_guid_t *guid)
 
 
 /* TODO Move To Header */
-eEsifError register_for_power_notification (const esif_guid_t *guid);
+eEsifError register_for_power_notification(const esif_guid_t *guid);
 
-static eEsifError EsifSvcEventRegisterAppByGroup (
+static eEsifError EsifSvcEventRegisterAppByGroup(
 	const EsifAppPtr appPtr,
 	const struct esif_fpc_event *event_ptr
 	)
@@ -417,16 +438,16 @@ static eEsifError EsifSvcEventRegisterAppByGroup (
 	UNREFERENCED_PARAMETER(guid_str);
 
 	ESIF_TRACE_DEBUG("%s: Event Alias: %s\n", ESIF_FUNC, event_ptr->name);
-	ESIF_TRACE_DEBUG("%s: Event GUID: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t*)event_ptr->event_guid, guid_str));
+	ESIF_TRACE_DEBUG("%s: Event GUID: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t *)event_ptr->event_guid, guid_str));
 	ESIF_TRACE_DEBUG("%s: Event Type: %s(%d)\n", ESIF_FUNC, esif_event_type_str(event_ptr->esif_event), event_ptr->esif_event);
 	ESIF_TRACE_DEBUG("%s: Event Data: %s(%d)\n", ESIF_FUNC,
 					 esif_data_type_str(event_ptr->esif_group_data_type), event_ptr->esif_group_data_type);
-	ESIF_TRACE_DEBUG("%s: Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t*)event_ptr->event_key, guid_str));
+	ESIF_TRACE_DEBUG("%s: Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t *)event_ptr->event_key, guid_str));
 
 	/*
 	 * Set the mask here so in case we get an immediate callback from the OS with state while registering.
 	 */
-	bitMask = bitMask << (UInt32) event_ptr->esif_event;
+	bitMask = bitMask << (UInt32)event_ptr->esif_event;
 	ESIF_TRACE_DEBUG("%s: s %016llx\n", ESIF_FUNC, bitMask);
 	appPtr->fRegisteredEvents |= bitMask;
 	ESIF_TRACE_DEBUG("%s: events %016llx\n", ESIF_FUNC, appPtr->fRegisteredEvents);
@@ -451,7 +472,7 @@ static eEsifError EsifSvcEventRegisterAppByGroup (
 
 		ESIF_TRACE_DEBUG("%s: POWER\n", ESIF_FUNC);
 		esif_guid_to_ms_guid(&power_guid);
-		ESIF_TRACE_DEBUG("%s: Power Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t*)&power_guid, guid_str));
+		ESIF_TRACE_DEBUG("%s: Power Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t *)&power_guid, guid_str));
 #ifdef ESIF_ATTR_OS_WINDOWS
 		register_for_power_notification(&power_guid);
 #endif
@@ -462,7 +483,7 @@ static eEsifError EsifSvcEventRegisterAppByGroup (
 }
 
 
-static eEsifError EsifSvcEventUnregisterAppByGroup (
+static eEsifError EsifSvcEventUnregisterAppByGroup(
 	const EsifAppPtr appPtr,
 	const struct esif_fpc_event *event_ptr
 	)
@@ -474,11 +495,11 @@ static eEsifError EsifSvcEventUnregisterAppByGroup (
 	UNREFERENCED_PARAMETER(guid_str);
 
 	ESIF_TRACE_DEBUG("%s: Event Alias: %s\n", ESIF_FUNC, event_ptr->name);
-	ESIF_TRACE_DEBUG("%s: Event GUID: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t*)event_ptr->event_guid, guid_str));
+	ESIF_TRACE_DEBUG("%s: Event GUID: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t *)event_ptr->event_guid, guid_str));
 	ESIF_TRACE_DEBUG("%s: Event Type: %s(%d)\n", ESIF_FUNC, esif_event_type_str(event_ptr->esif_event), event_ptr->esif_event);
 	ESIF_TRACE_DEBUG("%s: Event Data: %s(%d)\n", ESIF_FUNC,
 					 esif_data_type_str(event_ptr->esif_group_data_type), event_ptr->esif_group_data_type);
-	ESIF_TRACE_DEBUG("%s: Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t*)event_ptr->event_key, guid_str));
+	ESIF_TRACE_DEBUG("%s: Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t *)event_ptr->event_key, guid_str));
 
 	switch (event_ptr->esif_group) {
 	case ESIF_EVENT_GROUP_ACPI:
@@ -498,7 +519,7 @@ static eEsifError EsifSvcEventUnregisterAppByGroup (
 		break;
 	}
 
-	bitMask = bitMask << (UInt32) event_ptr->esif_event;
+	bitMask = bitMask << (UInt32)event_ptr->esif_event;
 	bitMask = ~bitMask;
 
 	ESIF_TRACE_DEBUG("%s: bitMask %016llx\n", ESIF_FUNC, bitMask);
@@ -509,7 +530,7 @@ static eEsifError EsifSvcEventUnregisterAppByGroup (
 }
 
 
-static eEsifError EsifSvcEventRegisterParticipantByGroup (
+static eEsifError EsifSvcEventRegisterParticipantByGroup(
 	const AppParticipantDataMapPtr participant_ptr,
 	const struct esif_fpc_event *event_ptr
 	)
@@ -520,16 +541,16 @@ static eEsifError EsifSvcEventRegisterParticipantByGroup (
 	UNREFERENCED_PARAMETER(guid_str);
 
 	ESIF_TRACE_DEBUG("%s: Event Alias: %s\n", ESIF_FUNC, event_ptr->name);
-	ESIF_TRACE_DEBUG("%s: Event GUID: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t*)event_ptr->event_guid, guid_str));
+	ESIF_TRACE_DEBUG("%s: Event GUID: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t *)event_ptr->event_guid, guid_str));
 	ESIF_TRACE_DEBUG("%s: Event Type: %s(%d)\n", ESIF_FUNC, esif_event_type_str(event_ptr->esif_event), event_ptr->esif_event);
 	ESIF_TRACE_DEBUG("%s: Event Data: %s(%d)\n", ESIF_FUNC,
 					 esif_data_type_str(event_ptr->esif_group_data_type), event_ptr->esif_group_data_type);
-	ESIF_TRACE_DEBUG("%s: Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t*)event_ptr->event_key, guid_str));
+	ESIF_TRACE_DEBUG("%s: Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t *)event_ptr->event_key, guid_str));
 
 	/*
 	 * Set the mask here so in case we get an immediate callback from the OS with state while registering.
 	 */
-	bitMask = bitMask << (UInt32) event_ptr->esif_event;
+	bitMask = bitMask << (UInt32)event_ptr->esif_event;
 	ESIF_TRACE_DEBUG("%s: bitMask %016llx\n", ESIF_FUNC, bitMask);
 	participant_ptr->fRegisteredEvents |= bitMask;
 	ESIF_TRACE_DEBUG("%s: events %016llx\n", ESIF_FUNC, participant_ptr->fRegisteredEvents);
@@ -556,7 +577,7 @@ static eEsifError EsifSvcEventRegisterParticipantByGroup (
 }
 
 
-static eEsifError EsifSvcEventUnregisterParticipantByGroup (
+static eEsifError EsifSvcEventUnregisterParticipantByGroup(
 	const AppParticipantDataMapPtr participant_ptr,
 	const struct esif_fpc_event *event_ptr
 	)
@@ -568,11 +589,11 @@ static eEsifError EsifSvcEventUnregisterParticipantByGroup (
 	UNREFERENCED_PARAMETER(guid_str);
 
 	ESIF_TRACE_DEBUG("%s: Event Alias: %s\n", ESIF_FUNC, event_ptr->name);
-	ESIF_TRACE_DEBUG("%s: Event GUID: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t*)event_ptr->event_guid, guid_str));
+	ESIF_TRACE_DEBUG("%s: Event GUID: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t *)event_ptr->event_guid, guid_str));
 	ESIF_TRACE_DEBUG("%s: Event Type: %s(%d)\n", ESIF_FUNC, esif_event_type_str(event_ptr->esif_event), event_ptr->esif_event);
 	ESIF_TRACE_DEBUG("%s: Event Data: %s(%d)\n", ESIF_FUNC,
 					 esif_data_type_str(event_ptr->esif_group_data_type), event_ptr->esif_group_data_type);
-	ESIF_TRACE_DEBUG("%s: Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t*)event_ptr->event_key, guid_str));
+	ESIF_TRACE_DEBUG("%s: Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t *)event_ptr->event_key, guid_str));
 
 	switch (event_ptr->esif_group) {
 	case ESIF_EVENT_GROUP_ACPI:
@@ -592,7 +613,7 @@ static eEsifError EsifSvcEventUnregisterParticipantByGroup (
 		break;
 	}
 
-	bitMask = bitMask << (UInt32) event_ptr->esif_event;
+	bitMask = bitMask << (UInt32)event_ptr->esif_event;
 	bitMask = ~bitMask;
 
 	ESIF_TRACE_DEBUG("%s: bitMask %016llx\n", ESIF_FUNC, bitMask);
@@ -603,7 +624,7 @@ static eEsifError EsifSvcEventUnregisterParticipantByGroup (
 }
 
 
-static eEsifError EsifSvcEventRegisterDomainByGroup (
+static eEsifError EsifSvcEventRegisterDomainByGroup(
 	const AppDomainDataMapPtr domain_ptr,
 	const struct esif_fpc_event *event_ptr
 	)
@@ -614,16 +635,16 @@ static eEsifError EsifSvcEventRegisterDomainByGroup (
 	UNREFERENCED_PARAMETER(guid_str);
 
 	ESIF_TRACE_DEBUG("%s: Event Alias: %s\n", ESIF_FUNC, event_ptr->name);
-	ESIF_TRACE_DEBUG("%s: Event GUID: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t*)event_ptr->event_guid, guid_str));
+	ESIF_TRACE_DEBUG("%s: Event GUID: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t *)event_ptr->event_guid, guid_str));
 	ESIF_TRACE_DEBUG("%s: Event Type: %s(%d)\n", ESIF_FUNC, esif_event_type_str(event_ptr->esif_event), event_ptr->esif_event);
 	ESIF_TRACE_DEBUG("%s: Event Data: %s(%d)\n", ESIF_FUNC,
 					 esif_data_type_str(event_ptr->esif_group_data_type), event_ptr->esif_group_data_type);
-	ESIF_TRACE_DEBUG("%s: Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t*)event_ptr->event_key, guid_str));
+	ESIF_TRACE_DEBUG("%s: Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t *)event_ptr->event_key, guid_str));
 
 	/*
 	 * Set the mask here so in case we get an immediate callback from the OS with state while registering.
 	 */
-	bitMask = bitMask << (UInt32) event_ptr->esif_event;
+	bitMask = bitMask << (UInt32)event_ptr->esif_event;
 	ESIF_TRACE_DEBUG("%s: bitMask %016llx\n", ESIF_FUNC, bitMask);
 	domain_ptr->fRegisteredEvents |= bitMask;
 	ESIF_TRACE_DEBUG("%s: events %016llx\n", ESIF_FUNC, domain_ptr->fRegisteredEvents);
@@ -650,7 +671,7 @@ static eEsifError EsifSvcEventRegisterDomainByGroup (
 }
 
 
-static eEsifError EsifSvcEventUnregisterDomainByGroup (
+static eEsifError EsifSvcEventUnregisterDomainByGroup(
 	const AppDomainDataMapPtr domain_ptr,
 	const struct esif_fpc_event *event_ptr
 	)
@@ -662,11 +683,11 @@ static eEsifError EsifSvcEventUnregisterDomainByGroup (
 	UNREFERENCED_PARAMETER(guid_str);
 
 	ESIF_TRACE_DEBUG("%s: Event Alias: %s\n", ESIF_FUNC, event_ptr->name);
-	ESIF_TRACE_DEBUG("%s: Event GUID: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t*)event_ptr->event_guid, guid_str));
+	ESIF_TRACE_DEBUG("%s: Event GUID: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t *)event_ptr->event_guid, guid_str));
 	ESIF_TRACE_DEBUG("%s: Event Type: %s(%d)\n", ESIF_FUNC, esif_event_type_str(event_ptr->esif_event), event_ptr->esif_event);
 	ESIF_TRACE_DEBUG("%s: Event Data: %s(%d)\n", ESIF_FUNC,
 					 esif_data_type_str(event_ptr->esif_group_data_type), event_ptr->esif_group_data_type);
-	ESIF_TRACE_DEBUG("%s: Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t*)event_ptr->event_key, guid_str));
+	ESIF_TRACE_DEBUG("%s: Event Key: %s\n", ESIF_FUNC, esif_guid_print((esif_guid_t *)event_ptr->event_key, guid_str));
 
 	switch (event_ptr->esif_group) {
 	case ESIF_EVENT_GROUP_ACPI:
@@ -686,7 +707,7 @@ static eEsifError EsifSvcEventUnregisterDomainByGroup (
 		break;
 	}
 
-	bitMask = bitMask << (UInt32) event_ptr->esif_event;
+	bitMask = bitMask << (UInt32)event_ptr->esif_event;
 	bitMask = ~bitMask;
 
 	ESIF_TRACE_DEBUG("%s: bitMask %016llx\n", ESIF_FUNC, bitMask);
@@ -698,7 +719,7 @@ static eEsifError EsifSvcEventUnregisterDomainByGroup (
 
 
 /* Provide registration for ESIF event */
-eEsifError EsifSvcEventRegister (
+eEsifError EsifSvcEventRegister(
 	const void *esifHandle,
 	const void *appHandle,
 	const void *participantHandle,
@@ -733,7 +754,7 @@ eEsifError EsifSvcEventRegister (
 					 appHandle,
 					 participantHandle,
 					 domainHandle,
-					 esif_guid_print((esif_guid_t*)eventGuid->buf_ptr, guid_str));
+					 esif_guid_print((esif_guid_t *)eventGuid->buf_ptr, guid_str));
 
 	/* Determine what to do based on provided parameters */
 	switch (Categorize(appHandle, participantHandle, domainHandle)) {
@@ -751,7 +772,7 @@ eEsifError EsifSvcEventRegister (
 		}
 		ESIF_TRACE_DEBUG("%s: Using Participant %s\n", ESIF_FUNC, up_ptr->fMetadata.fName);
 
-		event_ptr = up_ptr->fDspPtr->get_event_by_guid(up_ptr->fDspPtr, *(esif_guid_t*)eventGuid->buf_ptr);
+		event_ptr = up_ptr->fDspPtr->get_event_by_guid(up_ptr->fDspPtr, *(esif_guid_t *)eventGuid->buf_ptr);
 		if (NULL == event_ptr) {
 			ESIF_TRACE_DEBUG("%s: EVENT NOT FOUND/SUPPORTED\n", ESIF_FUNC);
 			rc = ESIF_E_NOT_FOUND;
@@ -792,7 +813,7 @@ eEsifError EsifSvcEventRegister (
 		ESIF_TRACE_DEBUG("%s: Using Participant %s\n", ESIF_FUNC, participant_ptr->fUpPtr->fMetadata.fName);
 
 		/* Find The Event Associated With Participant  */
-		event_ptr = participant_ptr->fUpPtr->fDspPtr->get_event_by_guid(participant_ptr->fUpPtr->fDspPtr, *(esif_guid_t*)eventGuid->buf_ptr);
+		event_ptr = participant_ptr->fUpPtr->fDspPtr->get_event_by_guid(participant_ptr->fUpPtr->fDspPtr, *(esif_guid_t *)eventGuid->buf_ptr);
 		if (NULL == event_ptr) {
 			ESIF_TRACE_DEBUG("%s: EVENT NOT FOUND/SUPPORTED\n", ESIF_FUNC);
 			rc = ESIF_E_NOT_FOUND;
@@ -835,7 +856,7 @@ eEsifError EsifSvcEventRegister (
 						 ESIF_FUNC, participant_ptr->fUpPtr->fMetadata.fName);
 
 		/* Find The Event Associated With Participant  */
-		event_ptr = participant_ptr->fUpPtr->fDspPtr->get_event_by_guid(participant_ptr->fUpPtr->fDspPtr, *(esif_guid_t*)eventGuid->buf_ptr);
+		event_ptr = participant_ptr->fUpPtr->fDspPtr->get_event_by_guid(participant_ptr->fUpPtr->fDspPtr, *(esif_guid_t *)eventGuid->buf_ptr);
 		if (NULL == event_ptr) {
 			ESIF_TRACE_DEBUG("%s: EVENT NOT FOUND/SUPPORTED\n", ESIF_FUNC);
 			rc = ESIF_E_NOT_FOUND;
@@ -859,7 +880,7 @@ exit:
 
 
 /* Provide unregistration for previously registered ESIF event */
-eEsifError EsifSvcEventUnregister (
+eEsifError EsifSvcEventUnregister(
 	const void *esifHandle,
 	const void *appHandle,
 	const void *participantHandle,
@@ -894,7 +915,7 @@ eEsifError EsifSvcEventUnregister (
 					 appHandle,
 					 participantHandle,
 					 domainHandle,
-					 esif_guid_print((esif_guid_t*)eventGuid->buf_ptr, guid_str));
+					 esif_guid_print((esif_guid_t *)eventGuid->buf_ptr, guid_str));
 
 	/* Determine what to do based on provided parameters */
 	switch (Categorize(appHandle, participantHandle, domainHandle)) {
@@ -914,7 +935,7 @@ eEsifError EsifSvcEventUnregister (
 		ESIF_TRACE_DEBUG("%s: Using Participant %s\n", ESIF_FUNC, up_ptr->fMetadata.fName);
 
 		/* Find The Event Associated With Participant 0 */
-		event_ptr = up_ptr->fDspPtr->get_event_by_guid(up_ptr->fDspPtr, *(esif_guid_t*)eventGuid->buf_ptr);
+		event_ptr = up_ptr->fDspPtr->get_event_by_guid(up_ptr->fDspPtr, *(esif_guid_t *)eventGuid->buf_ptr);
 		if (NULL == event_ptr) {
 			ESIF_TRACE_DEBUG("%s: EVENT NOT FOUND/SUPPORTED\n", ESIF_FUNC);
 			rc = ESIF_E_NOT_FOUND;
@@ -955,7 +976,7 @@ eEsifError EsifSvcEventUnregister (
 		ESIF_TRACE_DEBUG("%s: Using Participant %s\n", ESIF_FUNC, participant_ptr->fUpPtr->fMetadata.fName);
 
 		/* Find The Event Associated With Participant  */
-		event_ptr = participant_ptr->fUpPtr->fDspPtr->get_event_by_guid(participant_ptr->fUpPtr->fDspPtr, *(esif_guid_t*)eventGuid->buf_ptr);
+		event_ptr = participant_ptr->fUpPtr->fDspPtr->get_event_by_guid(participant_ptr->fUpPtr->fDspPtr, *(esif_guid_t *)eventGuid->buf_ptr);
 		if (NULL == event_ptr) {
 			ESIF_TRACE_WARN("%s: EVENT NOT FOUND/SUPPORTED\n", ESIF_FUNC);
 			rc = ESIF_E_NOT_FOUND;
@@ -998,7 +1019,7 @@ eEsifError EsifSvcEventUnregister (
 						 ESIF_FUNC, participant_ptr->fUpPtr->fMetadata.fName);
 
 		/* Find The Event Associated With Participant  */
-		event_ptr = participant_ptr->fUpPtr->fDspPtr->get_event_by_guid(participant_ptr->fUpPtr->fDspPtr, *(esif_guid_t*)eventGuid->buf_ptr);
+		event_ptr = participant_ptr->fUpPtr->fDspPtr->get_event_by_guid(participant_ptr->fUpPtr->fDspPtr, *(esif_guid_t *)eventGuid->buf_ptr);
 		if (NULL == event_ptr) {
 			ESIF_TRACE_DEBUG("%s: EVENT NOT FOUND/SUPPORTED\n", ESIF_FUNC);
 			rc = ESIF_E_NOT_FOUND;
@@ -1020,13 +1041,13 @@ exit:
 }
 
 
-eEsifError EsifSvcInit ()
+eEsifError EsifSvcInit()
 {
 	return ESIF_OK;
 }
 
 
-void EsifSvcExit ()
+void EsifSvcExit()
 {
 }
 

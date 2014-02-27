@@ -99,7 +99,6 @@ size_t EsifData_SizeofType (EsifDataPtr self)
 	case ESIF_DATA_BIT:
 	case ESIF_DATA_INT8:
 	case ESIF_DATA_UINT8:
-	case ESIF_DATA_PERCENT:
 		size = 1;
 		break;
 
@@ -115,12 +114,14 @@ size_t EsifData_SizeofType (EsifDataPtr self)
 	case ESIF_DATA_TEMPERATURE:
 	case ESIF_DATA_POWER:
 	case ESIF_DATA_TIME:
+	case ESIF_DATA_PERCENT:
 	case ESIF_DATA_IPV4:
 		size = 4;
 		break;
 
 	case ESIF_DATA_INT64:
 	case ESIF_DATA_UINT64:
+	case ESIF_DATA_FREQUENCY:
 		size = 8;
 		break;
 
@@ -156,7 +157,7 @@ size_t EsifData_SizeofType (EsifDataPtr self)
 	case ESIF_DATA_BLOB:
 	case ESIF_DATA_DSP:
 	case ESIF_DATA_STRUCTURE:
-	// case ESIF_DATA_XML:
+	case ESIF_DATA_XML:
 	default:
 		size = self->data_len;	// Or 0xFFFFFFFF?
 		break;
@@ -267,7 +268,7 @@ UInt32 EsifData_AsUInt32 (EsifDataPtr self)
 
 
 // ToString operator [dynamic, caller-owned]
-char*EsifData_ToString (EsifDataPtr self)
+char *EsifData_ToString (EsifDataPtr self)
 {
 	char *result   = 0;
 	UInt32 alloc   = 0;
@@ -299,12 +300,16 @@ char*EsifData_ToString (EsifDataPtr self)
 	case ESIF_DATA_INT32:
 	case ESIF_DATA_UINT32:
 	case ESIF_DATA_TEMPERATURE:
+	case ESIF_DATA_POWER:
+	case ESIF_DATA_TIME:
+	case ESIF_DATA_PERCENT:
 		alloc   = MAXSTR_INT32;
 		u32data = (UInt32) * STATIC_CAST(UInt32*, self->buf_ptr);
 		break;
 
 	case ESIF_DATA_INT64:
 	case ESIF_DATA_UINT64:
+	case ESIF_DATA_FREQUENCY:
 		alloc   = MAXSTR_INT64;
 		u64data = (UInt64) * STATIC_CAST(UInt64*, self->buf_ptr);
 		break;
@@ -314,6 +319,12 @@ char*EsifData_ToString (EsifDataPtr self)
 		ptrdata = (Byte*)self->buf_ptr;
 		ptrlen  = self->data_len;
 		break;
+
+   case ESIF_DATA_VOID:
+	   alloc   = 0;
+	   ptrdata = NULL;
+	   ptrlen  = 0;
+	   break;
 
 	/* TODO:
 	   case ESIF_DATA_BLOB:
@@ -325,14 +336,11 @@ char*EsifData_ToString (EsifDataPtr self)
 	   case ESIF_DATA_IPV4:
 	   case ESIF_DATA_IPV6:
 	   case ESIF_DATA_POINTER:
-	   case ESIF_DATA_POWER:
-	   case ESIF_DATA_QAULIFIER:
+	   case ESIF_DATA_QUALIFIER:
 	   case ESIF_DATA_REGISTER:
 	   case ESIF_DATA_STRUCTURE:
 	   case ESIF_DATA_TABLE:
-	   case ESIF_DATA_TIME:
 	   case ESIF_DATA_UNICODE:
-	   case ESIF_DATA_VOID:
 	 */
 	case ESIF_DATA_BINARY:
 	default:
@@ -342,10 +350,15 @@ char*EsifData_ToString (EsifDataPtr self)
 		break;
 	}
 
-	// Allocate memory and Convert data
-	if (alloc) {
+	// Allocate Memory and Convert Data
+	if (alloc == 0) {
+		return NULL;
+	}
+	else {
 		result = (char*)esif_ccb_malloc(alloc);
-		ASSERT(result);
+		if (result == NULL) {
+			return NULL;
+		}
 		switch (self->type) {
 		case ESIF_DATA_BIT:
 			esif_ccb_sprintf(alloc, result, "%ld", (long)((Int8)u32data & 0x1));
@@ -373,6 +386,9 @@ char*EsifData_ToString (EsifDataPtr self)
 
 		case ESIF_DATA_UINT32:
 		case ESIF_DATA_TEMPERATURE:
+		case ESIF_DATA_POWER:
+		case ESIF_DATA_TIME:
+		case ESIF_DATA_PERCENT:
 			esif_ccb_sprintf(alloc, result, "%lu", (long unsigned)u32data);
 			break;
 
@@ -381,6 +397,7 @@ char*EsifData_ToString (EsifDataPtr self)
 			break;
 
 		case ESIF_DATA_UINT64:
+		case ESIF_DATA_FREQUENCY:
 			esif_ccb_sprintf(alloc, result, "%llu", (UInt64)u64data);
 			break;
 
@@ -403,14 +420,11 @@ char*EsifData_ToString (EsifDataPtr self)
 		   case ESIF_DATA_IPV4:
 		   case ESIF_DATA_IPV6:
 		   case ESIF_DATA_POINTER:
-		   case ESIF_DATA_POWER:
-		   case ESIF_DATA_QAULIFIER:
+		   case ESIF_DATA_QUALIFIER:
 		   case ESIF_DATA_REGISTER:
 		   case ESIF_DATA_STRUCTURE:
 		   case ESIF_DATA_TABLE:
-		   case ESIF_DATA_TIME:
 		   case ESIF_DATA_UNICODE:
-		   case ESIF_DATA_VOID:
 		 */
 		case ESIF_DATA_BINARY:
 		default:
@@ -446,35 +460,45 @@ eEsifError EsifData_FromString (
 	ASSERT(self);
 
 	if (type == ESIF_DATA_AUTO) {
-		switch (*str) {
-		case '0':
-			if (str[1] == 'x') {
-				type = ESIF_DATA_BINARY;
-			} else {
-				type = ESIF_DATA_UINT32;
+		int ch=0;
+
+		// Default = STRING unless one of the recognized formats below
+		type = ESIF_DATA_STRING;
+
+		// 0x[0-9A-F]+ = UINT32 or BINARY (STRING if invalid hex string)
+		if (esif_ccb_strnicmp(str, "0x", 2) == 0) {
+			for (ch = 2; str[ch] != 0 && isxdigit(str[ch]); ch++) {
+				;
 			}
-			break;
-
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-		case '6':
-		case '7':
-		case '8':
-		case '9':
-			type = ESIF_DATA_UINT32;
-			break;
-
-		case '-':
-		case '+':
-			type = ESIF_DATA_INT32;
-			break;
-
-		default:
-			type = ESIF_DATA_STRING;
-			break;
+			if (str[ch] == 0) {
+				if (ch <= 10) {	// 0xAA, 0xAABB, 0xAABBCC, 0xAABBCCDD
+					type = ESIF_DATA_UINT32;
+				}
+				else {
+					type = ESIF_DATA_BINARY;
+				}
+			}
+		}
+		// [-+][0-9]+ = INT32, UINT32, INT64, UINT64 (STRING if non-numeric)
+		else if (str[0] == '+' || str[0] == '-' || isdigit(str[0])) {
+			int sign = str[0];
+			for (ch = 1; str[ch] != 0 && isdigit(str[ch]); ch++) {
+				;
+			}
+			if (str[ch] == 0) {
+				if (isdigit(sign)) {
+					if (ch <= 10)
+						type = ESIF_DATA_UINT32;
+					else if (ch <= 20)
+						type = ESIF_DATA_UINT64;
+				}
+				else {
+					if (ch <= 11)
+						type = ESIF_DATA_UINT32;
+					else if (ch <= 21)
+						type = ESIF_DATA_UINT64;
+				}
+			}
 		}
 		self->type = type;
 	}
@@ -495,11 +519,15 @@ eEsifError EsifData_FromString (
 	case ESIF_DATA_INT32:
 	case ESIF_DATA_UINT32:
 	case ESIF_DATA_TEMPERATURE:
+	case ESIF_DATA_POWER:
+	case ESIF_DATA_TIME:
+	case ESIF_DATA_PERCENT:
 		alloc = sizeof(UInt32);
 		break;
 
 	case ESIF_DATA_INT64:
 	case ESIF_DATA_UINT64:
+	case ESIF_DATA_FREQUENCY:
 		alloc = sizeof(UInt64);
 		break;
 
@@ -508,6 +536,12 @@ eEsifError EsifData_FromString (
 		ptrdata = (Byte*)str;
 		ptrlen  = alloc;
 		break;
+
+   case ESIF_DATA_VOID:
+	   alloc   = 0;
+	   ptrdata = NULL;
+	   ptrlen  = 0;
+	   break;
 
 	/* TODO:
 	   case ESIF_DATA_BLOB:
@@ -519,14 +553,11 @@ eEsifError EsifData_FromString (
 	   case ESIF_DATA_IPV4:
 	   case ESIF_DATA_IPV6:
 	   case ESIF_DATA_POINTER:
-	   case ESIF_DATA_POWER:
-	   case ESIF_DATA_QAULIFIER:
+	   case ESIF_DATA_QUALIFIER:
 	   case ESIF_DATA_REGISTER:
 	   case ESIF_DATA_STRUCTURE:
 	   case ESIF_DATA_TABLE:
-	   case ESIF_DATA_TIME:
 	   case ESIF_DATA_UNICODE:
-	   case ESIF_DATA_VOID:
 	 */
 	case ESIF_DATA_BINARY:
 	default:
@@ -541,7 +572,11 @@ eEsifError EsifData_FromString (
 		break;
 	}
 
-	if (alloc) {
+	// Allocate Memory and Convert Data
+	if (alloc == 0) {
+		EsifData_Set(self, type, ptrdata, 0, 0);
+	}
+	else {
 		EsifData_Set(self, type, esif_ccb_malloc(alloc), alloc, alloc);
 		ASSERT(self->buf_ptr);
 		SAFETY(memset(self->buf_ptr, 0, alloc));
@@ -552,44 +587,48 @@ eEsifError EsifData_FromString (
 		switch (type) {
 		case ESIF_DATA_BIT:
 		case ESIF_DATA_INT8:
-			esif_ccb_sscanf(str, IFHEX(str, "%x", "%d"), &u32data, sizeof(u32data));
+			esif_ccb_sscanf(str, IFHEX(str, "%x", "%d"), &u32data);
 			u32data = (self->type == ESIF_DATA_BIT ? u32data & 0x1 : u32data);
 			*STATIC_CAST(Int8*, buffer) = (Int8)u32data;
 			break;
 
 		case ESIF_DATA_INT16:
-			esif_ccb_sscanf(str, IFHEX(str, "%x", "%d"), &u32data, sizeof(u32data));
+			esif_ccb_sscanf(str, IFHEX(str, "%x", "%d"), &u32data);
 			*STATIC_CAST(Int16*, buffer) = (Int16)u32data;
 			break;
 
 		case ESIF_DATA_INT32:
-			esif_ccb_sscanf(str, IFHEX(str, "%x", "%d"), &u32data, sizeof(u32data));
+			esif_ccb_sscanf(str, IFHEX(str, "%x", "%d"), &u32data);
 			*STATIC_CAST(Int32*, buffer) = (Int32)u32data;
 			break;
 
 		case ESIF_DATA_UINT8:
-			esif_ccb_sscanf(str, IFHEX(str, "%x", "%u"), &u32data, sizeof(u32data));
+			esif_ccb_sscanf(str, IFHEX(str, "%x", "%u"), &u32data);
 			*STATIC_CAST(UInt8*, buffer) = (UInt8)u32data;
 			break;
 
 		case ESIF_DATA_UINT16:
-			esif_ccb_sscanf(str, IFHEX(str, "%x", "%u"), &u32data, sizeof(u32data));
+			esif_ccb_sscanf(str, IFHEX(str, "%x", "%u"), &u32data);
 			*STATIC_CAST(UInt16*, buffer) = (UInt16)u32data;
 			break;
 
 		case ESIF_DATA_UINT32:
 		case ESIF_DATA_TEMPERATURE:
-			esif_ccb_sscanf(str, IFHEX(str, "%x", "%u"), &u32data, sizeof(u32data));
+		case ESIF_DATA_POWER:
+		case ESIF_DATA_TIME:
+		case ESIF_DATA_PERCENT:
+			esif_ccb_sscanf(str, IFHEX(str, "%x", "%u"), &u32data);
 			*STATIC_CAST(UInt32*, buffer) = (UInt32)u32data;
 			break;
 
 		case ESIF_DATA_INT64:
-			esif_ccb_sscanf(str, IFHEX(str, "%llx", "%lld"), &u64data, sizeof(u64data));
+			esif_ccb_sscanf(str, IFHEX(str, "%llx", "%lld"), &u64data);
 			*STATIC_CAST(Int64*, buffer) = (UInt64)u64data;
 			break;
 
 		case ESIF_DATA_UINT64:
-			esif_ccb_sscanf(str, IFHEX(str, "%llx", "%llu"), &u64data, sizeof(u64data));
+		case ESIF_DATA_FREQUENCY:
+			esif_ccb_sscanf(str, IFHEX(str, "%llx", "%llu"), &u64data);
 			*STATIC_CAST(UInt64*, buffer) = (UInt64)u64data;
 			break;
 
@@ -607,14 +646,11 @@ eEsifError EsifData_FromString (
 		   case ESIF_DATA_IPV4:
 		   case ESIF_DATA_IPV6:
 		   case ESIF_DATA_POINTER:
-		   case ESIF_DATA_POWER:
-		   case ESIF_DATA_QAULIFIER:
+		   case ESIF_DATA_QUALIFIER:
 		   case ESIF_DATA_REGISTER:
 		   case ESIF_DATA_STRUCTURE:
 		   case ESIF_DATA_TABLE:
-		   case ESIF_DATA_TIME:
 		   case ESIF_DATA_UNICODE:
-		   case ESIF_DATA_VOID:
 		 */
 		case ESIF_DATA_BINARY:
 		default:

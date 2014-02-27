@@ -130,14 +130,13 @@ eEsifError DataVault_WriteVault (DataVaultPtr self)
 	}
 
 	// If any rows contain NOCACHE PERSIST values, we need to make a copy the original DataVault while creating the new one
-	// esif_ccb_sprintf(MAX_PATH, dv_file.filename, "%s%s", esif_build_path(dv_file.filename, MAX_PATH, NULL, self->name), ESIFDV_FILEEXT);
-	esif_ccb_sprintf(MAX_PATH, dv_file.filename, "%s%s%s", ESIFDV_DIR, self->name, ESIFDV_FILEEXT);
+	esif_build_path(dv_file.filename, sizeof(dv_file.filename), ESIF_PATHTYPE_DV, self->name, ESIFDV_FILEEXT);
 
 	for (idx = 0; idx < self->cache->size; idx++)
 		if (FLAGS_TESTALL(self->cache->elements[idx].flags, ESIF_SERVICE_CONFIG_NOCACHE | ESIF_SERVICE_CONFIG_PERSIST) &&
 			self->cache->elements[idx].value.buf_len == 0) {
 			struct stat filebak_stat = {0};
-            esif_ccb_sprintf(MAX_PATH, dv_filebak.filename, "%s%s%s", ESIFDV_DIR, self->name, ESIFDV_BAKFILEEXT);
+			esif_build_path(dv_filebak.filename, sizeof(dv_file.filename), ESIF_PATHTYPE_DV, self->name, ESIFDV_BAKFILEEXT);
 
 			// Delete BAK file if it exists
 			if (esif_ccb_stat(dv_filebak.filename, &filebak_stat) == 0) {
@@ -251,7 +250,7 @@ eEsifError DataVault_WriteVault (DataVaultPtr self)
 		IOStream_Destroy(vaultBak);
 		IOStream_Destroy(vault);
 		esif_ccb_unlink(dv_file.filename);
-		esif_ccb_rename(dv_filebak.filename, dv_file.filename);
+		IGNORE_RESULT(esif_ccb_rename(dv_filebak.filename, dv_file.filename));
 		return rc;
 	}
 	// Remove BAK file and Commit
@@ -433,7 +432,7 @@ static void DataVault_WriteLog (
 	EsifDataPtr value
 	)
 {
-#ifdef ESIF_CONFIG_LOG
+#ifndef ESIF_CONFIG_LOG
 	UNREFERENCED_PARAMETER(self);
 	UNREFERENCED_PARAMETER(action);
 	UNREFERENCED_PARAMETER(nameSpace);
@@ -451,8 +450,8 @@ static void DataVault_WriteLog (
 	if (!flags) {
 		return;
 	}
-
-	esif_ccb_sprintf(MAX_PATH, log_file.filename, "%s%s", esif_build_path(log_file.filename, MAX_PATH, ESIF_DIR_LOG, (EsifString)nameSpace), ESIFDV_LOGFILEEXT);
+	
+	esif_build_path(log_file.filename, sizeof(log_file.filename), ESIF_PATHTYPE_DV, nameSpace, ESIFDV_LOGFILEEXT);
 	esif_ccb_fopen(&filePtr, log_file.filename, "ab");
 	if (NULL == filePtr) {
 		return;
@@ -631,6 +630,7 @@ static eEsifError DataVault_WriteRegistry (
 
 		case ESIF_DATA_INT64:
 		case ESIF_DATA_UINT64:
+		case ESIF_DATA_FREQUENCY:
 			dwType = REG_QWORD;
 			dwSize = value->data_len;
 			break;
@@ -674,6 +674,9 @@ eEsifError DataVault_GetValue (
 {
 	eEsifError rc = ESIF_E_NOT_FOUND;
 	DataCacheEntryPtr keypair = NULL;
+
+	if (!self)
+		return ESIF_E_PARAMETER_IS_NULL;
 
 	// TODO: Locking
 
@@ -744,10 +747,8 @@ eEsifError DataVault_GetValue (
 		DataVault_WriteLog(self, "AUTO", (esif_string)(self->name), path, 0, value);
 	}
 
-	if (NULL != self) {
-		keypair = DataCache_GetValue(self->cache, (esif_string)path->buf_ptr);
-	}
-
+	keypair = DataCache_GetValue(self->cache, (esif_string)path->buf_ptr);
+	
 	if (NULL != keypair) {
 		UInt32 data_len = keypair->value.data_len;
 		void *buf_ptr   = keypair->value.buf_ptr;
@@ -889,6 +890,9 @@ eEsifError DataVault_SetValue (
 		void *buffer  = 0;
 		UInt32 buflen = 0;
 		if (DataVault_ReadFile(self, (char*)value->buf_ptr + 2, &buffer, &buflen) == ESIF_OK) {
+			if (value->buf_len) {
+				esif_ccb_free(value->buf_ptr);
+			}
 			value->buf_ptr = buffer;
 			if (value->type == ESIF_DATA_STRING) {
 				buflen++;	// Include Null Terminator
@@ -920,20 +924,32 @@ eEsifError DataVault_SetValue (
 			} else	// ...
 #endif
 			if (keypair->value.buf_len && value->data_len > keypair->value.buf_len) {
-				rc = ESIF_E_NEED_LARGER_BUFFER;
-			} else {
-				keypair->flags = flags;
-				keypair->value.type     = value->type;
-				keypair->value.data_len = value->data_len;
-
-				// Replace the File Offset stored in buf_ptr with a copy of the data for updated NOCACHE values
-				if (keypair->flags & ESIF_SERVICE_CONFIG_NOCACHE && keypair->value.buf_len == 0) {
-					keypair->value.buf_ptr = esif_ccb_malloc(value->data_len);
-					keypair->value.buf_len = value->data_len;
+				void *new_buf = NULL;
+				
+				// Autogrow buffer if it was allocated, otherwise ask for a larger buffer
+				if (keypair->value.buf_len > 0) {
+					new_buf= (void *)esif_ccb_realloc(keypair->value.buf_ptr, value->data_len);
 				}
-				esif_ccb_memcpy(keypair->value.buf_ptr, value->buf_ptr, value->data_len);
-				rc = ESIF_OK;
+
+				if (new_buf == NULL) {
+					return ESIF_E_NEED_LARGER_BUFFER;
+				}
+				else {
+					keypair->value.buf_len = value->data_len;
+					keypair->value.buf_ptr = new_buf;
+				}
+			} 
+			keypair->flags = flags;
+			keypair->value.type     = value->type;
+			keypair->value.data_len = value->data_len;
+
+			// Replace the File Offset stored in buf_ptr with a copy of the data for updated NOCACHE values
+			if (keypair->flags & ESIF_SERVICE_CONFIG_NOCACHE && keypair->value.buf_len == 0) {
+				keypair->value.buf_ptr = esif_ccb_malloc(value->data_len);
+				keypair->value.buf_len = value->data_len;
 			}
+			esif_ccb_memcpy(keypair->value.buf_ptr, value->buf_ptr, value->data_len);
+			rc = ESIF_OK;
 		}
 	} else if (value && value->buf_ptr && !(flags & ESIF_SERVICE_CONFIG_DELETE)) {
 		// Copy Key/Value Pair to new Data Row
@@ -989,8 +1005,7 @@ eEsifError EsifConfigSet (
 			return ESIF_E_NOT_FOUND;
 		}
 
-		// esif_ccb_sprintf(MAX_PATH, dv_file.filename, "%s%s", esif_build_path(dv_file.filename, MAX_PATH, NULL, DB->name), ESIFDV_FILEEXT);
-		esif_ccb_sprintf(MAX_PATH, dv_file.filename, "%s%s%s", ESIFDV_DIR, DB->name, ESIFDV_FILEEXT);
+		esif_build_path(dv_file.filename, sizeof(dv_file.filename), ESIF_PATHTYPE_DV, DB->name, ESIFDV_FILEEXT);
 		IOStream_SetFile(DB->stream, dv_file.filename, "rb");
 		rc = DataVault_ReadVault(DB);
 		if (rc == ESIF_E_NOT_FOUND) {
@@ -1047,6 +1062,48 @@ eEsifError EsifConfigFindFirst (
 	return EsifConfigFindNext(nameSpace, path, value, context);
 }
 
+// Update flags bitmask used by EsifConfigSet
+esif_flags_t EsifConfigFlags_Set(esif_flags_t bitmask, esif_string optname)
+{
+	// List of option names and codes. TODO: Keep this list sorted alphabetically and do a binary search
+	static struct OptionList_s {
+		StringPtr  name;
+		UInt32     option;
+	}
+	optionList[] = {
+		{"PERSIST",		ESIF_SERVICE_CONFIG_PERSIST },
+		{"ENCRYPT",		ESIF_SERVICE_CONFIG_ENCRYPT },
+		{"READONLY",	ESIF_SERVICE_CONFIG_READONLY},
+		{"NOCACHE",		ESIF_SERVICE_CONFIG_NOCACHE },
+		{"FILELINK",	ESIF_SERVICE_CONFIG_FILELINK},
+#ifdef ESIF_ATTR_OS_WINDOWS
+		{"REGLINK",		ESIF_SERVICE_CONFIG_REGLINK },
+#endif
+		{"DELETE",		ESIF_SERVICE_CONFIG_DELETE  },
+		{"STATIC",		ESIF_SERVICE_CONFIG_STATIC  },	// DataVault-Level Option
+
+		{"~NOPERSIST",	ESIF_SERVICE_CONFIG_PERSIST },	// Unset option
+		{         0,                            0}
+	};
+	int j;
+
+	for (j = 0; optionList[j].name; j++) {
+		// NAME = Set option
+		if (esif_ccb_stricmp(optname, optionList[j].name) == 0) {
+			bitmask |= optionList[j].option;
+			break;
+		}
+		// ~NAME = Unset option
+		if (optionList[j].name[0] == '~' && esif_ccb_stricmp(optname, optionList[j].name+1) == 0) {
+			bitmask &= ~optionList[j].option;
+			break;
+		}
+	}
+	if (!optionList[j].name) {
+		//CMD_OUT("Error: Invalid Option: %s\n", optname);
+	}
+	return bitmask;
+}
 
 /*****************************************************************************/
 /*****************************************************************************/

@@ -15,8 +15,7 @@
 ** limitations under the License.
 **
 ******************************************************************************/
-
-#define ESIF_TRACE_DEBUG_DISABLED
+#define ESIF_TRACE_ID	ESIF_TRACEMODULE_DSP
 
 #include "esif_uf.h"	/* Upper Framework */
 #include "esif_ipc.h"	/* IPC Abstraction */
@@ -40,7 +39,7 @@
 #endif
 
 // Send DSP
-int esif_send_dsp (
+int esif_send_dsp(
 	char *filename,
 	u8 dst_id
 	)
@@ -69,14 +68,14 @@ int esif_send_dsp (
 	//
 
 	if (NULL == filename) {
-		printf("%s: filename is null\n", ESIF_FUNC);
+		ESIF_TRACE_DEBUG("%s: filename is null\n", ESIF_FUNC);
 		rc = -1;
 		goto exit;
 	}
 
 	// Use name portion of filename for the DataVault key (C:\path\file.edp = file.edp)
 	edp_name  = strrchr(filename, *ESIF_PATH_SEP);
-	edp_name  = (edp_name ? (edp_name + 1) : filename);
+	edp_name  = (edp_name ? ++edp_name : filename);
 	nameSpace = EsifData_CreateAs(ESIF_DATA_STRING, ESIF_DSP_NAMESPACE, 0, ESIFAUTOLEN);
 	key = EsifData_CreateAs(ESIF_DATA_STRING, edp_name, 0, ESIFAUTOLEN);
 	value     = EsifData_CreateAs(ESIF_DATA_AUTO, NULL, ESIF_DATA_ALLOCATE, 0);
@@ -86,7 +85,7 @@ int esif_send_dsp (
 		filename = edp_name;
 		IOStream_SetMemory(io_ptr, (BytePtr)value->buf_ptr, value->data_len);
 	} else {
-		IOStream_SetFile(io_ptr, filename, (char*)"rb");
+		IOStream_SetFile(io_ptr, filename, (char *)"rb");
 	}
 
 	/* FIND CPC within EDP file */
@@ -95,7 +94,7 @@ int esif_send_dsp (
 		edp_size = edp_dir.fpc_offset - edp_dir.cpc_offset;
 		IOStream_Seek(io_ptr, edp_dir.cpc_offset, SEEK_SET);
 	} else {
-		printf("%s: file not found (%s)\n", ESIF_FUNC, filename);
+		ESIF_TRACE_DEBUG("%s: file not found (%s)\n", ESIF_FUNC, filename);
 		rc = -1;
 		goto exit;
 	}
@@ -130,14 +129,14 @@ int esif_send_dsp (
 	ipc_execute(ipc_ptr);
 
 	if (ESIF_OK != ipc_ptr->return_code) {
-		printf("ipc error code = %s(%d)\n",
+		ESIF_TRACE_ERROR("ipc error code = %s(%d)\n",
 			   esif_rc_str(ipc_ptr->return_code), ipc_ptr->return_code);
 		rc = -1;
 		goto exit;
 	}
 
 	if (ESIF_OK != primitive_ptr->return_code) {
-		printf("primitive error code = %s(%d)\n",
+		ESIF_TRACE_ERROR("primitive error code = %s(%d)\n",
 			   esif_rc_str(primitive_ptr->return_code), primitive_ptr->return_code);
 		rc = -1;
 		goto exit;
@@ -159,7 +158,7 @@ exit:
 }
 
 
-eEsifError EsifDspInit ()
+eEsifError EsifDspInit()
 {
 	eEsifError rc = ESIF_OK;
 	ESIF_TRACE_DEBUG("%s: Init Device Support Package (DSP)", ESIF_FUNC);
@@ -167,7 +166,7 @@ eEsifError EsifDspInit ()
 }
 
 
-void EsifDspExit ()
+void EsifDspExit()
 {
 	ESIF_TRACE_DEBUG("%s: Exit Device Support Package (DSP)", ESIF_FUNC);
 }

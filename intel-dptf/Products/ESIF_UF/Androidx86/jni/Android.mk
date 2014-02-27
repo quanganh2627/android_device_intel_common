@@ -19,8 +19,8 @@
 LOCAL_PATH := $(call my-dir)/../../..
 include $(CLEAR_VARS)
 
-LOCAL_CFLAGS    := -DESIF_ATTR_OS_ANDROID -DESIF_ATTR_USER -Wno-multichar
-LOCAL_MODULE    := esif_uf 
+LOCAL_CFLAGS    := -O0 -g -DESIF_ATTR_OS_ANDROID -DESIF_ATTR_USER -Wno-multichar -Wno-error=sequence-point
+LOCAL_MODULE    := esif_ufd
 LOCAL_SHARED_LIBRARIES := libdl
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/ESIF_CM/Sources $(LOCAL_PATH)/ESIF_UF/Sources $(LOCAL_PATH)/ESIF_WS/Sources $(LOCAL_PATH)/ESIF_LIB/Sources
@@ -57,14 +57,14 @@ LOCAL_SRC_FILES += ESIF_UF/Sources/esif_uf_test.c
 LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_databank.c
 LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_datacache.c
 LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_datavault.c
-LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_eqlcmd.c
-LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_eqlparser.c
-LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_eqlprovider.c
+#LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_eqlcmd.c
+#LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_eqlparser.c
+#LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_eqlprovider.c
 LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_esifdata.c
-LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_esifdatalist.c
+#LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_esifdatalist.c
 LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_iostream.c
 LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_istring.c
-LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_istringlist.c
+#LOCAL_SRC_FILES += ESIF_LIB/Sources/esif_lib_istringlist.c
 
 LOCAL_SRC_FILES += ESIF_WS/Sources/esif_ws_algo.c
 LOCAL_SRC_FILES += ESIF_WS/Sources/esif_ws_cgi.c

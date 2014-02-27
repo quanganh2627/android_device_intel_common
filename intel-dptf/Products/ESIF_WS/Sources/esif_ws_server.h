@@ -22,43 +22,16 @@
 #include "esif.h"
 #include "esif_ws_socket.h"
 
-#define NUM_CLIENTS 10000
-
-typedef struct _clientRecord {
+typedef struct s_clientRecord {
+	esif_ccb_socket_t socket;
 	enum socketState  state;
 	enum frameType    frameType;
 	protocol   prot;
 	msgBuffer  buf;
-	u8 previously_opened;
 } clientRecord;
 
-enum websocket_state_t {
-	closed = 0,
-	opened = 1,
-};
-
-
-/*
- *******************************************************************************
- ** EXTERN
- *******************************************************************************
- */
-
-
-/*
- *******************************************************************************
- ** PRIVATE
- *******************************************************************************
- */
-
-
-/*
- *******************************************************************************
- ** PUBLIC INTERFACE
- *******************************************************************************
- */
-
-int esif_ws_init (esif_string webroot);
-
+int  esif_ws_init(void);
+void esif_ws_exit(esif_thread_t *web_thread);
+void esif_ws_set_ipaddr_port(const char *ipaddr, u32 port);
 
 #endif /* ESIF_WS_SERVER_H */

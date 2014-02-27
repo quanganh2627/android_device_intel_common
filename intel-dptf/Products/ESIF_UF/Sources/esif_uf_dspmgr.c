@@ -15,8 +15,7 @@
 ** limitations under the License.
 **
 ******************************************************************************/
-
-#define ESIF_TRACE_DEBUG_DISABLED
+#define ESIF_TRACE_ID	ESIF_TRACEMODULE_DSP
 
 #include "esif_uf.h"			/* Upper Framework */
 #include "esif_dsp.h"			/* Device Support Package */
@@ -54,19 +53,20 @@ struct esif_uf_dm g_dm = {0};
 
 /* ESIF Memory Pool */
 struct esif_ccb_mempool *g_mempool[ESIF_MEMPOOL_TYPE_MAX] = {0};
+esif_ccb_lock_t g_mempool_lock;
 
 
 /* Allocate DSP Upper Insance */
-static struct esif_up_dsp*esif_dsp_create (void)
+static struct esif_up_dsp *esif_dsp_create(void)
 {
 	struct esif_up_dsp *dsp_ptr = NULL;
-	dsp_ptr = (struct esif_up_dsp*)esif_ccb_malloc(sizeof(*dsp_ptr));
+	dsp_ptr = (struct esif_up_dsp *)esif_ccb_malloc(sizeof(*dsp_ptr));
 	return dsp_ptr;
 }
 
 
 /* Free DSP Upper Instance */
-static void esif_dsp_destroy (struct esif_up_dsp *dsp_ptr)
+static void esif_dsp_destroy(struct esif_up_dsp *dsp_ptr)
 {
 	if (NULL == dsp_ptr) {
 		return;
@@ -81,7 +81,7 @@ static void esif_dsp_destroy (struct esif_up_dsp *dsp_ptr)
 
 
 /* DSP Interface */
-static esif_string get_code (struct esif_up_dsp *dsp)
+static esif_string get_code(struct esif_up_dsp *dsp)
 {
 	if (dsp->code_ptr) {
 		return dsp->code_ptr;
@@ -91,7 +91,7 @@ static esif_string get_code (struct esif_up_dsp *dsp)
 }
 
 
-static u8 get_ver_major (struct esif_up_dsp *dsp)
+static u8 get_ver_major(struct esif_up_dsp *dsp)
 {
 	if (dsp->ver_major_ptr) {
 		return *dsp->ver_major_ptr;
@@ -101,7 +101,7 @@ static u8 get_ver_major (struct esif_up_dsp *dsp)
 }
 
 
-static u8 get_ver_minor (struct esif_up_dsp *dsp)
+static u8 get_ver_minor(struct esif_up_dsp *dsp)
 {
 	if (dsp->ver_minor_ptr) {
 		return *dsp->ver_minor_ptr;
@@ -111,7 +111,7 @@ static u8 get_ver_minor (struct esif_up_dsp *dsp)
 }
 
 
-static u32 get_temp_c1 (
+static u32 get_temp_c1(
 	struct esif_up_dsp *dsp,
 	const enum esif_action_type action
 	)
@@ -126,7 +126,7 @@ static u32 get_temp_c1 (
 }
 
 
-static u32 get_temp_c2 (
+static u32 get_temp_c2(
 	struct esif_up_dsp *dsp,
 	const enum esif_action_type action
 	)
@@ -142,7 +142,7 @@ static u32 get_temp_c2 (
 
 
 /* Insert Primitive */
-static eEsifError insert_primitive (
+static eEsifError insert_primitive(
 	struct esif_up_dsp *dsp_ptr,
 	EsifFpcPrimitive *primitive_ptr
 	)
@@ -150,7 +150,7 @@ static eEsifError insert_primitive (
 	if (NULL == primitive_ptr) {
 		return ESIF_E_NULL_PRIMITIVE;
 	} else {
-		return esif_hash_table_put_item((UInt8*)&primitive_ptr->tuple,	/* Key */
+		return esif_hash_table_put_item((UInt8 *)&primitive_ptr->tuple,	/* Key */
 										sizeof(struct esif_primitive_tuple),/* Size Of Key */
 										primitive_ptr,						/* Item        */
 										dsp_ptr->ht_ptr);						/* Hash Table  */
@@ -158,7 +158,7 @@ static eEsifError insert_primitive (
 }
 
 
-static int is_same_primitive (
+static int is_same_primitive(
 	const struct esif_primitive_tuple *t1_ptr,
 	const struct esif_primitive_tuple *t2_ptr
 	)
@@ -170,7 +170,7 @@ static int is_same_primitive (
 }
 
 
-static EsifFpcPrimitivePtr find_primitive_in_list (
+static EsifFpcPrimitivePtr find_primitive_in_list(
 	struct esif_link_list *list_ptr,
 	const struct esif_primitive_tuple *tuple_ptr
 	)
@@ -195,7 +195,7 @@ end:
 
 
 /* Get Primtivie */
-static EsifFpcPrimitivePtr get_primitive (
+static EsifFpcPrimitivePtr get_primitive(
 	struct esif_up_dsp *dsp_ptr,
 	const struct esif_primitive_tuple *tuple_ptr
 	)
@@ -203,7 +203,7 @@ static EsifFpcPrimitivePtr get_primitive (
 	EsifFpcPrimitivePtr primitive_ptr = NULL;
 	struct esif_link_list *row_ptr;
 
-	row_ptr = esif_hash_table_get_item((u8*)tuple_ptr, sizeof(struct esif_primitive_tuple),
+	row_ptr = esif_hash_table_get_item((u8 *)tuple_ptr, sizeof(struct esif_primitive_tuple),
 									   dsp_ptr->ht_ptr);
 	if (NULL == row_ptr) {
 		goto exit;
@@ -221,7 +221,7 @@ exit:
 
 
 /* Get i-th Action */
-static EsifFpcActionPtr get_action (
+static EsifFpcActionPtr get_action(
 	EsifDspPtr dsp_ptr,
 	EsifFpcPrimitivePtr primitive_ptr,
 	UInt8 index
@@ -235,7 +235,7 @@ static EsifFpcActionPtr get_action (
 		return NULL;
 	}
 
-	row_ptr = esif_hash_table_get_item((UInt8*)&primitive_ptr->tuple,
+	row_ptr = esif_hash_table_get_item((UInt8 *)&primitive_ptr->tuple,
 									   sizeof(struct esif_primitive_tuple),
 									   dsp_ptr->ht_ptr);
 
@@ -249,18 +249,19 @@ static EsifFpcActionPtr get_action (
 	}
 
 	/* First Action */
-	action_ptr = (EsifFpcActionPtr)((UInt8*)primitive_ptr + sizeof(EsifFpcPrimitive));
+	action_ptr = (EsifFpcActionPtr)((UInt8 *)primitive_ptr + sizeof(EsifFpcPrimitive));
 
 	/* Locate i-th Action We Are Looking For */
-	for (i = 0; i < index; i++)
-		action_ptr = (EsifFpcActionPtr)((UInt8*)action_ptr + action_ptr->size);
+	for (i = 0; i < index; i++) {
+		action_ptr = (EsifFpcActionPtr)((UInt8 *)action_ptr + action_ptr->size);
+	}
 
 	return action_ptr;
 }
 
 
 /* Insert Algorithm Into Linked List */
-static enum esif_rc insert_algorithm (
+static enum esif_rc insert_algorithm(
 	struct esif_up_dsp *dsp_ptr,
 	struct esif_fpc_algorithm *algo_ptr
 	)
@@ -269,13 +270,13 @@ static enum esif_rc insert_algorithm (
 		return ESIF_E_PARAMETER_IS_NULL;
 	}
 
-	esif_link_list_node_add(dsp_ptr->algo_ptr, esif_link_list_create_node((void*)algo_ptr));
+	esif_link_list_node_add(dsp_ptr->algo_ptr, esif_link_list_create_node((void *)algo_ptr));
 	return ESIF_OK;
 }
 
 
 /* Insert Event Into Linked List */
-static enum esif_rc insert_event (
+static enum esif_rc insert_event(
 	struct esif_up_dsp *dsp_ptr,
 	struct esif_fpc_event *evt_ptr
 	)
@@ -284,14 +285,14 @@ static enum esif_rc insert_event (
 		return ESIF_E_PARAMETER_IS_NULL;
 	}
 
-	esif_link_list_node_add(dsp_ptr->evt_ptr, esif_link_list_create_node((void*)evt_ptr));
+	esif_link_list_node_add(dsp_ptr->evt_ptr, esif_link_list_create_node((void *)evt_ptr));
 	return ESIF_OK;
 }
 
 
 /* Get Algorithm From Linked List */
 static struct esif_fpc_algorithm
-*get_algorithm (
+*get_algorithm(
 	struct esif_up_dsp *dsp_ptr,
 	const enum esif_action_type action_type
 	)
@@ -301,7 +302,7 @@ static struct esif_fpc_algorithm
 	struct esif_fpc_algorithm *curr_algo_ptr = NULL;
 
 	while (curr_ptr) {
-		curr_algo_ptr = (struct esif_fpc_algorithm*)curr_ptr->data_ptr;
+		curr_algo_ptr = (struct esif_fpc_algorithm *)curr_ptr->data_ptr;
 		if (curr_algo_ptr != NULL) {
 			if (curr_algo_ptr->action_type == action_type) {
 				return curr_algo_ptr;
@@ -315,7 +316,7 @@ static struct esif_fpc_algorithm
 
 /* Get Event From Linked List By Type */
 static struct esif_fpc_event
-*get_event_by_type (
+*get_event_by_type(
 	struct esif_up_dsp *dsp_ptr,
 	const enum esif_event_type event_type
 	)
@@ -325,7 +326,7 @@ static struct esif_fpc_event
 	struct esif_fpc_event *curr_evt_ptr  = NULL;
 
 	while (curr_ptr) {
-		curr_evt_ptr = (struct esif_fpc_event*)curr_ptr->data_ptr;
+		curr_evt_ptr = (struct esif_fpc_event *)curr_ptr->data_ptr;
 		if (curr_evt_ptr != NULL) {
 			if (curr_evt_ptr->esif_event == event_type) {
 				return curr_evt_ptr;
@@ -339,7 +340,7 @@ static struct esif_fpc_event
 
 /* Get Event From Linked List By GUID */
 static struct esif_fpc_event
-*get_event_by_guid (
+*get_event_by_guid(
 	struct esif_up_dsp *dsp_ptr,
 	const esif_guid_t guid
 	)
@@ -349,7 +350,7 @@ static struct esif_fpc_event
 	struct esif_fpc_event *curr_evt_ptr  = NULL;
 
 	while (curr_ptr) {
-		curr_evt_ptr = (struct esif_fpc_event*)curr_ptr->data_ptr;
+		curr_evt_ptr = (struct esif_fpc_event *)curr_ptr->data_ptr;
 		if (curr_evt_ptr != NULL) {
 			if (memcmp(curr_evt_ptr->event_guid, guid, ESIF_GUID_LEN) == 0) {
 				return curr_evt_ptr;
@@ -362,7 +363,7 @@ static struct esif_fpc_event
 
 
 /* Insert Domain Into Linked List */
-static enum esif_rc insert_domain (
+static enum esif_rc insert_domain(
 	struct esif_up_dsp *dsp_ptr,
 	struct esif_fpc_domain *domain_ptr
 	)
@@ -371,12 +372,12 @@ static enum esif_rc insert_domain (
 		return ESIF_E_PARAMETER_IS_NULL;
 	}
 
-	esif_link_list_node_add(dsp_ptr->domain_ptr, esif_link_list_create_node((void*)domain_ptr));
+	esif_link_list_node_add(dsp_ptr->domain_ptr, esif_link_list_create_node((void *)domain_ptr));
 	return ESIF_OK;
 }
 
 
-static UInt32 get_domain_count (struct esif_up_dsp *dsp_ptr)
+static UInt32 get_domain_count(struct esif_up_dsp *dsp_ptr)
 {
 	return *dsp_ptr->domain_count;
 }
@@ -384,7 +385,7 @@ static UInt32 get_domain_count (struct esif_up_dsp *dsp_ptr)
 
 /* Get i-th Domain */
 static struct esif_fpc_domain
-*get_domain (
+*get_domain(
 	struct esif_up_dsp *dsp_ptr,
 	const u32 index
 	)
@@ -394,20 +395,18 @@ static struct esif_fpc_domain
 	struct esif_fpc_domain *curr_domain_ptr = NULL;
 	u32 i;
 
-	// printf("domain index %d\n", index);
 	for (i = 0; i < index; i++) {
-		curr_domain_ptr = (struct esif_fpc_domain*)curr_ptr->data_ptr;
+		curr_domain_ptr = (struct esif_fpc_domain *)curr_ptr->data_ptr;
 		curr_ptr = curr_ptr->next_ptr;
 		if (curr_ptr == NULL) {
 			break;	// return NULL;
 		}
 	}
-	// if( curr_domain_ptr) printf("domain = %s\n", curr_domain_ptr->descriptor.name);
 	return curr_domain_ptr;
 }
 
 
-enum esif_rc esif_fpc_load (
+enum esif_rc esif_fpc_load(
 	struct esif_fpc *fpc_ptr,
 	struct esif_up_dsp *dsp_ptr
 	)
@@ -418,11 +417,11 @@ enum esif_rc esif_fpc_load (
 	struct esif_fpc_event *event_ptr;
 	enum esif_rc rc = ESIF_OK;
 	unsigned long offset = 0;
-	u8 *base_ptr    = (u8*)fpc_ptr;
+	u8 *base_ptr    = (u8 *)fpc_ptr;
 	u32 num_prim    = 0, i, j;
 
 	if (fpc_ptr->number_of_domains < 1) {
-		printf("!ERR! %s: no domain error, number_of_domain = %d (less than 1)\n",
+		ESIF_TRACE_WARN("!ERR! %s: no domain error, number_of_domain = %d (less than 1)\n",
 			   ESIF_FUNC, fpc_ptr->number_of_domains);
 		rc = ESIF_E_PARAMETER_IS_NULL;
 		goto exit;
@@ -442,26 +441,26 @@ enum esif_rc esif_fpc_load (
 	}
 
 	ESIF_TRACE_DEBUG("%s <fpc @ %p> FPC name '%s' ver %x,%x desc '%s' size %u num_domains %d num_algorithms %d num_events %d",
-			   ESIF_FUNC, fpc_ptr,
-			   fpc_ptr->header.name,
-			   fpc_ptr->header.ver_major,
-			   fpc_ptr->header.ver_minor,
-			   fpc_ptr->header.description,
-			   fpc_ptr->size,
-			   fpc_ptr->number_of_domains,
-			   fpc_ptr->number_of_algorithms,
-			   fpc_ptr->number_of_events);
+					 ESIF_FUNC, fpc_ptr,
+					 fpc_ptr->header.name,
+					 fpc_ptr->header.ver_major,
+					 fpc_ptr->header.ver_minor,
+					 fpc_ptr->header.description,
+					 fpc_ptr->size,
+					 fpc_ptr->number_of_domains,
+					 fpc_ptr->number_of_algorithms,
+					 fpc_ptr->number_of_events);
 
 	/* First Domain, Ok To Have Zero Primitive Of A Domain */
-	domain_ptr = (struct esif_fpc_domain*)((u8*)fpc_ptr + sizeof(struct esif_fpc));
+	domain_ptr = (struct esif_fpc_domain *)((u8 *)fpc_ptr + sizeof(struct esif_fpc));
 	for (i = 0; i < fpc_ptr->number_of_domains; i++) {
-		offset = (unsigned long)((u8*)domain_ptr - base_ptr);
+		offset = (unsigned long)((u8 *)domain_ptr - base_ptr);
 		ESIF_TRACE_DEBUG("<%04lu> Domain[%d] name %s size %d num_of_primitives %d  "
-				   "num_of_capabilites %u (0x%x)",
-				   offset, i, domain_ptr->descriptor.name, domain_ptr->size,
-				   domain_ptr->number_of_primitives,
-				   domain_ptr->capability_for_domain.number_of_capability_flags,
-				   domain_ptr->capability_for_domain.capability_flags);
+						 "num_of_capabilites %u (0x%x)",
+						 offset, i, domain_ptr->descriptor.name, domain_ptr->size,
+						 domain_ptr->number_of_primitives,
+						 domain_ptr->capability_for_domain.number_of_capability_flags,
+						 domain_ptr->capability_for_domain.capability_flags);
 
 		/* Insert Domain Into Linked List */
 		rc = dsp_ptr->insert_domain(dsp_ptr, domain_ptr);
@@ -471,56 +470,56 @@ enum esif_rc esif_fpc_load (
 
 		/* Capability */
 		for (j = 0; j < domain_ptr->capability_for_domain.number_of_capability_flags; j++) {
-			offset = (unsigned long)(((u8*)&domain_ptr->capability_for_domain) - base_ptr);
+			offset = (unsigned long)(((u8 *)&domain_ptr->capability_for_domain) - base_ptr);
 			ESIF_TRACE_DEBUG("<%04lu> Capability[%d] 0x%x", offset, j,
-					   domain_ptr->capability_for_domain.capability_mask[j]);
+							 domain_ptr->capability_for_domain.capability_mask[j]);
 		}
 
 		/* First Primtive */
-		primitive_ptr = (struct esif_fpc_primitive*)((u8*)domain_ptr +
-													 sizeof(struct esif_fpc_domain));
+		primitive_ptr = (struct esif_fpc_primitive *)((u8 *)domain_ptr +
+													  sizeof(struct esif_fpc_domain));
 		for (j = 0; j < domain_ptr->number_of_primitives; j++, num_prim++) {
-			offset = (unsigned long)(((u8*)primitive_ptr) - base_ptr);
+			offset = (unsigned long)(((u8 *)primitive_ptr) - base_ptr);
 			ESIF_TRACE_DEBUG("<%04lu> Primitive[%03d]: size %3d tuple_id <%03u %03u %03u> "
-					   "operation %u(%s) req_type %u(%s) res_type %u(%s) num_actions %u",
-					   offset, j,
-					   primitive_ptr->size,
-					   primitive_ptr->tuple.id,
-					   primitive_ptr->tuple.domain,
-					   primitive_ptr->tuple.instance,
-					   primitive_ptr->operation,
-					   esif_primitive_opcode_str(primitive_ptr->operation),
-					   primitive_ptr->request_type,
-					   esif_data_type_str(primitive_ptr->request_type),
-					   primitive_ptr->result_type,
-					   esif_data_type_str(primitive_ptr->result_type),
-					   primitive_ptr->num_actions);
+							 "operation %u(%s) req_type %u(%s) res_type %u(%s) num_actions %u",
+							 offset, j,
+							 primitive_ptr->size,
+							 primitive_ptr->tuple.id,
+							 primitive_ptr->tuple.domain,
+							 primitive_ptr->tuple.instance,
+							 primitive_ptr->operation,
+							 esif_primitive_opcode_str(primitive_ptr->operation),
+							 primitive_ptr->request_type,
+							 esif_data_type_str(primitive_ptr->request_type),
+							 primitive_ptr->result_type,
+							 esif_data_type_str(primitive_ptr->result_type),
+							 primitive_ptr->num_actions);
 			/* Insert Primitive Into Hash */
 			rc = dsp_ptr->insert_primitive(dsp_ptr, primitive_ptr);
 			if (ESIF_OK != rc) {
 				goto exit;
 			}
 			/* Next Primitive */
-			primitive_ptr = (struct esif_fpc_primitive*)((u8*)primitive_ptr +
-														 primitive_ptr->size);
+			primitive_ptr = (struct esif_fpc_primitive *)((u8 *)primitive_ptr +
+														  primitive_ptr->size);
 		}
 		/* Next Domain */
-		domain_ptr = (struct esif_fpc_domain*)((u8*)domain_ptr + domain_ptr->size);
+		domain_ptr = (struct esif_fpc_domain *)((u8 *)domain_ptr + domain_ptr->size);
 	}
 
 	/* First Algorithm (Laid After The Last Domain) */
-	algorithm_ptr = (struct esif_fpc_algorithm*)domain_ptr;
+	algorithm_ptr = (struct esif_fpc_algorithm *)domain_ptr;
 	for (i = 0; i < fpc_ptr->number_of_algorithms; i++) {
-		offset = (unsigned long)((u8*)algorithm_ptr - base_ptr);
+		offset = (unsigned long)((u8 *)algorithm_ptr - base_ptr);
 		ESIF_TRACE_DEBUG("<%04lu> Algorithm[%03d]:  action_type %u(%s) temp_xform %u "
-				   "tempC1 %u tempC2 %u size %u",
-				   offset, i,
-				   algorithm_ptr->action_type,
-				   esif_action_type_str(algorithm_ptr->action_type),
-				   algorithm_ptr->temp_xform,
-				   algorithm_ptr->tempC1,
-				   algorithm_ptr->tempC2,
-				   algorithm_ptr->size);
+						 "tempC1 %u tempC2 %u size %u",
+						 offset, i,
+						 algorithm_ptr->action_type,
+						 esif_action_type_str(algorithm_ptr->action_type),
+						 algorithm_ptr->temp_xform,
+						 algorithm_ptr->tempC1,
+						 algorithm_ptr->tempC2,
+						 algorithm_ptr->size);
 
 		/* Insert Algorithm Into Linked List */
 		rc = dsp_ptr->insert_algorithm(dsp_ptr, algorithm_ptr);
@@ -529,16 +528,16 @@ enum esif_rc esif_fpc_load (
 		}
 
 		/* Next Algorithm */
-		algorithm_ptr = (struct esif_fpc_algorithm*)((u8*)algorithm_ptr +
-													 sizeof(struct esif_fpc_algorithm));
+		algorithm_ptr = (struct esif_fpc_algorithm *)((u8 *)algorithm_ptr +
+													  sizeof(struct esif_fpc_algorithm));
 	}
 
 	/* First Event (Laid After The Last Algorithm) */
-	event_ptr = (struct esif_fpc_event*)algorithm_ptr;
+	event_ptr = (struct esif_fpc_event *)algorithm_ptr;
 	for (i = 0; i < fpc_ptr->number_of_events; i++) {
-		offset = (unsigned long)((u8*)event_ptr - base_ptr);
+		offset = (unsigned long)((u8 *)event_ptr - base_ptr);
 		ESIF_TRACE_DEBUG("<%04lu> Event [%03d] type %s(%d)\n",
-				   offset, i, esif_event_type_str(event_ptr->esif_event), event_ptr->esif_event);
+						 offset, i, esif_event_type_str(event_ptr->esif_event), event_ptr->esif_event);
 
 		/* Insert Algorithm Into Linked List */
 		rc = dsp_ptr->insert_event(dsp_ptr, event_ptr);
@@ -547,27 +546,27 @@ enum esif_rc esif_fpc_load (
 		}
 
 		/* Next Event */
-		event_ptr = (struct esif_fpc_event*)((u8*)event_ptr +
-											 sizeof(struct esif_fpc_event));
+		event_ptr = (struct esif_fpc_event *)((u8 *)event_ptr +
+											  sizeof(struct esif_fpc_event));
 	}
 
 exit:
 	ESIF_TRACE_DEBUG("%s: %u domains, %u primitives and %u algorithms %u events inserted! status %s",
-			   ESIF_FUNC, fpc_ptr->number_of_domains, num_prim, fpc_ptr->number_of_algorithms, fpc_ptr->number_of_events,
-			   esif_rc_str(rc));
+					 ESIF_FUNC, fpc_ptr->number_of_domains, num_prim, fpc_ptr->number_of_algorithms, fpc_ptr->number_of_events,
+					 esif_rc_str(rc));
 	return rc;
 }
 
 
 /* Add DSP Entry */
-static eEsifError esif_dsp_entry_create (struct esif_ccb_file *file_ptr)
+static eEsifError esif_dsp_entry_create(struct esif_ccb_file *file_ptr)
 {
 	struct esif_up_dsp *dsp_ptr = NULL;
 	struct esif_fpc *fpc_ptr    = NULL;
 	u32 fpc_static = ESIF_FALSE;
 	eEsifError rc  = ESIF_E_UNSPECIFIED;
 	UInt8 i = 0;
-	char path[MAX_PATH];
+	char path[MAX_PATH]={0};
 	UInt32 fpc_size = 0, edp_size = 0;
 	size_t fpc_read = 0;
 	struct edp_dir edp_dir;
@@ -591,7 +590,7 @@ static eEsifError esif_dsp_entry_create (struct esif_ccb_file *file_ptr)
 	}
 
 	// Look for EDP file either on disk or in a DataVault (static or file), depending on priority setting
-	esif_ccb_sprintf(MAX_PATH, path, "%s%s%s", esif_build_path(path, MAX_PATH, ESIF_DIR_DSP, NULL), ESIF_PATH_SEP, file_ptr->filename);
+	esif_build_path(path, sizeof(path), ESIF_PATHTYPE_DSP, file_ptr->filename, NULL);
 	if ((ESIF_EDP_DV_PRIORITY == 1 || !esif_ccb_file_exists(path)) && EsifConfigGet(nameSpace, key, value) == ESIF_OK) {
 		esif_ccb_strcpy(path, file_ptr->filename, MAX_PATH);
 		IOStream_SetMemory(io_ptr, (BytePtr)value->buf_ptr, value->data_len);
@@ -622,12 +621,17 @@ static eEsifError esif_dsp_entry_create (struct esif_ccb_file *file_ptr)
 
 	// use static DataVault buffer (if available), otherwise allocate space for our FPC file contents (which will not be freed)
 	if (IOStream_GetType(io_ptr) == StreamMemory && value->buf_len == 0) {
-		fpc_ptr    = (struct esif_fpc*)(IOStream_GetMemoryBuffer(io_ptr) + IOStream_GetOffset(io_ptr));
+		fpc_ptr = (struct esif_fpc *)IOStream_GetMemoryBuffer(io_ptr); 
+		if (NULL == fpc_ptr) {
+			ESIF_TRACE_DEBUG("%s: NULL buffer", ESIF_FUNC);
+			goto exit;
+		}
+		fpc_ptr += IOStream_GetOffset(io_ptr);
 		fpc_read   = fpc_size;
 		ESIF_TRACE_DEBUG("%s: static vault size %u buf_ptr=0x%p\n", ESIF_FUNC, (int)fpc_read, fpc_ptr);
 		fpc_static = ESIF_TRUE;
 	} else {
-		fpc_ptr = (struct esif_fpc*)esif_ccb_malloc(fpc_size);
+		fpc_ptr = (struct esif_fpc *)esif_ccb_malloc(fpc_size);
 		if (NULL == fpc_ptr) {
 			ESIF_TRACE_DEBUG("%s: malloc failed to allocate %u bytes\n", ESIF_FUNC, fpc_size);
 			goto exit;
@@ -661,18 +665,18 @@ static eEsifError esif_dsp_entry_create (struct esif_ccb_file *file_ptr)
 	ESIF_TRACE_DEBUG("PCI Function:   -1x%02x", fpc_ptr->header.pci_function);
 
 	dsp_ptr->code_ptr = (EsifString)fpc_ptr->header.name;
-	dsp_ptr->bus_enum = (UInt8*)&fpc_ptr->header.bus_enum;
+	dsp_ptr->bus_enum = (UInt8 *)&fpc_ptr->header.bus_enum;
 	dsp_ptr->type     = (EsifString)fpc_ptr->header.type;
-	dsp_ptr->ver_major_ptr  = (UInt8*)&fpc_ptr->header.ver_major;
-	dsp_ptr->ver_minor_ptr  = (UInt8*)&fpc_ptr->header.ver_minor;
+	dsp_ptr->ver_major_ptr  = (UInt8 *)&fpc_ptr->header.ver_major;
+	dsp_ptr->ver_minor_ptr  = (UInt8 *)&fpc_ptr->header.ver_minor;
 	dsp_ptr->acpi_device    = (EsifString)fpc_ptr->header.acpi_device;
 	dsp_ptr->acpi_scope     = (EsifString)fpc_ptr->header.acpi_scope;
 	dsp_ptr->acpi_type      = (EsifString)fpc_ptr->header.acpi_type;
 	dsp_ptr->vendor_id      = (EsifString)fpc_ptr->header.pci_vendor_id;
 	dsp_ptr->device_id      = (EsifString)fpc_ptr->header.pci_device_id;
-	dsp_ptr->pci_bus = (UInt8*)&fpc_ptr->header.pci_bus;
-	dsp_ptr->pci_bus_device = (UInt8*)&fpc_ptr->header.pci_device;
-	dsp_ptr->pci_function   = (UInt8*)&fpc_ptr->header.pci_function;
+	dsp_ptr->pci_bus = (UInt8 *)&fpc_ptr->header.pci_bus;
+	dsp_ptr->pci_bus_device = (UInt8 *)&fpc_ptr->header.pci_device;
+	dsp_ptr->pci_function   = (UInt8 *)&fpc_ptr->header.pci_function;
 
 	/* Assign Function Pointers */
 	dsp_ptr->get_code = get_code;
@@ -700,7 +704,7 @@ static eEsifError esif_dsp_entry_create (struct esif_ccb_file *file_ptr)
 		ESIF_TRACE_DEBUG("%s: FPC %s load successfully", ESIF_FUNC, path);
 	} else {
 		ESIF_TRACE_DEBUG("%s: Unable to load FPC %s, rc %s",
-				   ESIF_FUNC, path, esif_rc_str(rc));
+						 ESIF_FUNC, path, esif_rc_str(rc));
 	}
 
 	/* Lock DSP Manager */
@@ -708,10 +712,11 @@ static eEsifError esif_dsp_entry_create (struct esif_ccb_file *file_ptr)
 
 	/* Simple Table Lookup For Now. Scan Table And Find First Empty Slot */
 	/* Empty slot indicated by AVAILABLE state                           */
-	for (i = 0; i < MAX_DSP_MANAGER_ENTRY; i++)
+	for (i = 0; i < MAX_DSP_MANAGER_ENTRY; i++) {
 		if (NULL == g_dm.dme[i].dsp_ptr) {
 			break;
 		}
+	}
 
 
 	/* If No Available Slots Return */
@@ -725,7 +730,7 @@ static eEsifError esif_dsp_entry_create (struct esif_ccb_file *file_ptr)
 	*/
 	g_dm.dme[i].dsp_ptr  = dsp_ptr;
 	g_dm.dme[i].file_ptr = file_ptr;
-	g_dm.dme[i].fpc_ptr = (fpc_static ? 0 : fpc_ptr);
+	g_dm.dme[i].fpc_ptr  = (fpc_static ? 0 : fpc_ptr);
 	g_dm.dme_count++;
 	dsp_ptr = NULL;	// Deallocate on exit
 	fpc_ptr = NULL;	// Deallocate on exit
@@ -746,7 +751,7 @@ exit:
 }
 
 
-static eEsifError esif_dsp_file_scan ()
+static eEsifError esif_dsp_file_scan()
 {
 	eEsifError rc = ESIF_OK;
 	struct esif_ccb_file *ffd_ptr = NULL;
@@ -764,12 +769,12 @@ static eEsifError esif_dsp_file_scan ()
 		EsifDataPtr key       = EsifData_CreateAs(ESIF_DATA_AUTO, NULL, ESIF_DATA_ALLOCATE, 0);
 		EsifDataPtr value     = EsifData_CreateAs(ESIF_DATA_AUTO, NULL, ESIF_DATA_ALLOCATE, 0);
 
-		ESIF_TRACE_DEBUG("%s: SCAN CONFIG For DSP Files NameSpace = %s, Pattern %s", ESIF_FUNC, (char*)nameSpace->buf_ptr, pattern);
+		ESIF_TRACE_DEBUG("%s: SCAN CONFIG For DSP Files NameSpace = %s, Pattern %s", ESIF_FUNC, (char *)nameSpace->buf_ptr, pattern);
 		if ((rc = EsifConfigFindFirst(nameSpace, key, value, &context)) == ESIF_OK) {
 			do {
 				// Load all keys from the DataVault with an ".edp" extension
 				if (key->data_len >= 5 && esif_ccb_stricmp(((StringPtr)(key->buf_ptr)) + key->data_len - 5, ".edp") == 0) {
-					ffd_ptr = (struct esif_ccb_file*)esif_ccb_malloc(sizeof(*ffd_ptr));
+					ffd_ptr = (struct esif_ccb_file *)esif_ccb_malloc(sizeof(*ffd_ptr));
 					esif_ccb_strcpy(ffd_ptr->filename, (StringPtr)key->buf_ptr, sizeof(ffd_ptr->filename));
 					esif_dsp_entry_create(ffd_ptr);
 					files++;
@@ -787,12 +792,12 @@ static eEsifError esif_dsp_file_scan ()
 	}
 
 	// 2. Load all EDP's from the DSP folder, if any exist, except ones already loaded from DataBank
-	esif_build_path(path, MAX_PATH, ESIF_DIR_DSP, NULL);
+	esif_build_path(path, MAX_PATH, ESIF_PATHTYPE_DSP, NULL, NULL);
 	esif_ccb_strcpy(pattern, "*.edp", MAX_PATH);
 
 	ESIF_TRACE_DEBUG("%s: SCAN File System For DSP Files Path = %s, Pattern %s", ESIF_FUNC, path, pattern);
 	/* Find the first file in the directory that matches are search */
-	ffd_ptr = (struct esif_ccb_file*)esif_ccb_malloc(sizeof(*ffd_ptr));
+	ffd_ptr = (struct esif_ccb_file *)esif_ccb_malloc(sizeof(*ffd_ptr));
 	if (ffd_ptr == NULL) {
 		rc = ESIF_E_NO_MEMORY;
 		goto exit;
@@ -809,7 +814,7 @@ static eEsifError esif_dsp_file_scan ()
 		// Don't process the file if it the same name was already loaded from a DataVault
 		if (DB == NULL || DataCache_GetValue(DB->cache, ffd_ptr->filename) == NULL) {
 			esif_dsp_entry_create(ffd_ptr);
-			ffd_ptr = (struct esif_ccb_file*)esif_ccb_malloc(sizeof(*ffd_ptr));
+			ffd_ptr = (struct esif_ccb_file *)esif_ccb_malloc(sizeof(*ffd_ptr));
 			files++;
 		}
 	} while (esif_ccb_file_enum_next(find_handle, pattern, ffd_ptr));
@@ -824,7 +829,7 @@ exit:
 
 
 /* Build DSP Table From DSP Resources */
-static eEsifError esif_dsp_table_build ()
+static eEsifError esif_dsp_table_build()
 {
 	eEsifError rc = ESIF_OK;
 	ESIF_TRACE_DEBUG("%s: Build DSP Table", ESIF_FUNC);
@@ -833,7 +838,7 @@ static eEsifError esif_dsp_table_build ()
 }
 
 
-void esif_dsp_table_destroy ()
+void esif_dsp_table_destroy()
 {
 	UInt8 i;
 	ESIF_TRACE_DEBUG("%s: Destroy DSP Table", ESIF_FUNC);
@@ -853,7 +858,7 @@ void esif_dsp_table_destroy ()
  *******************************************************************************
  */
 
-esif_string esif_uf_dm_select_dsp (
+esif_string esif_uf_dm_select_dsp(
 	eEsifParticipantOrigin origin,
 	void *piPtr
 	)
@@ -871,13 +876,13 @@ esif_string esif_uf_dm_select_dsp (
 	} else if (!strcmp(name, "TMEM")) {
 		selection = (esif_string)"sb_tmem";
 	} else if (!strcmp(name, "TAMB")) {
-		selection = (esif_string)"sb_temp";
+		selection = (esif_string)"sb_fgen";
 	} else if (!strcmp(name, "TEFN")) {
-		selection = (esif_string)"sb_temp";
+		selection = (esif_string)"sb_fgen";
 	} else if (!strcmp(name, "TSKN")) {
-		selection = (esif_string)"sb_temp";
+		selection = (esif_string)"sb_fgen";
 	} else if (!strcmp(name, "T_VR")) {
-		selection = (esif_string)"sb_temp";
+		selection = (esif_string)"sb_fgen";
 	} else if (!strcmp(name, "FGEN")) {
 		selection = (esif_string)"sb_fgen";
 	} else if (!strcmp(name, "DPLY")) {
@@ -891,13 +896,19 @@ esif_string esif_uf_dm_select_dsp (
 	} else if (!strcmp(name, "WWAN")) {
 		selection = (esif_string)"sb_wwan";
 	} else if (!strcmp(name, "TINL")) {
-		selection = (esif_string)"sb_temp";
+		selection = (esif_string)"sb_fgen";
 	} else if (!strcmp(name, "TCPU")) {
 		selection = (esif_string)"sb_b0_d4_f0";
 	} else if (!strcmp(name, "TPCH")) {
 		selection = (esif_string)"sb_b0_d1f_f6";
 	} else if (!strcmp(name, "IETM")) {
 		selection = (esif_string)"sb_ietm";
+	} else if (!strcmp(name, "GEN1")) {
+		selection = (esif_string)"sb_fgen";
+	} else if (!strcmp(name, "GEN2")) {
+		selection = (esif_string)"sb_fgen";
+	} else if (!strcmp(name, "WPKG")) {
+		selection = (esif_string)"sb_wpkg";
 	} else {
 		selection = (esif_string)"sb_fgen";
 	}
@@ -914,23 +925,24 @@ esif_string esif_uf_dm_select_dsp (
 }
 
 
-struct esif_up_dsp*esif_uf_dm_select_dsp_by_code (esif_string code)
+struct esif_up_dsp *esif_uf_dm_select_dsp_by_code(esif_string code)
 {
 	UInt8 i = 0;
 	struct esif_up_dsp *found_ptr = NULL;
 
-	for (i = 0; i < g_dm.dme_count; i++)
+	for (i = 0; i < g_dm.dme_count; i++) {
 		if (!strcmp(code, g_dm.dme[i].dsp_ptr->code_ptr)) {
 			found_ptr = g_dm.dme[i].dsp_ptr;
 			break;
 		}
+	}
 
 	return found_ptr;
 }
 
 
 /* Handle each weighted Minterm */
-static int compare_and_weight_minterm (
+static int compare_and_weight_minterm(
 	esif_string dsp,
 	esif_string qry,
 	u8 weight
@@ -951,7 +963,7 @@ static int compare_and_weight_minterm (
 
 
 /* ACPI Weighted Query */
-static int weighted_acpi_eq (
+static int weighted_acpi_eq(
 	struct esif_up_dsp *dsp_ptr,
 	struct esif_uf_dm_query_acpi *qry_ptr
 	)
@@ -991,7 +1003,7 @@ no_match:
 
 
 /* PLAT Weighted Query */
-static int weighted_plat_eq (
+static int weighted_plat_eq(
 	struct esif_up_dsp *dsp_ptr,
 	struct esif_uf_dm_query_plat *qry_ptr
 	)
@@ -1024,7 +1036,7 @@ no_match:
 ** The DSP may indicate don't cares by using blanks.  Query's may indicate don't
 ** haves with blanks as well.
 */
-EsifString esif_uf_dm_query (
+EsifString esif_uf_dm_query(
 	enum esif_uf_dm_query_type query_type,
 	void *qry_ptr
 	)
@@ -1055,7 +1067,7 @@ EsifString esif_uf_dm_query (
 		switch (query_type) {
 		case ESIF_UF_DM_QUERY_TYPE_ACPI:
 			best   = 16 + 8 + 4 + 2 + 1;// 5 minterms
-			weight = weighted_acpi_eq(dsp_ptr, (struct esif_uf_dm_query_acpi*)qry_ptr);
+			weight = weighted_acpi_eq(dsp_ptr, (struct esif_uf_dm_query_acpi *)qry_ptr);
 			break;
 
 		// TBD
@@ -1065,11 +1077,11 @@ EsifString esif_uf_dm_query (
 		// TBD
 		case ESIF_UF_DM_QUERY_TYPE_PLATFORM:
 			best   = 2 + 1;
-			weight = weighted_plat_eq(dsp_ptr, (struct esif_uf_dm_query_plat*)qry_ptr);
+			weight = weighted_plat_eq(dsp_ptr, (struct esif_uf_dm_query_plat *)qry_ptr);
 			break;
 		}
 
-		printf("%s: DSP: %s Weight: %d\n", ESIF_FUNC, (esif_string)dsp_ptr->code_ptr, weight);
+		CMD_OUT("%s: DSP: %s Weight: %d\n", ESIF_FUNC, (esif_string)dsp_ptr->code_ptr, weight);
 
 		/*
 		** Keep track of row with most weight known as heaviest.  Note that once we
@@ -1088,15 +1100,15 @@ EsifString esif_uf_dm_query (
 	esif_ccb_read_unlock(&g_dm.lock);
 
 	if (dsp_code_ptr != NULL) {
-		printf("%s: Selected DSP: %s Score: %d of %d\n", ESIF_FUNC, dsp_code_ptr, heaviest, best);
+		CMD_OUT("%s: Selected DSP: %s Score: %d of %d\n", ESIF_FUNC, dsp_code_ptr, heaviest, best);
 	} else {
-		printf("%s: No DSP selected; DME count must be 0\n", ESIF_FUNC);
+		CMD_OUT("%s: No DSP selected; DME count must be 0\n", ESIF_FUNC);
 	}
 	return dsp_code_ptr;
 }
 
 
-eEsifError EsifDspMgrInit ()
+eEsifError EsifDspMgrInit()
 {
 	ESIF_TRACE_DEBUG("%s: Init DSP Manager(DSPMGR)", ESIF_FUNC);
 	esif_ccb_lock_init(&g_dm.lock);
@@ -1110,7 +1122,7 @@ eEsifError EsifDspMgrInit ()
 }
 
 
-void EsifDspMgrExit ()
+void EsifDspMgrExit()
 {
 	EsifDspExit();
 	esif_dsp_table_destroy();
