@@ -47,6 +47,12 @@
          capability can provide power savings when wifi needs to be always kept on. -->
     <bool translatable="false" name="config_wifi_background_scan_support">true</bool>
 
+    <!-- Boolean indicating whether the wifi chipset supports the scan always mechanism.
+         This mechanism allows to maintain the wifi stack up and running even when for the
+         system Wi-Fi is off -->
+     <add-resource type="bool" name="config_wifi_scanalways_support"></add-resource>
+     <bool translatable="false" name="config_wifi_scanalways_support">true</bool>
+
     <!-- Boolean indicating whether the wifi chipset has dual frequency band support -->
     <bool translatable="false" name="config_wifi_dual_band_support">true</bool>
 

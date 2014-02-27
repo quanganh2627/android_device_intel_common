@@ -30,6 +30,7 @@
   <java-symbol type="string" name="hotspot_multiple_devices_connected" />
   <java-symbol type="string" name="hotspot_device_connected" />
   <java-symbol type="string" name="hotspot_device_disconnected" />
+  <java-symbol type="bool" name="config_wifi_scanalways_support" />
 
   <java-symbol type="xml" name="thermal_sensor_config" />
   <java-symbol type="xml" name="thermal_throttle_config" />
