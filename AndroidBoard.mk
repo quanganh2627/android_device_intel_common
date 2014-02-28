@@ -2,7 +2,6 @@
 #
 
 LOCAL_PATH := $(call my-dir)
-SUPPORT_PATH := vendor/intel/support
 ACS_BUILDBOT_PATH := vendor/intel/PRIVATE/buildbot_acs
 PERMISSIONS_PATH := frameworks/native/data/etc
 
@@ -35,44 +34,6 @@ LOCAL_SRC_FILES := gpio-keys.kl
 LOCAL_MODULE_CLASS := SHARED_LIBRARIES
 LOCAL_MODULE_PATH := $(TARGET_OUT_KEYLAYOUT)
 include $(BUILD_PREBUILT)
-
-# MKBOOTIMG is the tool that is used by AOSP build system to
-# stitch kernel. We overide the default script to
-# adapt to out own IAFW format.
-ifeq ($(TARGET_PARTITIONING_SCHEME),"osip-gpt")
-MKBOOTIMG := $(SUPPORT_PATH)/mkbootimg
-endif
-
-# Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
-# Add dependancy on ISU packages only if ISU method is used as ISU might not be delivered.
-ifneq ($(findstring isu,$(TARGET_OS_SIGNING_METHOD)),)
-$(MKBOOTIMG): isu isu_stream isu_wrapper
-endif
-$(MKBOOTIMG): xfstk-stitcher
-
-# If the kernel source is present, AndroidBoard.mk will perform a kernel build.
-# otherwise, AndroidBoard.mk will find the kernel binaries in a tarball.
-ifneq ($(wildcard $(KERNEL_SRC_DIR)/Makefile),)
-TARGET_KERNEL_SOURCE_IS_PRESENT ?= true
-endif
-
-.PHONY: build_kernel
-ifeq ($(TARGET_KERNEL_SOURCE_IS_PRESENT),true)
-#Kernel rules (build from source, or from tarball
-include $(COMMON_PATH)/AndroidKernel.mk
-build_kernel: get_kernel_from_source
-else
-build_kernel: get_kernel_from_tarball
-endif
-
-.PHONY: get_kernel_from_tarball
-get_kernel_from_tarball:
-	tar -xv -C $(PRODUCT_OUT) -f $(TARGET_KERNEL_TARBALL)
-
-bootimage: build_kernel
-
-$(INSTALLED_KERNEL_TARGET): build_kernel
-$(INSTALLED_RAMDISK_TARGET): build_kernel
 
 # checkapi is only called if droid is among the cmd goals, or no cmd goal is given
 # We add it here to be called for other targets as well

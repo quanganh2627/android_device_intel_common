@@ -1,4 +1,5 @@
 COMMON_PATH := device/intel/common
+SUPPORT_PATH := vendor/intel/support
 
 TARGET_ARCH := x86
 TARGET_ARCH_VARIANT := x86-atom
@@ -304,6 +305,10 @@ ifeq ($(TARGET_PARTITIONING_SCHEME), "osip-gpt")
 		$(ADDITIONAL_BOOTIMAGE_ARGS)
 endif
 
+# If LOCAL_SIGN is not set, sign the OS locally (don't use signing server)
+# this can be overriden with an environment variable
+LOCAL_SIGN ?= true
+
 # BIOS TYPE
 # - iafw
 # - uefi
@@ -312,6 +317,44 @@ TARGET_BIOS_TYPE ?= "iafw"
 ifeq ($(TARGET_BIOS_TYPE),"uefi")
 INSTALLED_ESPIMAGE_TARGET := $(PRODUCT_OUT)/esp.img
 endif
+
+# MKBOOTIMG is the tool that is used by AOSP build system to
+# stitch kernel. We overide the default script to
+# adapt to out own IAFW format.
+ifeq ($(TARGET_PARTITIONING_SCHEME),"osip-gpt")
+MKBOOTIMG := $(SUPPORT_PATH)/mkbootimg
+endif
+
+# Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
+# Add dependancy on ISU packages only if ISU method is used as ISU might not be delivered.
+ifneq ($(findstring isu,$(TARGET_OS_SIGNING_METHOD)),)
+$(MKBOOTIMG): isu isu_stream isu_wrapper
+endif
+$(MKBOOTIMG): xfstk-stitcher
+
+# If the kernel source is present, AndroidBoard.mk will perform a kernel build.
+# otherwise, AndroidBoard.mk will find the kernel binaries in a tarball.
+ifneq ($(wildcard $(KERNEL_SRC_DIR)/Makefile),)
+TARGET_KERNEL_SOURCE_IS_PRESENT ?= true
+endif
+
+.PHONY: build_kernel build_kernel-nodeps
+ifeq ($(TARGET_KERNEL_SOURCE_IS_PRESENT),true)
+build_kernel: get_kernel_from_source
+build_kernel-nodeps: get_kernel_from_source
+else
+build_kernel: get_kernel_from_tarball
+build_kernel-nodeps: get_kernel_from_tarball
+endif
+
+.PHONY: get_kernel_from_tarball
+get_kernel_from_tarball:
+	tar -xv -C $(PRODUCT_OUT) -f $(TARGET_KERNEL_TARBALL)
+
+bootimage: build_kernel
+
+$(INSTALLED_KERNEL_TARGET): build_kernel
+$(INSTALLED_RAMDISK_TARGET): build_kernel
 
 # external release
 include $(COMMON_PATH)/external/external.mk

@@ -4,8 +4,6 @@
 # dependency due to its bad handling of echo \1
 MAKE += SHELL=/bin/bash
 
-.PHONY: menuconfig xconfig gconfig get_kernel_from_source
-.PHONY: build_bzImage copy_modules_to_root
 # This rule is useful for creating a kernel that will be
 # shared with a tree that does not have kernel source.
 make_kernel_tarball: get_kernel_from_source bootimage
@@ -81,6 +79,7 @@ KERNEL_DEFCONFIG_KDUMP := $(KERNEL_DEFCONFIG)
 KERNEL_DIFFCONFIG ?= $(TARGET_DEVICE_DIR)/$(TARGET_DEVICE)_diffconfig
 KERNEL_VERSION_FILE := $(KERNEL_OUT_DIR)/include/config/kernel.release
 KERNEL_VERSION_FILE_KDUMP := $(KERNEL_OUT_DIR_KDUMP)/include/config/kernel.release
+KERNEL_BZIMAGE := $(PRODUCT_OUT)/kernel
 
 $(KERNEL_CONFIG): $(KERNEL_DEFCONFIG) $(wildcard $(KERNEL_DIFFCONFIG))
 	@echo Regenerating kernel config $(KERNEL_OUT_DIR)
@@ -95,16 +94,20 @@ $(KERNEL_CONFIG_KDUMP): $(KERNEL_DEFCONFIG_KDUMP) $(wildcard $(KERNEL_DIFFCONFIG
 	@cat $^ > $@
 	@$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS_KDUMP) oldconfig
 
-build_bzImage: $(KERNEL_CONFIG) openssl $(MINIGZIP)
+ifeq (,$(filter build_kernel-nodeps,$(MAKECMDGOALS)))
+$(KERNEL_BZIMAGE): openssl $(MINIGZIP)
+endif
+
+$(KERNEL_BZIMAGE): $(KERNEL_CONFIG)
 	@$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS)
-	@cp -f $(KERNEL_OUT_DIR)/arch/x86/boot/bzImage $(PRODUCT_OUT)/kernel
+	@cp -f $(KERNEL_OUT_DIR)/arch/x86/boot/bzImage $@
 
 build_bzImage_kdump: $(KERNEL_CONFIG_KDUMP) openssl $(MINIGZIP)
 	@echo Building the kdump bzimage
 	@$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS_KDUMP)
 	@cp -f $(KERNEL_OUT_DIR_KDUMP)/arch/x86/boot/bzImage $(PRODUCT_OUT)/kdumpbzImage
 
-modules_install: build_bzImage
+modules_install: $(KERNEL_BZIMAGE)
 	@mkdir -p $(KERNEL_OUT_MODINSTALL)
 	@$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS) modules_install
 
@@ -160,7 +163,7 @@ TAGS tags gtags cscope: $(KERNEL_CONFIG)
 define build_kernel_module
 .PHONY: $(2)
 
-$(2): build_bzImage
+$(2): $(KERNEL_BZIMAGE)
 	@echo Building kernel module $(2) in $(1)
 	@mkdir -p $(KERNEL_OUT_DIR)/../../$(1)
 	@+$(KERNEL_BLD_ENV) $(MAKE) -C $(KERNEL_SRC_DIR) $(KERNEL_BLD_FLAGS) M=../../$(1) $(3)
@@ -180,27 +183,8 @@ $(addprefix $(2)_,TAGS tags gtags cscope): $(KERNEL_CONFIG)
 copy_modules_to_root: $(2)_install
 
 clean_kernel: $(2)_clean
-
 endef
 
-#save variables to rebuild the kernel
-KVAR_LIST := TARGET_BOARD_PLATFORM \
-        PRODUCT_OUT \
-        KERNEL_SRC_DIR \
-        BOARD_USE_64BIT_KERNEL \
-        TARGET_TOOLS_PREFIX \
-        TARGET_CC \
-        CCACHE_SLOPPINESS \
-        TARGET_DEVICE_DIR \
-        TARGET_DEVICE
-
-KAND_CONFIG := $(foreach v,$(KVAR_LIST),$(v):="$($(v))")
-
-$(KERNEL_OUT_DIR)/android_config.mk: $(KERNEL_CONFIG)
-	@rm -f $@
-	@for v in $(KAND_CONFIG) ; do echo  $${v} >> $@ ; done
-
-build_bzImage: $(KERNEL_OUT_DIR)/android_config.mk
-
-
+.PHONY: menuconfig xconfig gconfig get_kernel_from_source
+.PHONY: copy_modules_to_root $(KERNEL_BZIMAGE)
 

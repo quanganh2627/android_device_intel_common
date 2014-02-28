@@ -1,6 +1,16 @@
 PRODUCT_MANUFACTURER := intel
 override PRODUCT_BRAND := intel
 
+# These goals don't need to collect and include Android.mks/CleanSpec.mks
+# in the source tree.
+intel_dont_bother_goals := build_kernel-nodeps \
+    menuconfig xconfig gconfig \
+    TAGS tags gtags cscope
+
+ifneq ($(filter $(intel_dont_bother_goals), $(MAKECMDGOALS)),)
+dont_bother := true
+endif
+
 #Add Power HAL Package
 PRODUCT_PACKAGES += \
     power.$(PRODUCT_DEVICE)
