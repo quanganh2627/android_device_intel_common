@@ -371,6 +371,8 @@ struct atomisp_dvs2_bq_resolutions {
 	struct dvs2_bq_resolution envelope_bq;
 	/* isp pipe filter size [BQ] */
 	struct dvs2_bq_resolution ispfilter_bq;
+	/* GDC shit size [BQ] */
+	struct dvs2_bq_resolution gdc_shift_bq;
 };
 
 struct atomisp_dvs_6axis_config {
