@@ -58,3 +58,6 @@ uevent:sdio:c*v037Ad*   setprop wlan.driver.vendor mtk
 uevent:sdio:c*v0089d*   setprop wlan.driver.vendor intel
 # realtek
 uevent:sdio:c*v024Cd*	setprop wlan.driver.vendor rtl
+
+# Modem
+uevent:usb:v1519p0452d* setprop sys.usb.modemevt 1
