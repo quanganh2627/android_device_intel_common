@@ -51,7 +51,7 @@ PRODUCT_PACKAGES_ENG += \
     mts-test \
     modem_test
 
-PRODUCT_PACKAGES_USERDEBUG += \
+PRODUCT_PACKAGES_DEBUG += \
     ssploop \
     sspconf \
     audience_write \
@@ -61,7 +61,6 @@ PRODUCT_PACKAGES_USERDEBUG += \
     kcmdline \
     peeknpoke \
     purgatory-i386 \
-    kexec-tools-i386 \
     kexec-i386 \
     phonemonitor \
     crashlogd \
