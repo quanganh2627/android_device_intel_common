@@ -23,3 +23,14 @@ function mbimg
     echo ===[ Generating Ramdisk and ${ANDROID_PRODUCT_OUT}/boot.img]===
     (\cd "$T" && make ramdisk-nodeps bootimage-nodeps)
 }
+
+# Print a small help
+help_msg='
+Intel Build shortcuts:
+- mbimg -j4:   fast incremental rebuild of kernel/ramdisk/bootimage.
+- mkernel -j4: fast incremental rebuild of kernel
+'
+
+echo
+hmm | head -n 13
+echo "${help_msg}"
