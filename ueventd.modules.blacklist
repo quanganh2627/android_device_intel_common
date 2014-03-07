@@ -9,3 +9,9 @@ blacklist atomisp-css2400b0_v21
 blacklist atomisp-css2401a0_legacy_v21
 blacklist atomisp-css2401a0_v21
 blacklist css2600-mod
+blacklist snd-soc-wm-hubs
+blacklist snd-soc-wm8994
+blacklist snd-soc-sst-platform
+blacklist snd-intel-sst
+blacklist snd-merr-dpcm-wm8958
+blacklist snd-merr-saltbay-wm8958
