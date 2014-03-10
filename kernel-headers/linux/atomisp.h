@@ -381,6 +381,35 @@ struct atomisp_parameters {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct atomisp_capture_config *capture_config;
  struct atomisp_anr_thres *anr_thres;
+ void	*lin_2500_config;       /* Skylake: Linearization config */
+ void	*obgrid_2500_config;    /* Skylake: OBGRID config */
+ void	*bnr_2500_config;       /* Skylake: bayer denoise config */
+ void	*shd_2500_config;       /* Skylake: shading config */
+ void	*dm_2500_config;        /* Skylake: demosaic config */
+ void	*rgbpp_2500_config;     /* Skylake: RGBPP config */
+ void	*yuvp1_2500_config;     /* Skylake: yuvp1 config */
+ void	*yuvp2_2500_config;     /* Skylake: yuvp2 config */
+ void	*tnr_2500_config;       /* Skylake: TNR config */
+ void	*dpc_2500_config;       /* Skylake: DPC config */
+ void	*awb_2500_config;       /* Skylake: auto white balance config */
+ void	*awb_fr_2500_config;    /* Skylake: auto white balance filter response config */
+ void	*anr_2500_config;       /* Skylake: ANR config */
+ void	*af_2500_config;        /* Skylake: auto focus config */
+ void	*ae_2500_config;        /* Skylake: auto exposure config */
+ void	*bds_2500_config;       /* Skylake: bayer downscaler config */
+ void	*dvs_2500_config;       /* Skylake: digital video stabilization config */
+ void	*res_mgr_2500_config;
+
+ /*
+  * Output frame pointer the config is to be applied to (optional),
+  * set to NULL to make this config is applied as global.
+  */
+ void	*output_frame;
+ /*
+  * Unique ID to track which config was actually applied to a particular
+  * frame, driver will send this id back with output frame together.
+  */
+ uint32_t	isp_config_id;
 };
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define ATOMISP_GAMMA_TABLE_SIZE 1024
