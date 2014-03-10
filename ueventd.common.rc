@@ -25,8 +25,8 @@
 
 # Device needed by security functionalities
 /dev/sep_sec_driver                     0660   system     system
-/dev/mei                                0660   system     system
-/dev/meimm                              0660   system     system
+/dev/mei                                0660   system     mei
+/dev/meimm                              0660   system     mei
 
 # Android sync framework sw driver
 /dev/sw_sync                            0660   system     system

@@ -161,11 +161,6 @@ service charger_app /charger
     class charger
     user root
 
-service drm /system/bin/drmserver
-    class main
-    user drm
-    group drm system inet drmrpc sdcard_r security
-
 #Enable Houdini for execuable
 service enable_houdini /system/bin/enable_houdini
     class main

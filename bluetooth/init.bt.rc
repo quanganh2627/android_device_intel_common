@@ -28,6 +28,6 @@ service iprenew_bt-pan /system/bin/logwrapper /system/bin/dhcpcd -n
 service bd_prov /system/bin/bd_prov
     class core
     user system
-    group system bluetooth security
+    group system bluetooth security mei
     disabled
     oneshot
