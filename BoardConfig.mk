@@ -23,6 +23,9 @@ PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.multidisplay:com.intel.confi
 ifeq ($(strip $(INTEL_FEATURE_AWARESERVICE)),true)
 PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.aware.awareservice
 endif
+ifeq ($(strip $(INTEL_FEATURE_LPAL)),true)
+PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.vtsv.service
+endif
 ifeq ($(strip $(INTEL_FEATURE_ASF)),true)
 PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.asf
 endif
