@@ -88,8 +88,10 @@ supDomain: Parameter
 				ANY
 					ALL
 						AndroidMode Is InCsvCall
-						ModemAudioStatus Is True
 						OutputDevices Includes Earpiece
+						ANY
+							ModemAudioStatus Is True
+							CmeDirectStreamCapture Is True
 					InputDevices Includes Main
 					ALL
 						AlwaysListening Is True
@@ -109,7 +111,9 @@ supDomain: Parameter
 				ANY
 					ALL
 						AndroidMode Is InCsvCall
-						ModemAudioStatus Is True
+						ANY
+							ModemAudioStatus Is True
+							CmeDirectStreamCapture Is True
 						ANY
 							OutputDevices Includes SCO
 							OutputDevices Includes SCO_Headset
@@ -128,7 +132,9 @@ supDomain: Parameter
 				ANY
 					ALL
 						AndroidMode Is InCsvCall
-						ModemAudioStatus Is True
+						ANY
+							ModemAudioStatus Is True
+							CmeDirectStreamCapture Is True
 						OutputDevices Includes Headset
 					InputDevices Includes Headset
 					ALL
@@ -159,7 +165,9 @@ supDomain: Parameter
 				ANY
 					ALL
 						AndroidMode Is InCsvCall
-						ModemAudioStatus Is True
+						ANY
+							ModemAudioStatus Is True
+							CmeDirectStreamCapture Is True
 						ANY
 							OutputDevices Includes Headphones
 							OutputDevices Includes IHF
@@ -313,6 +321,26 @@ supDomain: Parameter
 			component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
 				MODES = InCsvCall
 
+		conf: IN_IMS
+			ALL
+				AndroidMode Is InCsvCall
+				ModemAudioStatus IsNot True
+				ANY
+					CmeDirectStreamPlayback Is True
+					CmeDirectStreamCapture Is True
+				ANY
+					OutputDevices Is IHF
+					OutputDevices Is Headset
+					OutputDevices Is Headphones
+					OutputDevices Is Earpiece
+					OutputDevices Is SCO
+					OutputDevices Is SCO_Headset
+					OutputDevices Is SCO_CarKit
+
+			component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
+				MODES = InImsCall
+
+
 		conf: IN_COMMUNICATION
 			ALL
 				AndroidMode Is InVoipCall
@@ -339,10 +367,17 @@ supDomain: Parameter
 			ANY
 				ALL
 					AndroidMode Is InCsvCall
+					ModemAudioStatus Is True
 					CsvBandType Is NB
 				ALL
 					AndroidMode Is InVoipCall
 					VoIPBandType Is NB
+				ALL
+					AndroidMode Is InCsvCall
+					ImsBandType Is NB
+					ANY
+						CmeDirectStreamPlayback Is True
+						CmeDirectStreamCapture Is True
 
 			component: /Route/ROUTEMGR/CRITERIA/BAND_TYPE_CRITERIA/
 				BANDS = NB
@@ -351,10 +386,17 @@ supDomain: Parameter
 			ANY
 				ALL
 					AndroidMode Is InCsvCall
+					ModemAudioStatus Is True
 					CsvBandType Is WB
 				ALL
 					AndroidMode Is InVoipCall
 					VoIPBandType Is WB
+				ALL
+					AndroidMode Is InCsvCall
+					ImsBandType Is WB
+					ANY
+						CmeDirectStreamPlayback Is True
+						CmeDirectStreamCapture Is True
 
 			component: /Route/ROUTEMGR/CRITERIA/BAND_TYPE_CRITERIA/
 				BANDS = WB
@@ -363,10 +405,17 @@ supDomain: Parameter
 			ANY
 				ALL
 					AndroidMode Is InCsvCall
+					ModemAudioStatus Is True
 					CsvBandType Is SuperWB
 				ALL
 					AndroidMode Is InVoipCall
 					VoIPBandType Is SuperWB
+				ALL
+					AndroidMode Is InCsvCall
+					ImsBandType Is SuperWB
+					ANY
+						CmeDirectStreamPlayback Is True
+						CmeDirectStreamCapture Is True
 
 			component: /Route/ROUTEMGR/CRITERIA/BAND_TYPE_CRITERIA/
 				BANDS = SuperWB

@@ -3,7 +3,7 @@ InclusiveCriterion InputDevices			:	Communication	Ambient		Main		SCO_Headset		He
 InclusiveCriterion OutputFlags			:	Direct			Primary		Fast		Deep			Offload		RemoteBgm
 InclusiveCriterion InputSources			:	Default			Mic			VoiceUplink	VoiceDownlink	VoiceCall	Camcorder		VoiceRecognition	VoiceCommunication
 InclusiveCriterion TtyDirection			: 	Downlink 		Uplink
-InclusiveCriterion StatesChanged		: 	AndroidMode		HasModem	ModemState	ModemAudioStatus	HacSelected	TtyDirection	BtEnable 	BtHeadsetNrEc	BtHeadsetBandType	CsvBandType	VoIPBandType	InputDevices	OutputDevices	InputSources	OutputFlags	DirectStream	ScreenOn	ContextAwareness	FmEnabled	AlwaysListening BypassNonLinearPp MicMute LpalDevice
+InclusiveCriterion StatesChanged		: 	AndroidMode		HasModem	ModemState	ModemAudioStatus	HacSelected	TtyDirection	BtEnable 	BtHeadsetNrEc	BtHeadsetBandType	CsvBandType	VoIPBandType	ImsBandType	InputDevices	OutputDevices	InputSources	OutputFlags	DirectStream	ScreenOn	ContextAwareness	FmEnabled	AlwaysListening BypassNonLinearPp MicMute	LpalDevice
 InclusiveCriterion LpalDevice			:	Main			Headset
 ExclusiveCriterion AndroidMode			:	Normal			RingTone	InCsvCall	InVoipCall
 ExclusiveCriterion BtEnable				: 	False			True
@@ -15,6 +15,7 @@ ExclusiveCriterion BtHeadsetNrEc		:	False			True
 ExclusiveCriterion BtHeadsetBandType	:	Unknown			NB			WB			SuperWB
 ExclusiveCriterion CsvBandType			:	Unknown			NB			WB			SuperWB
 ExclusiveCriterion VoIPBandType			:	Unknown			NB			WB			SuperWB
+ExclusiveCriterion ImsBandType			:	Unknown			NB			WB			SuperWB
 ExclusiveCriterion ContextAwareness		:	False			True
 ExclusiveCriterion AlwaysListening		:	False			True
 ExclusiveCriterion HasModem				:	False			True
@@ -22,3 +23,5 @@ ExclusiveCriterion ModemState			:	False			True
 ExclusiveCriterion ScreenOn				: 	False			True
 ExclusiveCriterion BypassNonLinearPp	: 	False			True
 ExclusiveCriterion MicMute				:	False			True
+ExclusiveCriterion CmeDirectStreamCapture	:	False			True
+ExclusiveCriterion CmeDirectStreamPlayback	:	False			True
