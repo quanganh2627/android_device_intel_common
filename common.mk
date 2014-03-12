@@ -164,8 +164,10 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
      $(COMMON_PATH)/init.dump.rc:root/init.dump.rc
 endif
 
+ifneq ($(BOARD_HAVE_MODEM), false)
 # AMTL unified configuration
 -include vendor/intel/tools/log_capture/amtl/src/com/intel/amtl/config_catalog/amtl.mk
+endif
 
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/init.common.rc:root/init.common.rc
@@ -206,4 +208,3 @@ include $(COMMON_PATH)/test_suites.mk
 # CAM
 PRODUCT_PACKAGES += \
     cam_mandatory
-

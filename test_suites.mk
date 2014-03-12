@@ -47,9 +47,13 @@ PRODUCT_PACKAGES_ENG += \
     imginfo \
     TXEI_TEST \
     TXEI_SEC_TOOLS \
-    iperf \
+    iperf
+
+ifeq ($(BOARD_HAVE_MODEM), true)
+PRODUCT_PACKAGES_ENG += \
     mts-test \
     modem_test
+endif
 
 PRODUCT_PACKAGES_DEBUG += \
     ssploop \
@@ -68,4 +72,3 @@ PRODUCT_PACKAGES_DEBUG += \
     parse_stack \
     ad_drv_test \
     gtester
-
