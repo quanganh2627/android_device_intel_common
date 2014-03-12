@@ -202,6 +202,9 @@ USE_VIDEO_EFFECT := true
 # Do not use shared object of ia_face by default
 USE_SHARED_IA_FACE := false
 
+# Use multi-thread for acceleration
+USE_INTEL_MULT_THREAD := true
+
 # Use panorama v1.0 by default
 IA_PANORAMA_VERSION := 1.0
 
