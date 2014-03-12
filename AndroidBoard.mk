@@ -39,7 +39,7 @@ include $(BUILD_PREBUILT)
 # We add it here to be called for other targets as well
 #droid: checkapi
 
-fastboot_flashfile: bootimage
+FASTBOOT_FLASHFILE_DEPS := bootimage
 
 ifeq ($(TARGET_USERIMAGES_SPARSE_EXT_DISABLED),true)
 TARGET_SYSTEM := systemimg_gz
@@ -51,14 +51,14 @@ ifeq ($(ENABLE_FRU),yes)
 bootimage: build_fru
 endif
 ifneq ($(FLASHFILE_BOOTONLY),true)
-fastboot_flashfile: firmware recoveryimage
+FASTBOOT_FLASHFILE_DEPS += firmware recoveryimage
 ifeq ($(TARGET_USE_DROIDBOOT),true)
-fastboot_flashfile: droidbootimage
+FASTBOOT_FLASHFILE_DEPS += droidbootimage
 endif
-fastboot_flashfile: $(TARGET_SYSTEM)
+FASTBOOT_FLASHFILE_DEPS += $(TARGET_SYSTEM)
 endif
 ifeq ($(TARGET_BIOS_TYPE),"uefi")
-fastboot_flashfile: espimage
+FASTBOOT_FLASHFILE_DEPS += espimage
 endif
 
 #ifeq ($(USE_GMS_ALL),true)
@@ -74,7 +74,7 @@ GENERIC_TARGET_NAME ?= $(TARGET_PRODUCT)
 flashfiles: fastboot_flashfile ota_flashfile
 
 .PHONY: fastboot_flashfile
-fastboot_flashfile:
+fastboot_flashfile: $(FASTBOOT_FLASHFILE_DEPS)
 	PUBLISH_PATH=$(PUBLISH_PATH) \
 	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
 	GENERIC_TARGET_NAME=$(GENERIC_TARGET_NAME) \
@@ -86,6 +86,21 @@ fastboot_flashfile:
 	TARGET_BIOS_TYPE=$(TARGET_BIOS_TYPE) \
 	SPARSE_DISABLED=$(TARGET_USERIMAGES_SPARSE_EXT_DISABLED) \
 	$(SUPPORT_PATH)/publish_build.py '$@' $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC) $(TARGET_USE_XEN)
+
+.PHONY: flashfiles_nozip
+flashfiles_nozip: $(FASTBOOT_FLASHFILE_DEPS)
+	FLASHFILE_ZIP=0 \
+	PUBLISH_PATH=$(PUBLISH_PATH) \
+	TARGET_PUBLISH_PATH=$(PUBLISH_PATH)/$(TARGET_PUBLISH_PATH) \
+	GENERIC_TARGET_NAME=$(GENERIC_TARGET_NAME) \
+	TARGET_USE_DROIDBOOT=$(TARGET_USE_DROIDBOOT) \
+	FLASHFILE_BOOTONLY=$(FLASHFILE_BOOTONLY) \
+	FLASHFILE_NO_OTA=$(FLASHFILE_NO_OTA) \
+	FLASH_MODEM=$(BOARD_HAVE_MODEM) \
+	ULPMC_BINARY=$(ULPMC_BINARY) \
+	TARGET_BIOS_TYPE=$(TARGET_BIOS_TYPE) \
+	SPARSE_DISABLED=$(TARGET_USERIMAGES_SPARSE_EXT_DISABLED) \
+	$(SUPPORT_PATH)/publish_build.py 'fastboot_flashfile' $(REF_PRODUCT_NAME) $(TARGET_DEVICE) $(PUBLISH_TARGET_BUILD_VARIANT) $(FILE_NAME_TAG) $(TARGET_BOARD_SOC) $(TARGET_USE_XEN)
 
 # Buildbot override to force OTA on UI demand (maintainers/engineering builds)
 ifeq ($(FORCE_OTA),true)
