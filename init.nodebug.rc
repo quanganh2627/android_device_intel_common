@@ -24,7 +24,6 @@ on charger
     mount ext4 /dev/block/mmcblk0p7 /logs nosuid nodev barrier=1,data=ordered
     mkdir /logs/modemcrash 0775 system system
     mkdir /logs/aplogs 0775 system log
-    setprop sys.usb.config iadb
 
 on ramconsole
     powerctl reboot
