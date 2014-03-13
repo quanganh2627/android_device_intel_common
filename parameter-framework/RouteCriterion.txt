@@ -3,7 +3,8 @@ InclusiveCriterion InputDevices			:	Communication	Ambient		Main		SCO_Headset		He
 InclusiveCriterion OutputFlags			:	Direct			Primary		Fast		Deep			Offload		RemoteBgm
 InclusiveCriterion InputSources			:	Default			Mic			VoiceUplink	VoiceDownlink	VoiceCall	Camcorder		VoiceRecognition	VoiceCommunication
 InclusiveCriterion TtyDirection			: 	Downlink 		Uplink
-InclusiveCriterion StatesChanged		: 	AndroidMode		HasModem	ModemState	ModemAudioStatus	HacSelected	TtyDirection	BtEnable 	BtHeadsetNrEc	BtHeadsetBandType	CsvBandType	VoIPBandType	InputDevices	OutputDevices	InputSources	OutputFlags	DirectStream	ScreenOn	ContextAwareness	FmEnabled	AlwaysListening BypassNonLinearPp MicMute
+InclusiveCriterion StatesChanged		: 	AndroidMode		HasModem	ModemState	ModemAudioStatus	HacSelected	TtyDirection	BtEnable 	BtHeadsetNrEc	BtHeadsetBandType	CsvBandType	VoIPBandType	InputDevices	OutputDevices	InputSources	OutputFlags	DirectStream	ScreenOn	ContextAwareness	FmEnabled	AlwaysListening BypassNonLinearPp MicMute LpalDevice
+InclusiveCriterion LpalDevice			:	Main			Headset
 ExclusiveCriterion AndroidMode			:	Normal			RingTone	InCsvCall	InVoipCall
 ExclusiveCriterion BtEnable				: 	False			True
 ExclusiveCriterion DirectStream			: 	False			True
