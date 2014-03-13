@@ -36,6 +36,13 @@
         android:title="@string/bluetooth_settings_title"
         android:icon="@drawable/ic_settings_bluetooth2" />
 
+    <!-- Ethernet -->
+    <header
+        android:id="@+id/ethernet_settings"
+        android:fragment="com.android.settings.ethernet.EthernetSettings"
+        android:title="@string/ethernet_settings_title"
+        android:icon="@drawable/ic_settings_ethernet" />
+
     <!-- Data Usage -->
     <header
         android:id="@+id/data_usage_settings"
