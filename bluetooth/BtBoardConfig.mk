@@ -11,3 +11,10 @@ ifeq ($(RTK_BLUETOOTH_INTERFACE), uart)
 endif
 
 endif
+
+# Intel chip compilation flag
+ifeq ($(COMBO_CHIP_VENDOR), intel)
+BOARD_USES_WCS := true
+else
+BOARD_USES_WCS := false
+endif
