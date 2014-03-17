@@ -450,6 +450,16 @@ supDomain: Parameter
 			component: /Route/ROUTEMGR/CRITERIA/BT_HEADSET_NREC_CRITERIA/
 				BOOLEAN = False
 
+	domain: BtHeadsetBandType
+		conf: WB
+			BtHeadsetBandType Is WB
+			component: /Route/ROUTEMGR/CRITERIA/BT_HEADSET_BAND_CRITERIA/
+				BANDS = WB
+
+		conf: NB
+			component: /Route/ROUTEMGR/CRITERIA/BT_HEADSET_BAND_CRITERIA/
+				BANDS = NB
+
 	domain: Hac
 		conf: Enabled
 			HacSelected Is True
