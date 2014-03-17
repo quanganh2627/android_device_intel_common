@@ -124,7 +124,7 @@ ADDITIONAL_DEFAULT_PROPERTIES += ro.arch=x86
 ifeq ($(PRODUCT_MANUFACTURER),intel)
 ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 ADDITIONAL_DEFAULT_PROPERTIES += persist.service.apklogfs.enable=1 \
-                                 persist.fwlog.enable=0
+                                 persist.fwlog.enable=1
 endif
 
 ifeq ($(TARGET_BUILD_VARIANT),eng)
