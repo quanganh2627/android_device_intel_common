@@ -160,7 +160,9 @@ supDomain: Parameter
 					ALL
 						AndroidMode Is InCsvCall
 						ModemAudioStatus Is True
-						OutputDevices Includes IHF
+						ANY
+							OutputDevices Includes Headphones
+							OutputDevices Includes IHF
 					InputDevices Includes Back
 
 				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
