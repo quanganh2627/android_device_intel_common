@@ -205,6 +205,9 @@ USE_SHARED_IA_FACE := false
 # Use multi-thread for acceleration
 USE_INTEL_MULT_THREAD := true
 
+# Use Async OMX for http streaming
+USE_ASYNC_OMX_CLIENT := true
+
 # Use panorama v1.0 by default
 IA_PANORAMA_VERSION := 1.0
 
