@@ -43,10 +43,8 @@
 #include "MessageLoggingInterface.h"
 #include "PolicyMessage.h"
 
-class PolicyServicesInterfaceContainer
+struct PolicyServicesInterfaceContainer
 {
-public:
-
     PolicyServicesInterfaceContainer(void);
 
     DomainActiveControlInterface* domainActiveControl;

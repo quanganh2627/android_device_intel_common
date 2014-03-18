@@ -19,7 +19,6 @@
 #include "WorkItemStatistics.h"
 #include "XmlNode.h"
 #include "FrameworkEvent.h"
-#include "GccFix.h"
 
 WorkItemStatistics::WorkItemStatistics(void)
 {

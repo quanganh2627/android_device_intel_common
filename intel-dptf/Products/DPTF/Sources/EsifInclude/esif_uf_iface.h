@@ -19,6 +19,15 @@
 #ifndef _ESIF_UF_IFACE_
 #define _ESIF_UF_IFACE_
 
+/* Log Type */
+typedef enum _t_eLogType : unsigned int {
+    eLogTypeFatal   = 0,
+    eLogTypeError   = 1,
+    eLogTypeWarning = 2,
+    eLogTypeInfo    = 3,
+    eLogTypeDebug   = 4
+} eLogType;
+
 typedef enum _t_eIfaceType {
     eIfaceTypeApplication = 0,
     eIfaceTypeEsifService,

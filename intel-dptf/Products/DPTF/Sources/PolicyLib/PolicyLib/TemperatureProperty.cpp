@@ -25,7 +25,7 @@ TemperatureProperty::TemperatureProperty(
     const DomainProperties& domainProperties,
     const PolicyServicesInterfaceContainer& policyServices)
     : DomainProperty(participantIndex, domainIndex, domainProperties, policyServices),
-    m_lastThresholdsSet(Temperature(Constants::Invalid), Temperature(Constants::Invalid), Constants::Invalid),
+    m_lastThresholdsSet(Temperature::createInvalid(), Temperature::createInvalid(), Constants::Invalid),
     m_lastThresholdsSetValid(false)
 {
 }

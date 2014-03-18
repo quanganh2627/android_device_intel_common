@@ -1,14 +1,14 @@
 <!-- begin xsl -->
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- format_id=BEEFCAFEBEEFCAFEBEEFCAFEBEEFCAFE -->
+<!-- format_id=3E-58-63-46-F8-F7-45-4A-A8-F7-DE-7E-C6-F7-61-A8 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/dppm_status">
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="2">
+  <tr bgcolor="#00AEEF" colspan="2">
     <th colspan="2">Policies</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Index</th>
     <th>Name</th>
   </tr>
@@ -23,10 +23,10 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="24">
+  <tr bgcolor="#00AEEF" colspan="24">
     <th colspan="24">Participants</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Index</th>
     <th>Name</th>
     <th>Description</th>
@@ -74,7 +74,7 @@
 
         </xsl:when>
         <xsl:otherwise>
-          <td colspan="3" bgcolor="#AAAAAA"></td>
+          <td colspan="3" bgcolor="#FFFFFF"></td>
         </xsl:otherwise>
       </xsl:choose>
 
@@ -145,17 +145,17 @@
 
 <!-- begin xsl -->
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- format_id=89C3953AB8E42946A526C52C88626BAE -->
+<!-- format_id=89-C3-95-3A-B8-E4-29-46-A5-26-C5-2C-88-62-6B-AE -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/active_policy_status">
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="5">
+  <tr bgcolor="#00AEEF" colspan="5">
     <th colspan="5">Fan Status</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Participant</th>
-    <th>Speed (% / CtrlID)</th>
+    <th>Speed %</th>
     <th>Fine Grain</th>
   </tr>
   <xsl:for-each select="fan_status/active_cooling_control">
@@ -170,10 +170,10 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="16">
+  <tr bgcolor="#00AEEF" colspan="16">
     <th colspan="16">Trip Point Status</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Index</th>
     <th>Name</th>
     <th>Aux0</th>
@@ -216,10 +216,10 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="15">
+  <tr bgcolor="#00AEEF" colspan="15">
     <th colspan="15">ART Status</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Target Index</th>
     <th>Target Object ID</th>
     <th>Source Index</th>
@@ -265,15 +265,15 @@
 
 <!-- begin xsl -->
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- format_id=E78AC697FA159C49B8C95DA81D606E0A -->
+<!-- format_id=E7-8A-C6-97-FA-15-9C-49-B8-C9-5D-A8-1D-60-6E-0A -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/critical_policy_status">
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="2">
+  <tr bgcolor="#00AEEF" colspan="2">
     <th colspan="2">Signal Status</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>State</th>
     <th>Signal Count</th>
   </tr>
@@ -294,10 +294,10 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="6">
+  <tr bgcolor="#00AEEF" colspan="6">
     <th colspan="6">Trip Point Status</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Index</th>
     <th>Name</th>
     <th>Temperature</th>
@@ -324,25 +324,25 @@
 
 <!-- begin xsl -->
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- format_id=065B45B94979C640ABF2363A70C8706C -->
+<!-- format_id=06-5B-45-B9-49-79-C6-40-AB-F2-36-3A-70-C8-70-6C -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/lpm_policy_status">
 
 <table border="1">
-  <tr bgcolor="#FF9900">
+  <tr bgcolor="#00AEEF">
     <td>LPM Mode Boss</td>
     <td align='right'>
         <xsl:value-of select="lpm_mode_boss" />
     </td>
   </tr>
-  <tr bgcolor="#FF9900">
+  <tr bgcolor="#00AEEF">
     <td>LPM Mode</td>
     <td align='right'>
       <xsl:value-of select="lpm_mode" />
     </td>
   </tr>
   <xsl:if test="lpm_mode='App Specific'">
-  <tr bgcolor="#FF9900">
+  <tr bgcolor="#00AEEF">
     <td>Foreground App Name</td>
     <td align='right'>
       <xsl:value-of select="foreground_app_name" />
@@ -350,7 +350,7 @@
   </tr>
   </xsl:if>
   <xsl:if test="lpm_mode_boss='OS Controlled' and lpm_mode='Standard'">
-  <tr bgcolor="#FF9900">
+  <tr bgcolor="#00AEEF">
     <td>LPMSet Index</td>
     <td align='right'>
       <xsl:value-of select="lpmset_index" />
@@ -362,16 +362,16 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#FF9900" colspan="10">
+  <tr bgcolor="#00AEEF" colspan="10">
     <th colspan="10">LPM Current Entries</th>
   </tr>
   <tr colspan="10">
-    <td bgcolor="#FF9900">Version</td>
+    <td bgcolor="#00AEEF">Version</td>
     <td align='right' colspan="7">
       <xsl:value-of select="lpm_table/version" />
     </td>
   </tr>
-  <tr bgcolor="#FF9900">
+  <tr bgcolor="#00AEEF">
     <th>Target ACPI scope</th>
     <th>Target Index</th>
     <th>Domain Index</th>
@@ -414,10 +414,10 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="10">
+  <tr bgcolor="#00AEEF" colspan="10">
     <th colspan="10">LPM Standard Configuration Entries</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Target ACPI scope</th>
     <th>Target Index</th>
     <th>Domain Index</th>
@@ -452,17 +452,17 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="10">
+  <tr bgcolor="#00AEEF" colspan="10">
     <th colspan="10">LPM Sets</th>
   </tr>
   <xsl:for-each select="lpm_sets/lpmset_entry">
     <tr colspan="10">
-      <td bgcolor="#9acd32">LpmSet Index</td>
+      <td bgcolor="#00AEEF">LpmSet Index</td>
       <td align='right' colspan="7">
         <xsl:value-of select="lpmset_index" />
       </td>
     </tr>
-    <tr bgcolor="#9acd32">
+    <tr bgcolor="#00AEEF">
       <th>Target ACPI scope</th>
       <th>Target Index</th>
       <th>Domain Index</th>
@@ -498,10 +498,10 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="10">
+  <tr bgcolor="#00AEEF" colspan="10">
     <th colspan="10">LPM App Specific Entries</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
       <th>LpmSet Index</th>
       <th>App Names</th>
   </tr>
@@ -525,15 +525,15 @@
 
 <!-- begin xsl -->
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- format_id=D641A426AAE2B46A84B4A8CE79027D3 -->
+<!-- format_id=D6-41-A4-42-6A-AE-2B-46-A8-4B-4A-8C-E7-90-27-D3 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/passive_policy_status">
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="7">
+  <tr bgcolor="#00AEEF" colspan="7">
     <th colspan="7">Trip Point Status</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Participant</th>
     <th>Aux0</th>
     <th>Temp</th>
@@ -558,10 +558,10 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="10">
+  <tr bgcolor="#00AEEF" colspan="10">
     <th colspan="10">Control Status</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Participant</th>
     <th>Domain</th>
     <th>Temp</th>
@@ -584,10 +584,10 @@
     <xsl:for-each select="controls/control">
     <xsl:choose>
     <xsl:when test="current='X' and max!='X' and min!='X'">
-    <td align='center' bgcolor="red"><xsl:value-of select="min"/>-<xsl:value-of select="current"/>-<xsl:value-of select="max"/></td>
+    <td align='center' bgcolor="#ED1C24"><xsl:value-of select="min"/>-<xsl:value-of select="current"/>-<xsl:value-of select="max"/></td>
     </xsl:when>
     <xsl:when test="current!=min">
-    <td align='center' bgcolor="yellow"><xsl:value-of select="min"/>-<xsl:value-of select="current"/>-<xsl:value-of select="max"/></td>
+    <td align='center' bgcolor="#FFFF00"><xsl:value-of select="min"/>-<xsl:value-of select="current"/>-<xsl:value-of select="max"/></td>
     </xsl:when>
     <xsl:otherwise>
     <td align='center'><xsl:value-of select="min"/>-<xsl:value-of select="current"/>-<xsl:value-of select="max"/></td>
@@ -602,10 +602,10 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="4">
+  <tr bgcolor="#00AEEF" colspan="4">
     <th colspan="4">TRT</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Target</th>
     <th>Source</th>
     <th>Influence</th>
@@ -624,10 +624,10 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="3">
+  <tr bgcolor="#00AEEF" colspan="3">
     <th colspan="3">Trip Point Statistics</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Participant</th>
     <th>Time Since Last Trip</th>
     <th>Temperature Of Last Trip</th>
@@ -646,10 +646,10 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="2">
+  <tr bgcolor="#00AEEF" colspan="2">
     <th colspan="2">Source Availability Schedule</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Source</th>
     <th>Next Time Available (S)</th>
   </tr>
@@ -664,10 +664,10 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="2">
+  <tr bgcolor="#00AEEF" colspan="2">
     <th colspan="2">Target Callback Schedule</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Target</th>
     <th>Next Callback Time (S)</th>
   </tr>
@@ -687,15 +687,15 @@
 
 <!-- begin xsl -->
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- format_id=0A9745E1C1E4734D900EC9C5A69DD067 -->
+<!-- format_id=0A-97-45-E1-C1-E4-73-4D-90-0E-C9-C5-A6-9D-D0-67 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/config_tdp_policy_status">
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="5">
+  <tr bgcolor="#00AEEF" colspan="5">
     <th colspan="5">Config TDP Levels</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Participant</th>
     <th>Domain</th>
     <th>Lower Config TDP</th>
@@ -720,11 +720,11 @@
 <xsl:for-each select="config_tdp_levels/participant_config_tdp_level/domain_config_tdp_level">
 <xsl:if test="control_config_tdp_level/config_tdp_control_set">
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="5">
+  <tr bgcolor="#00AEEF" colspan="5">
     <th colspan="5">Config TDP Control Set [<xsl:value-of select="../participant_name"/> (<xsl:value-of select="../participant_index"/>), <xsl:value-of select="domain_name"/> (<xsl:value-of select="domain_index"/>)]
     </th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Index</th>
     <th>Turbo Ratio</th>
     <th>Max Power</th>
@@ -744,10 +744,10 @@
 </xsl:for-each>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="5">
+  <tr bgcolor="#00AEEF" colspan="5">
     <th colspan="5">Config TDP Activity</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Name</th>
     <th>Value</th>
   </tr>
@@ -784,15 +784,15 @@
 
 <!-- begin xsl -->
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- format_id=B7F1CA1638DDED40B1C11B8A1913D531 -->
+<!-- format_id=B7-F1-CA-16-38-DD-ED-40-B1-C1-1B-8A-19-13-D5-31 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/cooling_mode_policy_status">
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="5">
+  <tr bgcolor="#00AEEF" colspan="5">
     <th colspan="5">Current Cooling Preference</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Name</th>
     <th>Value</th>
   </tr>
@@ -818,14 +818,164 @@
 
 <!-- begin xsl -->
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- format_id=CAFEBEEFCAFEBEEFCAFEBEEFCAFEBEEF -->
+<!-- format_id=49-18-CE-C4-3A-24-F3-49-B8-D5-F9-70-02-F3-8E-6A -->
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:template match="/act_policy_status">
+
+<table border="1">
+  <tr bgcolor="#00AEEF" colspan="5">
+    <th colspan="5">FIVR Devices</th>
+  </tr>
+  <tr bgcolor="#00AEEF">
+    <th>Participant</th>
+    <th>Domain</th>
+    <th>Last Set Frequency</th>
+  </tr>
+  <xsl:for-each select="fivr_device_list/fivr_device">
+  <tr>
+    <td align='left'><xsl:value-of select="participant_name"/> (<xsl:value-of select="participant_index"/>)</td>
+    <td align='left'><xsl:value-of select="domain_name"/> (<xsl:value-of select="domain_index"/>)</td>
+    <td align='right'><xsl:value-of select="radio_frequency_control/last_set_frequency"/></td>
+  </tr>
+  </xsl:for-each>
+</table>
+
+<br></br>
+
+<table border="1">
+  <tr bgcolor="#00AEEF" colspan="6">
+    <th colspan="6">Radio Devices</th>
+  </tr>
+  <tr bgcolor="#00AEEF">
+    <th>Participant</th>
+    <th>Domain</th>
+    <th>Connection Status</th>
+    <th>Center Frequency</th>
+    <th>Left Spread</th>
+    <th>Right Spread</th>
+  </tr>
+  <xsl:for-each select="radio_device_list/radio_device">
+  <tr>
+    <td align='left'><xsl:value-of select="participant_name"/> (<xsl:value-of select="participant_index"/>)</td>
+    <td align='left'><xsl:value-of select="domain_name"/> (<xsl:value-of select="domain_index"/>)</td>
+    <td align='right'><xsl:value-of select="last_known_connection_status"/></td>
+    <td align='right'><xsl:value-of select="radio_frequency_profile_data/center_frequency"/></td>
+    <td align='right'><xsl:value-of select="radio_frequency_profile_data/left_frequency_spread"/></td>
+    <td align='right'><xsl:value-of select="radio_frequency_profile_data/right_frequency_spread"/></td>
+  </tr>
+  </xsl:for-each>
+</table>
+
+<br></br>
+
+<table border="1">
+  <tr bgcolor="#00AEEF" colspan="9">
+    <th colspan="9">Pixel Clock Device Properties</th>
+  </tr>
+  <tr bgcolor="#00AEEF">
+    <th>Participant</th>
+    <th>Domain</th>
+    <th>Deviation</th>
+    <th>Upward Deviation</th>
+    <th>Downward Deviation</th>
+    <th>Channel Type</th>
+    <th>SSC Enabled</th>
+    <th>Spread Type</th>
+    <th>Spread Percentage</th>
+  </tr>
+
+  <xsl:for-each select="pixel_clock_device_list/pixel_clock_device">
+  <tr>
+    <td align='left'><xsl:value-of select="participant_name"/> (<xsl:value-of select="participant_index"/>)</td>
+    <td align='left'><xsl:value-of select="domain_name"/> (<xsl:value-of select="domain_index"/>)</td>
+    <td align='right'><xsl:value-of select="pixel_clock_capabilities/deviation"/></td>
+    <td align='right'><xsl:value-of select="pixel_clock_capabilities/upward_deviation"/></td>
+    <td align='right'><xsl:value-of select="pixel_clock_capabilities/downward_deviation"/></td>
+    <td align='right'><xsl:value-of select="pixel_clock_capabilities/channel_type"/></td>
+    <td align='right'><xsl:value-of select="pixel_clock_capabilities/ssc_enabled"/></td>
+    <td align='right'><xsl:value-of select="pixel_clock_capabilities/spread_type"/></td>
+    <td align='right'><xsl:value-of select="pixel_clock_capabilities/spread_percentage"/></td>
+  </tr>
+  </xsl:for-each>
+</table>
+
+<br></br>
+
+<table border="1">
+  <tr bgcolor="#00AEEF" colspan="4">
+    <th colspan="4">Pixel Clock Device Frequencies</th>
+  </tr>
+  <tr bgcolor="#00AEEF">
+    <th>Pixel Clock</th>
+    <th>Panel Frequency</th>
+    <th>SSC Enabled Nudge Frequency</th>
+    <th>SSC Disabled Nudge Frequency</th>
+  </tr>
+<xsl:for-each select="pixel_clock_device_list/pixel_clock_device/pixel_clock_data_set/pixel_clock">
+  <tr>
+    <td align='right'><xsl:value-of select="pixel_clock_number"/></td>
+    <td align='right'><xsl:value-of select="pixel_clock_data/panel_input_frequency"/></td>
+    <td align='right'><xsl:value-of select="pixel_clock_data/ssc_enabled_nudge_frequency"/></td>
+    <td align='right'><xsl:value-of select="pixel_clock_data/ssc_disabled_nudge_frequency"/></td>
+  </tr>
+  </xsl:for-each>
+</table>
+
+<br></br>
+
+<table border="1">
+  <tr bgcolor="#00AEEF" colspan="4">
+    <th colspan="4">Pixel Clock Candidate Sets</th>
+  </tr>
+  <tr bgcolor="#00AEEF">
+    <th>Name</th>
+    <th>Spread Type</th>
+    <th>Spread %</th>
+    <th>Candidate Sets</th>
+  </tr>
+  <xsl:for-each select="pixel_clock_device_list/pixel_clock_device/candidate_sets/candidate_set">
+  <tr>
+    <td align='left'><xsl:value-of select="name"/></td>
+    <td align='left'><xsl:value-of select="pixel_clock_frequency_table/spread_type"/></td>
+    <td align='right'><xsl:value-of select="pixel_clock_frequency_table/spread_percentage"/></td>
+    <td align='right'>
+      <table border="1">
+        <tr bgcolor="#00AEEF">
+          <th>Pixel Clock</th>
+          <th>Frequency</th>
+        </tr>
+        <xsl:for-each select="pixel_clock_frequency_table/pixel_clock_frequencies/pixel_clock">
+        <tr>
+          <td align='right'><xsl:value-of select="pixel_clock_number"/></td>
+          <td align='right'>
+          <xsl:for-each select="frequency">
+            <xsl:value-of select="current()"/><br/>
+          </xsl:for-each>
+          </td>
+        </tr>
+        </xsl:for-each>
+      </table>
+    </td>
+  </tr>
+  </xsl:for-each>
+</table>
+    
+</xsl:template>
+</xsl:stylesheet>
+<!-- end xsl -->
+
+
+        
+<!-- begin xsl -->
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- format_id=F0-CB-64-06-E4-2B-46-B5-9C-85-32-D1-A1-B7-CB-68 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/participant">
 
 <h2><xsl:value-of select="participant_properties/name" /> - <xsl:value-of select="participant_properties/description" /></h2>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="2">
+  <tr bgcolor="#00AEEF" colspan="2">
     <th colspan="2">Participant Properties</th>
   </tr>
   <tr>
@@ -846,10 +996,10 @@
 
 <xsl:if test="specific_info">
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="15">
+  <tr bgcolor="#00AEEF" colspan="15">
     <th colspan="15">Specific Info</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>CRT</th>
     <th>HOT</th>
     <th>WRM</th>
@@ -892,7 +1042,7 @@
   <!-- Domain Priority -->
   <xsl:if test="domain_priority/domain_priority">
     <table border="1">
-    <tr bgcolor="#9acd32" colspan="2">
+    <tr bgcolor="#00AEEF" colspan="2">
       <th colspan="2">Domain Properties</th>
     </tr>
     <tr>
@@ -907,10 +1057,10 @@
   <!-- Temperature Control -->
   <xsl:if test="temperature_control">
     <table border="1">
-    <tr bgcolor="#9acd32" colspan="4">
+    <tr bgcolor="#00AEEF" colspan="4">
       <th colspan="4">Temperature Control</th>
     </tr>
-    <tr bgcolor="#9acd32">
+    <tr bgcolor="#00AEEF">
       <th>Temperature</th>
       <xsl:if test="temperature_control/temperature_thresholds">
         <th>Aux 0</th>
@@ -935,10 +1085,10 @@
   <!-- Performance Control - Status -->
   <xsl:if test="performance_control">
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="2">
+      <tr bgcolor="#00AEEF" colspan="2">
         <th colspan="2">Performance Control Status</th>
       </tr>
-      <tr bgcolor="#9acd32">
+      <tr bgcolor="#00AEEF">
         <th>Current Index</th>
       </tr>
       <tr>
@@ -952,10 +1102,10 @@
   <!-- Performance Control - Static Caps -->
   <xsl:if test="performance_control">
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="2">
+      <tr bgcolor="#00AEEF" colspan="2">
         <th colspan="2">Performance Control Static Caps</th>
       </tr>
-      <tr bgcolor="#9acd32">
+      <tr bgcolor="#00AEEF">
         <th>Dynamic Performance Control States</th>
       </tr>
       <tr>
@@ -969,10 +1119,10 @@
   <!-- Performance Control - Dynamic Caps -->
   <xsl:if test="performance_control">
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="2">
+      <tr bgcolor="#00AEEF" colspan="2">
         <th colspan="2">Performance Control Dynamic Caps</th>
       </tr>
-      <tr bgcolor="#9acd32">
+      <tr bgcolor="#00AEEF">
         <th>Upper Limit</th>
         <th>Lower Limit</th>
       </tr>
@@ -988,10 +1138,10 @@
   <!-- Performance Control Set -->
   <xsl:if test="performance_control">
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="7">
+      <tr bgcolor="#00AEEF" colspan="7">
         <th colspan="7">Performance Control Set</th>
       </tr>
-      <tr bgcolor="#9acd32">
+      <tr bgcolor="#00AEEF">
         <th>Index</th>
         <th>Control ID</th>
         <th>Type</th>
@@ -1020,10 +1170,10 @@
   <!-- Power Status -->
   <xsl:if test="power_status">
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="7">
+      <tr bgcolor="#00AEEF" colspan="7">
         <th colspan="7">Power Status</th>
       </tr>
-      <tr bgcolor="#9acd32">
+      <tr bgcolor="#00AEEF">
         <th>Power</th>
       </tr>
       <tr>
@@ -1037,10 +1187,10 @@
   <!-- Power Control Status -->
   <xsl:if test="power_control/power_control_status_set">
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="4">
+      <tr bgcolor="#00AEEF" colspan="4">
         <th colspan="4">Power Control Status</th>
       </tr>
-      <tr bgcolor="#9acd32">
+      <tr bgcolor="#00AEEF">
         <th>Control Type</th>
         <th>Power Limit (mW)</th>
         <th>Time Window</th>
@@ -1062,10 +1212,10 @@
   <!-- Power Control Dynamic Caps -->
   <xsl:if test="power_control/power_control_dynamic_caps_set">
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="8">
+      <tr bgcolor="#00AEEF" colspan="8">
         <th colspan="8">Power Control Dynamic Caps</th>
       </tr>
-      <tr bgcolor="#9acd32">
+      <tr bgcolor="#00AEEF">
         <th>Control Type</th>
         <th>Max Power Limit (mW)</th>
         <th>Min Power Limit (mW)</th>
@@ -1095,7 +1245,7 @@
   <!-- Core Control -->
   <xsl:if test="core_control">
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="2">
+      <tr bgcolor="#00AEEF" colspan="2">
         <th colspan="2">Core Control</th>
       </tr>
       <tr>
@@ -1137,10 +1287,10 @@
   <!-- Display Control -->
   <xsl:if test="display_control">
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="1">
+      <tr bgcolor="#00AEEF" colspan="1">
         <th colspan="7">Display Status</th>
       </tr>
-      <tr bgcolor="#9acd32">
+      <tr bgcolor="#00AEEF">
         <th>Brightness</th>
       </tr>
       <tr>
@@ -1151,10 +1301,10 @@
     <br></br>
 
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="2">
+      <tr bgcolor="#00AEEF" colspan="2">
         <th colspan="2">Display Control Dynamic Caps</th>
       </tr>
-      <tr bgcolor="#9acd32">
+      <tr bgcolor="#00AEEF">
         <th>Upper Limit</th>
         <th>Lower Limit</th>
       </tr>
@@ -1167,10 +1317,10 @@
     <br></br>
 
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="2">
+      <tr bgcolor="#00AEEF" colspan="2">
         <th colspan="2">Display Control Set</th>
       </tr>
-      <tr bgcolor="#9acd32">
+      <tr bgcolor="#00AEEF">
         <th>Index</th>
         <th>Brightness %</th>
       </tr>
@@ -1190,12 +1340,12 @@
   <!-- Active Control -->
   <xsl:if test="active_control">
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="2">
+      <tr bgcolor="#00AEEF" colspan="2">
         <th colspan="2">Active Control Status</th>
       </tr>
-      <tr bgcolor="#9acd32">
-        <th>Control ID</th>
-        <th>Speed (RPMs)</th>
+      <tr bgcolor="#00AEEF">
+        <th>Control ID / Fan Speed %</th>
+        <th>Speed (RPM) for Control ID</th>
       </tr>
       <tr>
         <td align='right'><xsl:value-of select="active_control/active_control_status/current_control_id" /></td>
@@ -1206,10 +1356,10 @@
     <br></br>
 
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="3">
+      <tr bgcolor="#00AEEF" colspan="3">
         <th colspan="3">Active Control Static Caps</th>
       </tr>
-      <tr bgcolor="#9acd32">
+      <tr bgcolor="#00AEEF">
         <th>Fine Grained Control</th>
         <th>Low Speed Notification</th>
         <th>Step Size</th>
@@ -1224,10 +1374,10 @@
     <br></br>
 
     <table border="1">
-      <tr bgcolor="#9acd32" colspan="5">
+      <tr bgcolor="#00AEEF" colspan="5">
         <th colspan="5">Active Control Set</th>
       </tr>
-      <tr bgcolor="#9acd32">
+      <tr bgcolor="#00AEEF">
         <th>Control ID</th>
         <th>Trip Point</th>
         <th>Speed (RPMs)</th>
@@ -1259,15 +1409,15 @@
 
 <!-- begin xsl -->
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- format_id=C5614DE930804DB5981AD1D167DD4CD7 -->
+<!-- format_id=C5-61-4D-E9-30-80-4D-B5-98-1A-D1-D1-67-DD-4C-D7 -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/work_item_queue_manager_status">
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="4">
+  <tr bgcolor="#00AEEF" colspan="4">
     <th colspan="4">Queue Statistics</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Queue</th>
     <th>Current Count</th>
     <th>Max Count</th>
@@ -1302,10 +1452,10 @@
 <br></br>
 
 <table border="1">
-  <tr bgcolor="#9acd32" colspan="8">
+  <tr bgcolor="#00AEEF" colspan="8">
     <th colspan="8">Work Item Statistics</th>
   </tr>
-  <tr bgcolor="#9acd32">
+  <tr bgcolor="#00AEEF">
     <th>Work Item Type</th>
     <th>Total Executed</th>
     <th>Avg Execution Time</th>

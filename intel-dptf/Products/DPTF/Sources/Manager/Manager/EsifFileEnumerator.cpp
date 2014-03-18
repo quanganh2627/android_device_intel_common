@@ -19,7 +19,6 @@
 #include "EsifFileEnumerator.h"
 #include "esif_ccb_memory.h"
 #include "DptfExceptions.h"
-#include <iostream>
 
 EsifFileEnumerator::EsifFileEnumerator(std::string path, std::string pattern) : m_path(path), m_pattern(pattern),
     m_fileHandle(INVALID_HANDLE_VALUE)
@@ -40,9 +39,6 @@ std::string EsifFileEnumerator::getFirstFile(void)
     esif_string path = const_cast<esif_string>(m_path.c_str());
     esif_string pattern = const_cast<esif_string>(m_pattern.c_str());
 
-	std::cerr << "path: " << path << std::endl;
-	std::cerr << "pattern: " << pattern << std::endl;
-	std::cerr << "Calling esif_ccb_file_enum()" << std::endl;
     m_fileHandle = esif_ccb_file_enum_first(path, pattern, &m_file);
 
     if (m_fileHandle == INVALID_HANDLE_VALUE)

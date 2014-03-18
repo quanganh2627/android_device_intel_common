@@ -18,19 +18,16 @@
 
 #pragma once
 #include "Dptf.h"
-#include "ControlKnobType.h"
-#include "DomainType.h"
-#include "LpmMode.h"
+
+//
+// This is in place to format C++ built in types (only).  For any classes that we have
+// created they should have a toString() function to provide formatting.
+//
 
 namespace StatusFormat
 {
-    std::string friendlyValue(UIntN value);
     std::string friendlyValue(Bool value);
+    std::string friendlyValue(UInt32 value);
     std::string friendlyValue(UInt64 value);
-    std::string friendlyValue(float value);
     std::string friendlyValue(double value);
-    std::string friendlyValue(ControlKnobType::Type value);
-    std::string friendlyValue(DomainType::Type value);
-    std::string friendlyValue(LpmMode::Type type);
-    std::string friendlyValue(LpmMode::Boss boss);
 };

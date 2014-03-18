@@ -25,7 +25,7 @@ CoreControlPreferencesCachedProperty::CoreControlPreferencesCachedProperty(
     const DomainProperties& domainProperties,
     const PolicyServicesInterfaceContainer& policyServices)
     : CachedProperty(), DomainProperty(participantIndex, domainIndex, domainProperties, policyServices),
-    m_preferences(false, Constants::Invalid, Percentage(),
+    m_preferences(false, Constants::Invalid, Percentage::createInvalid(),
         CoreControlOffliningMode::None, CoreControlOffliningMode::None)
 {
 }

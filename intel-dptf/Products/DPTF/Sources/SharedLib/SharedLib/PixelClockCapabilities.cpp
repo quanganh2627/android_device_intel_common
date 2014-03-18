@@ -103,6 +103,6 @@ XmlNode* PixelClockCapabilities::getXml(void) const
     capabilities->addChild(XmlNode::createDataElement("ssc_enabled", friendlyValue(m_sscEnabled)));
     capabilities->addChild(XmlNode::createDataElement("spread_type", 
         PixelClockSpreadType::ToString(m_sscSpreadDirection)));
-    capabilities->addChild(XmlNode::createDataElement("spread_percentage", friendlyValue(m_spreadPercentage * 100)));
+    capabilities->addChild(XmlNode::createDataElement("spread_percentage", m_spreadPercentage.toString()));
     return capabilities;
 }

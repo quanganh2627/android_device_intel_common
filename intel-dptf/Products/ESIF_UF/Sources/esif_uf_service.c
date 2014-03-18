@@ -25,6 +25,7 @@
 #include "esif_uf_service.h"	/* ESIF Service */
 #include "esif_uf_primitive.h"	/* ESIF Primitive Execution */
 #include "esif_dsp.h"
+#include "esif_uf_ccb_system.h"
 
 #ifdef ESIF_ATTR_OS_WINDOWS
 //
@@ -400,27 +401,6 @@ eEsifError EsifSvcWriteLog(
 /*
 ** Event Registration / Unregistration
 */
-
-static ESIF_INLINE void esif_guid_to_ms_guid(esif_guid_t *guid)
-{
-#ifdef ESIF_ATTR_OS_WINDOWS
-	u8 *ptr = (u8 *)guid;
-	u8 b[ESIF_GUID_LEN] = {0};
-
-	ESIF_TRACE_DEBUG("%s:\n", ESIF_FUNC);
-	esif_ccb_memcpy(&b, ptr, ESIF_GUID_LEN);
-
-	*(ptr + 0) = b[3];
-	*(ptr + 1) = b[2];
-	*(ptr + 2) = b[1];
-	*(ptr + 3) = b[0];
-	*(ptr + 4) = b[5];
-	*(ptr + 5) = b[4];
-	*(ptr + 6) = b[7];
-	*(ptr + 7) = b[6];
-#endif
-}
-
 
 /* TODO Move To Header */
 eEsifError register_for_power_notification(const esif_guid_t *guid);

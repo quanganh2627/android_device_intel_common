@@ -44,7 +44,7 @@ void PerformanceControlKnob::limit()
         {
             stringstream messageBefore;
             messageBefore << "Attempting to limit " << controlTypeToString(m_controlType) << "s.";
-            postDebugMessage(PolicyMessage(FLF, messageBefore.str(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, messageBefore.str(), getParticipantIndex(), getDomainIndex()));
 
             const PerformanceControlDynamicCaps& dynamicCapabilities = m_performanceControl->getDynamicCapabilities();
             UIntN lowerLimitIndex = dynamicCapabilities.getCurrentLowerLimitIndex();
@@ -57,11 +57,11 @@ void PerformanceControlKnob::limit()
                 << "Limited performance state to " 
                 << nextIndex 
                 << "(" << controlTypeToString(m_controlType) << ").";
-            postDebugMessage(PolicyMessage(FLF, messageAfter.str(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, messageAfter.str(), getParticipantIndex(), getDomainIndex()));
         }
         catch (std::exception& ex)
         {
-            postDebugMessage(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
             throw ex;
         }
     }
@@ -75,7 +75,7 @@ void PerformanceControlKnob::unlimit()
         {
             stringstream messageBefore;
             messageBefore << "Attempting to unlimit " << controlTypeToString(m_controlType) << "s.";
-            postDebugMessage(PolicyMessage(FLF, messageBefore.str(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, messageBefore.str(), getParticipantIndex(), getDomainIndex()));
 
             const PerformanceControlDynamicCaps& dynamicCapabilities = m_performanceControl->getDynamicCapabilities();
             UIntN upperLimitIndex = dynamicCapabilities.getCurrentUpperLimitIndex();
@@ -88,11 +88,11 @@ void PerformanceControlKnob::unlimit()
                 << "Unlimited performance state to " 
                 << nextIndex 
                 << "(" << controlTypeToString(m_controlType) << ").";
-            postDebugMessage(PolicyMessage(FLF, messageAfter.str(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, messageAfter.str(), getParticipantIndex(), getDomainIndex()));
         }
         catch (std::exception& ex)
         {
-            postDebugMessage(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
             throw ex;
         }
     }
@@ -177,8 +177,7 @@ XmlNode* PerformanceControlKnob::getXml()
         status->addChild(XmlNode::createDataElement("type", controlTypeToString(m_controlType)));
         auto dynamicCapabilities = m_performanceControl->getDynamicCapabilities();
         status->addChild(dynamicCapabilities.getXml());
-        auto currentStatus = m_performanceControl->getStatus();
-        status->addChild(currentStatus.getXml());
+        status->addChild(m_performanceControl->getStatus().getXml());
     }
     return status;
 }

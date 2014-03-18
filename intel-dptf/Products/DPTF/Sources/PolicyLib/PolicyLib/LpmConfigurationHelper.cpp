@@ -82,26 +82,6 @@ void LpmConfigurationHelper::setPolicyServices(PolicyServicesInterfaceContainer 
     m_policyServices = policyServices;
 }
 
-void LpmConfigurationHelper::postInfoMessage(const PolicyMessage& message)
-{
-    m_policyServices.messageLogging->writeMessageInfo(message);
-}
-
-void LpmConfigurationHelper::postWarningMessage(const PolicyMessage& message)
-{
-    m_policyServices.messageLogging->writeMessageWarning(message);
-}
-
-void LpmConfigurationHelper::postErrorMessage(const PolicyMessage& message)
-{
-    m_policyServices.messageLogging->writeMessageError(message);
-}
-
-void LpmConfigurationHelper::postDebugMessage(const PolicyMessage& message)
-{
-    m_policyServices.messageLogging->writeMessageDebug(message);
-}
-
 PolicyServicesInterfaceContainer& LpmConfigurationHelper::getPolicyServices(void)
 {
     return m_policyServices;

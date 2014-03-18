@@ -28,6 +28,7 @@ typedef HINSTANCE esif_lib_t;
 	#define ESIF_LIB_EXT ".dll"
 #else
 	#include <dlfcn.h>
+	#include <ctype.h>
 typedef void *esif_lib_t;
 	#define ESIF_LIB_EXT ".so"
 #endif
@@ -37,7 +38,7 @@ static ESIF_INLINE esif_lib_t esif_ccb_library_load(esif_string lib_name)
 {
 #ifdef ESIF_ATTR_OS_WINDOWS
 	return LoadLibraryA(lib_name);
-	
+
 #else
 	esif_lib_t handle = dlopen(lib_name, RTLD_NOW);
 
@@ -51,7 +52,7 @@ static ESIF_INLINE esif_lib_t esif_ccb_library_load(esif_string lib_name)
 			library[j] = tolower(lib_name[j]);
 		}
 		handle = dlopen(library, RTLD_NOW);
-		
+
 		/* Capitalized.so */
 		if (NULL == handle) {
 			library[0] = toupper(library[0]);

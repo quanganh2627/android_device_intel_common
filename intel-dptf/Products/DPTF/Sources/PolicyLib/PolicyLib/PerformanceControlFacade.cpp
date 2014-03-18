@@ -17,7 +17,6 @@
 ******************************************************************************/
 
 #include "PerformanceControlFacade.h"
-#include <sstream>
 #include "StatusFormat.h"
 using namespace std;
 using namespace StatusFormat;
@@ -32,9 +31,9 @@ PerformanceControlFacade::PerformanceControlFacade(
     m_domainProperties(domainProperties),
     m_policyServices(policyServices),
     m_performanceControlSetProperty(participantIndex, domainIndex, domainProperties, policyServices),
-    m_performanceControlStatusProperty(participantIndex, domainIndex, domainProperties, policyServices),
     m_performanceControlCapabilitiesProperty(participantIndex, domainIndex, domainProperties, policyServices),
-    m_controlsHaveBeenInitialized(false)
+    m_controlsHaveBeenInitialized(false),
+    m_lastIssuedPerformanceControlIndex(0)
 {
 }
 
@@ -47,19 +46,16 @@ Bool PerformanceControlFacade::supportsPerformanceControls()
     return m_domainProperties.implementsPerformanceControlInterface();
 }
 
-const PerformanceControlStatus& PerformanceControlFacade::getStatus()
-{
-    initializeControlsIfNeeded();
-    return m_performanceControlStatusProperty.getStatus();
-}
-
 void PerformanceControlFacade::setControl(UIntN performanceControlIndex)
 {
     if (supportsPerformanceControls())
     {
+        m_lastIssuedPerformanceControlIndex = performanceControlIndex;
+        const PerformanceControlDynamicCaps& caps = getDynamicCapabilities();
+        m_isLimited = m_lastIssuedPerformanceControlIndex > caps.getCurrentUpperLimitIndex();
         m_policyServices.domainPerformanceControl->setPerformanceControl(
             m_participantIndex, m_domainIndex, performanceControlIndex);
-        m_performanceControlStatusProperty.invalidate();
+        
     }
     else
     {
@@ -75,7 +71,6 @@ const PerformanceControlSet& PerformanceControlFacade::getControls()
 void PerformanceControlFacade::refreshControls()
 {
     m_performanceControlSetProperty.refresh();
-    m_performanceControlStatusProperty.invalidate();
 }
 
 void PerformanceControlFacade::refreshCapabilities()
@@ -83,23 +78,49 @@ void PerformanceControlFacade::refreshCapabilities()
     m_performanceControlCapabilitiesProperty.refresh();
 }
 
-void PerformanceControlFacade::invalidateStatus()
-{
-    m_performanceControlStatusProperty.invalidate();
-}
-
 const PerformanceControlDynamicCaps& PerformanceControlFacade::getDynamicCapabilities()
 {
     return m_performanceControlCapabilitiesProperty.getDynamicCaps();
 }
 
+PerformanceControlStatus PerformanceControlFacade::getStatus() const
+{
+    return PerformanceControlStatus(m_lastIssuedPerformanceControlIndex);
+}
+
 void PerformanceControlFacade::initializeControlsIfNeeded()
 {
-    if (m_controlsHaveBeenInitialized == false)
+    if (supportsPerformanceControls())
     {
         const PerformanceControlDynamicCaps& caps = getDynamicCapabilities();
         UIntN upperLimitIndex = caps.getCurrentUpperLimitIndex();
-        setControl(upperLimitIndex);
-        m_controlsHaveBeenInitialized = true;
+        UIntN lowerLimitIndex = caps.getCurrentLowerLimitIndex();
+        if (m_controlsHaveBeenInitialized == false)
+        {
+            setControl(upperLimitIndex);
+            m_controlsHaveBeenInitialized = true;
+        }
+        else
+        {
+            if (m_isLimited)
+            {
+                if (m_lastIssuedPerformanceControlIndex < upperLimitIndex)
+                {
+                    setControl(upperLimitIndex);
+                }
+
+                if (m_lastIssuedPerformanceControlIndex > lowerLimitIndex)
+                {
+                    setControl(lowerLimitIndex);
+                }
+            }
+            else
+            {
+                if (m_lastIssuedPerformanceControlIndex != upperLimitIndex)
+                {
+                    setControl(upperLimitIndex);
+                }
+            }
+        }
     }
 }

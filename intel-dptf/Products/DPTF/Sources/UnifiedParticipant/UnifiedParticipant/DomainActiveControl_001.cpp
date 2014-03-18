@@ -91,7 +91,7 @@ void DomainActiveControl_001::setActiveControl(UIntN participantIndex, UIntN dom
                              setActiveControl function that take a control index as an argument.");
     }
 
-    // For now SET_FAN_LEVEL doesn't follow the normal rule for percentages.  For this we pass in a whole number
+    // FIXME: For now SET_FAN_LEVEL doesn't follow the normal rule for percentages.  For this we pass in a whole number
     // which would be 90 for 90%.  This is an exception and should be corrected in the future.
     UInt32 convertedFanSpeedPercentage = static_cast<UInt32>(fanSpeed * 100);
 

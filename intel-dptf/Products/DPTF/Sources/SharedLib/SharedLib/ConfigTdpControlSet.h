@@ -28,16 +28,16 @@ class ConfigTdpControlSet final
 {
 public:
 
-    ConfigTdpControlSet(const std::vector<ConfigTdpControl>& configTdpControl, UIntN nominalControlIndex);
+    ConfigTdpControlSet(const std::vector<ConfigTdpControl>& configTdpControl);
     UIntN getCount(void) const;
     const ConfigTdpControl& operator[](UIntN index) const;
-    UIntN getNominalControlIndex(void) const;
     Bool operator==(const ConfigTdpControlSet& rhs) const;
     Bool operator!=(const ConfigTdpControlSet& rhs) const;
+    std::vector<std::string> getAsNameList() const;
+
     XmlNode* getXml(void);
 
 private:
 
     std::vector<ConfigTdpControl> m_configTdpControl;
-    UIntN m_nominalControlIndex;
 };

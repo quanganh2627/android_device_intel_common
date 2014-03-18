@@ -23,6 +23,13 @@
 namespace Constants
 {
     const UInt32 Invalid = 0xFFFFFFFFU;
+    const std::string InvalidString("X");
+
+    const UInt8 MaxUInt8 = 0xFFU;
+    const UInt16 MaxUInt16 = 0xFFFFU;
+    const UInt32 MaxUInt32 = 0xFFFFFFFFU;
+    const UInt64 MaxUInt64 = 0xFFFFFFFFFFFFFFFFU;
+
     const UIntN DefaultBufferSize = 4096;
     const UIntN GuidSize = 16;
 

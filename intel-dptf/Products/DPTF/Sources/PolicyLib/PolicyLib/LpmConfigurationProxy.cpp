@@ -19,7 +19,6 @@
 #include "LpmConfigurationProxy.h"
 #include "LpmConfigurationReaderV0.h"
 #include "LpmConfigurationReaderV1.h"
-#include "GccFix.h"
 
 LpmConfigurationProxy::LpmConfigurationProxy(void)
     :m_lpmModeBoss(LpmMode::Bios),
@@ -122,7 +121,7 @@ void LpmConfigurationProxy::updateLpmMode()
     }
     else
     {
-      throw dptf_exception("Invalid cLPM value (" + GccFix::to_string(cLpmSetting));
+        throw dptf_exception("Invalid cLPM value (" + GccFix::to_string(cLpmSetting));
     }
 }
 
@@ -152,12 +151,12 @@ void LpmConfigurationProxy::createLpmConfiguration(void)
     catch(dptf_exception& e)
     {
         string errorMsg = e.what();
-        postErrorMessage(PolicyMessage(FLF, e.what(), Constants::Invalid));
+        m_policyServices.messageLogging->writeMessageError(PolicyMessage(FLF, e.what(), Constants::Invalid));
         return;
     }
     catch(...)
     {
-        postErrorMessage(PolicyMessage(FLF,"Allocation failed for config reader",
+        m_policyServices.messageLogging->writeMessageError(PolicyMessage(FLF,"Allocation failed for config reader",
             Constants::Invalid));
         return;
     }
@@ -177,7 +176,7 @@ void LpmConfigurationProxy::updateCurrentLpmEntriesStandardMode(void)
 
     if (isStandardMode() == false)
     {
-        postErrorMessage(PolicyMessage(FLF,
+        m_policyServices.messageLogging->writeMessageError(PolicyMessage(FLF,
             "Invalid LPM Mode (" + GccFix::to_string(lpmMode()) + ") expecting Std mode",
             Constants::Invalid));
         m_currentLpmEntries.clear();
@@ -187,7 +186,7 @@ void LpmConfigurationProxy::updateCurrentLpmEntriesStandardMode(void)
     m_currentLpmEntries = m_lpmConfiguration.getLpmEntriesForStandardConfiguration();
     if (m_currentLpmEntries.empty())
     {
-        postDebugMessage(PolicyMessage(FLF,
+        m_policyServices.messageLogging->writeMessageDebug(PolicyMessage(FLF,
             "Got zero LPM enrties in updateCurrentLpmEntriesStandardMode()",
             Constants::Invalid));
     }
@@ -218,7 +217,7 @@ void LpmConfigurationProxy::updateCurrentLpmEntriesAppMode(void)
 
     if (isAppSpecificMode() == false)
     {
-       postErrorMessage(PolicyMessage(FLF,
+       m_policyServices.messageLogging->writeMessageError(PolicyMessage(FLF,
             "Invalid LPM Mode (" + GccFix::to_string(lpmMode()) + ") expecting App Specific",
             Constants::Invalid));
         m_currentLpmEntries.clear();
@@ -227,7 +226,7 @@ void LpmConfigurationProxy::updateCurrentLpmEntriesAppMode(void)
 
     if (m_currentForegroundApp.empty())
     {
-        postInfoMessage(PolicyMessage(FLF, "Empty App name...", Constants::Invalid));
+        m_policyServices.messageLogging->writeMessageDebug(PolicyMessage(FLF, "Empty App name...", Constants::Invalid));
         m_currentLpmEntries.clear();
         return;
     }

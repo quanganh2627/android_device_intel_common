@@ -56,20 +56,14 @@ private:
 
     ParticipantServicesInterface* m_participantServicesInterface;
 
-    // Functions
-    void initializeDataStructures(void);
     void createPerformanceControlSet(UIntN domainIndex);
     void verifyPerformanceControlIndex(UIntN performanceControlIndex);
     void checkAndCreateControlStructures(UIntN domainIndex);
     void createPerformanceControlDynamicCaps(UIntN domainIndex);
     void createPerformanceControlStaticCaps(void);
 
-    // Vars (external)
     PerformanceControlSet* m_performanceControlSet;
     PerformanceControlDynamicCaps* m_performanceControlDynamicCaps;
     PerformanceControlStaticCaps* m_performanceControlStaticCaps;
-    PerformanceControlStatus* m_performanceControlStatus;
-
-    // Vars (internal)
     UIntN m_currentPerformanceControlIndex;
 };

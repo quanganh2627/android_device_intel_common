@@ -53,3 +53,18 @@ LOCAL_SRC_FILES := $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 include $(BUILD_SHARED_LIBRARY)
 
+SYMLINKS := $(TARGET_OUT)/etc/dptf/bin/$(LOCAL_MODULE).so
+$(SYMLINKS): POLICY_LIB := /system/lib/$(LOCAL_MODULE).so
+$(SYMLINKS): $(LOCAL_INSTALLED_MODULE) $(LOCAL_PATH)/Android.mk
+	@echo "Symlink: $@ -> $(POLICY_LIB)"
+	@mkdir -p $(dir $@)
+	@rm -rf $@
+	$(hide) ln -sf $(POLICY_LIB) $@
+
+ALL_DEFAULT_INSTALLED_MODULES += $(SYMLINKS)
+
+# We need this so that the installed files could be picked up based on the
+# local module name
+#ALL_MODULES.$(LOCAL_MODULE).INSTALLED := \
+#	$(ALL_MODULES.$(LOCAL_MODULE).INSTALLED) $(SYMLINKS)
+

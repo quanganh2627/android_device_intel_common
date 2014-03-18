@@ -32,8 +32,6 @@ Power PowerStatus::getCurrentPower(void) const
 XmlNode* PowerStatus::getXml(void)
 {
     XmlNode* root = XmlNode::createWrapperElement("power_status");
-
-    root->addChild(m_currentPower.getXml("power"));
-
+    root->addChild(XmlNode::createDataElement("power", m_currentPower.toString()));
     return root;
 }

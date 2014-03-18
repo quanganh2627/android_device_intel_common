@@ -18,6 +18,7 @@
 #define ESIF_TRACE_ID	ESIF_TRACEMODULE_DSP
 
 #include "esif_uf.h"			/* Upper Framework */
+#include "esif_ipc.h"			/* IPC Abstraction */
 #include "esif_dsp.h"			/* Device Support Package */
 #include "esif_hash_table.h"	/* Hash Table */
 #include "esif_uf_fpc.h"		/* Full Primitive Catalog */
@@ -291,8 +292,7 @@ static enum esif_rc insert_event(
 
 
 /* Get Algorithm From Linked List */
-static struct esif_fpc_algorithm
-*get_algorithm(
+static struct esif_fpc_algorithm *get_algorithm(
 	struct esif_up_dsp *dsp_ptr,
 	const enum esif_action_type action_type
 	)
@@ -315,8 +315,7 @@ static struct esif_fpc_algorithm
 
 
 /* Get Event From Linked List By Type */
-static struct esif_fpc_event
-*get_event_by_type(
+static struct esif_fpc_event *get_event_by_type(
 	struct esif_up_dsp *dsp_ptr,
 	const enum esif_event_type event_type
 	)
@@ -339,8 +338,7 @@ static struct esif_fpc_event
 
 
 /* Get Event From Linked List By GUID */
-static struct esif_fpc_event
-*get_event_by_guid(
+static struct esif_fpc_event *get_event_by_guid(
 	struct esif_up_dsp *dsp_ptr,
 	const esif_guid_t guid
 	)
@@ -384,8 +382,7 @@ static UInt32 get_domain_count(struct esif_up_dsp *dsp_ptr)
 
 
 /* Get i-th Domain */
-static struct esif_fpc_domain
-*get_domain(
+static struct esif_fpc_domain *get_domain(
 	struct esif_up_dsp *dsp_ptr,
 	const u32 index
 	)
@@ -674,9 +671,9 @@ static eEsifError esif_dsp_entry_create(struct esif_ccb_file *file_ptr)
 	dsp_ptr->acpi_type      = (EsifString)fpc_ptr->header.acpi_type;
 	dsp_ptr->vendor_id      = (EsifString)fpc_ptr->header.pci_vendor_id;
 	dsp_ptr->device_id      = (EsifString)fpc_ptr->header.pci_device_id;
-	dsp_ptr->pci_bus = (UInt8 *)&fpc_ptr->header.pci_bus;
-	dsp_ptr->pci_bus_device = (UInt8 *)&fpc_ptr->header.pci_device;
-	dsp_ptr->pci_function   = (UInt8 *)&fpc_ptr->header.pci_function;
+	dsp_ptr->pci_bus		= (EsifString)&fpc_ptr->header.pci_bus;
+	dsp_ptr->pci_bus_device = (EsifString)&fpc_ptr->header.pci_device;
+	dsp_ptr->pci_function   = (EsifString)&fpc_ptr->header.pci_function;
 
 	/* Assign Function Pointers */
 	dsp_ptr->get_code = get_code;
@@ -941,6 +938,274 @@ struct esif_up_dsp *esif_uf_dm_select_dsp_by_code(esif_string code)
 }
 
 
+EsifString esif_uf_dm_select_dsp_for_participant(
+	struct esif_ipc_event_data_create_participant *data_ptr
+	)
+{
+	EsifString edp_filename_ptr = NULL;
+	EsifString dsp_lookup_result_ptr = NULL;
+	char guid_str[ESIF_GUID_PRINT_SIZE];
+
+	// Sharkbay
+	if (!strcmp(data_ptr->name, "TFN1")) {
+		edp_filename_ptr = (char *)"sb_tfan";
+	} else if (!strcmp(data_ptr->name, "TFN2")) {
+		edp_filename_ptr = (char *)"sb_tfan";
+	} else if (!strcmp(data_ptr->name, "TMEM")) {
+		edp_filename_ptr = (char *)"sb_tmem";
+	} else if (!strcmp(data_ptr->name, "TAMB")) {
+		edp_filename_ptr = (char *)"sb_fgen";
+	} else if (!strcmp(data_ptr->name, "TEFN")) {
+		edp_filename_ptr = (char *)"sb_fgen";
+	} else if (!strcmp(data_ptr->name, "TSKN")) {
+		edp_filename_ptr = (char *)"sb_fgen";
+	} else if (!strcmp(data_ptr->name, "T_VR")) {
+		edp_filename_ptr = (char *)"sb_fgen";
+	} else if (!strcmp(data_ptr->name, "FGEN")) {
+		edp_filename_ptr = (char *)"sb_fgen";
+	} else if (!strcmp(data_ptr->name, "DPLY")) {
+		edp_filename_ptr = (char *)"sb_dply";
+	} else if (!strcmp(data_ptr->name, "TPWR")) {
+		edp_filename_ptr = (char *)"sb_tpwr";
+	} else if (!strcmp(data_ptr->name, "WIFI")) {
+		edp_filename_ptr = (char *)"sb_wifi";
+	} else if (!strcmp(data_ptr->name, "WGIG")) {
+		edp_filename_ptr = (char *)"sb_wgig";
+	} else if (!strcmp(data_ptr->name, "WWAN")) {
+		edp_filename_ptr = (char *)"sb_wwan";
+	} else if (!strcmp(data_ptr->name, "TINL")) {
+		edp_filename_ptr = (char *)"sb_fgen";
+	} else if (!strcmp(data_ptr->name, "TPCH")) {
+		edp_filename_ptr = (char *)"sb_b0_d1f_f6";
+	} else if (!strcmp(data_ptr->name, "TCPU")) {
+		edp_filename_ptr = (char *)"sb_b0_d4_f0";
+	} else if (!strcmp(data_ptr->name, "IETM")) {
+		edp_filename_ptr = (char *)"sb_ietm";
+	} else if (!strcmp(data_ptr->name, "DPTFZ")) {
+		edp_filename_ptr = (char *)"sb_ietm";
+	} else {
+		edp_filename_ptr = (char *)"sb_fgen";
+	}
+
+	// PCI
+	if (1 == data_ptr->enumerator) {
+		ESIF_TRACE_DEBUG(
+			"==================================================\n"
+			"ESIF IPC EVENT DATA CREATE PCI PARTICIPANT:\n"
+			"==================================================\n"
+			"Instance:       %d\n"
+			"Version:        %d\n"
+			"Class:          %s\n"
+			"Enumerator:     %s(%u)\n"
+			"Flags:          0x%08x\n"
+			"Name:           %s\n"
+			"Description:    %s\n"
+			"Driver Name:    %s\n"
+			"Device Name:    %s\n"
+			"Device Path:    %s\n"
+			"ACPI Scope:     %s\n"
+			"PCI Vendor:     0x%04X %s\n"
+			"PCI Device:     0x%04X %s\n"
+			"PCI Bus:        0x%02X\n"
+			"PCI Bus Device: 0x%02X\n"
+			"PCI Function:   0x%02X\n"
+			"PCI Revision:   0x%02X\n"
+			"PCI Class:      0x%02X %s\n"
+			"PCI SubClass:   0x%02X\n"
+			"PCI ProgIF:     0x%02X\n\n",
+			data_ptr->id,
+			data_ptr->version,
+			esif_guid_print((esif_guid_t *)data_ptr->class_guid, guid_str),
+			esif_participant_enum_str(data_ptr->enumerator),
+			data_ptr->enumerator,
+			data_ptr->flags,
+			data_ptr->name,
+			data_ptr->desc,
+			data_ptr->driver_name,
+			data_ptr->device_name,
+			data_ptr->device_path,
+			data_ptr->acpi_scope,
+			data_ptr->pci_vendor,
+			esif_vendor_str(data_ptr->pci_vendor),
+			data_ptr->pci_device,
+			esif_device_str(data_ptr->pci_device),
+			data_ptr->pci_bus,
+			data_ptr->pci_bus_device,
+			data_ptr->pci_function,
+			data_ptr->pci_revision,
+			data_ptr->pci_class,
+			esif_pci_class_str(data_ptr->pci_class),
+			data_ptr->pci_sub_class,
+			data_ptr->pci_prog_if);
+
+		{
+			struct esif_uf_dm_query_pci qry = {0};
+			char temp_vid[MAX_VENDOR_ID_STRING_LENGTH]		= {0};
+			char temp_did[MAX_DEVICE_ID_STRING_LENGTH]		= {0};
+
+			esif_ccb_sprintf(MAX_VENDOR_ID_STRING_LENGTH, temp_vid, "0x%04X", data_ptr->pci_vendor);
+			esif_ccb_sprintf(MAX_DEVICE_ID_STRING_LENGTH, temp_did, "0x%04X", data_ptr->pci_device);
+
+			qry.pci_vid = (EsifString)temp_vid;
+			qry.pci_did = (EsifString)temp_did;
+
+			ESIF_TRACE_DEBUG(
+				"\n\nQuery WHERE Clause:\n\n"
+				"pci_vid: %s\n"
+				"pci_did: %s\n",
+				qry.pci_vid,
+				qry.pci_did);
+
+			dsp_lookup_result_ptr = esif_uf_dm_query(ESIF_UF_DM_QUERY_TYPE_PCI, &qry);
+
+			ESIF_TRACE_DEBUG("DSP Lookup: %s\n", dsp_lookup_result_ptr);
+
+			if (NULL == dsp_lookup_result_ptr) {
+				dsp_lookup_result_ptr = edp_filename_ptr;
+			}
+
+			ESIF_TRACE_DEBUG("\nDSP Lookup: %s\n", dsp_lookup_result_ptr);
+
+			/* We are all in for PCI so override our selection */
+			edp_filename_ptr = dsp_lookup_result_ptr;
+		}
+
+		// ACPI
+	} else if (0 == data_ptr->enumerator) {
+		ESIF_TRACE_DEBUG(
+			"==================================================\n"
+			"ESIF IPC EVENT DATA CREATE ACPI PARTICIPANT:\n"
+			"==================================================\n"
+			"Instance:       %d\n"
+			"Version:        %d\n"
+			"Class:          %s\n"
+			"Enumerator:     %s(%u)\n"
+			"Flags:          0x%08x\n"
+			"Name:           %s\n"
+			"Description:    %s\n"
+			"Driver Name:    %s\n"
+			"Device Name:    %s\n"
+			"Device Path:    %s\n"
+			"ACPI Device:    %s %s\n"
+			"ACPI Scope:     %s\n",
+			data_ptr->id,
+			data_ptr->version,
+			esif_guid_print((esif_guid_t *)&data_ptr->class_guid, guid_str),
+			esif_participant_enum_str(data_ptr->enumerator),
+			data_ptr->enumerator,
+			data_ptr->flags,
+			data_ptr->name,
+			data_ptr->desc,
+			data_ptr->driver_name,
+			data_ptr->device_name,
+			data_ptr->device_path,
+			data_ptr->acpi_device,
+			esif_acpi_device_str(data_ptr->acpi_device),
+			data_ptr->acpi_scope);
+
+		if (data_ptr->acpi_uid != 0xFFFFFFFF) {
+			ESIF_TRACE_DEBUG("ACPI UID:       0x%x\n",
+								data_ptr->acpi_uid);
+		}
+
+		if (data_ptr->acpi_type != 0xFFFFFFFF) {
+			ESIF_TRACE_DEBUG("ACPI Type:      0x%x %s\n",
+								data_ptr->acpi_type,
+								esif_domain_type_str((enum esif_domain_type)data_ptr->acpi_type));
+		}
+
+		{
+			struct esif_uf_dm_query_acpi qry = {0};
+			#define TEMP_LEN 12
+			char temp_type[TEMP_LEN]    = {0};
+			char temp_uid[TEMP_LEN]		= {0};
+
+			EsifString acpi_device = "*";
+			EsifString acpi_type   = "*";
+			EsifString acpi_uid    = "*";
+			EsifString acpi_scope  = "*";
+
+			int type = data_ptr->acpi_type;
+			int uid  = data_ptr->acpi_uid;
+
+			if (esif_ccb_strlen(data_ptr->acpi_device, ESIF_NAME_LEN) > 0) {
+				acpi_device = data_ptr->acpi_device;
+			}
+			if (esif_ccb_strlen(data_ptr->acpi_scope, ESIF_SCOPE_LEN) > 0) {
+				acpi_scope = data_ptr->acpi_scope;
+			}
+
+			if (type >= 0) {
+				esif_ccb_sprintf(TEMP_LEN, temp_type, "%d", type);
+				acpi_type = temp_type;
+			}
+
+			if (uid >= 0) {
+				esif_ccb_sprintf(TEMP_LEN, temp_uid, "%d", uid);
+				acpi_uid = temp_uid;
+			}
+
+			qry.acpi_device = acpi_device;
+			qry.acpi_type   = acpi_type;
+			qry.acpi_uid    = acpi_uid;
+			qry.acpi_scope  = acpi_scope;
+
+			ESIF_TRACE_DEBUG(
+				"\n\nQuery WHERE Clause:\n\n"
+				"acpi_device: %s\n"
+				"acpi_type:   %s\n"
+				"acpi_uid:    %s\n"
+				"acpi_scope:  %s\n",
+				acpi_device,
+				acpi_type,
+				acpi_uid,
+				acpi_scope);
+
+			dsp_lookup_result_ptr = esif_uf_dm_query(ESIF_UF_DM_QUERY_TYPE_ACPI, &qry);
+
+			ESIF_TRACE_DEBUG("DSP Lookup: %s\n", dsp_lookup_result_ptr);
+
+			if (NULL == dsp_lookup_result_ptr) {
+				dsp_lookup_result_ptr = edp_filename_ptr;
+			}
+
+			ESIF_TRACE_DEBUG("\nDSP Lookup: %s\n", dsp_lookup_result_ptr);
+
+			/* We are all in for ACPI so override our selection */
+			edp_filename_ptr = dsp_lookup_result_ptr;
+		}
+	} else {
+		ESIF_TRACE_DEBUG(
+			"=======================================================\n"
+			"ESIF IPC EVENT DATA CREATE PLATFORM PARTICIPANT:\n"
+			"=======================================================\n"
+			"Instance:       %d\n"
+			"Version:        %d\n"
+			"Class:          %s\n"
+			"Enumerator:     %s(%u)\n"
+			"Flags:          0x%08x\n"
+			"Name:           %s\n"
+			"Description:    %s\n"
+			"Driver Name:    %s\n"
+			"Device Name:    %s\n"
+			"Device Path:    %s\n\n",
+			data_ptr->id,
+			data_ptr->version,
+			esif_guid_print((esif_guid_t *)data_ptr->class_guid, guid_str),
+			esif_participant_enum_str(data_ptr->enumerator),
+			data_ptr->enumerator,
+			data_ptr->flags,
+			data_ptr->name,
+			data_ptr->desc,
+			data_ptr->driver_name,
+			data_ptr->device_name,
+			data_ptr->device_path);
+	}
+
+	return edp_filename_ptr;
+}	
+
+
 /* Handle each weighted Minterm */
 static int compare_and_weight_minterm(
 	esif_string dsp,
@@ -951,7 +1216,7 @@ static int compare_and_weight_minterm(
 	int score = 0;
 	if (0 == *dsp || '*' == *dsp) {	/* DSP don't care trumps all */
 		score = 0;
-	} else if (0 == *dsp && (0 == *qry || '*' == *qry)) {	/* blank == blank don't care. */
+	} else if (0 == *qry || '*' == *qry) {	/* blank == blank don't care. */
 		score = 0;
 	} else if (0 == strcmp(dsp, qry)) {	/* data == data match. */
 		score = weight;
@@ -990,6 +1255,34 @@ static int weighted_acpi_eq(
 	weight += minterm;
 
 	minterm = compare_and_weight_minterm(dsp_ptr->acpi_scope, qry_ptr->acpi_scope, 1);
+	if (minterm == -1) {
+		goto no_match;
+	}
+	weight += minterm;
+
+	return weight;
+
+no_match:
+	return -1;
+}
+
+
+/* PCI Weighted Query */
+static int weighted_pci_eq(
+	struct esif_up_dsp *dsp_ptr,
+	struct esif_uf_dm_query_pci *qry_ptr
+	)
+{
+	int weight  = 0;
+	int minterm = 0;
+
+	minterm = compare_and_weight_minterm(dsp_ptr->vendor_id, qry_ptr->pci_vid, 2);
+	if (minterm == -1) {
+		goto no_match;
+	}
+	weight += minterm;
+
+	minterm = compare_and_weight_minterm(dsp_ptr->device_id, qry_ptr->pci_did, 1);
 	if (minterm == -1) {
 		goto no_match;
 	}
@@ -1070,8 +1363,9 @@ EsifString esif_uf_dm_query(
 			weight = weighted_acpi_eq(dsp_ptr, (struct esif_uf_dm_query_acpi *)qry_ptr);
 			break;
 
-		// TBD
 		case ESIF_UF_DM_QUERY_TYPE_PCI:
+			best = 2 + 1;
+			weight = weighted_pci_eq(dsp_ptr, (struct esif_uf_dm_query_pci *)qry_ptr);
 			break;
 
 		// TBD

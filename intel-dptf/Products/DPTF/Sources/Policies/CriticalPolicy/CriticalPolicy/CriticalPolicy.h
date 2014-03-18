@@ -64,14 +64,15 @@ private:
         Temperature currentTemperature,
         std::vector<std::pair<ParticipantSpecificInfoKey::Type, UIntN>> tripPoints,
         ParticipantProxy& participant);
-    UIntN determineLowerTemperatureThreshold(
+    Temperature determineLowerTemperatureThreshold(
         Temperature currentTemperature,
         std::vector<std::pair<ParticipantSpecificInfoKey::Type, UIntN>> tripPoints);
-    UIntN determineUpperTemperatureThreshold(
+    Temperature determineUpperTemperatureThreshold(
         Temperature currentTemperature,
         std::vector<std::pair<ParticipantSpecificInfoKey::Type, UIntN>> tripPoints);
-    void takePowerAction(ParticipantSpecificInfoKey::Type crossedTripPoint);
+    void takePowerAction(const Temperature& currentTemperature, ParticipantSpecificInfoKey::Type crossedTripPoint, const Temperature& crossedTripPointTemperature);
     ParticipantSpecificInfoKey::Type findTripPointCrossed(
         const std::vector<std::pair<ParticipantSpecificInfoKey::Type, UIntN>>& tripPoints,
         const Temperature& currentTemperature);
+    XmlNode* getXmlForCriticalTripPoints() const;
 };

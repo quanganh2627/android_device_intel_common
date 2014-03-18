@@ -17,37 +17,42 @@
 ******************************************************************************/
 
 #include "Temperature.h"
-#include "DptfExceptions.h"
-#include "XmlNode.h"
-#include "StatusFormat.h"
-#include "GccFix.h"
 
-Temperature::Temperature(void) : m_temperature(invalidTemperature)
+Temperature::Temperature(void)
+    : m_temperature(0), m_valid(false)
 {
 }
 
-Temperature::Temperature(UInt32 temperature) : m_temperature(temperature)
+Temperature::Temperature(UInt32 temperature)
+    : m_temperature(temperature), m_valid(true)
 {
-    if (temperature > maxValidTemperature && temperature != invalidTemperature)
+    if (temperature > maxValidTemperature)
     {
         throw dptf_exception("Temperature out of valid range");
     }
 }
 
-UInt32 Temperature::getTemperature() const
+Temperature Temperature::createInvalid()
 {
-    return m_temperature;
-}
-
-Bool Temperature::isTemperatureValid() const
-{
-    return isTemperatureValid(m_temperature);
+    return Temperature();
 }
 
 Bool Temperature::operator==(const Temperature& rhs) const
 {
     // Do not throw an exception if temperature is not valid.
-    return (this->getTemperature() == rhs.getTemperature());
+
+    if (this->isValid() == true && rhs.isValid() == true)
+    {
+        return (this->m_temperature == rhs.m_temperature);
+    }
+    else if (this->isValid() == false && rhs.isValid() == false)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 Bool Temperature::operator!=(const Temperature& rhs) const
@@ -58,53 +63,64 @@ Bool Temperature::operator!=(const Temperature& rhs) const
 
 Bool Temperature::operator>(const Temperature& rhs) const
 {
-    throwIfTemperatureNotValid(this->getTemperature(), rhs.getTemperature());
-    return (this->getTemperature() > rhs.getTemperature());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return (this->m_temperature > rhs.m_temperature);
 }
 
 Bool Temperature::operator>=(const Temperature& rhs) const
 {
-    throwIfTemperatureNotValid(this->getTemperature(), rhs.getTemperature());
-    return (this->getTemperature() >= rhs.getTemperature());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return (this->m_temperature >= rhs.m_temperature);
 }
 
 Bool Temperature::operator<(const Temperature& rhs) const
 {
-    throwIfTemperatureNotValid(this->getTemperature(), rhs.getTemperature());
-    return (this->getTemperature() < rhs.getTemperature());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return (this->m_temperature < rhs.m_temperature);
 }
 
 Bool Temperature::operator<=(const Temperature& rhs) const
 {
-    throwIfTemperatureNotValid(this->getTemperature(), rhs.getTemperature());
-    return (this->getTemperature() <= rhs.getTemperature());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return (this->m_temperature <= rhs.m_temperature);
+}
+
+std::ostream& operator<<(std::ostream& os, const Temperature& temperature)
+{
+    os << temperature.toString();
+    return os;
+}
+
+Temperature::operator UInt32(void) const
+{
+    throwIfInvalid(*this);
+    return m_temperature;
+}
+
+Bool Temperature::isValid() const
+{
+    return m_valid;
 }
 
 std::string Temperature::toString() const
 {
-    if (isTemperatureValid())
+    if (isValid())
     {
-        return GccFix::to_string(m_temperature) + "C"; // TODO: adjust for when we get 10th degrees C
+        return GccFix::to_string(m_temperature); // TODO: adjust for when we get 10th degrees C
     }
     else
     {
-        return "_C"; // TODO: adjust for when we get 10th degrees C
+        return std::string(Constants::InvalidString);
     }
 }
 
-XmlNode* Temperature::getXml(std::string tag)
+void Temperature::throwIfInvalid(const Temperature& temperature) const
 {
-    return XmlNode::createDataElement(tag, StatusFormat::friendlyValue(m_temperature));
-}
-
-Bool Temperature::isTemperatureValid(UInt32 temperature) const
-{
-    return ((temperature <= maxValidTemperature) && (temperature != invalidTemperature));
-}
-
-void Temperature::throwIfTemperatureNotValid(UInt32 lhs, UInt32 rhs) const
-{
-    if (isTemperatureValid(lhs) == false || isTemperatureValid(rhs) == false)
+    if (temperature.isValid() == false)
     {
         throw dptf_exception("Temperature is not valid.");
     }

@@ -41,10 +41,10 @@ void DomainPixelClockControl_001::setPixelClockControl(UIntN participantIndex, U
     for (UIntN i = 0; i < pixelClockDataSet.getCount(); i++)
     {
         m_participantServicesInterface->primitiveExecuteSetAsUInt64(
-            esif_primitive_type::SET_CLOCK_SSC_ENABLED, pixelClockDataSet[i].getSscEnabledNudgeFrequency().getFrequency(),
+            esif_primitive_type::SET_CLOCK_SSC_ENABLED, pixelClockDataSet[i].getSscEnabledNudgeFrequency(),
             domainIndex, static_cast<UInt8>(i));
         m_participantServicesInterface->primitiveExecuteSetAsUInt64(
-            esif_primitive_type::SET_CLOCK_SSC_DISABLED, pixelClockDataSet[i].getSscDisabledNudgeFrequency().getFrequency(),
+            esif_primitive_type::SET_CLOCK_SSC_DISABLED, pixelClockDataSet[i].getSscDisabledNudgeFrequency(),
             domainIndex, static_cast<UInt8>(i));
     }
 }

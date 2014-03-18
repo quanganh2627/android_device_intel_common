@@ -18,8 +18,6 @@
 
 #include "SpecificInfo.h"
 #include <algorithm>
-#include "GccFix.h"
-
 using namespace std;
 
 Bool compareTripPointsOnTemperature(

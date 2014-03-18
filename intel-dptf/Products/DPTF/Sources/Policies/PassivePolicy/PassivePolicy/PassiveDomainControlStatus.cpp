@@ -18,7 +18,6 @@
 
 #include "PassiveDomainControlStatus.h"
 #include "StatusFormat.h"
-#include <sstream>
 using namespace std;
 using namespace StatusFormat;
 
@@ -26,9 +25,9 @@ PassiveDomainControlStatus::PassiveDomainControlStatus(DomainProxy& domain)
     : m_participantIndex(Constants::Invalid),
     m_domainIndex(Constants::Invalid),
     m_domainName(""),
-    m_domainTemperature(Constants::Invalid),
+    m_domainTemperature(Temperature::createInvalid()),
     m_domainPriority(Constants::Invalid),
-    m_domainUtilization(Percentage())
+    m_domainUtilization(Percentage::createInvalid())
 {
     aquireDomainStatus(domain);
     addPowerStatus(domain);
@@ -44,7 +43,7 @@ XmlNode* PassiveDomainControlStatus::getXml()
     domainControlStatus->addChild(XmlNode::createDataElement("index", friendlyValue(m_domainIndex)));
     domainControlStatus->addChild(XmlNode::createDataElement("name", m_domainName));
     domainControlStatus->addChild(
-        XmlNode::createDataElement("temperature", friendlyValue(m_domainTemperature.getTemperature())));
+        XmlNode::createDataElement("temperature", m_domainTemperature.toString()));
     domainControlStatus->addChild(m_domainUtilization.getXml("utilization"));
     domainControlStatus->addChild(
         XmlNode::createDataElement("priority",
@@ -101,7 +100,7 @@ void PassiveDomainControlStatus::addPstateStatus(DomainProxy& domain)
         UIntN lowerLimitIndex;
         if (firstTstateIndex != Constants::Invalid)
         {
-            lowerLimitIndex = firstTstateIndex - 1;
+            lowerLimitIndex = std::min(firstTstateIndex - 1, dynamicCapabilities.getCurrentLowerLimitIndex());
         }
         else
         {
@@ -142,6 +141,10 @@ void PassiveDomainControlStatus::addTstateStatus(DomainProxy& domain)
                 indexOfFirstControlWithType(perfControl.getControls(), PerformanceControlType::ThrottleState);
             IntN currentIndex = perfControl.getStatus().getCurrentControlSetIndex() - tstateIndexStart;
             currentIndex = std::max(0, currentIndex);
+            if (maxUnlimitedIndex == maxLimitedIndex)
+            {
+                throw dptf_exception("No T-state controls are available.");
+            }
 
             m_controlStatus.push_back(
                 ControlStatus(
@@ -169,8 +172,8 @@ void PassiveDomainControlStatus::addPowerStatus(DomainProxy& domain)
     if (powerControl.supportsPowerControls())
     {
         // get the min and max power limits
-        Power min(Constants::Invalid);
-        Power max(Constants::Invalid);
+        Power min(Power::createInvalid());
+        Power max(Power::createInvalid());
         try
         {
             UIntN pl1Index = powerControl.getPl1ControlSetIndex();
@@ -183,7 +186,7 @@ void PassiveDomainControlStatus::addPowerStatus(DomainProxy& domain)
         }
 
         // get the current power limit
-        Power current(Constants::Invalid);
+        Power current(Power::createInvalid());
         try
         {
             const PowerControlStatusSet& statusSet = powerControl.getControls();
@@ -194,8 +197,7 @@ void PassiveDomainControlStatus::addPowerStatus(DomainProxy& domain)
         }
 
         // add the control status to the list
-        m_controlStatus.push_back(
-            ControlStatus("Power", min.getPower(), max.getPower(), current.getPower()));
+        m_controlStatus.push_back(ControlStatus("Power", min, max, current));
     }
     else
     {
@@ -247,7 +249,7 @@ void PassiveDomainControlStatus::addDisplayStatus(DomainProxy& domain)
 void PassiveDomainControlStatus::addCoreStatus(DomainProxy& domain)
 {
     CoreControlFacade& coreControl = domain.getCoreControl();
-    if (coreControl.supportsCoreControls())
+    if (coreControl.supportsCoreControls() && coreControl.getPreferences().isLpoEnabled())
     {
         // get maximum processors
         UIntN maxProcessors(Constants::Invalid);

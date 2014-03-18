@@ -19,7 +19,6 @@
 #include "ParticipantStatusMap.h"
 #include "ParticipantManager.h"
 #include "XmlNode.h"
-#include "GccFix.h"
 
 ParticipantStatusMap::ParticipantStatusMap(ParticipantManager* participantManager) :
     m_participantManager(participantManager)

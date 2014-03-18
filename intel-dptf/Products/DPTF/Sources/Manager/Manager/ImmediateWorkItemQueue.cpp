@@ -21,7 +21,6 @@
 #include "WorkItemMatches.h"
 #include "ParticipantWorkItem.h"
 #include "XmlNode.h"
-#include "GccFix.h"
 
 ImmediateWorkItemQueue::ImmediateWorkItemQueue(EsifSemaphore* workItemQueueSemaphore) :
     m_workItemQueueSemaphore(workItemQueueSemaphore), m_maxCount(0)

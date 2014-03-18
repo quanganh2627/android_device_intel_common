@@ -20,11 +20,13 @@
 #define _ESIF_CCB_SYSTEM_H_
 
 #include "esif.h"
+#include "esif_data.h"
 
 #ifdef ESIF_ATTR_USER
 
 #ifdef ESIF_ATTR_OS_WINDOWS
 #include "powrprof.h"
+#include "win\dppe.h"
 #endif
 
 // Execute System Command. Encapsulate to avoid Linux warnings when using gcc -O9
@@ -74,6 +76,27 @@ typedef DWORD (WINAPI * PFNPOWERREPORTTHERMALEVENT)(
 #define THERMAL_EVENT_UNSPECIFIED 0xffffffff
 
 #endif
+
+
+static ESIF_INLINE void esif_guid_to_ms_guid(esif_guid_t *guid)
+{
+#ifdef ESIF_ATTR_OS_WINDOWS
+	u8 *ptr = (u8 *)guid;
+	u8 b[ESIF_GUID_LEN] = {0};
+
+	ESIF_TRACE_DEBUG("%s:\n", ESIF_FUNC);
+	esif_ccb_memcpy(&b, ptr, ESIF_GUID_LEN);
+
+	*(ptr + 0) = b[3];
+	*(ptr + 1) = b[2];
+	*(ptr + 2) = b[1];
+	*(ptr + 3) = b[0];
+	*(ptr + 4) = b[5];
+	*(ptr + 5) = b[4];
+	*(ptr + 6) = b[7];
+	*(ptr + 7) = b[6];
+#endif
+}
 
 // Enter S0 Shutdown
 static ESIF_INLINE void esif_ccb_shutdown(
@@ -142,6 +165,33 @@ static ESIF_INLINE void esif_ccb_suspend()
 #endif
 }
 
+#ifdef ESIF_ATTR_OS_WINDOWS
+#define esif_ccb_remove_power_setting(req_ptr) \
+	esif_ccb_remove_power_setting_win(req_ptr)
+
+#define system_clear_ctdp_names() \
+	system_clear_ctdp_names_win()
+
+#define system_set_ctdp_name(request, instance) \
+	system_set_ctdp_name_win(request, instance)
+
+#define system_get_ctdp_name(response, instance) \
+	system_get_ctdp_name_win(response, instance)
+
+#else
+#define esif_ccb_remove_power_setting(req_ptr) \
+	ESIF_E_ACTION_NOT_IMPLEMENTED
+
+#define system_clear_ctdp_names() \
+	ESIF_E_ACTION_NOT_IMPLEMENTED
+
+#define system_set_ctdp_name(request, instance) \
+	ESIF_E_ACTION_NOT_IMPLEMENTED
+
+#define system_get_ctdp_name(response, instance) \
+	ESIF_E_ACTION_NOT_IMPLEMENTED
+
+#endif
 
 #endif /* ESIF_ATTR_USER */
 #endif /* _ESIF_CCB_SYSTEM_H_ */

@@ -21,12 +21,11 @@
 #include "DptfManager.h"
 #include "EsifServices.h"
 #include "Utility.h"
-#include "GccFix.h"
 
 TemperatureThresholdArbitrator::TemperatureThresholdArbitrator(DptfManager* dptfManager) :
     m_dptfManager(dptfManager),
-    m_lastKnownParticipantTemperature(Temperature::invalidTemperature),
-    m_arbitratedTemperatureThresholds(Temperature::invalidTemperature, Temperature::invalidTemperature, 0)
+    m_lastKnownParticipantTemperature(Temperature::createInvalid()),
+    m_arbitratedTemperatureThresholds(Temperature::createInvalid(), Temperature::createInvalid(), 0)
 {
 }
 
@@ -82,8 +81,8 @@ void TemperatureThresholdArbitrator::throwIfTemperatureThresholdsInvalid(UIntN p
     Temperature aux0 = temperatureThresholds.getAux0();
     Temperature aux1 = temperatureThresholds.getAux1();
 
-    if ((aux0.isTemperatureValid() == true && aux0 > currentTemperature) ||
-        (aux1.isTemperatureValid() == true && aux1 < currentTemperature))
+    if ((aux0.isValid() == true && aux0 > currentTemperature) ||
+        (aux1.isValid() == true && aux1 < currentTemperature))
     {
         ManagerMessage message = ManagerMessage(m_dptfManager, FLF,
             "Received invalid temperature thresholds from policy.");
@@ -112,8 +111,8 @@ Bool TemperatureThresholdArbitrator::findNewTemperatureThresholds(const Temperat
 {
     m_lastKnownParticipantTemperature = currentTemperature;
 
-    Temperature newAux0;
-    Temperature newAux1;
+    Temperature newAux0 = Temperature::createInvalid();
+    Temperature newAux1 = Temperature::createInvalid();
 
     for (UIntN i = 0; i < m_requestedTemperatureThresholds.size(); i++)
     {
@@ -125,17 +124,17 @@ Bool TemperatureThresholdArbitrator::findNewTemperatureThresholds(const Temperat
             Temperature currentAux1 = currentTemperatureThresholds->getAux1();
 
             // check for a new aux0
-            if ((currentAux0.isTemperatureValid() == true) &&
+            if ((currentAux0.isValid() == true) &&
                 (currentAux0 <= m_lastKnownParticipantTemperature) &&
-                ((newAux0.isTemperatureValid() == false) || (currentAux0 > newAux0)))
+                ((newAux0.isValid() == false) || (currentAux0 > newAux0)))
             {
                 newAux0 = currentAux0;
             }
 
             // check for a new aux1
-            if ((currentAux1.isTemperatureValid() == true) &&
+            if ((currentAux1.isValid() == true) &&
                 (currentAux1 >= m_lastKnownParticipantTemperature) &&
-                ((newAux1.isTemperatureValid() == false) || (currentAux1 < newAux1)))
+                ((newAux1.isValid() == false) || (currentAux1 < newAux1)))
             {
                 newAux1 = currentAux1;
             }

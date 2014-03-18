@@ -60,24 +60,21 @@ private:
     ParticipantServicesInterface* m_participantServicesInterface;
 
     // Functions
-    void initializeDataStructures(void);
-    void createPerformanceControlSet(UIntN domainIndex);
-    void createPerformanceControlDynamicCaps(UIntN domainIndex);
+    void initializePerformanceControlSetIfNull(UIntN domainIndex);
+    void initializePerformanceControlDynamicCapsIfNull(UIntN domainIndex);
     void createPerformanceControlStatus(void);
     void arbitratePerformanceStateLimits(UIntN pStateUpperLimitIndex, UIntN pStateLowerLimitIndex,
         UIntN tStateUpperLimitIndex, UIntN tStateLowerLimitIndex,
         UIntN& performanceUpperLimitIndex, UIntN& performanceLowerLimitIndex);
     void calculateThrottlingStateLimits(UIntN& tStateUpperLimitIndex, UIntN& tStateLowerLimitIndex, UIntN domainIndex);
     void calculatePerformanceStateLimits(UIntN& pStateUpperLimitIndex, UIntN& pStateLowerLimitIndex, UIntN domainIndex);
-    void verifyPerformanceControlIndex(UIntN performanceControlIndex);
-    void checkAndCreateControlStructures(UIntN domainIndex);
-    void createPerformanceControlStaticCaps(void);
+    void throwIfPerformanceControlIndexIsInvalid(UIntN performanceControlIndex);
+    void initializePerformanceControlStaticCapsIfNull(void);
 
     // Vars (external)
     PerformanceControlDynamicCaps* m_performanceControlDynamicCaps;
     PerformanceControlSet* m_performanceControlSet;
     PerformanceControlStaticCaps* m_performanceControlStaticCaps;
-    PerformanceControlStatus* m_performanceControlStatus;
 
     // Vars (internal)
     UIntN m_currentPerformanceControlIndex;

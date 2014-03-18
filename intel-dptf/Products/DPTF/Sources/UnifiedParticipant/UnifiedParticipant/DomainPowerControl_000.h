@@ -29,7 +29,7 @@
 //
 
 class DomainPowerControl_000 final : public DomainPowerControlInterface,
-    public ComponentExtendedInterface, public ConfigTdpDataSyncInterface
+    public ComponentExtendedInterface
 {
 public:
 
@@ -43,8 +43,4 @@ public:
     // ComponentExtendedInterface
     virtual void clearCachedData(void) override final;
     virtual XmlNode* getXml(UIntN domainIndex) override final;
-
-    // ConfigTdpDataSyncInterface
-    virtual void updateBasedOnConfigTdpInformation(UIntN participantIndex, UIntN domainIndex,
-        ConfigTdpControlSet configTdpControlSet, ConfigTdpControlStatus configTdpControlStatus) override final;
 };

@@ -488,35 +488,46 @@ std::vector<PerformanceControl> BinaryParse::processorPssObject(UInt32 dataLengt
     if (dataLength % sizeof(EsifDataBinaryPssPackage))
     {
         // Data size mismatch, should be evenly divisible
-        throw dptf_exception("Data size mismatch.");
+        throw dptf_exception("Failed to parse PSS object.  The length of data received does not match the expected \
+                             data length.");
     }
 
-    for (UIntN i = 0; i < rows; i++)
+    for (UIntN row = 0; row < rows; row++)
     {
-        Percentage* p;
-
         if (controls.empty())
         {
-            p = new Percentage(1.0);
+            Percentage ratio(1.0);
+            PerformanceControl performanceControl(
+                static_cast<UInt32>(currentRow->control.integer.value),
+                PerformanceControlType::PerformanceState,
+                static_cast<UInt32>(currentRow->power.integer.value),
+                ratio,
+                static_cast<UInt32>(currentRow->latency.integer.value),
+                static_cast<UInt32>(currentRow->coreFrequency.integer.value),
+                std::string("MHz"));
+            controls.push_back(performanceControl);
         }
         else
         {
-            p = new Percentage((static_cast<UIntN>((100 * currentRow->coreFrequency.integer.value)
-                / controls.front().getControlAbsoluteValue())) / 100.0);
+            if (controls.front().getControlAbsoluteValue() != 0)
+            {
+                Percentage ratio((static_cast<UIntN>((100 * currentRow->coreFrequency.integer.value) / 
+                    controls.front().getControlAbsoluteValue())) / 100.0);
+                PerformanceControl performanceControl(
+                    static_cast<UInt32>(currentRow->control.integer.value),
+                    PerformanceControlType::PerformanceState,
+                    static_cast<UInt32>(currentRow->power.integer.value),
+                    ratio,
+                    static_cast<UInt32>(currentRow->latency.integer.value),
+                    static_cast<UInt32>(currentRow->coreFrequency.integer.value),
+                    std::string("MHz"));
+                controls.push_back(performanceControl);
+            }
+            else
+            {
+                throw dptf_exception("Invalid performance control set.  Performance controls will not be available for this domain.");
+            }
         }
-
-        PerformanceControl temp(
-            static_cast<UInt32>(currentRow->control.integer.value),
-            PerformanceControlType::PerformanceState,
-            static_cast<UInt32>(currentRow->power.integer.value),
-            *p,
-            static_cast<UInt32>(currentRow->latency.integer.value),
-            static_cast<UInt32>(currentRow->coreFrequency.integer.value),
-            std::string("MHz"));
-
-        controls.push_back(temp);
-
-        delete p;
 
         data += sizeof(struct EsifDataBinaryPssPackage);
         currentRow = reinterpret_cast<struct EsifDataBinaryPssPackage*>(data);
@@ -637,10 +648,10 @@ std::vector<ConfigTdpControl> BinaryParse::processorTdplObject(UInt32 dataLength
     for (UIntN i = 0; i < rows; i++)
     {
         ConfigTdpControl* temp = new ConfigTdpControl(
-            static_cast<UIntN>(currentRow->tdpControl.integer.value),
-            static_cast<UIntN>(currentRow->frequencyControl.integer.value),
-            static_cast<UIntN>(currentRow->tdpPower.integer.value),
-            static_cast<UIntN>(currentRow->frequency.integer.value));
+            currentRow->tdpControl.integer.value,
+            currentRow->frequencyControl.integer.value,
+            currentRow->tdpPower.integer.value,
+            currentRow->frequency.integer.value);
 
         controls.push_back(*temp);
         delete temp;

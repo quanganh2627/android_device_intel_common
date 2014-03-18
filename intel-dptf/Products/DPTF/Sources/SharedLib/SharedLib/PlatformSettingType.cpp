@@ -16,17 +16,18 @@
 **
 ******************************************************************************/
 
-//#pragma once
-//
-//#include "Dptf.h"
-//#include "esif_data_variant.h"
-//
-//class EsifDataVariant final
-//{
-//public:
-//
-//
-//private:
-//
-//    esif_data_variant m_esifDataVariant;
-//};
+#include "PlatformSettingType.h"
+
+namespace PlatformSettingType
+{
+    std::string ToString(PlatformSettingType::Type type)
+    {
+        switch (type)
+        {
+            case PlatformSettingType::ConfigTdp:
+                return "ConfigTDP";
+            default:
+                throw dptf_exception("PlatformSettingType::Type is invalid.");
+        }
+    }
+}

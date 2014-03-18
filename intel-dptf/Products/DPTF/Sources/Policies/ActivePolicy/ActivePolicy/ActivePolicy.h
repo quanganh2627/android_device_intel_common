@@ -66,8 +66,8 @@ private:
 
     // setting target trip point notification
     void setTripPointNotificationForTarget(ParticipantProxy& target, const Temperature& currentTemperature);
-    UIntN determineLowerTemperatureThreshold(const Temperature& currentTemperature, SpecificInfo& tripPoints) const;
-    UIntN determineUpperTemperatureThreshold(const Temperature& currentTemperature, SpecificInfo& tripPoints) const;
+    Temperature determineLowerTemperatureThreshold(const Temperature& currentTemperature, SpecificInfo& tripPoints) const;
+    Temperature determineUpperTemperatureThreshold(const Temperature& currentTemperature, SpecificInfo& tripPoints) const;
 
     // selecting a fan speed
     Percentage selectFanSpeed(const ActiveRelationshipTableEntry& entry, SpecificInfo& tripPoints, const Temperature& temperature);
@@ -81,4 +81,8 @@ private:
     // selecting participants
     Bool participantIsSourceDevice(UIntN participantIndex);
     Bool participantIsTargetDevice(UIntN participantIndex);
+
+    // status
+    XmlNode* getXmlForActiveTripPoints() const;
+    XmlNode* getXmlForActiveCoolingControls() const;
 };

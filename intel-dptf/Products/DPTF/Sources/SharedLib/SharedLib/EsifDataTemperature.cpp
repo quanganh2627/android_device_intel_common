@@ -25,7 +25,7 @@ EsifDataTemperature::EsifDataTemperature(void)
 
 EsifDataTemperature::EsifDataTemperature(const Temperature& temperature)
 {
-    initialize(temperature.getTemperature());
+    initialize(temperature);
 }
 
 EsifDataTemperature::operator esif::EsifDataPtr(void)
@@ -35,7 +35,14 @@ EsifDataTemperature::operator esif::EsifDataPtr(void)
 
 EsifDataTemperature::operator Temperature(void) const
 {
-    return Temperature(m_esifDataValue);
+    if (m_esifDataValue == Constants::Invalid)
+    {
+        return Temperature::createInvalid();
+    }
+    else
+    {
+        return Temperature(m_esifDataValue);
+    }
 }
 
 void EsifDataTemperature::initialize(UInt32 data)

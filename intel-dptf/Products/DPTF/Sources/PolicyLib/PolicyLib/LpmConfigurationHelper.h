@@ -46,12 +46,6 @@ public:
         ) const;
 
 protected:
-    void postInfoMessage(const PolicyMessage& message);
-    void postWarningMessage(const PolicyMessage& message);
-    void postErrorMessage(const PolicyMessage& message);
-    void postDebugMessage(const PolicyMessage& message);
-
-private:
 
     PolicyServicesInterfaceContainer m_policyServices;
 

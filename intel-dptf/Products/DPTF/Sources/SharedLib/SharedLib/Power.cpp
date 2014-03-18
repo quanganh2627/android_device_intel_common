@@ -17,108 +17,127 @@
 ******************************************************************************/
 
 #include "Power.h"
-#include "DptfExceptions.h"
-#include "StatusFormat.h"
-#include "XmlNode.h"
-#include "GccFix.h"
 
-Power::Power(void) : m_power(invalidPower)
+static const UInt32 MaxValidPower = 10000000; // 10,000 watts
+
+Power::Power(void)
+    : m_power(0), m_valid(false)
 {
 }
 
-Power::Power(UInt32 power) : m_power(power)
+Power::Power(UInt32 power)
+    : m_power(power), m_valid(true)
 {
-    if (power > maxValidPower && power != invalidPower)
+    if (power > MaxValidPower)
     {
+        m_valid = false;
         throw dptf_exception("Power value " + GccFix::to_string(power) + " out of valid range.");
     }
 }
 
-UInt32 Power::getPower() const
+Power Power::createInvalid()
 {
-    return m_power;
-}
-
-Bool Power::isPowerValid() const
-{
-    return isPowerValid(m_power);
+    return Power();
 }
 
 Bool Power::operator==(const Power& rhs) const
 {
-    return (this->getPower() == rhs.getPower());
+    // Do not throw an exception if power is not valid.
+
+    if (this->isValid() == true && rhs.isValid() == true)
+    {
+        return (this->m_power == rhs.m_power);
+    }
+    else if (this->isValid() == false && rhs.isValid() == false)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 Bool Power::operator!=(const Power& rhs) const
 {
+    // Do not throw an exception if power is not valid.
     return !(*this == rhs);
 }
 
 Bool Power::operator>(const Power& rhs) const
 {
-    throwIfInvalidPower(this->getPower(), rhs.getPower());
-    return (this->getPower() > rhs.getPower());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return (this->m_power > rhs.m_power);
 }
 
 Bool Power::operator>=(const Power& rhs) const
 {
-    throwIfInvalidPower(this->getPower(), rhs.getPower());
-    return (this->getPower() >= rhs.getPower());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return (this->m_power >= rhs.m_power);
 }
 
 Bool Power::operator<(const Power& rhs) const
 {
-    throwIfInvalidPower(this->getPower(), rhs.getPower());
-    return (this->getPower() < rhs.getPower());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return (this->m_power < rhs.m_power);
 }
 
 Bool Power::operator<=(const Power& rhs) const
 {
-    throwIfInvalidPower(this->getPower(), rhs.getPower());
-    return (this->getPower() <= rhs.getPower());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return (this->m_power <= rhs.m_power);
 }
 
 Power Power::operator+(const Power& rhs) const
 {
-    throwIfInvalidPower(this->getPower(), rhs.getPower());
-    return Power(this->getPower() + rhs.getPower());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return Power(this->m_power + rhs.m_power);
 }
 
 Power Power::operator-(const Power& rhs) const
 {
-    throwIfInvalidPower(this->getPower(), rhs.getPower());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
 
-    if (rhs.getPower() > this->getPower())
+    if (rhs.m_power > this->m_power)
     {
-        throw dptf_exception("Invalid power subtraction requested.  rhs > lhs.");
+        throw dptf_exception("Invalid power subtraction requested.  Right side is greater than left side.");
     }
+    else
+    {
+        return Power(this->m_power - rhs.m_power);
+    }
+}
 
-    return Power(this->getPower() - rhs.getPower());
+std::ostream& operator<<(std::ostream& os, const Power& power)
+{
+    os << power.toString();
+    return os;
+}
+
+Power::operator UInt32(void) const
+{
+    return m_power;
+}
+
+Bool Power::isValid() const
+{
+    return m_valid;
 }
 
 std::string Power::toString() const
 {
-    return GccFix::to_string(m_power) + "mW";
+    return GccFix::to_string(m_power);
 }
 
-XmlNode* Power::getXml(void)
+void Power::throwIfInvalid(const Power& power) const
 {
-    return getXml("");
-}
-
-XmlNode* Power::getXml(std::string tag)
-{
-    return XmlNode::createDataElement(tag, StatusFormat::friendlyValue(m_power));
-}
-
-Bool Power::isPowerValid(UInt32 power) const
-{
-    return ((power <= maxValidPower) && (power != invalidPower));
-}
-
-void Power::throwIfInvalidPower(UInt32 lhs, UInt32 rhs) const
-{
-    if (isPowerValid(lhs) == false || isPowerValid(rhs) == false)
+    if (power.isValid() == false)
     {
         throw dptf_exception("Power is invalid.");
     }

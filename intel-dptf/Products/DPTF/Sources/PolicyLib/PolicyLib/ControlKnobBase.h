@@ -44,8 +44,6 @@ protected:
     UIntN getParticipantIndex() const;
     UIntN getDomainIndex() const;
 
-    void postDebugMessage(const PolicyMessage& message);
-
 private:
 
     PolicyServicesInterfaceContainer m_policyServices;

@@ -17,7 +17,7 @@
 ******************************************************************************/
 
 #include "CoreControlKnob.h"
-#include <math.h>
+#include <cmath>
 using namespace std;
 
 CoreControlKnob::CoreControlKnob(
@@ -42,7 +42,7 @@ void CoreControlKnob::limit()
     {
         try
         {
-            postDebugMessage(PolicyMessage(FLF, "Attempting to limit cores.", 
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, "Attempting to limit cores.", 
                 getParticipantIndex(), getDomainIndex()));
 
             Percentage stepSize = m_coreControl->getPreferences().getStepSize();
@@ -55,11 +55,11 @@ void CoreControlKnob::limit()
 
             stringstream message;
             message << "Limited cores to " << nextActiveCores << ".";
-            postDebugMessage(PolicyMessage(FLF, message.str(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, message.str(), getParticipantIndex(), getDomainIndex()));
         }
         catch (std::exception& ex)
         {
-            postDebugMessage(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
             throw ex;
         }
     }
@@ -71,7 +71,7 @@ void CoreControlKnob::unlimit()
     {
         try
         {
-            postDebugMessage(PolicyMessage(FLF, "Attempting to unlimit cores.", 
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, "Attempting to unlimit cores.", 
                 getParticipantIndex(), getDomainIndex()));
 
             Percentage stepSize = m_coreControl->getPreferences().getStepSize();
@@ -84,11 +84,11 @@ void CoreControlKnob::unlimit()
 
             stringstream message;
             message << "Unlimited cores to " << nextActiveCores << ".";
-            postDebugMessage(PolicyMessage(FLF, message.str(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, message.str(), getParticipantIndex(), getDomainIndex()));
         }
         catch (std::exception& ex)
         {
-            postDebugMessage(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
             throw ex;
         }
     }
@@ -148,7 +148,7 @@ Bool CoreControlKnob::canUnlimit()
 UIntN CoreControlKnob::calculateStepAmount(Percentage stepSize, UIntN totalAvailableCores)
 {
     double result = stepSize * (double)totalAvailableCores;
-    return (UIntN)ceil(result);
+    return (UIntN)std::ceil(result);
 }
 
 XmlNode* CoreControlKnob::getXml()

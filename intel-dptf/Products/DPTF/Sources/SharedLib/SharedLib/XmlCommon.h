@@ -20,7 +20,6 @@
 #include "Dptf.h"
 #include "Indent.h"
 #include "StatusFormat.h"
-#include <sstream>
 
 namespace XmlCommon
 {

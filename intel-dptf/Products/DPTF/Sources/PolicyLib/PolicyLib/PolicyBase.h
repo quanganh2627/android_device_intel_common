@@ -132,12 +132,6 @@ protected:
     PolicyServicesInterfaceContainer& getPolicyServices() const;
     std::shared_ptr<TimeInterface>& getTime() const;
 
-    // message functions for subclasses
-    void postInfoMessage(const PolicyMessage& message) const;
-    void postWarningMessage(const PolicyMessage& message) const;
-    void postErrorMessage(const PolicyMessage& message) const;
-    void postDebugMessage(const PolicyMessage& message) const;
-
 private:
 
     // policy state

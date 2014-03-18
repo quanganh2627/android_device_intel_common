@@ -33,6 +33,12 @@ struct esif_data_complex_scp {
     u32 power_limit;
 };
 
+// Thermal Shutdown Event
+struct esif_data_complex_shutdown {
+    u32 temperature;
+    u32 tripPointTemperature;
+};
+
 // Operating System Capabilities
 struct esif_data_complex_osc {
     esif_guid_t guid;
@@ -49,21 +55,6 @@ struct esif_table_hdr {
     u16 rows;
     u16 cols;
 };
-
-#pragma pack(push, 1)
-/* Must be consecutive data no pointers may be marshalled from R0 To R3 */
-/* esif_data_type must be structure. buffer size must be 272 bytes (guid+context). */
-
-struct esif_data_guid_event {
-
-    /* ESIF Event GUID */
-    esif_guid_t event_GUID;
-
-    /* ESIF Event Data */
-    u8          event_context[256];
-    u8          event_context_length;
-};
-#pragma pack(pop)
 
 /* Allocate */
 struct esif_data *esif_data_alloc(enum esif_data_type type, u32 data_len);

@@ -38,9 +38,12 @@ struct instancelock {
 	char *lockfile; /* lock filename */
 	int  lockfd;    /* lock file descriptor */
 };
-static struct instancelock g_instance = {"/var/run/esif_ufd.pid"};
+static struct instancelock g_instance = {"esif_ufd.pid"};
 
 #define HOME_DIRECTORY	NULL /* use OS-specific default */
+
+/* Enable Instance Lock? */
+#define ESIF_ATTR_INSTANCE_LOCK
 
 /* 
 ** Not ALL OS Entries Suport All Of These
@@ -55,11 +58,42 @@ extern int g_quit2;
 extern int g_repeat;
 extern int g_repeat_delay;
 extern int g_soe;
+extern int g_shell_enabled;
 extern int g_cmdshell_enabled;
 
 /* Worker Thread in esif_uf */
 esif_thread_t g_thread;
 void*esif_event_worker_thread (void *ptr);
+
+/* IPC Resync */
+extern enum esif_rc sync_lf_participants();
+extern esif_handle_t g_ipc_handle;
+
+u32 g_ipc_retry_msec	 = 100;		/* 100ms by default */
+u32 g_ipc_retry_max_msec = 2000;	/* 2 sec by default */
+
+/* Attempt IPC Connect and Sync for specified time if no IPC connection */
+eEsifError ipc_resync()
+{
+	eEsifError rc = ESIF_OK;
+	u32 elapsed_msec = 0;
+
+	if (g_ipc_handle == ESIF_INVALID_HANDLE) {		
+		rc = ESIF_E_NO_LOWER_FRAMEWORK;
+
+		while (!g_quit && elapsed_msec < g_ipc_retry_max_msec) {
+			ipc_connect();
+			if (g_ipc_handle != ESIF_INVALID_HANDLE) {
+				sync_lf_participants();
+				rc = ESIF_OK;
+				break;
+			}
+			esif_ccb_sleep_msec(g_ipc_retry_msec);
+			elapsed_msec += g_ipc_retry_msec;
+		}
+	}
+	return rc;
+}
 
 /* Emulate Windows kbhit Function */
 static int kbhit (void)
@@ -94,7 +128,7 @@ static int kbhit (void)
 	return 0;
 }
 
-#if defined(ESIF_ATTR_OS_ANDROID)
+#if !defined(ESIF_ATTR_INSTANCE_LOCK)
 // Instance Checking Disabled in Android for now
 
 int instance_lock()
@@ -118,11 +152,14 @@ int instance_lock()
 {
 	int rc=0;
 	char pid_buffer[12]={0};
+	char fullpath[MAX_PATH]={0};
 
 	if (g_instance.lockfd) {
 		return ESIF_TRUE;
 	}
-	if ((g_instance.lockfd = open(g_instance.lockfile, O_CREAT | O_RDWR, 0644)) == 0 || flock(g_instance.lockfd, LOCK_EX | LOCK_NB) != 0) {
+
+	esif_build_path(fullpath, sizeof(fullpath), ESIF_PATHTYPE_LOCK, g_instance.lockfile, NULL);
+	if ((g_instance.lockfd = open(fullpath, O_CREAT | O_RDWR, 0644)) == 0 || flock(g_instance.lockfd, LOCK_EX | LOCK_NB) != 0) {
 		int error = errno;
 		close(g_instance.lockfd);
 		g_instance.lockfd = 0;
@@ -136,10 +173,13 @@ int instance_lock()
 
 void instance_unlock()
 {
+	char fullpath[MAX_PATH]={0};
+
 	if (g_instance.lockfd) {
 		close(g_instance.lockfd);
 		g_instance.lockfd = 0;
-		unlink(g_instance.lockfile);
+		esif_build_path(fullpath, sizeof(fullpath), ESIF_PATHTYPE_LOCK, g_instance.lockfile, NULL);
+		unlink(fullpath);
 	}
 }
 
@@ -192,12 +232,10 @@ static int run_as_daemon(int start_with_pipe, int start_with_log)
 		CMD_DEBUG("\nESIF Daemon/Loader (c) 2013-2014 Intel Corp. Ver x1.0.0.1\n");
 		CMD_DEBUG("Spawn Daemon ESIF Child Process: %d\n", process_id);
 		if (ESIF_TRUE == start_with_pipe) {
-			unlink(cmd_in);
 			CMD_DEBUG("Command Input:  %s\n", cmd_in);
 		}
 
 		if (ESIF_TRUE == start_with_log) {
-			unlink(cmd_out);
 			CMD_DEBUG("Command Output: %s\n", cmd_out);
 		}
 		exit(EXIT_SUCCESS);
@@ -215,6 +253,7 @@ static int run_as_daemon(int start_with_pipe, int start_with_log)
 
 	/* Child will receive input from FIFO PIPE? */
 	if (ESIF_TRUE == start_with_pipe) {
+		unlink(cmd_in);
 		if (-1 == mkfifo(cmd_in, S_IROTH)) {
 		}
 	}
@@ -228,23 +267,25 @@ static int run_as_daemon(int start_with_pipe, int start_with_log)
 	/* 6. Open file descriptors 0, 1, and 2 and redirect */
 	/* stdin */
 	if (ESIF_TRUE == start_with_log) {
+		unlink(cmd_out);
 		open (cmd_out, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 	} else {
 		open ("/dev/null", O_RDWR);
 	}
 
 	/* stdout */
-	dup(0);
-	setvbuf(stdout, NULL, _IONBF, 0);
+	if (dup(0) != -1)
+		setvbuf(stdout, NULL, _IONBF, 0);
 	/* stderr */
-	dup(0);
-	setvbuf(stderr, NULL, _IONBF, 0);
+	if (dup(0) != -1)
+		setvbuf(stderr, NULL, _IONBF, 0);
 
 	/*
 	** Start The Daemon
 	*/
 	g_cmdshell_enabled = 0;
 	esif_uf_init(HOME_DIRECTORY);
+	ipc_resync();
 	esif_ccb_thread_create(&g_thread, esif_event_worker_thread, "Daemon");
 	cmd_app_subsystem(SUBSYSTEM_ESIF);
 
@@ -313,12 +354,14 @@ static int run_as_server(FILE* input, char* command, int quit_after_command)
 	if (!instance_lock()) {
 		return ESIF_FALSE;
 	}
+	g_shell_enabled = 1; /* enabled in shell mode by default */
 
 	esif_uf_init(HOME_DIRECTORY);
-
+	ipc_resync();
 	esif_ccb_thread_create(&g_thread, esif_event_worker_thread, "Server");
-	sleep(1); 
+	esif_ccb_sleep_msec(10);
 	cmd_app_subsystem(SUBSYSTEM_ESIF);
+
  	while (!g_quit) {
 		int count = 0;
 		// Startup Command?
@@ -328,6 +371,13 @@ static int run_as_server(FILE* input, char* command, int quit_after_command)
 						g_quit = 1;
 						continue;
 				}
+		}
+
+		// Exit if Shell disabled
+		if (!g_shell_enabled) {
+			CMD_OUT("Shell Unavailable.\n");
+			g_quit = 1;
+			continue;
 		}
 
 		// Get User Input
@@ -402,7 +452,7 @@ int main (int argc, char **argv)
 
 	optind = 1;	// Rest To 1 Restart Vector Scan
 
-	while ((c = getopt(argc, argv, "d:f:c:b:nxhq?spl")) != -1) {
+	while ((c = getopt(argc, argv, "d:f:c:b:r:i:nxhq?spl")) != -1) {
 		switch (c) {
 		case 'd':
 			g_dst = (u8)esif_atoi(optarg);
@@ -432,6 +482,14 @@ int main (int argc, char **argv)
 			quit_after_command = ESIF_TRUE;
 			break;
 
+		case 'r':
+			g_ipc_retry_max_msec = esif_atoi(optarg);
+			break;
+
+		case 'i':
+			g_ipc_retry_msec = esif_atoi(optarg);
+			break;
+
 #if defined (ESIF_ATTR_DAEMON)
 
 		case 's':
@@ -459,6 +517,8 @@ int main (int argc, char **argv)
 			"-c [*command]       Issue Shell Command\n"
 			"-q                  Quit After Command\n"
 			"-b [*size]          Set Binary Buffer Size\n"
+			"-r [*msec]          Set IPC Retry Timeout in msec\n"
+			"-i [*msec]          Set IPC Retry Interval in msec\n"
 #if defined (ESIF_ATTR_DAEMON)
 			"-s                  Run As Server\n"
 			"-p                  Use Pipe For Input\n"

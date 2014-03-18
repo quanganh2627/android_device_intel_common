@@ -25,7 +25,7 @@ EsifDataFrequency::EsifDataFrequency(void)
 
 EsifDataFrequency::EsifDataFrequency(const Frequency& data)
 {
-    initialize(data.getFrequency());
+    initialize(data);
 }
 
 EsifDataFrequency::operator esif::EsifDataPtr(void)

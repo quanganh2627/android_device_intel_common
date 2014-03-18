@@ -322,8 +322,7 @@ void PolicyBase::overrideTimeObject(std::shared_ptr<TimeInterface> timeObject)
     UInt32 enabled;
     try
     {
-        enabled = getPolicyServices().platformConfigurationData->readConfigurationUInt32(
-            "EnablePolicyDebugInterface");
+        enabled = getPolicyServices().platformConfigurationData->readConfigurationUInt32("EnablePolicyDebugInterface");
     }
     catch (...)
     {
@@ -529,7 +528,7 @@ void PolicyBase::takeControlOfOsc(bool shouldTakeControl)
         }
         catch (...)
         {
-            postErrorMessage(PolicyMessage(FLF, "Failed to acquire OSC."));
+            m_policyServices.messageLogging->writeMessageError(PolicyMessage(FLF, "Failed to acquire OSC."));
         }
     }
 }
@@ -544,27 +543,7 @@ void PolicyBase::releaseControlofOsc(bool shouldReleaseControl)
         }
         catch (...)
         {
-            postErrorMessage(PolicyMessage(FLF, "Failed to release OSC."));
+            m_policyServices.messageLogging->writeMessageError(PolicyMessage(FLF, "Failed to release OSC."));
         }
     }
-}
-
-void PolicyBase::postInfoMessage(const PolicyMessage& message) const
-{
-    m_policyServices.messageLogging->writeMessageInfo(message);
-}
-
-void PolicyBase::postWarningMessage(const PolicyMessage& message) const
-{
-    m_policyServices.messageLogging->writeMessageWarning(message);
-}
-
-void PolicyBase::postErrorMessage(const PolicyMessage& message) const
-{
-    m_policyServices.messageLogging->writeMessageError(message);
-}
-
-void PolicyBase::postDebugMessage(const PolicyMessage& message) const
-{
-    m_policyServices.messageLogging->writeMessageDebug(message);
 }

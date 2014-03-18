@@ -127,24 +127,14 @@ Bool LpmEntry::operator!=(const LpmEntry& rhs) const
 XmlNode* LpmEntry::getXml(void) const
 {
     XmlNode* lpmEntryRoot = XmlNode::createWrapperElement("lpm_entry");
-
-    lpmEntryRoot->addChild(
-        XmlNode::createDataElement("target_acpi_scope", targetDeviceAcpiScope()));
-    lpmEntryRoot->addChild(XmlNode::createDataElement("target_index",
-        friendlyValue(m_targetDeviceIndex)));
-    lpmEntryRoot->addChild(XmlNode::createDataElement("domain_index",
-        friendlyValue(m_domainIndex)));
-    lpmEntryRoot->addChild(XmlNode::createDataElement("domain_type",
-        friendlyValue(domainType())));
-    lpmEntryRoot->addChild(XmlNode::createDataElement("control_knob",
-        friendlyValue(controlKnob())));
-    lpmEntryRoot->addChild(XmlNode::createDataElement("control_value",
-        friendlyValue(controlValue())));
-    lpmEntryRoot->addChild(XmlNode::createDataElement("applied_control",
-        friendlyValue(appliedControl())));
-    lpmEntryRoot->addChild(XmlNode::createDataElement("applied_control_units",
-        appliedControlUnits()));
-
+    lpmEntryRoot->addChild(XmlNode::createDataElement("target_acpi_scope", targetDeviceAcpiScope()));
+    lpmEntryRoot->addChild(XmlNode::createDataElement("target_index", friendlyValue(m_targetDeviceIndex)));
+    lpmEntryRoot->addChild(XmlNode::createDataElement("domain_index", friendlyValue(m_domainIndex)));
+    lpmEntryRoot->addChild(XmlNode::createDataElement("domain_type", DomainType::ToString(domainType())));
+    lpmEntryRoot->addChild(XmlNode::createDataElement("control_knob", ControlKnobType::ToString(controlKnob())));
+    lpmEntryRoot->addChild(XmlNode::createDataElement("control_value", friendlyValue(controlValue())));
+    lpmEntryRoot->addChild(XmlNode::createDataElement("applied_control", friendlyValue(appliedControl())));
+    lpmEntryRoot->addChild(XmlNode::createDataElement("applied_control_units", appliedControlUnits()));
     return lpmEntryRoot;
 }
 

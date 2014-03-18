@@ -33,9 +33,6 @@
 #include "win\banned.h"
 #endif
 
-// TODO move these
-void ipc_autoconnect();
-void ipc_disconnect();
 void esif_dispatch_event();
 int esif_send_dsp(char *filename, u8 dst_id);
 
@@ -110,11 +107,12 @@ void esif_dispatch_event()
 
 void EsifEventProcess(struct esif_ipc_event_header *eventHdrPtr)
 {
+	eEsifError rc = ESIF_OK;
 	char domain_str[8] = "";
 	esif_ccb_time_t now;
-	char guid_str[ESIF_GUID_PRINT_SIZE];
 	struct esif_data void_data = {ESIF_DATA_VOID, NULL, 0};
-	UNREFERENCED_PARAMETER(guid_str);
+	UInt8 participantId;
+
 	UNREFERENCED_PARAMETER(domain_str);
 
 	esif_ccb_system_time(&now);
@@ -152,7 +150,6 @@ void EsifEventProcess(struct esif_ipc_event_header *eventHdrPtr)
 	if (ESIF_EVENT_PARTICIPANT_CREATE == eventHdrPtr->type) {
 		struct esif_ipc_event_data_create_participant *data_ptr = NULL;
 		EsifString edp_filename_ptr = NULL;
-		EsifString dsp_lookup_result_ptr = NULL;
 
 		if(eventHdrPtr->data_len < sizeof(*data_ptr)) {
 			goto exit;
@@ -161,228 +158,7 @@ void EsifEventProcess(struct esif_ipc_event_header *eventHdrPtr)
 		// Event Data
 		data_ptr = (struct esif_ipc_event_data_create_participant *)(eventHdrPtr + 1);
 
-		// Sharkbay
-		if (!strcmp(data_ptr->name, "TFN1")) {
-			edp_filename_ptr = (char *)"sb_tfan";
-		} else if (!strcmp(data_ptr->name, "TFN2")) {
-			edp_filename_ptr = (char *)"sb_tfan";
-		} else if (!strcmp(data_ptr->name, "TMEM")) {
-			edp_filename_ptr = (char *)"sb_tmem";
-		} else if (!strcmp(data_ptr->name, "TAMB")) {
-			edp_filename_ptr = (char *)"sb_fgen";
-		} else if (!strcmp(data_ptr->name, "TEFN")) {
-			edp_filename_ptr = (char *)"sb_fgen";
-		} else if (!strcmp(data_ptr->name, "TSKN")) {
-			edp_filename_ptr = (char *)"sb_fgen";
-		} else if (!strcmp(data_ptr->name, "T_VR")) {
-			edp_filename_ptr = (char *)"sb_fgen";
-		} else if (!strcmp(data_ptr->name, "FGEN")) {
-			edp_filename_ptr = (char *)"sb_fgen";
-		} else if (!strcmp(data_ptr->name, "DPLY")) {
-			edp_filename_ptr = (char *)"sb_dply";
-		} else if (!strcmp(data_ptr->name, "TPWR")) {
-			edp_filename_ptr = (char *)"sb_tpwr";
-		} else if (!strcmp(data_ptr->name, "WIFI")) {
-			edp_filename_ptr = (char *)"sb_wifi";
-		} else if (!strcmp(data_ptr->name, "WGIG")) {
-			edp_filename_ptr = (char *)"sb_wgig";
-		} else if (!strcmp(data_ptr->name, "WWAN")) {
-			edp_filename_ptr = (char *)"sb_wwan";
-		} else if (!strcmp(data_ptr->name, "TINL")) {
-			edp_filename_ptr = (char *)"sb_fgen";
-		} else if (!strcmp(data_ptr->name, "TPCH")) {
-			edp_filename_ptr = (char *)"sb_b0_d1f_f6";
-		} else if (!strcmp(data_ptr->name, "TCPU")) {
-			edp_filename_ptr = (char *)"sb_b0_d4_f0";
-		} else if (!strcmp(data_ptr->name, "IETM")) {
-			edp_filename_ptr = (char *)"sb_ietm";
-		} else if (!strcmp(data_ptr->name, "DPTFZ")) {
-			edp_filename_ptr = (char *)"sb_ietm";
-		} else {
-			edp_filename_ptr = (char *)"sb_fgen";
-		}
-
-		// PCI
-		if (1 == data_ptr->enumerator) {
-			ESIF_TRACE_DEBUG(
-				"==================================================\n"
-				"ESIF IPC EVENT DATA CREATE PCI PARTICIPANT:\n"
-				"==================================================\n"
-				"Instance:       %d\n"
-				"Version:        %d\n"
-				"Class:          %s\n"
-				"Enumerator:     %s(%u)\n"
-				"Flags:          0x%08x\n"
-				"Name:           %s\n"
-				"Description:    %s\n"
-				"Driver Name:    %s\n"
-				"Device Name:    %s\n"
-				"Device Path:    %s\n"
-				"ACPI Scope:     %s\n"
-				"PCI Vendor:     0x%04X %s\n"
-				"PCI Device:     0x%04X %s\n"
-				"PCI Bus:        0x%02X\n"
-				"PCI Bus Device: 0x%02X\n"
-				"PCI Function:   0x%02X\n"
-				"PCI Revision:   0x%02X\n"
-				"PCI Class:      0x%02X %s\n"
-				"PCI SubClass:   0x%02X\n"
-				"PCI ProgIF:     0x%02X\n\n",
-				data_ptr->id,
-				data_ptr->version,
-				esif_guid_print((esif_guid_t *)data_ptr->class_guid, guid_str),
-				esif_participant_enum_str(data_ptr->enumerator),
-				data_ptr->enumerator,
-				data_ptr->flags,
-				data_ptr->name,
-				data_ptr->desc,
-				data_ptr->driver_name,
-				data_ptr->device_name,
-				data_ptr->device_path,
-				data_ptr->acpi_scope,
-				data_ptr->pci_vendor,
-				esif_vendor_str(data_ptr->pci_vendor),
-				data_ptr->pci_device,
-				esif_device_str(data_ptr->pci_device),
-				data_ptr->pci_bus,
-				data_ptr->pci_bus_device,
-				data_ptr->pci_function,
-				data_ptr->pci_revision,
-				data_ptr->pci_class,
-				esif_pci_class_str(data_ptr->pci_class),
-				data_ptr->pci_sub_class,
-				data_ptr->pci_prog_if);
-			// ACPI
-		} else if (0 == data_ptr->enumerator) {
-			ESIF_TRACE_DEBUG(
-				"==================================================\n"
-				"ESIF IPC EVENT DATA CREATE ACPI PARTICIPANT:\n"
-				"==================================================\n"
-				"Instance:       %d\n"
-				"Version:        %d\n"
-				"Class:          %s\n"
-				"Enumerator:     %s(%u)\n"
-				"Flags:          0x%08x\n"
-				"Name:           %s\n"
-				"Description:    %s\n"
-				"Driver Name:    %s\n"
-				"Device Name:    %s\n"
-				"Device Path:    %s\n"
-				"ACPI Device:    %s %s\n"
-				"ACPI Scope:     %s\n",
-				data_ptr->id,
-				data_ptr->version,
-				esif_guid_print((esif_guid_t *)&data_ptr->class_guid, guid_str),
-				esif_participant_enum_str(data_ptr->enumerator),
-				data_ptr->enumerator,
-				data_ptr->flags,
-				data_ptr->name,
-				data_ptr->desc,
-				data_ptr->driver_name,
-				data_ptr->device_name,
-				data_ptr->device_path,
-				data_ptr->acpi_device,
-				esif_acpi_device_str(data_ptr->acpi_device),
-				data_ptr->acpi_scope);
-
-			if (data_ptr->acpi_uid != 0xFFFFFFFF) {
-				ESIF_TRACE_DEBUG("ACPI UID:       0x%x\n",
-								 data_ptr->acpi_uid);
-			}
-
-			if (data_ptr->acpi_type != 0xFFFFFFFF) {
-				ESIF_TRACE_DEBUG("ACPI Type:      0x%x %s\n",
-								 data_ptr->acpi_type,
-								 esif_domain_type_str((enum esif_domain_type)data_ptr->acpi_type));
-			}
-
-			{
-				struct esif_uf_dm_query_acpi qry = {0};
-				#define TEMP_LEN 12
-				char temp_type[TEMP_LEN]    = {0};
-				char temp_uid[TEMP_LEN]		= {0};
-
-				EsifString acpi_device = "*";
-				EsifString acpi_type   = "*";
-				EsifString acpi_uid    = "*";
-				EsifString acpi_scope  = "*";
-
-				int type = data_ptr->acpi_type;
-				int uid  = data_ptr->acpi_uid;
-
-				if (esif_ccb_strlen(data_ptr->acpi_device, ESIF_NAME_LEN) > 0) {
-					acpi_device = data_ptr->acpi_device;
-				}
-				if (esif_ccb_strlen(data_ptr->acpi_scope, ESIF_SCOPE_LEN) > 0) {
-					acpi_scope = data_ptr->acpi_scope;
-				}
-
-				if (type >= 0) {
-					esif_ccb_sprintf(TEMP_LEN, temp_type, "%d", type);
-					acpi_type = temp_type;
-				}
-
-				if (uid >= 0) {
-					esif_ccb_sprintf(TEMP_LEN, temp_uid, "%d", uid);
-					acpi_uid = temp_uid;
-				}
-
-				qry.acpi_device = acpi_device;
-				qry.acpi_type   = acpi_type;
-				qry.acpi_uid    = acpi_uid;
-				qry.acpi_scope  = acpi_scope;
-
-				ESIF_TRACE_DEBUG(
-					"\n\nQuery WHERE Clause:\n\n"
-					"acpi_device: %s\n"
-					"acpi_type:   %s\n"
-					"acpi_uid:    %s\n"
-					"acpi_scope:  %s\n",
-					acpi_device,
-					acpi_type,
-					acpi_uid,
-					acpi_scope);
-
-				dsp_lookup_result_ptr = esif_uf_dm_query(ESIF_UF_DM_QUERY_TYPE_ACPI, &qry);
-
-				ESIF_TRACE_DEBUG("DSP Lookup: %s\n", dsp_lookup_result_ptr);
-
-				if (NULL == dsp_lookup_result_ptr) {
-					dsp_lookup_result_ptr = edp_filename_ptr;
-				}
-
-				ESIF_TRACE_DEBUG("\nDSP Lookup: %s\n", dsp_lookup_result_ptr);
-
-				/* We are all in for ACPI so override our selection */
-				edp_filename_ptr = dsp_lookup_result_ptr;
-			}
-		} else {
-			ESIF_TRACE_DEBUG(
-				"=======================================================\n"
-				"ESIF IPC EVENT DATA CREATE PLATFORM PARTICIPANT:\n"
-				"=======================================================\n"
-				"Instance:       %d\n"
-				"Version:        %d\n"
-				"Class:          %s\n"
-				"Enumerator:     %s(%u)\n"
-				"Flags:          0x%08x\n"
-				"Name:           %s\n"
-				"Description:    %s\n"
-				"Driver Name:    %s\n"
-				"Device Name:    %s\n"
-				"Device Path:    %s\n\n",
-				data_ptr->id,
-				data_ptr->version,
-				esif_guid_print((esif_guid_t *)data_ptr->class_guid, guid_str),
-				esif_participant_enum_str(data_ptr->enumerator),
-				data_ptr->enumerator,
-				data_ptr->flags,
-				data_ptr->name,
-				data_ptr->desc,
-				data_ptr->driver_name,
-				data_ptr->device_name,
-				data_ptr->device_path);
-		}
+		edp_filename_ptr = esif_uf_dm_select_dsp_for_participant(data_ptr);
 
 		if (EsifUpManagerDoesAvailableParticipantExistByName(data_ptr->name)) {
 			return;
@@ -417,12 +193,29 @@ void EsifEventProcess(struct esif_ipc_event_header *eventHdrPtr)
 			ESIF_TRACE_DEBUG("Please manually load a CPC for this Participant\n");
 			ESIF_TRACE_DEBUG("Example: dst %d then loadcpc\n\n", eventHdrPtr->src_id);
 		}
-	} else if (ESIF_EVENT_PARTICIPANT_UNREGISTER == eventHdrPtr->type) {
-		ESIF_TRACE_DEBUG("Destroy Upper Participant: %d\n", eventHdrPtr->src_id);
-		EsifUpManagerUnregisterParticipant(eParticipantOriginLF, &eventHdrPtr->src_id);
 	} else {
-		// Best Effor Delivery.
-		EsifAppsEvent(eventHdrPtr->dst_id, eventHdrPtr->dst_domain_id, eventHdrPtr->type, &void_data);
+		/*
+		* Can't move this above everything because if a participant is not yet created, the
+		* mapping function will fail.
+		*/
+		participantId = eventHdrPtr->src_id;
+		if (eventHdrPtr->dst_id == ESIF_INSTANCE_UF) {
+			rc = EsifUpManagerMapLpidToPartHandle(eventHdrPtr->src_id, &participantId);
+			if (rc != ESIF_OK) {
+				ESIF_TRACE_ERROR("Invalid event source received");
+				goto exit;
+			}
+		}
+
+		if (ESIF_EVENT_PARTICIPANT_UNREGISTER == eventHdrPtr->type) {
+
+			ESIF_TRACE_DEBUG("Destroy Lower Participant: %d\n", participantId);
+			EsifUpManagerUnregisterParticipant(eParticipantOriginLF, &participantId);
+
+		} else {
+			// Best Effort Delivery
+			EsifAppsEvent(participantId, eventHdrPtr->dst_domain_id, eventHdrPtr->type, &void_data);
+		}
 	}
 exit:
 	(0);
@@ -440,18 +233,20 @@ void *esif_event_worker_thread(void *ptr)
 	UNREFERENCED_PARAMETER(ptr);
 	CMD_OUT("Start ESIF Upper Framework Shell\n");
 
-	// Connect To Kernel IPC
-	ipc_autoconnect();
+	// Connect To Kernel IPC with infinite timeout
+	ipc_autoconnect(0);
 
 	// Run Until Told To Quit
 	while (!g_quit) {
+		if (g_ipc_handle == ESIF_INVALID_HANDLE) {
+			break;
+		}
 		FD_ZERO(&rfds);
 #ifdef ESIF_ATTR_OS_WINDOWS
 		FD_SET((SOCKET)g_ipc_handle, &rfds);
 #else
 		FD_SET((u32)g_ipc_handle, &rfds);
 #endif
-
 		tv.tv_sec  = 0;
 		tv.tv_usec = 50000;	/* 50 msec */
 

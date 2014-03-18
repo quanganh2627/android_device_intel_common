@@ -18,7 +18,7 @@
 
 #include "LpmConfigurationReaderV1.h"
 #include "BinaryParse.h"
-#include "GccFix.h"
+
 
 
 LpmConfigurationReaderV1::LpmConfigurationReaderV1(PolicyServicesInterfaceContainer policyServices)
@@ -86,7 +86,7 @@ vector<AppSpecificEntry> LpmConfigurationReaderV1::readAppSpecificEntries(void)
     catch (dptf_exception& e)
     {
         string msg = e.what();
-        postInfoMessage(PolicyMessage(FLF,
+        m_policyServices.messageLogging->writeMessageDebug(PolicyMessage(FLF,
             "Error msg (" + msg + "). Last appIndex = " + GccFix::to_string(appIndex),
             Constants::Invalid));
         return appSpecificEntries;
@@ -129,7 +129,7 @@ vector<LpmSet> LpmConfigurationReaderV1::readLpmSets(void)
     catch (dptf_exception& e)
     {
         string msg = e.what();
-        postInfoMessage(PolicyMessage(FLF,
+        m_policyServices.messageLogging->writeMessageDebug(PolicyMessage(FLF,
             "Error msg (" + msg + "). Last lpmSetIndex = " + GccFix::to_string(lpmSetIndex),
             Constants::Invalid));
         return lpmSets;
@@ -172,7 +172,7 @@ vector<LpmEntry> LpmConfigurationReaderV1::readLpmEntries(void)
     catch (dptf_exception& e)
     {
         string msg = e.what();
-        postInfoMessage(PolicyMessage(FLF,
+        m_policyServices.messageLogging->writeMessageDebug(PolicyMessage(FLF,
             "Error msg (" + msg + "). Last lpmEntryIndex = " + GccFix::to_string(lpmEntryIndex),
             Constants::Invalid));
         return lpmEntries;

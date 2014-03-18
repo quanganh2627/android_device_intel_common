@@ -63,6 +63,8 @@ int g_quit		 = ESIF_FALSE;	// Quit
 int g_disconnectClient = ESIF_FALSE;// Disconnect client
 int g_quit2      = ESIF_FALSE;	// Quit 2
 
+UInt8 g_esif_started = ESIF_FALSE;
+
 static esif_thread_t g_webthread;  //web worker thread
 
 // Global Shell lock to limit parse_cmd to one thread at a time
@@ -86,7 +88,7 @@ static EsifLogFile g_EsifLogFile[MAX_ESIFLOG] = {0};
 
 static esif_string g_home = NULL; // Global Home directory
 
-// Set Pathname components based on OS & Architecture
+// Set Pathname components based on OS & Architecture. Only esif_build_path should use these.
 #ifdef ESIF_ATTR_OS_WINDOWS
   #ifdef ESIF_ATTR_64BIT
     #define ESIF_DIR_EXE	"ufx64"
@@ -97,9 +99,39 @@ static esif_string g_home = NULL; // Global Home directory
 	#define ESIF_DIR_EXE	NULL
 #endif
 #define ESIF_DIR_BIN	"bin"
+#define ESIF_DIR_LOCK	"tmp"
 #define ESIF_DIR_CMD	"cmd"
 #define ESIF_DIR_DSP	"dsp"
 #define ESIF_DIR_LOG	"log"
+#define ESIF_DIR_UI		"ui"
+
+// OS-specific Full Pathnames. Only esif_build_path should use these.
+#if defined(ESIF_ATTR_OS_CHROME)
+# define ESIF_FULLPATH_HOME	"/usr/share/dptf"
+# define ESIF_FULLPATH_DV	"/etc/dptf"
+# define ESIF_FULLPATH_TEMP	"/tmp"
+# define ESIF_FULLPATH_LOG	"/usr/local/var/log/dptf"
+#elif defined(ESIF_ATTR_OS_ANDROID)
+# define ESIF_FULLPATH_HOME	"/etc/dptf"
+# define ESIF_FULLPATH_DV	"/etc/dptf"
+# define ESIF_FULLPATH_TEMP	"/etc/dptf/tmp"
+#elif defined(ESIF_ATTR_OS_LINUX)
+# define ESIF_FULLPATH_HOME	"/usr/share/dptf"
+# define ESIF_FULLPATH_DV	"/etc/dptf"
+# define ESIF_FULLPATH_TEMP	"/tmp"
+#endif
+
+// Optional Custom path configuration file support
+#ifdef ESIF_ATTR_OS_WINDOWS
+# define ESIF_CUSTOM_PATH_FILENAME	"C:\\Windows\\esif.conf"	
+#else
+# define ESIF_CUSTOM_PATH_FILENAME	"/etc/esif.conf"
+#endif
+#define PATHTYPE_INIT	((esif_pathtype)(-1))
+#define PATHTYPE_EXIT	((esif_pathtype)(-2))
+#define esif_custom_path_init()	esif_custom_path(PATHTYPE_INIT)
+#define esif_custom_path_exit()	esif_custom_path(PATHTYPE_EXIT)
+static int g_custom_path_initialized=0;
 
 eEsifError EsifLogMgrInit(void)
 {
@@ -376,7 +408,7 @@ exit:
 
 
 /* Will sync any existing lower framework participatnts */
-static enum esif_rc sync_lf_participants()
+enum esif_rc sync_lf_participants()
 {
 	eEsifError rc = ESIF_OK;
 	struct esif_command_get_participants *data_ptr = NULL;
@@ -476,26 +508,114 @@ void done(const void *context)
 	CMD_OUT("Context = %p %s\n", context, (char *)context);
 }
 
+// Recursively create a path if it does not already exist
+int esif_ccb_makepath (char *path)
+{
+	int rc = -1;
+	struct stat st = {0};
+
+	// create path only if it does not already exist
+	if ((rc = esif_ccb_stat(path, &st)) != 0) {
+		size_t len = esif_ccb_strlen(path, MAX_PATH);
+		char dir[MAX_PATH];
+		char *slash;
+
+		// trim any trailing slash
+		esif_ccb_strcpy(dir, path, MAX_PATH);
+		if (len > 0 && dir[len - 1] == *ESIF_PATH_SEP) {
+			dir[len - 1] = 0;
+		}
+
+		// if path doesn't exist and can't be created, recursively create parent folder(s)
+		if ((rc = esif_ccb_stat(dir, &st)) != 0 && (rc = esif_ccb_mkdir(dir)) != 0) {
+			if ((slash = esif_ccb_strrchr(dir, *ESIF_PATH_SEP)) != 0) {
+				*slash = 0;
+				if ((rc = esif_ccb_makepath(dir)) == 0) {
+					*slash = *ESIF_PATH_SEP;
+					rc     = esif_ccb_mkdir(dir);
+				}
+			}
+		}
+	}
+	return rc;
+}
+
+// Load Custom Paths from configuration file, overriding defaults?
+static char *esif_custom_path(esif_pathtype type)
+{
+	static char *conf_buffer=0;
+	static char *custom_path[ESIF_PATHTYPE_MAX] = {0};
+	char *result = NULL;
+
+	if (type == PATHTYPE_EXIT) {
+		esif_ccb_memset(custom_path, 0, sizeof(custom_path));
+		esif_ccb_free(conf_buffer);
+		conf_buffer = 0;
+		g_custom_path_initialized = 0;
+		return result;
+	}
+
+	if (!g_custom_path_initialized) {
+		char *filename = ESIF_CUSTOM_PATH_FILENAME;
+		FILE *fp = NULL;
+		struct stat st={0};
+
+		g_custom_path_initialized = 1;
+		if (esif_ccb_stat(filename, &st) == 0 && esif_ccb_fopen(&fp, ESIF_CUSTOM_PATH_FILENAME, "rb") == 0) {
+			char *ctxt = 0;
+			conf_buffer = (char *) esif_ccb_malloc(st.st_size + 1);
+			if (esif_ccb_fread(conf_buffer, st.st_size, sizeof(char), st.st_size, fp) == st.st_size) {
+				char *keypair = esif_ccb_strtok(conf_buffer, "\r\n", &ctxt);
+				char *value = 0;
+				char *names[ESIF_PATHTYPE_MAX+1] = {"HOME","TEMP","DV","LOG","BIN","LOCK","EXE","DLL","DPTF","DSP","CMD","UI",0};
+				u32  id=0;
+
+				while (keypair != NULL) {
+					value = esif_ccb_strchr(keypair, '=');
+					if (value) {
+						*value++ = 0;
+						for (id=0; id < ESIF_PATHTYPE_MAX && names[id]; id++) {
+							if (esif_ccb_stricmp(keypair, names[id]) == 0) {
+								custom_path[(esif_pathtype)id] = value;
+								break;
+							}
+						}
+					}
+					keypair = esif_ccb_strtok(NULL, "\r\n", &ctxt);
+				}
+			}
+			esif_ccb_fclose(fp);
+		}
+	}
+
+	if (conf_buffer && type < ESIF_PATHTYPE_MAX) {
+		result = custom_path[type];
+	}
+	return result;
+}
+
 /* Build Full Pathname for a given path type including an optional filename and extention. 
  * Defaults below, where "C:\Program Files..." is either:
  *     "C:\Program Files\Intel\Intel(R) Dynamic Platform and Thermal Framework"
  *  or "C:\Program Files (x86)\Intel\Intel(R) Dynamic Platform and Thermal Framework"
  * ("+" = writeable)
  * 
- * Type	Linux					Windows
- * ----	-----------------------	----------------------------------------------------------------------------
- * HOME	/usr/share/dptf			C:\Program Files...
- *+TEMP /tmp					C:\Windows\Temp  or  C:\Users\<username>\AppData\Local\Temp
- *+DV	/etc/esif				C:\Windows\ServiceProfiles\LocalService\AppData\Intel\DPTF
- *+LOG	Same as DV				Same as DV
- *+BIN	/usr/share/dptf/bin		C:\Program Files...\bin
- *+LOCK	/var/run				Same as TEMP
- * EXE	/usr/share/dptf/ufx64	C:\Program Files...\ufx64 [or ufx86]
- * DLL	/usr/share/dptf/ufx64	C:\Program Files...\ufx64 [or ufx86]
- * DSP	/usr/share/dptf/dsp		C:\Program Files...\dsp
- * CMD	/usr/share/dptf/cmd		C:\Program Files...\cmd
- * UI	/usr/share/dptf			C:\Program Files...
- * DPTF	/usr/share/dptf			ufx64  [or ufx86]
+ * Type	Linux					Windows															Chrome
+ * ----	-----------------------	---------------------------------------------------------------	-----------------
+ * HOME	/usr/share/dptf			C:\Program Files...												Same as Linux
+ *+TEMP /tmp					C:\Windows\Temp  or  C:\Users\<username>\AppData\Local\Temp		Same as Linux
+ *+DV	/etc/dptf				C:\Windows\ServiceProfiles\LocalService\AppData\Intel\DPTF		Same as Linux
+ *+LOG	/usr/share/dptf/log		C:\Windows\ServiceProfiles\LocalService\AppData\Intel\DPTF\log	/usr/local/var/log/dptf
+ *+BIN	/usr/share/dptf/bin		C:\Windows\ServiceProfiles\LocalService\AppData\Intel\DPTF\bin	Same as Linux
+ *+LOCK	/var/run				Same as TEMP													Same as Linux
+ * EXE	N/A						C:\Program Files...\ufx64 [or ufx86]							Same as Linux
+ * DLL	N/A						C:\Program Files...\ufx64 [or ufx86]							Same as Linux
+ * DSP	/etc/dptf/dsp			C:\Program Files...\dsp											Same as Linux
+ * CMD	/etc/dptf/cmd			C:\Program Files...\cmd											Same as Linux
+ * UI	/usr/share/dptf/ui		C:\Program Files...\ui											Same as Linux
+ * DPTF	/usr/share/dptf			ufx64  [or ufx86]												Same as Linux
+ *
+ * N/A = Do not use Full Paths. Must use relative paths so OS can search /usr/lib64, /usr/bin, etc
  */
 esif_string esif_build_path(
 	esif_string buffer, 
@@ -504,11 +624,26 @@ esif_string esif_build_path(
 	esif_string filename,
 	esif_string ext)
 {
+	char *custom_path = NULL;
 	char home[MAX_PATH]={0};
 	size_t len = 0;
+	int was_initialized = g_custom_path_initialized;
 
 	if (NULL == buffer) {
 		return NULL;
+	}
+
+	// Read optional custom path file
+	if ((custom_path = esif_custom_path(type)) != NULL) {
+		// Do not return full path if it starts with "#", unless no filename specified
+		if (*custom_path == '#') {
+			if (filename == NULL && ext == NULL)
+				custom_path++;
+			else
+				custom_path = "";
+		}
+		esif_ccb_strcpy(buffer, custom_path, buf_len);
+		goto exit;
 	}
 
 	// If g_home is undefined, use default location
@@ -524,10 +659,8 @@ esif_string esif_build_path(
 		if (esif_ccb_file_exists(winHome)) {
 			g_home = esif_ccb_strdup(winHome);
 		}
-	#elif defined(ESIF_ATTR_OS_ANDROID)
-		g_home = esif_ccb_strdup("."); // Placeholder
-	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME)
-		static char *home_default = "/usr/share/dptf";
+	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME) || defined(ESIF_ATTR_OS_ANDROID)
+		static char *home_default = ESIF_FULLPATH_HOME;
 		if (esif_ccb_file_exists(home_default)) {
 			g_home = esif_ccb_strdup(home_default);
 		}
@@ -535,16 +668,14 @@ esif_string esif_build_path(
 	}
 
 	// if g_DataVaultDir is undefined, use default
-	if (g_DataVaultDir[0] == 0) {
+	if (g_DataVaultDir[0] == '\0') {
 	#if defined(ESIF_ATTR_OS_WINDOWS)
 		if (GetWindowsDirectoryA(g_DataVaultDir, sizeof(g_DataVaultDir)) == 0) {
 			esif_ccb_strcpy(g_DataVaultDir, "C:\\Windows", sizeof(g_DataVaultDir));
 		}
 		esif_ccb_strcat(g_DataVaultDir, "\\ServiceProfiles\\LocalService\\AppData\\Local\\Intel\\DPTF", sizeof(g_DataVaultDir));
-	#elif defined(ESIF_ATTR_OS_ANDROID)
-		esif_ccb_strcpy(g_DataVaultDir, ".", sizeof(g_DataVaultDir)); // Placeholder
-	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME)
-		esif_ccb_strcpy(g_DataVaultDir, "/etc/dptf", sizeof(g_DataVaultDir));
+	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME) || defined(ESIF_ATTR_OS_ANDROID)
+		esif_ccb_strcpy(g_DataVaultDir, ESIF_FULLPATH_DV, sizeof(g_DataVaultDir));
 	#endif
 	}
 
@@ -554,11 +685,11 @@ esif_string esif_build_path(
 	}
 	len = esif_ccb_strlen(home, sizeof(home));
 	if (len > 0 && home[len-1] == *ESIF_PATH_SEP) {
-		home[len-1] = 0;
+		home[len-1] = '\0';
 	}
 
 	// Build Directory
-	buffer[0] = 0;
+	buffer[0] = '\0';
 	switch (type) {
 	case ESIF_PATHTYPE_HOME: // Read-Only
 		esif_ccb_strcpy(buffer, home, buf_len);
@@ -568,15 +699,13 @@ esif_string esif_build_path(
 	case ESIF_PATHTYPE_TEMP:
 	#if defined(ESIF_ATTR_OS_WINDOWS)
 		if ((len = (size_t)GetTempPathA((DWORD)buf_len, buffer)) > 1) {
-			buffer[len-2] = 0; // Trim trailing slash
+			buffer[len-2] = '\0'; // Trim trailing slash
 		}
 		else {
-			buffer[0] = 0;
+			buffer[0] = '\0';
 		}
-	#elif defined(ESIF_ATTR_OS_ANDROID)
-		esif_ccb_strcpy(buffer, ".", buf_len); // Placeholder
-	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME)
-		esif_ccb_strcpy(buffer, "/tmp", buf_len);
+	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME) || defined(ESIF_ATTR_OS_ANDROID)
+		esif_ccb_strcpy(buffer, ESIF_FULLPATH_TEMP, buf_len);
 	#endif
 		break;
 
@@ -586,18 +715,30 @@ esif_string esif_build_path(
 
 	case ESIF_PATHTYPE_LOG:
 	#if defined(ESIF_ATTR_OS_WINDOWS)
-		esif_ccb_strcpy(buffer, g_DataVaultDir, buf_len);
-	#elif defined(ESIF_ATTR_OS_ANDROID)
-		esif_ccb_strcpy(buffer, g_DataVaultDir, buf_len); // Placeholder
-	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME)
-		// This may use a different path (/var/log/...) in the future
-		esif_ccb_strcpy(buffer, g_DataVaultDir, buf_len);
+		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", g_DataVaultDir, ESIF_PATH_SEP, ESIF_DIR_LOG);
+	#elif defined(ESIF_ATTR_OS_ANDROID) || defined(ESIF_ATTR_OS_LINUX)
+		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", home, ESIF_PATH_SEP, ESIF_DIR_LOG);
+	#elif defined(ESIF_ATTR_OS_CHROME)
+		esif_ccb_strcpy(buffer, ESIF_FULLPATH_LOG, buf_len);
 	#endif
 		break;
 
 	case ESIF_PATHTYPE_BIN:
-		// TODO: These may need to go to writable DV dir in Windows
+	#if defined(ESIF_ATTR_OS_WINDOWS)
+		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", g_DataVaultDir, ESIF_PATH_SEP, ESIF_DIR_BIN);
+	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME) || defined(ESIF_ATTR_OS_ANDROID)
 		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", home, ESIF_PATH_SEP, ESIF_DIR_BIN);
+	#endif
+		break;
+
+	case ESIF_PATHTYPE_LOCK:
+	#if defined(ESIF_ATTR_OS_WINDOWS)
+		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", g_DataVaultDir, ESIF_PATH_SEP, ESIF_DIR_LOCK);
+	#elif defined(ESIF_ATTR_OS_ANDROID)
+		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", home, ESIF_PATH_SEP, ESIF_DIR_LOCK);
+	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME)
+		esif_ccb_strcpy(buffer, "/var/run", buf_len);
+	#endif
 		break;
 
 	// Read-Only Paths
@@ -605,53 +746,67 @@ esif_string esif_build_path(
 		// Binaries Use full path (ufx64/ufx86 folder) in Windows, otherwise Home directory
 	#if defined(ESIF_ATTR_OS_WINDOWS)
 		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", home, ESIF_PATH_SEP, ESIF_DIR_EXE);
-	#elif defined(ESIF_ATTR_OS_ANDROID)
-		esif_ccb_strcpy(buffer, home, buf_len); // Placeholder
-	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME)
-		esif_ccb_strcpy(buffer, home, buf_len);
+	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME) || defined(ESIF_ATTR_OS_ANDROID)
+		esif_ccb_strcpy(buffer, "", buf_len);
 	#endif
 		break;
 
 	case ESIF_PATHTYPE_DLL:
-		// Shared Libraries loaded by ESIF. Use full path (ufx64/ufx86 folder), otherwise Home directory
+		// Shared Libraries loaded by ESIF. Use full path in Windows only, otherwise use name only so OS searches /usr/lib*
 	#if defined(ESIF_ATTR_OS_WINDOWS)
 		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", home, ESIF_PATH_SEP, ESIF_DIR_EXE);
-	#elif defined(ESIF_ATTR_OS_ANDROID)
-		esif_ccb_strcpy(buffer, home, buf_len); // Placeholder
-	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME)
+	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME) || defined(ESIF_ATTR_OS_ANDROID)
 		esif_ccb_strcpy(buffer, "", buf_len);
 	#endif
 		break;
 
 	case ESIF_PATHTYPE_DPTF:
-		// Shared Libraries loaded by DPTF app. Always pass full path to the app.
+		// Shared Libraries loaded by external DPTF app. Always pass full path to the app.
 	#if defined(ESIF_ATTR_OS_WINDOWS)
 		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", home, ESIF_PATH_SEP, ESIF_DIR_EXE);
 	#elif defined(ESIF_ATTR_OS_ANDROID)
-		esif_ccb_strcpy(buffer, home, buf_len); // Placeholder
+		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", home, ESIF_PATH_SEP, ESIF_DIR_EXE);
 	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME)
 		esif_ccb_strcpy(buffer, home, buf_len);
 	#endif
 		break;
 
 	case ESIF_PATHTYPE_DSP:
+	#if defined(ESIF_ATTR_OS_WINDOWS)
 		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", home, ESIF_PATH_SEP, ESIF_DIR_DSP);
+	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME) || defined(ESIF_ATTR_OS_ANDROID)
+		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", g_DataVaultDir, ESIF_PATH_SEP, ESIF_DIR_DSP);
+	#endif
 		break;
 
 	case ESIF_PATHTYPE_CMD:
+	#if defined(ESIF_ATTR_OS_WINDOWS)
 		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", home, ESIF_PATH_SEP, ESIF_DIR_CMD);
+	#elif defined(ESIF_ATTR_OS_LINUX) || defined(ESIF_ATTR_OS_CHROME) || defined(ESIF_ATTR_OS_ANDROID)
+		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", g_DataVaultDir, ESIF_PATH_SEP, ESIF_DIR_CMD);
+	#endif
 		break;
 
 	case ESIF_PATHTYPE_UI:
-		esif_ccb_strcpy(buffer, home, buf_len);
+		esif_ccb_sprintf(buf_len, buffer, "%s%s%s", home, ESIF_PATH_SEP, ESIF_DIR_UI);
 		break;
 	default:
 		break;
 	}
 
+exit:
+	if (!was_initialized) {
+		esif_custom_path_exit();
+	}
+
+	// Create folder if necessary
+	if (buffer[0] != '\0') {
+		esif_ccb_makepath(buffer);
+	}
+
 	// Append Optional filename.ext
 	if (filename != NULL || ext != NULL) {
-		if (buffer[0] != 0)
+		if (buffer[0] != '\0')
 			esif_ccb_strcat(buffer, ESIF_PATH_SEP, buf_len);
 		if (filename != NULL)
 			esif_ccb_strcat(buffer, filename, buf_len);
@@ -728,6 +883,7 @@ eEsifError esif_uf_init(esif_string home_dir)
 #ifdef ESIF_ATTR_SHELL_LOCK
 	esif_ccb_mutex_init(&g_shellLock);
 #endif
+	esif_custom_path_init();
 
 	ESIF_TRACE_DEBUG("%s: Init Upper Framework (UF)", ESIF_FUNC);
 
@@ -810,6 +966,8 @@ void esif_uf_exit()
 	g_esif_started = ESIF_FALSE;
 
 	ESIF_TRACE_DEBUG("%s: Exit Upper Framework (UF)", ESIF_FUNC);
+
+	esif_custom_path_exit();
 
 #ifdef ESIF_ATTR_SHELL_LOCK
 	esif_ccb_mutex_uninit(&g_shellLock);

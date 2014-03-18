@@ -17,8 +17,6 @@
 ******************************************************************************/
 
 #include "CriticalPolicyStatistics.h"
-#include "GccFix.h"
-
 using namespace std;
 
 CriticalPolicyStatistics::CriticalPolicyStatistics()

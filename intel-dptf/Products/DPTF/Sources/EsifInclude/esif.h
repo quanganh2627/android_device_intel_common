@@ -19,6 +19,7 @@
 #ifndef _ESIF_H_
 #define _ESIF_H_
 
+#include "GccFix.h"
 #include "esif_basic_types.h"
 
 /*******************************************************************************

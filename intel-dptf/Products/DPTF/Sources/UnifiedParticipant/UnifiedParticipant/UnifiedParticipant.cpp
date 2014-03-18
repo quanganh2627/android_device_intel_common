@@ -22,6 +22,8 @@
 #include "XmlNode.h"
 #include "StatusFormat.h"
 
+static const Guid FormatId(0xF0, 0xCB, 0x64, 0x06, 0xE4, 0x2B, 0x46, 0xB5, 0x9C, 0x85, 0x32, 0xD1, 0xA1, 0xB7, 0xCB, 0x68);
+
 UnifiedParticipant::UnifiedParticipant(void)
 {
     initialize();
@@ -531,7 +533,7 @@ XmlNode* UnifiedParticipant::getXml(UIntN domainIndex) const
         catch (...)
         {
             // Write message log error
-            m_participantServicesInterface->writeMessageError(ParticipantMessage(FLF, "Unable to get specific info XML status!"));
+            m_participantServicesInterface->writeMessageWarning(ParticipantMessage(FLF, "Unable to get specific info XML status!"));
         }
     }
 
@@ -559,7 +561,7 @@ XmlNode* UnifiedParticipant::getStatusAsXml(UIntN domainIndex) const
 {
     XmlNode* participantRoot = XmlNode::createRoot();
 
-    XmlNode* formatId = XmlNode::createComment("format_id=CAFEBEEFCAFEBEEFCAFEBEEFCAFEBEEF");
+    XmlNode* formatId = XmlNode::createComment("format_id=" + FormatId.toString());
 
     participantRoot->addChild(formatId);
 
@@ -1046,18 +1048,9 @@ void UnifiedParticipant::sendConfigTdpInfoToAllDomainsAndCreateNotification()
             {
                 try
                 {
-                    m_domains[domainIndex]->getPowerControlConfigTdpSyncInterfacePtr()->updateBasedOnConfigTdpInformation(
-                        m_participantIndex, domainIndex, configTdpControlSet, configTdpControlStatus);
-                    m_participantServicesInterface->createEventDomainPowerControlCapabilityChanged();
-                }
-                catch (...)
-                {
-                }
-
-                try
-                {
-                    m_domains[domainIndex]->getPerformanceControlConfigTdpSyncInterfacePtr()->updateBasedOnConfigTdpInformation(
-                        m_participantIndex, domainIndex, configTdpControlSet, configTdpControlStatus);
+                    m_domains[domainIndex]->getPerformanceControlConfigTdpSyncInterfacePtr()->
+                        updateBasedOnConfigTdpInformation(m_participantIndex, domainIndex, configTdpControlSet, 
+                        configTdpControlStatus);
                     m_participantServicesInterface->createEventDomainPerformanceControlCapabilityChanged();
                 }
                 catch (...)
@@ -1106,7 +1099,7 @@ ConfigTdpControlStatus UnifiedParticipant::getFirstConfigTdpControlStatus()
 ConfigTdpControlSet UnifiedParticipant::getFirstConfigTdpControlSet()
 {
     Bool foundControlSet = false;
-    ConfigTdpControlSet configTdpControlSet(std::vector<ConfigTdpControl>(1, ConfigTdpControl(0, 0, 0, 0)), 0);
+    ConfigTdpControlSet configTdpControlSet(std::vector<ConfigTdpControl>(1, ConfigTdpControl(0, 0, 0, 0)));
     for (UIntN domainIndex = 0; domainIndex < m_domains.size(); domainIndex++)
     {
         if (m_domains[domainIndex] != nullptr)

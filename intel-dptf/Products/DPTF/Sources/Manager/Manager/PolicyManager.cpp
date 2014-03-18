@@ -24,9 +24,9 @@
 #include "EsifFileEnumerator.h"
 #include "EsifServices.h"
 #include "Utility.h"
-#include <iostream>
 
-PolicyManager::PolicyManager(DptfManager* dptfManager) : m_dptfManager(dptfManager)
+PolicyManager::PolicyManager(DptfManager* dptfManager) : m_dptfManager(dptfManager),
+    m_supportedPolicyList(dptfManager)
 {
 }
 
@@ -37,17 +37,13 @@ PolicyManager::~PolicyManager(void)
 
 void PolicyManager::createAllPolicies(const std::string& dptfHomeDirectoryPath)
 {
-	std::cerr << "PolicyManager: looking for policies under " << dptfHomeDirectoryPath << std::endl;
 #ifdef ESIF_ATTR_OS_WINDOWS
     EsifFileEnumerator fileEnumerator(dptfHomeDirectoryPath, "DptfPolicy*.dll");
 #else
     EsifFileEnumerator fileEnumerator(dptfHomeDirectoryPath, "DptfPolicy*.so");
 #endif
-	std::cerr << "Done declaring file enumerator" << std::endl;
 
     std::string policyFileName = fileEnumerator.getFirstFile();
-	std::cerr << "PolicyFileName: " << policyFileName << std::endl;
-	
 
     while (policyFileName.length() > 0)
     {
@@ -73,16 +69,23 @@ void PolicyManager::createAllPolicies(const std::string& dptfHomeDirectoryPath)
 
 void PolicyManager::createPolicy(const std::string& policyFileName)
 {
-    UIntN firstAvailableIndex = 0;
+    UIntN firstAvailableIndex = Constants::Invalid;
     Policy* policy = nullptr;
 
     try
     {
-        // create an instance of the policy class and save at the first available index
         policy = new Policy(m_dptfManager);
         firstAvailableIndex = getFirstNonNullIndex(m_policy);
         m_policy[firstAvailableIndex] = policy;
+    }
+    catch (...)
+    {
+        DELETE_MEMORY_TC(policy);
+        throw;
+    }
 
+    try
+    {
         // Create the policy.  This will end up calling the functions in the .dll/.so and will throw an
         // exception if it doesn't find a valid policy to load.
         policy->createPolicy(policyFileName, firstAvailableIndex, m_supportedPolicyList);
@@ -95,8 +98,7 @@ void PolicyManager::createPolicy(const std::string& policyFileName)
     }
     catch (...)
     {
-        m_policy[firstAvailableIndex] = nullptr;
-        delete policy;
+        destroyPolicy(firstAvailableIndex);
         throw;
     }
 }
@@ -115,6 +117,9 @@ void PolicyManager::destroyAllPolicies(void)
             }
             catch (...)
             {
+                ManagerMessage message = ManagerMessage(m_dptfManager, FLF, "Failed while trying to enqueue and wait for WIPolicyDestroy.");
+                message.addMessage("Policy Index", i);
+                m_dptfManager->getEsifServices()->writeMessageError(message);
             }
         }
     }
@@ -131,6 +136,9 @@ void PolicyManager::destroyPolicy(UIntN policyIndex)
         }
         catch (...)
         {
+            ManagerMessage message = ManagerMessage(m_dptfManager, FLF, "Failed while trying to destroy policy.");
+            message.addMessage("Policy Index", policyIndex);
+            m_dptfManager->getEsifServices()->writeMessageError(message);
         }
 
         DELETE_MEMORY_TC(m_policy[policyIndex]);

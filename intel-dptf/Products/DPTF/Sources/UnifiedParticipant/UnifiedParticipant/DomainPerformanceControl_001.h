@@ -56,18 +56,15 @@ private:
     DomainPerformanceControl_001(const DomainPerformanceControl_001& rhs);
     DomainPerformanceControl_001& operator=(const DomainPerformanceControl_001& rhs);
 
-    ParticipantServicesInterface* m_participantServicesInterface;
-
-    // Functions
     void createPerformanceControlStaticCapsIfNeeded();
     void createPerformanceControlDynamicCapsIfNeeded(UIntN domainIndex);
     void createPerformanceControlSetIfNeeded(UIntN domainIndex);
     void verifyPerformanceControlIndex(UIntN performanceControlIndex);
     void checkAndCreateControlStructures(UIntN domainIndex);
 
-    // Vars
+    ParticipantServicesInterface* m_participantServicesInterface;
+    UIntN m_currentPerformanceControlIndex;
     PerformanceControlStaticCaps* m_performanceControlStaticCaps;
     PerformanceControlDynamicCaps* m_performanceControlDynamicCaps;
-    PerformanceControlStatus* m_performanceControlStatus;
     PerformanceControlSet* m_performanceControlSet;
 };

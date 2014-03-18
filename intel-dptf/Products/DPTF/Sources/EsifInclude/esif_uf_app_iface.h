@@ -43,6 +43,7 @@ typedef struct _t_AppData {
 
     /* Version 1 */
     esif::EsifData              fPathHome;                          /* Path to home e.g. c:\program files\Intel\DPTF... */
+    eLogType                    fLogLevel;                          /* Current Logging/Trace Level */
 
 } AppData, *AppDataPtr, **AppDataPtrLocation;
 

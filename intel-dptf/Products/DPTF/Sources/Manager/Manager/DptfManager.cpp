@@ -24,19 +24,19 @@
 #include "UniqueIdGenerator.h"
 #include "IndexContainer.h"
 #include "esif_uf_app_iface.h"
+#include "esif_uf_iface.h"
 #include "DptfStatus.h"
 #include "EsifDataString.h"
-#include <iostream>
 
 DptfManager::DptfManager(void) : m_dptfManagerCreateStarted(false), m_dptfManagerCreateFinished(false),
-    m_dptfShuttingDown(false), m_dptfEnabled(false), m_esifServices(nullptr),
+    m_dptfShuttingDown(false), m_workItemQueueManagerCreated(false), m_dptfEnabled(false), m_esifServices(nullptr),
     m_workItemQueueManager(nullptr), m_policyManager(nullptr), m_participantManager(nullptr),
     m_dptfStatus(nullptr), m_indexContainer(nullptr)
 {
 }
 
 void DptfManager::createDptfManager(const void* esifHandle, EsifInterfacePtr esifInterfacePtr,
-    const std::string& dptfHomeDirectoryPath, Bool dptfEnabled)
+    const std::string& dptfHomeDirectoryPath, eLogType currentLogVerbosityLevel, Bool dptfEnabled)
 {
     if (m_dptfManagerCreateStarted == true)
     {
@@ -46,39 +46,28 @@ void DptfManager::createDptfManager(const void* esifHandle, EsifInterfacePtr esi
 
     try
     {
-        //std::stringstream message;
-		std::cerr << "DPTF Home Directory: " << dptfHomeDirectoryPath << std::endl;
-        //esifInterfacePtr->fWriteLogFuncPtr(esifHandle, this, nullptr, nullptr, EsifDataString(message.str()), eLogType::eLogTypeFatal);
-
- #ifdef ESIF_ATTR_OS_WINDOWS
+#ifdef ESIF_ATTR_OS_WINDOWS
         m_dptfHomeDirectoryPath = dptfHomeDirectoryPath + "\\";
 #else
         m_dptfHomeDirectoryPath = dptfHomeDirectoryPath + "/";
 #endif
-		m_dptfHomeDirectoryPath = "/system/lib/";
 
         m_dptfEnabled = dptfEnabled;
 
         m_indexContainer = new IndexContainer(Constants::Participants::MaxParticipantEstimate);
-		std::cerr << "created IndexContainer" << std::endl;
-        m_esifServices = new EsifServices(this, esifHandle, esifInterfacePtr);
-		std::cerr << "created EsifServices" << std::endl;
+        m_esifServices = new EsifServices(this, esifHandle, esifInterfacePtr, currentLogVerbosityLevel);
         m_participantManager = new ParticipantManager(this);
-		std::cerr << "created ParticipantManager" << std::endl;
         m_policyManager = new PolicyManager(this);
-		std::cerr << "created PolicyManager" << std::endl;
 
         // Make sure to create these AFTER creating the ParticipantManager and PolicyManager
         m_workItemQueueManager = new WorkItemQueueManager(this);
-		std::cerr << "created WorkItemQueueManager" << std::endl;
+        m_workItemQueueManagerCreated = true;
+
         m_dptfStatus = new DptfStatus(this);
-		std::cerr << "created DptfStatus" << std::endl;
 
         m_policyManager->createAllPolicies(m_dptfHomeDirectoryPath);
-		std::cerr << "Done createAllPolicies()" << std::endl;
 
         registerDptfFrameworkEvents();
-		std::cerr << "Done registerDptfFrameworkEvents()" << std::endl;
 
         m_dptfManagerCreateFinished = true;
     }
@@ -106,9 +95,19 @@ DptfManager::~DptfManager(void)
     shutDown();
 }
 
-Bool DptfManager::isAvailable(void) const
+Bool DptfManager::isDptfManagerCreated(void) const
 {
-    return ((m_dptfManagerCreateFinished == true) && (m_dptfShuttingDown == false));
+    return m_dptfManagerCreateFinished;
+}
+
+Bool DptfManager::isDptfShuttingDown(void) const
+{
+    return m_dptfShuttingDown;
+}
+
+Bool DptfManager::isWorkItemQueueManagerCreated(void) const
+{
+    return m_workItemQueueManagerCreated;
 }
 
 EsifServices* DptfManager::getEsifServices(void) const
@@ -154,9 +153,9 @@ void DptfManager::shutDown(void)
     unregisterDptfFrameworkEvents();
 
     disableAndEmptyAllQueues();
-    deleteDptfStatus();
     destroyAllPolicies();
     destroyAllParticipants();
+    deleteDptfStatus();
     deleteWorkItemQueueManager();
     deletePolicyManager();
     deleteParticipantManager();
@@ -181,11 +180,6 @@ void DptfManager::disableAndEmptyAllQueues(void)
     catch (...)
     {
     }
-}
-
-void DptfManager::deleteDptfStatus()
-{
-    DELETE_MEMORY_TC(m_dptfStatus);
 }
 
 void DptfManager::destroyAllPolicies(void)
@@ -218,6 +212,11 @@ void DptfManager::destroyAllParticipants(void)
     catch (...)
     {
     }
+}
+
+void DptfManager::deleteDptfStatus()
+{
+    DELETE_MEMORY_TC(m_dptfStatus);
 }
 
 void DptfManager::deleteWorkItemQueueManager(void)
@@ -269,9 +268,29 @@ void DptfManager::destroyFrameworkEventInfo(void)
 
 void DptfManager::registerDptfFrameworkEvents(void)
 {
-    // do not catch exceptions here
-    m_esifServices->registerEvent(FrameworkEvent::DptfConnectedStandbyEntry);
-    m_esifServices->registerEvent(FrameworkEvent::DptfConnectedStandbyExit);
+    try
+    {
+        m_esifServices->registerEvent(FrameworkEvent::DptfConnectedStandbyEntry);
+    }
+    catch (...)
+    {
+    }
+
+    try
+    {
+        m_esifServices->registerEvent(FrameworkEvent::DptfConnectedStandbyExit);
+    }
+    catch (...)
+    {
+    }
+
+    try
+    {
+        m_esifServices->registerEvent(FrameworkEvent::DptfLogVerbosityChanged);
+    }
+    catch (...)
+    {
+    }
 }
 
 void DptfManager::unregisterDptfFrameworkEvents(void)
@@ -279,7 +298,22 @@ void DptfManager::unregisterDptfFrameworkEvents(void)
     try
     {
         m_esifServices->unregisterEvent(FrameworkEvent::DptfConnectedStandbyEntry);
+    }
+    catch (...)
+    {
+    }
+
+    try
+    {
         m_esifServices->unregisterEvent(FrameworkEvent::DptfConnectedStandbyExit);
+    }
+    catch (...)
+    {
+    }
+
+    try
+    {
+        m_esifServices->unregisterEvent(FrameworkEvent::DptfLogVerbosityChanged);
     }
     catch (...)
     {

@@ -22,10 +22,8 @@ using namespace std;
 TargetNoAction::TargetNoAction(
     PolicyServicesInterfaceContainer& policyServices, std::shared_ptr<TimeInterface> time,
     ParticipantTracker& participantTracker, ThermalRelationshipTable& trt,
-    std::shared_ptr<CallbackScheduler> callbackScheduler, TargetMonitor& targetMonitor,
-    UtilizationStatus utilizationBiasThreshold, UIntN target)
-    : TargetActionBase(policyServices, time, participantTracker, trt, callbackScheduler, targetMonitor, 
-    utilizationBiasThreshold, target)
+    std::shared_ptr<CallbackScheduler> callbackScheduler, TargetMonitor& targetMonitor, UIntN target)
+    : TargetActionBase(policyServices, time, participantTracker, trt, callbackScheduler, targetMonitor, target)
 {
 }
 
@@ -35,5 +33,5 @@ TargetNoAction::~TargetNoAction()
 
 void TargetNoAction::execute()
 {
-    postDebugMessage(PolicyMessage(FLF, "Nothing to do for target.", getTarget()));
+    getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, "Nothing to do for target.", getTarget()));
 }

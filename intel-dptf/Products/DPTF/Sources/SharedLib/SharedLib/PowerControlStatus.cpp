@@ -64,11 +64,9 @@ Bool PowerControlStatus::operator!=(const PowerControlStatus& rhs) const
 XmlNode* PowerControlStatus::getXml(void)
 {
     XmlNode* root = XmlNode::createWrapperElement("power_control_status");
-
     root->addChild(XmlNode::createDataElement("control_type", PowerControlType::ToString(m_powerControlType)));
-    root->addChild(m_currentPowerLimit.getXml("power_limit"));
+    root->addChild(XmlNode::createDataElement("power_limit", m_currentPowerLimit.toString()));
     root->addChild(XmlNode::createDataElement("time_window", StatusFormat::friendlyValue(m_currentTimeWindow)));
-    root->addChild(m_currentDutyCycle.getXml("duty_cycle"));
-
+    root->addChild(XmlNode::createDataElement("duty_cycle", m_currentDutyCycle.toString()));
     return root;
 }

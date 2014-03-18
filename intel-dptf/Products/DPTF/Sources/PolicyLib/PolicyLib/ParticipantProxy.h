@@ -53,9 +53,6 @@ public:
     const DomainPropertiesSet& getDomainPropertiesSet();
     const ParticipantProperties& getParticipantProperties();
 
-    // controls
-    void initializeControlsForAllDomains();
-
     // trip point sets
     CriticalTripPointsCachedProperty& getCriticalTripPointProperty();
     ActiveTripPointsCachedProperty& getActiveTripPointProperty();
@@ -105,5 +102,4 @@ private:
     // services
     PolicyServicesInterfaceContainer m_policyServices;
     std::shared_ptr<TimeInterface> m_time;
-    void postDebugMessage(const PolicyMessage& message);
 };

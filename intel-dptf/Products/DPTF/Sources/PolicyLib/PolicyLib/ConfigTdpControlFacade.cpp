@@ -17,7 +17,6 @@
 ******************************************************************************/
 
 #include "ConfigTdpControlFacade.h"
-#include <sstream>
 #include "StatusFormat.h"
 using namespace std;
 using namespace StatusFormat;
@@ -44,10 +43,30 @@ ConfigTdpControlFacade::~ConfigTdpControlFacade()
 
 void ConfigTdpControlFacade::setControl(UIntN configTdpControlIndex)
 {
-    if (supportsConfigTdp())
+    if (supportsConfigTdpControls())
     {
+        const ConfigTdpControlDynamicCaps& capabilities = m_configTdpCapabilities.getDynamicCaps();
+        UIntN arbitratedConfigTdpIndex;
+        if ((configTdpControlIndex >= capabilities.getCurrentUpperLimitIndex()) && 
+            (configTdpControlIndex <= capabilities.getCurrentLowerLimitIndex()))
+        {
+            arbitratedConfigTdpIndex = configTdpControlIndex;
+        }
+        else if (configTdpControlIndex < capabilities.getCurrentUpperLimitIndex())
+        {
+            arbitratedConfigTdpIndex = capabilities.getCurrentUpperLimitIndex();
+        }
+        else if (configTdpControlIndex > capabilities.getCurrentLowerLimitIndex())
+        {
+            arbitratedConfigTdpIndex = capabilities.getCurrentLowerLimitIndex();
+        }
+        else
+        {
+            arbitratedConfigTdpIndex = capabilities.getCurrentUpperLimitIndex();
+        }
+
         m_policyServices.domainConfigTdpControl->setConfigTdpControl(
-            m_participantIndex, m_domainIndex, configTdpControlIndex);
+            m_participantIndex, m_domainIndex, arbitratedConfigTdpIndex);
         m_configTdpStatus.invalidate();
     }
     else
@@ -63,7 +82,7 @@ void ConfigTdpControlFacade::refreshCapabilities()
 
 void ConfigTdpControlFacade::initializeControlsIfNeeded()
 {
-    if (m_controlsHaveBeenInitialized == false)
+    if (supportsConfigTdpControls() && (m_controlsHaveBeenInitialized == false))
     {
         ConfigTdpControlDynamicCaps caps = getCapabilities();
         setControl(caps.getCurrentUpperLimitIndex());
@@ -71,7 +90,7 @@ void ConfigTdpControlFacade::initializeControlsIfNeeded()
     }
 }
 
-Bool ConfigTdpControlFacade::supportsConfigTdp()
+Bool ConfigTdpControlFacade::supportsConfigTdpControls()
 {
     return m_domainProperties.implementsConfigTdpControlInterface();
 }
@@ -94,7 +113,7 @@ ConfigTdpControlSet ConfigTdpControlFacade::getControlSet()
 XmlNode* ConfigTdpControlFacade::getXml()
 {
     XmlNode* status = XmlNode::createWrapperElement("control_config_tdp_level");
-    if (supportsConfigTdp())
+    if (supportsConfigTdpControls())
     {
         try
         {
@@ -121,7 +140,7 @@ XmlNode* ConfigTdpControlFacade::getXml()
         catch (...)
         {
             status->addChild(ConfigTdpControlSet(vector<ConfigTdpControl>(1, 
-                ConfigTdpControl(Constants::Invalid, Constants::Invalid, Constants::Invalid, Constants::Invalid)), 0).getXml());
+                ConfigTdpControl(Constants::Invalid, Constants::Invalid, Constants::Invalid, Constants::Invalid))).getXml());
         }
     }
     return status;

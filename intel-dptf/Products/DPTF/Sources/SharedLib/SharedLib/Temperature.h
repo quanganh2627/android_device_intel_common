@@ -17,37 +17,33 @@
 ******************************************************************************/
 
 #pragma once
-
 #include "Dptf.h"
-#include "BasicTypes.h"
-#include "DptfExport.h"
-
-class XmlNode;
 
 class Temperature final
 {
 public:
 
-    Temperature(void);
+    Temperature(void); // Initialized to invalid by default
     Temperature(UInt32 temperature);
-    UInt32 getTemperature() const;
-    Bool isTemperatureValid() const;
+    static Temperature createInvalid();
+
     Bool operator==(const Temperature& rhs) const;
     Bool operator!=(const Temperature& rhs) const;
     Bool operator>(const Temperature& rhs) const;
     Bool operator>=(const Temperature& rhs) const;
     Bool operator<(const Temperature& rhs) const;
     Bool operator<=(const Temperature& rhs) const;
+    friend std::ostream& operator<<(std::ostream& os, const Temperature& temperature);
+    operator UInt32(void) const;
 
+    Bool isValid() const;
     std::string toString() const;
-    XmlNode* getXml(std::string tag);
-
-    static const UInt32 invalidTemperature = 0xFFFFFFFF;
 
 private:
 
-    UInt32 m_temperature;
-    Bool isTemperatureValid(UInt32 temperature) const;
-    void throwIfTemperatureNotValid(UInt32 lhs, UInt32 rhs) const;
     static const UInt32 maxValidTemperature = 2500;
+    Bool m_valid;
+    UInt32 m_temperature;
+
+    void throwIfInvalid(const Temperature& temperature) const;
 };

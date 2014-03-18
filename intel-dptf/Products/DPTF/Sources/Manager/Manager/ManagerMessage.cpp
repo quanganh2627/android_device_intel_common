@@ -23,7 +23,6 @@
 #include "PolicyManager.h"
 #include "Policy.h"
 #include "FrameworkEvent.h"
-#include "GccFix.h"
 
 ManagerMessage::ManagerMessage(const DptfManager* dptfManager, const std::string& fileName,
     UIntN lineNumber, const std::string& executingFunctionName) :

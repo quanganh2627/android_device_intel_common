@@ -16,59 +16,41 @@
 **
 ******************************************************************************/
 
-#include "PowerStatusCachedProperty.h"
+#include "PowerStatusProperty.h"
 using namespace std;
 
-PowerStatusCachedProperty::PowerStatusCachedProperty(
+PowerStatusProperty::PowerStatusProperty(
     UIntN participantIndex,
     UIntN domainIndex,
     const DomainProperties& domainProperties,
     const PolicyServicesInterfaceContainer& policyServices)
-    : CachedProperty(), DomainProperty(participantIndex, domainIndex, domainProperties, policyServices),
-    m_powerStatus(Power(Constants::Invalid))
+    : DomainProperty(participantIndex, domainIndex, domainProperties, policyServices)
 {
 }
 
-PowerStatusCachedProperty::~PowerStatusCachedProperty()
+PowerStatusProperty::~PowerStatusProperty()
 {
 }
 
-Bool PowerStatusCachedProperty::implementsPowerStatusInterface(void)
+Bool PowerStatusProperty::implementsPowerStatusInterface(void)
 {
     return getDomainProperties().implementsPowerStatusInterface();
 }
 
-const PowerStatus& PowerStatusCachedProperty::getStatus(void)
+PowerStatus PowerStatusProperty::getStatus()
 {
     if (implementsPowerStatusInterface())
     {
-        if (isCacheValid() == false)
-        {
-            refresh();
-        }
-        return m_powerStatus;
+        return getPolicyServices().domainPowerStatus->getPowerStatus(
+            getParticipantIndex(), getDomainIndex());
     }
     else
     {
-        throw dptf_exception("Domain does not support the power control interface.");
+        throw dptf_exception("Domain does not support the power status interface.");
     }
 }
 
-Bool PowerStatusCachedProperty::supportsProperty(void)
+Bool PowerStatusProperty::supportsProperty(void)
 {
-    if (isCacheValid() == false)
-    {
-        refresh();
-    }
     return implementsPowerStatusInterface();
-}
-
-void PowerStatusCachedProperty::refreshData(void)
-{
-    if (implementsPowerStatusInterface())
-    {
-        m_powerStatus =
-            getPolicyServices().domainPowerStatus->getPowerStatus(
-                getParticipantIndex(), getDomainIndex());
-    }
 }

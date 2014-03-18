@@ -20,7 +20,6 @@
 
 #include "DptfExport.h"
 #include <stdexcept>
-#include <string>
 
 #ifdef ESIF_ATTR_OS_WINDOWS
 #pragma warning(push) // TODO: remove this warning and rely on a single source for this warning

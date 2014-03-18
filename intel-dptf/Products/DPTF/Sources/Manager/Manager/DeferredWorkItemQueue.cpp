@@ -20,7 +20,6 @@
 #include "EsifMutexHelper.h"
 #include "WorkItemMatches.h"
 #include "XmlNode.h"
-#include "GccFix.h"
 
 DeferredWorkItemQueue::DeferredWorkItemQueue(EsifSemaphore* workItemQueueSemaphore) :
     m_workItemQueueSemaphore(workItemQueueSemaphore), m_timer(TimerCallback, this), m_maxCount(0)

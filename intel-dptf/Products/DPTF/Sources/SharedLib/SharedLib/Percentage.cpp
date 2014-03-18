@@ -18,39 +18,46 @@
 
 #include "Percentage.h"
 #include "DptfExceptions.h"
-#include "StatusFormat.h"
-#include "XmlNode.h"
-#include "GccFix.h"
+#include "Constants.h"
+#include <iomanip>
 
-const double Percentage::m_invalidPercentage = 9999.0;
-
-Percentage::Percentage(void) :
-    m_percentage(m_invalidPercentage)
+Percentage::Percentage(void)
+    : m_percentage(0.0), m_valid(false)
 {
 }
 
-Percentage::Percentage(double percentage) :
-    m_percentage(percentage)
+Percentage::Percentage(double percentage)
+    : m_percentage(percentage), m_valid(true)
 {
-    if (isPercentageValid(percentage) == false)
-    {
-        throw dptf_exception("Percentage is not valid.");
-    }
 }
 
-Percentage Percentage::fromWholeNumber(UIntN number)
+Percentage Percentage::createInvalid()
 {
-    return (double)((double)number / 100.0);
+    return Percentage();
 }
 
-Bool Percentage::isPercentageValid() const
+Percentage Percentage::fromWholeNumber(UIntN wholeNumber)
 {
-    return isPercentageValid(m_percentage);
+    double value = ((double)wholeNumber / 100.0);
+    return Percentage(value);
 }
 
 Bool Percentage::operator==(const Percentage& rhs) const
 {
-    return (this->m_percentage == rhs.m_percentage);
+    // Do not throw an exception if percentage is not valid.
+
+    if (this->isValid() == true && rhs.isValid() == true)
+    {
+        return (this->m_percentage == rhs.m_percentage);
+    }
+    else if (this->isValid() == false && rhs.isValid() == false)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 Bool Percentage::operator!=(const Percentage& rhs) const
@@ -60,31 +67,30 @@ Bool Percentage::operator!=(const Percentage& rhs) const
 
 Bool Percentage::operator>(const Percentage& rhs) const
 {
-    throwIfInvalidPercentage(this->m_percentage, rhs.m_percentage);
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
     return (this->m_percentage > rhs.m_percentage);
 }
 
 Bool Percentage::operator>=(const Percentage& rhs) const
 {
-    throwIfInvalidPercentage(this->m_percentage, rhs.m_percentage);
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
     return (this->m_percentage >= rhs.m_percentage);
 }
 
 Bool Percentage::operator<(const Percentage& rhs) const
 {
-    throwIfInvalidPercentage(this->m_percentage, rhs.m_percentage);
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
     return (this->m_percentage < rhs.m_percentage);
 }
 
 Bool Percentage::operator<=(const Percentage& rhs) const
 {
-    throwIfInvalidPercentage(this->m_percentage, rhs.m_percentage);
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
     return (this->m_percentage <= rhs.m_percentage);
-}
-
-Percentage::operator double(void) const
-{
-    return m_percentage;
 }
 
 std::ostream& operator<<(std::ostream& os, const Percentage& percentage)
@@ -93,9 +99,15 @@ std::ostream& operator<<(std::ostream& os, const Percentage& percentage)
     return os;
 }
 
-std::string Percentage::toString() const
+Percentage::operator double(void) const
 {
-    return GccFix::to_string(m_percentage);
+    throwIfInvalid(*this);
+    return m_percentage;
+}
+
+Bool Percentage::isValid() const
+{
+    return m_valid;
 }
 
 UIntN Percentage::toWholeNumber() const
@@ -103,32 +115,23 @@ UIntN Percentage::toWholeNumber() const
     return (UIntN)(m_percentage * 100);
 }
 
-XmlNode* Percentage::getXml(void)
+std::string Percentage::toString() const
 {
-    return getXml("");
-}
-
-XmlNode* Percentage::getXml(std::string tag)
-{
-    return XmlNode::createDataElement(tag, StatusFormat::friendlyValue(m_percentage));
-}
-
-Bool Percentage::isPercentageValid(double percentage) const
-{
-    return (percentage <= 1.0);
-}
-
-void Percentage::throwIfInvalidPercentage(double percentage) const
-{
-    if (isPercentageValid(percentage) == false)
+    if (isValid())
     {
-        throw dptf_exception("Percentage is not valid.");
+        std::stringstream stream;
+        stream << std::setprecision(2) << std::fixed << (m_percentage * 100);
+        return stream.str();
+    }
+    else
+    {
+        return Constants::InvalidString;
     }
 }
 
-void Percentage::throwIfInvalidPercentage(double lhs, double rhs) const
+void Percentage::throwIfInvalid(const Percentage& percentage) const
 {
-    if (isPercentageValid(lhs) == false || isPercentageValid(rhs) == false)
+    if (percentage.isValid() == false)
     {
         throw dptf_exception("Percentage is not valid.");
     }

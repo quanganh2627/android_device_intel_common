@@ -83,7 +83,7 @@ std::vector<PowerControlStatus> PowerControlArbitrator::createInitialArbitratedP
     std::vector<PowerControlStatus> arbitratedPowerControlStatusVector;
     for (UIntN i = 0; i < PowerControlType::max; i++)
     {
-        PowerControlStatus pcs = PowerControlStatus((PowerControlType::Type)i, Power(), Constants::Invalid, Percentage());
+        PowerControlStatus pcs = PowerControlStatus((PowerControlType::Type)i, Power::createInvalid(), Constants::Invalid, Percentage::createInvalid());
         arbitratedPowerControlStatusVector.push_back(pcs);
     }
 
@@ -115,8 +115,8 @@ void PowerControlArbitrator::arbitrate(std::vector<PowerControlStatus> &arbitrat
                 if (currentPowerControlStatus.getPowerControlType() == currentPowerControlType)
                 {
                     // Power
-                    if ((currentPowerControlStatus.getCurrentPowerLimit().isPowerValid() == true) &&
-                        ((arbitratedPowerControlStatusVector[currentPowerControlType].getCurrentPowerLimit().isPowerValid() == false) ||
+                    if ((currentPowerControlStatus.getCurrentPowerLimit().isValid() == true) &&
+                        ((arbitratedPowerControlStatusVector[currentPowerControlType].getCurrentPowerLimit().isValid() == false) ||
                          (currentPowerControlStatus.getCurrentPowerLimit() < arbitratedPowerControlStatusVector[currentPowerControlType].getCurrentPowerLimit())))
                     {
                         arbitratedPowerControlStatusVector[currentPowerControlType].m_currentPowerLimit =
@@ -149,7 +149,7 @@ PowerControlStatusSet PowerControlArbitrator::getArbitratedPowerControlStatusSet
     for (UIntN i = 0; i < PowerControlType::max; i++)
     {
         PowerControlStatus pcs = arbitratedPowerControlStatusVector[i];
-        if ((pcs.getCurrentPowerLimit().isPowerValid() == true) ||
+        if ((pcs.getCurrentPowerLimit().isValid() == true) ||
             (pcs.getCurrentTimeWindow() != Constants::Invalid))
         {
             reducedPowerControlStatusVector.push_back(pcs);

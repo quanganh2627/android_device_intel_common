@@ -37,10 +37,20 @@
 #include "ManagerMessage.h"
 
 EsifServices::EsifServices(const DptfManager* dptfManager, const void* esifHandle,
-    const EsifInterfacePtr esifInterfacePtr) : m_dptfManager(dptfManager),
-    m_esifHandle(esifHandle)
+    const EsifInterfacePtr esifInterfacePtr, eLogType currentLogVerbosityLevel) :
+    m_dptfManager(dptfManager), m_esifHandle(esifHandle), m_currentLogVerbosityLevel(currentLogVerbosityLevel)
 {
     esif_ccb_memcpy(&m_esifInterface, esifInterfacePtr, sizeof(EsifInterface));
+}
+
+eLogType EsifServices::getCurrentLogVerbosityLevel(void) const
+{
+    return m_currentLogVerbosityLevel;
+}
+
+void EsifServices::setCurrentLogVerbosityLevel(eLogType currentLogVerbosityLevel)
+{
+    m_currentLogVerbosityLevel = currentLogVerbosityLevel;
 }
 
 UInt32 EsifServices::readConfigurationUInt32(const std::string& elementPath)
@@ -356,6 +366,18 @@ std::string EsifServices::primitiveExecuteGetAsString(esif_primitive_type primit
     return esifResult;
 }
 
+void EsifServices::primitiveExecuteSetAsString(esif_primitive_type primitive, std::string stringValue, 
+    UIntN participantIndex, UIntN domainIndex, UInt8 instance)
+{
+    throwIfParticipantDomainCombinationInvalid(FLF, participantIndex, domainIndex);
+
+    eEsifError rc = m_esifInterface.fPrimitiveFuncPtr(m_esifHandle, m_dptfManager,
+        (void*)m_dptfManager->getIndexContainer()->getIndexPtr(participantIndex),
+        (void*)m_dptfManager->getIndexContainer()->getIndexPtr(domainIndex),
+        EsifDataString(stringValue), EsifDataVoid(), primitive, instance);
+    throwIfNotSuccessful(FLF, rc, primitive, participantIndex, domainIndex, instance);
+}
+
 void EsifServices::primitiveExecuteGet(esif_primitive_type primitive, esif_data_type esifDataType,
     void* bufferPtr, UInt32 bufferLength, UInt32* dataLength, UIntN participantIndex,
     UIntN domainIndex, UInt8 instance)
@@ -388,27 +410,42 @@ void EsifServices::primitiveExecuteSet(esif_primitive_type primitive, esif_data_
 
 void EsifServices::writeMessageFatal(const std::string& message, MessageCategory::Type messageCategory)
 {
-    writeMessage(eLogType::eLogTypeFatal, messageCategory, message);
+    if (eLogType::eLogTypeFatal <= m_currentLogVerbosityLevel)
+    {
+        writeMessage(eLogType::eLogTypeFatal, messageCategory, message);
+    }
 }
 
 void EsifServices::writeMessageError(const std::string& message, MessageCategory::Type messageCategory)
 {
-    writeMessage(eLogType::eLogTypeError, messageCategory, message);
+    if (eLogType::eLogTypeError <= m_currentLogVerbosityLevel)
+    {
+        writeMessage(eLogType::eLogTypeError, messageCategory, message);
+    }
 }
 
 void EsifServices::writeMessageWarning(const std::string& message, MessageCategory::Type messageCategory)
 {
-    writeMessage(eLogType::eLogTypeWarning, messageCategory, message);
+    if (eLogType::eLogTypeWarning <= m_currentLogVerbosityLevel)
+    {
+        writeMessage(eLogType::eLogTypeWarning, messageCategory, message);
+    }
 }
 
 void EsifServices::writeMessageInfo(const std::string& message, MessageCategory::Type messageCategory)
 {
-    writeMessage(eLogType::eLogTypeInfo, messageCategory, message);
+    if (eLogType::eLogTypeInfo <= m_currentLogVerbosityLevel)
+    {
+        writeMessage(eLogType::eLogTypeInfo, messageCategory, message);
+    }
 }
 
 void EsifServices::writeMessageDebug(const std::string& message, MessageCategory::Type messageCategory)
 {
-    writeMessage(eLogType::eLogTypeDebug, messageCategory, message);
+    if (eLogType::eLogTypeDebug <= m_currentLogVerbosityLevel)
+    {
+        writeMessage(eLogType::eLogTypeDebug, messageCategory, message);
+    }
 }
 
 void EsifServices::registerEvent(FrameworkEvent::Type frameworkEvent, UIntN participantIndex, UIntN domainIndex)
@@ -432,7 +469,7 @@ void EsifServices::registerEvent(FrameworkEvent::Type frameworkEvent, UIntN part
         message.addMessage("Guid", guid.toString());
         message.setParticipantAndDomainIndex(participantIndex, domainIndex);
         message.setEsifErrorCode(rc);
-        writeMessageError(message);
+        writeMessageWarning(message);
     }
 }
 
@@ -457,11 +494,11 @@ void EsifServices::unregisterEvent(FrameworkEvent::Type frameworkEvent, UIntN pa
         message.addMessage("Guid", guid.toString());
         message.setParticipantAndDomainIndex(participantIndex, domainIndex);
         message.setEsifErrorCode(rc);
-        writeMessageError(message);
+        writeMessageWarning(message);
     }
 }
 
-void EsifServices::writeMessage(eLogType logType, MessageCategory::Type messageCategory, const std::string& message)
+void EsifServices::writeMessage(eLogType messageLevel, MessageCategory::Type messageCategory, const std::string& message)
 {
     // Do not throw an error here....
     // In general we will write to the log file when an error has been thrown and we don't want to create
@@ -475,8 +512,8 @@ void EsifServices::writeMessage(eLogType logType, MessageCategory::Type messageC
     {
 #endif
 
-    m_esifInterface.fWriteLogFuncPtr(m_esifHandle, m_dptfManager, nullptr,
-        nullptr, EsifDataString(message), logType);
+        m_esifInterface.fWriteLogFuncPtr(m_esifHandle, m_dptfManager, nullptr,
+            nullptr, EsifDataString(message), messageLevel);
 
 #ifdef ONLY_LOG_TEMPERATURE_THRESHOLDS
     }
@@ -518,16 +555,10 @@ void EsifServices::throwIfNotSuccessful(const std::string& fileName, UIntN lineN
 
     if ((primitive == GET_TRIP_POINT_ACTIVE) && (returnCode == ESIF_I_ACPI_TRIP_POINT_NOT_PRESENT))
     {
-        // no message
-    }
-    else if (returnCode == ESIF_E_PRIMITIVE_NOT_FOUND_IN_DSP)
-    {
-        // error message
-        writeMessageError(message);
+        // no message.  we still throw an exception to inform the policy.
     }
     else
     {
-        // default to warning message
         writeMessageWarning(message);
     }
 

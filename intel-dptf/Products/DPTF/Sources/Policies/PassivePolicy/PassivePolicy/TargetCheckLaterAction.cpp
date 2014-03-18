@@ -22,10 +22,8 @@ using namespace std;
 TargetCheckLaterAction::TargetCheckLaterAction(
     PolicyServicesInterfaceContainer& policyServices, std::shared_ptr<TimeInterface> time,
     ParticipantTracker& participantTracker, ThermalRelationshipTable& trt,
-    std::shared_ptr<CallbackScheduler> callbackScheduler, TargetMonitor& targetMonitor,
-    UtilizationStatus utilizationBiasThreshold, UIntN target)
-    : TargetActionBase(policyServices, time, participantTracker, trt, callbackScheduler, targetMonitor, 
-    utilizationBiasThreshold, target)
+    std::shared_ptr<CallbackScheduler> callbackScheduler, TargetMonitor& targetMonitor, UIntN target)
+    : TargetActionBase(policyServices, time, participantTracker, trt, callbackScheduler, targetMonitor, target)
 {
 }
 
@@ -38,11 +36,11 @@ void TargetCheckLaterAction::execute()
     try
     {
         // schedule a callback as soon as possible
-        postDebugMessage(PolicyMessage(FLF, "Attempting to schedule callback for target participant.", getTarget()));
+        getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, "Attempting to schedule callback for target participant.", getTarget()));
         getCallbackScheduler()->scheduleCallbackAfterShortestSamplePeriod(getTarget());
     }
     catch (...)
     {
-        postWarningMessage(PolicyMessage(FLF, "Failed to schedule callback for target participant.", getTarget()));
+        getPolicyServices().messageLogging->writeMessageWarning(PolicyMessage(FLF, "Failed to schedule callback for target participant.", getTarget()));
     }
 }

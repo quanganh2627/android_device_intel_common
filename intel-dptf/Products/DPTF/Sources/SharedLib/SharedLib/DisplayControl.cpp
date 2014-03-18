@@ -47,8 +47,6 @@ Bool DisplayControl::operator<(const DisplayControl& rhs) const
 XmlNode* DisplayControl::getXml(void)
 {
     XmlNode* root = XmlNode::createWrapperElement("display_control");
-
-    root->addChild(m_brightness.getXml("brightness"));
-
+    root->addChild(XmlNode::createDataElement("brightness", m_brightness.toString()));
     return root;
 }

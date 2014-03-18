@@ -20,18 +20,16 @@
 
 #include "Dptf.h"
 
-class XmlNode;
-
 // Represents frequency in Hz
 
 class Frequency final
 {
 public:
 
-    Frequency(void);
+    Frequency(void); // Initialized to invalid by default
     Frequency(UInt64 frequency);
-    UInt64 getFrequency() const;
-    Bool isFrequencyValid() const;
+    static Frequency createInvalid();
+
     Bool operator==(const Frequency& rhs) const;
     Bool operator!=(const Frequency& rhs) const;
     Bool operator>(const Frequency& rhs) const;
@@ -41,13 +39,16 @@ public:
     Frequency operator+(const Frequency& rhs) const;
     Frequency operator-(const Frequency& rhs) const;
     Frequency operator*(const Frequency& rhs) const;
+    friend std::ostream& operator<<(std::ostream& os, const Frequency& frequency);
+    operator UInt64(void) const;
 
+    Bool isValid() const;
     std::string toString() const;
-    XmlNode* getXml(std::string tag) const;
 
 private:
 
-    static const UInt64 invalidFrequency = 0xFFFFFFFF;
+    Bool m_valid;
     UInt64 m_frequency;                                             // Units:  Hz
-    void throwIfFrequencyNotValid(UInt64 lhs, UInt64 rhs) const;
+
+    void throwIfInvalid(const Frequency& frequency) const;
 };

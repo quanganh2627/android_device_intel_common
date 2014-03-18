@@ -23,10 +23,8 @@ using namespace std;
 TargetLimitAction::TargetLimitAction(
     PolicyServicesInterfaceContainer& policyServices, std::shared_ptr<TimeInterface> time,
     ParticipantTracker& participantTracker, ThermalRelationshipTable& trt,
-    std::shared_ptr<CallbackScheduler> callbackScheduler, TargetMonitor& targetMonitor,
-    UtilizationStatus utilizationBiasThreshold, UIntN target)
-    : TargetActionBase(policyServices, time, participantTracker, trt, callbackScheduler, targetMonitor, 
-    utilizationBiasThreshold, target)
+    std::shared_ptr<CallbackScheduler> callbackScheduler, TargetMonitor& targetMonitor, UIntN target)
+    : TargetActionBase(policyServices, time, participantTracker, trt, callbackScheduler, targetMonitor, target)
 {
 }
 
@@ -42,12 +40,12 @@ void TargetLimitAction::execute()
         getTargetMonitor().startMonitoring(getTarget());
         
         // choose sources to limit for target
-        postDebugMessage(PolicyMessage(FLF, "Attempting to limit target participant.", getTarget()));
+        getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, "Attempting to limit target participant.", getTarget()));
         vector<UIntN> sourcesToLimit = chooseSourcesToLimitForTarget(getTarget());
 
         if (sourcesToLimit.size() > 0)
         {
-            postDebugMessage(PolicyMessage(FLF, constructMessageForSources("limit", getTarget(), sourcesToLimit)));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, constructMessageForSources("limit", getTarget(), sourcesToLimit)));
             for (auto source = sourcesToLimit.begin(); source != sourcesToLimit.end(); source++)
             {
                 // if source is busy now, schedule a callback as soon as possible
@@ -60,7 +58,7 @@ void TargetLimitAction::execute()
                     // limit the appropriate domains for the source and schedule a callback after the next sampling
                     // period
                     vector<UIntN> domains = chooseDomainsToLimitForSource(getTarget(), *source);
-                    postDebugMessage(PolicyMessage(FLF, constructMessageForSourceDomains("limit", getTarget(), *source, domains)));
+                    getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, constructMessageForSourceDomains("limit", getTarget(), *source, domains)));
                     for (auto domain = domains.begin(); domain != domains.end(); domain++)
                     {
                         limitDomain(*source, *domain);
@@ -72,13 +70,13 @@ void TargetLimitAction::execute()
         else
         {
             // schedule a callback as soon as possible if there are no sources that can be limited
-            postDebugMessage(PolicyMessage(FLF, "No sources to limit for target.", getTarget()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, "No sources to limit for target.", getTarget()));
             getCallbackScheduler()->scheduleCallbackAfterShortestSamplePeriod(getTarget());
         }
     }
     catch (...)
     {
-        postWarningMessage(PolicyMessage(FLF, "Failed to limit source(s) for target.", getTarget()));
+        getPolicyServices().messageLogging->writeMessageWarning(PolicyMessage(FLF, "Failed to limit source(s) for target.", getTarget()));
     }
 }
 
@@ -165,22 +163,26 @@ std::vector<UIntN> TargetLimitAction::chooseDomainsToLimitForSource(UIntN target
         }
         else
         {
-            // limit package domains, domains that do not report utilization, and domains whose utilization is higher
-            // than the bias threshold
+            // Limit package domains first.  If there are no package domains that have controls to limit, 
+            // choose domains that do not report utilization and the domain whose priority and 
+            // utilization is highest.
             vector<UIntN> packageDomains = getPackageDomains(source, domainsWithControlKnobsToTurn);
             domainsToLimitSet.insert(packageDomains.begin(), packageDomains.end());
-            vector<pair<UIntN, UtilizationStatus>> domainsSortedByPreference =
-                getDomainsSortedByPriorityThenUtilization(source, domainsWithControlKnobsToTurn);
-            for (auto domain = domainsSortedByPreference.begin(); domain != domainsSortedByPreference.end(); domain++)
+            if (packageDomains.size() == 0)
             {
-                if (domain->second.getCurrentUtilization().isPercentageValid() == false)
+                vector<pair<UIntN, UtilizationStatus>> domainsSortedByPreference =
+                    getDomainsSortedByPriorityThenUtilization(source, domainsWithControlKnobsToTurn);
+                for (auto domain = domainsSortedByPreference.begin(); domain != domainsSortedByPreference.end(); domain++)
                 {
-                    domainsToLimitSet.insert(domain->first);
-                }
-                else if (domain->second.getCurrentUtilization() >= 
-                         getUtilizationBiasThreshold().getCurrentUtilization())
-                {
-                    domainsToLimitSet.insert(domain->first);
+                    if (domain->second.getCurrentUtilization().isValid() == false)
+                    {
+                        domainsToLimitSet.insert(domain->first);
+                    }
+                    else
+                    {
+                        domainsToLimitSet.insert(domain->first);
+                        break;
+                    }
                 }
             }
         }
@@ -225,7 +227,7 @@ std::vector<std::pair<UIntN, UtilizationStatus>> TargetLimitAction::getDomainsSo
     {
         DomainPriority domainPriority =
             getParticipantTracker()[source][*domain].getDomainPriorityProperty().getDomainPriority();
-        UtilizationStatus utilStatus = UtilizationStatus(Percentage());
+        UtilizationStatus utilStatus = UtilizationStatus(Percentage::createInvalid());
         if (domainReportsUtilization(source, *domain))
         {
             utilStatus = getParticipantTracker()[source][*domain].getUtilizationStatus();

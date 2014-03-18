@@ -41,7 +41,7 @@ void DisplayControlKnob::limit()
     {
         try
         {
-            postDebugMessage(PolicyMessage(FLF, "Attempting to limit display brightness.", 
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, "Attempting to limit display brightness.", 
                 getParticipantIndex(), getDomainIndex()));
 
             UIntN currentControlIndex = m_displayControl->getStatus().getBrightnessLimitIndex();
@@ -52,11 +52,11 @@ void DisplayControlKnob::limit()
 
             stringstream message;
             message << "Limited display brightness to control index" << nextControlIndex << ".";
-            postDebugMessage(PolicyMessage(FLF, message.str(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, message.str(), getParticipantIndex(), getDomainIndex()));
         }
         catch (std::exception& ex)
         {
-            postDebugMessage(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
             throw ex;
         }
     }
@@ -68,7 +68,7 @@ void DisplayControlKnob::unlimit()
     {
         try
         {
-            postDebugMessage(PolicyMessage(FLF, "Attempting to unlimit display brightness.", 
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, "Attempting to unlimit display brightness.", 
                 getParticipantIndex(), getDomainIndex()));
 
             UIntN currentControlIndex = m_displayControl->getStatus().getBrightnessLimitIndex();
@@ -78,11 +78,11 @@ void DisplayControlKnob::unlimit()
 
             stringstream message;
             message << "Unlimited display brightness to control index " << nextControlIndex << ".";
-            postDebugMessage(PolicyMessage(FLF, message.str(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, message.str(), getParticipantIndex(), getDomainIndex()));
         }
         catch (std::exception& ex)
         {
-            postDebugMessage(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
             throw ex;
         }
     }

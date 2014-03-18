@@ -44,7 +44,7 @@
 #include "PolicyServicesMessageLogging.h"
 
 Policy::Policy(DptfManager* dptfManager) : m_dptfManager(dptfManager), m_theRealPolicy(nullptr),
-    m_policyIndex(Constants::Invalid), m_esifLibrary(nullptr),
+    m_theRealPolicyCreated(false), m_policyIndex(Constants::Invalid), m_esifLibrary(nullptr),
     m_createPolicyInstanceFuncPtr(nullptr), m_destroyPolicyInstanceFuncPtr(nullptr)
 {
 }
@@ -56,10 +56,6 @@ Policy::~Policy(void)
 void Policy::createPolicy(const std::string& policyFileName, UIntN newPolicyIndex,
     const SupportedPolicyList& supportedPolicyList)
 {
-    //
-    // FIXME:  clean this up...
-    //
-
     // If an exception is thrown while trying to create the policy, the PolicyManager will
     // delete the Policy instance and remove the policy completely.
 
@@ -89,41 +85,19 @@ void Policy::createPolicy(const std::string& policyFileName, UIntN newPolicyInde
 
     m_guid = m_theRealPolicy->getGuid();
 
-    //throw implement_me();
-    //FIXME:  for initial development skip this check for the guid
-    //Bool policySupported = supportedPolicyList.isPolicyValid(m_guid);
-    //if (policySupported == false)
-    //{
-    //    throw dptf_exception(".....
-    //}
+    Bool policySupported = supportedPolicyList.isPolicyValid(m_guid);
+    if (policySupported == false)
+    {
+        std::stringstream message;
+        message << "Policy [" << m_policyFileName << "] will not be loaded.  GUID not in supported policy list [" << m_guid << "]";
+        throw dptf_exception(message.str());
+    }
 
-    // FIXME:  move this to class factory
-    PolicyServicesInterfaceContainer policyServices;
-    policyServices.domainActiveControl = new PolicyServicesDomainActiveControl(m_dptfManager, m_policyIndex);
-    policyServices.domainConfigTdpControl = new PolicyServicesDomainConfigTdpControl(m_dptfManager, m_policyIndex);
-    policyServices.domainCoreControl = new PolicyServicesDomainCoreControl(m_dptfManager, m_policyIndex);
-    policyServices.domainDisplayControl = new PolicyServicesDomainDisplayControl(m_dptfManager, m_policyIndex);
-    policyServices.domainPerformanceControl = new PolicyServicesDomainPerformanceControl(m_dptfManager, m_policyIndex);
-    policyServices.domainPixelClockControl = new PolicyServicesDomainPixelClockControl(m_dptfManager, m_policyIndex);
-    policyServices.domainPixelClockStatus = new PolicyServicesDomainPixelClockStatus(m_dptfManager, m_policyIndex);
-    policyServices.domainPowerControl = new PolicyServicesDomainPowerControl(m_dptfManager, m_policyIndex);
-    policyServices.domainPowerStatus = new PolicyServicesDomainPowerStatus(m_dptfManager, m_policyIndex);
-    policyServices.domainPriority = new PolicyServicesDomainPriority(m_dptfManager, m_policyIndex);
-    policyServices.domainRfProfileControl = new PolicyServicesDomainRfProfileControl(m_dptfManager, m_policyIndex);
-    policyServices.domainRfProfileStatus = new PolicyServicesDomainRfProfileStatus(m_dptfManager, m_policyIndex);
-    policyServices.domainTemperature = new PolicyServicesDomainTemperature(m_dptfManager, m_policyIndex);
-    policyServices.domainUtilization = new PolicyServicesDomainUtilization(m_dptfManager, m_policyIndex);
-    policyServices.participantGetSpecificInfo = new PolicyServicesParticipantGetSpecificInfo(m_dptfManager, m_policyIndex);
-    policyServices.participantProperties = new PolicyServicesParticipantProperties(m_dptfManager, m_policyIndex);
-    policyServices.participantSetSpecificInfo = new PolicyServicesParticipantSetSpecificInfo(m_dptfManager, m_policyIndex);
-    policyServices.platformConfigurationData = new PolicyServicesPlatformConfigurationData(m_dptfManager, m_policyIndex);
-    policyServices.platformNotification = new PolicyServicesPlatformNotification(m_dptfManager, m_policyIndex);
-    policyServices.platformPowerState = new PolicyServicesPlatformPowerState(m_dptfManager, m_policyIndex);
-    policyServices.policyEventRegistration = new PolicyServicesPolicyEventRegistration(m_dptfManager, m_policyIndex);
-    policyServices.policyInitiatedCallback = new PolicyServicesPolicyInitiatedCallback(m_dptfManager, m_policyIndex);
-    policyServices.messageLogging = new PolicyServicesMessageLogging(m_dptfManager, m_policyIndex);
+    // create all of the classes necessary to fill in the policy services interface container
+    createPolicyServices();
 
-    m_theRealPolicy->create(true, policyServices, newPolicyIndex);
+    m_theRealPolicy->create(true, m_policyServices, newPolicyIndex);
+    m_theRealPolicyCreated = true;
 
     m_policyName = m_theRealPolicy->getName();
 }
@@ -132,14 +106,31 @@ void Policy::destroyPolicy()
 {
     try
     {
-        m_theRealPolicy->destroy();
+        if ((m_theRealPolicy != nullptr) &&
+            (m_theRealPolicyCreated == true))
+        {
+            m_theRealPolicy->destroy();
+        }
     }
     catch (...)
     {
     }
 
+    destroyPolicyServices();
+
     // Call the function that is exposed in the .dll/.so and ask it to destroy the instance of the class
-    m_destroyPolicyInstanceFuncPtr(m_theRealPolicy);
+    if ((m_destroyPolicyInstanceFuncPtr != nullptr) &&
+        (m_theRealPolicy != nullptr))
+    {
+        m_destroyPolicyInstanceFuncPtr(m_theRealPolicy);
+    }
+
+    if (m_esifLibrary != nullptr)
+    {
+        m_esifLibrary->unload();
+    }
+
+    DELETE_MEMORY_TC(m_esifLibrary);
 }
 
 Guid Policy::getGuid(void)
@@ -422,4 +413,58 @@ void Policy::unregisterEvent(PolicyEvent::Type policyEvent)
 Bool Policy::isEventRegistered(PolicyEvent::Type policyEvent)
 {
     return m_registeredEvents.test(policyEvent);
+}
+
+void Policy::createPolicyServices(void)
+{
+    m_policyServices.domainActiveControl = new PolicyServicesDomainActiveControl(m_dptfManager, m_policyIndex);
+    m_policyServices.domainConfigTdpControl = new PolicyServicesDomainConfigTdpControl(m_dptfManager, m_policyIndex);
+    m_policyServices.domainCoreControl = new PolicyServicesDomainCoreControl(m_dptfManager, m_policyIndex);
+    m_policyServices.domainDisplayControl = new PolicyServicesDomainDisplayControl(m_dptfManager, m_policyIndex);
+    m_policyServices.domainPerformanceControl = new PolicyServicesDomainPerformanceControl(m_dptfManager, m_policyIndex);
+    m_policyServices.domainPixelClockControl = new PolicyServicesDomainPixelClockControl(m_dptfManager, m_policyIndex);
+    m_policyServices.domainPixelClockStatus = new PolicyServicesDomainPixelClockStatus(m_dptfManager, m_policyIndex);
+    m_policyServices.domainPowerControl = new PolicyServicesDomainPowerControl(m_dptfManager, m_policyIndex);
+    m_policyServices.domainPowerStatus = new PolicyServicesDomainPowerStatus(m_dptfManager, m_policyIndex);
+    m_policyServices.domainPriority = new PolicyServicesDomainPriority(m_dptfManager, m_policyIndex);
+    m_policyServices.domainRfProfileControl = new PolicyServicesDomainRfProfileControl(m_dptfManager, m_policyIndex);
+    m_policyServices.domainRfProfileStatus = new PolicyServicesDomainRfProfileStatus(m_dptfManager, m_policyIndex);
+    m_policyServices.domainTemperature = new PolicyServicesDomainTemperature(m_dptfManager, m_policyIndex);
+    m_policyServices.domainUtilization = new PolicyServicesDomainUtilization(m_dptfManager, m_policyIndex);
+    m_policyServices.participantGetSpecificInfo = new PolicyServicesParticipantGetSpecificInfo(m_dptfManager, m_policyIndex);
+    m_policyServices.participantProperties = new PolicyServicesParticipantProperties(m_dptfManager, m_policyIndex);
+    m_policyServices.participantSetSpecificInfo = new PolicyServicesParticipantSetSpecificInfo(m_dptfManager, m_policyIndex);
+    m_policyServices.platformConfigurationData = new PolicyServicesPlatformConfigurationData(m_dptfManager, m_policyIndex);
+    m_policyServices.platformNotification = new PolicyServicesPlatformNotification(m_dptfManager, m_policyIndex);
+    m_policyServices.platformPowerState = new PolicyServicesPlatformPowerState(m_dptfManager, m_policyIndex);
+    m_policyServices.policyEventRegistration = new PolicyServicesPolicyEventRegistration(m_dptfManager, m_policyIndex);
+    m_policyServices.policyInitiatedCallback = new PolicyServicesPolicyInitiatedCallback(m_dptfManager, m_policyIndex);
+    m_policyServices.messageLogging = new PolicyServicesMessageLogging(m_dptfManager, m_policyIndex);
+}
+
+void Policy::destroyPolicyServices(void)
+{
+    DELETE_MEMORY_TC(m_policyServices.domainActiveControl);
+    DELETE_MEMORY_TC(m_policyServices.domainConfigTdpControl);
+    DELETE_MEMORY_TC(m_policyServices.domainCoreControl);
+    DELETE_MEMORY_TC(m_policyServices.domainDisplayControl);
+    DELETE_MEMORY_TC(m_policyServices.domainPerformanceControl);
+    DELETE_MEMORY_TC(m_policyServices.domainPixelClockControl);
+    DELETE_MEMORY_TC(m_policyServices.domainPixelClockStatus);
+    DELETE_MEMORY_TC(m_policyServices.domainPowerControl);
+    DELETE_MEMORY_TC(m_policyServices.domainPowerStatus);
+    DELETE_MEMORY_TC(m_policyServices.domainPriority);
+    DELETE_MEMORY_TC(m_policyServices.domainRfProfileControl);
+    DELETE_MEMORY_TC(m_policyServices.domainRfProfileStatus);
+    DELETE_MEMORY_TC(m_policyServices.domainTemperature);
+    DELETE_MEMORY_TC(m_policyServices.domainUtilization);
+    DELETE_MEMORY_TC(m_policyServices.participantGetSpecificInfo);
+    DELETE_MEMORY_TC(m_policyServices.participantProperties);
+    DELETE_MEMORY_TC(m_policyServices.participantSetSpecificInfo);
+    DELETE_MEMORY_TC(m_policyServices.platformConfigurationData);
+    DELETE_MEMORY_TC(m_policyServices.platformNotification);
+    DELETE_MEMORY_TC(m_policyServices.platformPowerState);
+    DELETE_MEMORY_TC(m_policyServices.policyEventRegistration);
+    DELETE_MEMORY_TC(m_policyServices.policyInitiatedCallback);
+    DELETE_MEMORY_TC(m_policyServices.messageLogging);
 }

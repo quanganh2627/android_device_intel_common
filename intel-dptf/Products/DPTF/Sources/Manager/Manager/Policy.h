@@ -93,6 +93,7 @@ private:
 
     // The instance returned when we called CreatePolicyInstance on the .dll/.so
     PolicyInterface* m_theRealPolicy;
+    Bool m_theRealPolicyCreated;
 
     // The index assigned by the policy manager
     UIntN m_policyIndex;
@@ -112,6 +113,14 @@ private:
     // function pointers exposed in the .dll/.so
     CreatePolicyInstanceFuncPtr m_createPolicyInstanceFuncPtr;
     DestroyPolicyInstanceFuncPtr m_destroyPolicyInstanceFuncPtr;
+
+    // Policy services should be used as an interface instead of an interface container.
+    // Because of this design decision the code is split between the shared lib and
+    // the manager which is why the following functions are here.  This should be improved
+    // in the future.
+    PolicyServicesInterfaceContainer m_policyServices;
+    void createPolicyServices(void);
+    void destroyPolicyServices(void);
 
     // track the events that will be forwarded to the policy
     std::bitset<PolicyEvent::Max> m_registeredEvents;

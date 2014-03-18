@@ -28,6 +28,11 @@ PerformanceControl::PerformanceControl(UIntN controlId, PerformanceControlType::
 {
 }
 
+PerformanceControl PerformanceControl::createInvalid()
+{
+    return PerformanceControl(0, PerformanceControlType::Unknown, 0, Percentage(0.0), 0, 0, "");
+}
+
 UIntN PerformanceControl::getControlId(void) const
 {
     return m_controlId;
@@ -102,7 +107,7 @@ XmlNode* PerformanceControl::getXml()
     root->addChild(XmlNode::createDataElement("control_id", StatusFormat::friendlyValue(m_controlId)));
     root->addChild(XmlNode::createDataElement("control_type", PerformanceControlTypeToString(m_performanceControlType)));
     root->addChild(XmlNode::createDataElement("tdp_power", StatusFormat::friendlyValue(m_tdpPower)));
-    root->addChild(XmlNode::createDataElement("performance_percentage", StatusFormat::friendlyValue(m_performancePercentage)));
+    root->addChild(XmlNode::createDataElement("performance_percentage", m_performancePercentage.toString()));
     root->addChild(XmlNode::createDataElement("transition_latency", StatusFormat::friendlyValue(m_transitionLatency)));
     root->addChild(XmlNode::createDataElement("control_absolute_value", StatusFormat::friendlyValue(m_controlAbsoluteValue)));
     root->addChild(XmlNode::createDataElement("value_units", m_valueUnits));

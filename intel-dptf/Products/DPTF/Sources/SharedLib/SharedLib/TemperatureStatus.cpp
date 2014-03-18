@@ -30,5 +30,5 @@ Temperature TemperatureStatus::getCurrentTemperature(void) const
 
 XmlNode* TemperatureStatus::getXml(void)
 {
-    return getCurrentTemperature().getXml("temperature_status");
+    return XmlNode::createDataElement("temperature_status", getCurrentTemperature().toString());
 }

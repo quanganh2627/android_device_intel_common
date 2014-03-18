@@ -25,7 +25,7 @@ EsifDataPower::EsifDataPower(void)
 
 EsifDataPower::EsifDataPower(const Power& data)
 {
-    initialize(data.getPower());
+    initialize(data);
 }
 
 EsifDataPower::operator esif::EsifDataPtr(void)

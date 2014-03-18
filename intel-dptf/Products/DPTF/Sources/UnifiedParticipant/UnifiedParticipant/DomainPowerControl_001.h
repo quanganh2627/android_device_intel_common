@@ -26,12 +26,8 @@
 #include "DptfMemory.h"
 #include "ConfigTdpDataSyncInterface.h"
 
-//
-// Power Controls
-//
-
 class DomainPowerControl_001 final : public DomainPowerControlInterface,
-    public ComponentExtendedInterface, public ConfigTdpDataSyncInterface
+    public ComponentExtendedInterface
 {
 public:
 
@@ -47,35 +43,24 @@ public:
     virtual void clearCachedData(void) override final;
     virtual XmlNode* getXml(UIntN domainIndex) override final;
 
-    // ConfigTdpDataSyncInterface
-    virtual void updateBasedOnConfigTdpInformation(UIntN participantIndex, UIntN domainIndex,
-        ConfigTdpControlSet configTdpControlSet, ConfigTdpControlStatus configTdpControlStatus) override final;
-
 private:
 
-    // hide the copy constructor and = operator
+    // Don't allow this class to be copied
     DomainPowerControl_001(const DomainPowerControl_001& rhs);
     DomainPowerControl_001& operator=(const DomainPowerControl_001& rhs);
 
-    ParticipantServicesInterface* m_participantServicesInterface;
-
-    // Functions
-    void initializeDataStructures(void);
     void createPowerControlDynamicCapsSet(UIntN domainIndex);
     void validatePowerControlDynamicCapsSet();
     void determinePowerControlProgrammability();
-    void programPowerControl(const PowerControlStatus& powerControlStatusSet, UIntN domainIndex);
-    void validatePowerControlStatus(const PowerControlStatus& powerControlStatus);
-    void checkAndCreateControlStructures(UIntN domainIndex);
+    void programPowerControl(const PowerControlStatusSet& powerControlStatusSet, UIntN domainIndex);
+    void validatePowerControlStatus(const PowerControlStatusSet& powerControlStatusSet, UIntN domainIndex);
+    void initializePowerControlDynamicCapsSetIfNull(UIntN domainIndex);
     PowerControlDynamicCapsSet getAdjustedDynamicCapsBasedOnConfigTdpMaxLimit(
         const PowerControlDynamicCapsSet& capsSet);
 
-    // Vars (external)
+    ParticipantServicesInterface* m_participantServicesInterface;
     PowerControlDynamicCapsSet* m_powerControlDynamicCaps;
     PowerControlStatusSet* m_powerControlStatusSet;
-
-    // Vars (internal)
     std::map<PowerControlType::Type, Bool> m_canProgramPowerLimit;
     std::map<PowerControlType::Type, Bool> m_canProgramTimeWindow;
-    Power m_tdpMaxPower;
 };

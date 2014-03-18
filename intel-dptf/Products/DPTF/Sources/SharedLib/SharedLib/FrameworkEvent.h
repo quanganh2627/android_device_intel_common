@@ -39,6 +39,7 @@ namespace FrameworkEvent
         DptfConnectedStandbyEntry,
         DptfConnectedStandbyExit,
         DptfGetStatus,
+        DptfLogVerbosityChanged,
 
         // Participant and Domain events
         ParticipantAllocate,

@@ -20,6 +20,7 @@
 
 #include "Dptf.h"
 #include "WorkItemMatchCriteria.h"
+#include "XmlNode.h"
 
 class WorkItemQueueInterface
 {

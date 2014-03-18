@@ -18,8 +18,6 @@
 
 #include "TargetMonitor.h"
 #include "StatusFormat.h"
-#include "GccFix.h"
-
 using namespace std;
 using namespace StatusFormat;
 

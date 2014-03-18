@@ -23,10 +23,8 @@ using namespace std;
 TargetUnlimitAction::TargetUnlimitAction(
     PolicyServicesInterfaceContainer& policyServices, std::shared_ptr<TimeInterface> time,
     ParticipantTracker& participantTracker, ThermalRelationshipTable& trt,
-    std::shared_ptr<CallbackScheduler> callbackScheduler, TargetMonitor& targetMonitor,
-    UtilizationStatus utilizationBiasThreshold, UIntN target)
-    : TargetActionBase(policyServices, time, participantTracker, trt, callbackScheduler, targetMonitor, 
-    utilizationBiasThreshold, target)
+    std::shared_ptr<CallbackScheduler> callbackScheduler, TargetMonitor& targetMonitor, UIntN target)
+    : TargetActionBase(policyServices, time, participantTracker, trt, callbackScheduler, targetMonitor, target)
 {
 }
 
@@ -39,9 +37,9 @@ void TargetUnlimitAction::execute()
     try
     {
         // choose sources to unlimit for target
-        postDebugMessage(PolicyMessage(FLF, "Attempting to unlimit target participant.", getTarget()));
+        getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, "Attempting to unlimit target participant.", getTarget()));
         vector<UIntN> sourcesToUnlimit = chooseSourcesToUnlimitForTarget(getTarget());
-        postDebugMessage(PolicyMessage(FLF, constructMessageForSources("unlimit", getTarget(), sourcesToUnlimit)));
+        getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, constructMessageForSources("unlimit", getTarget(), sourcesToUnlimit)));
 
         if (sourcesToUnlimit.size() > 0)
         {
@@ -56,7 +54,7 @@ void TargetUnlimitAction::execute()
                 {
                     // unlimit appropriate domains for source and schedule a callback after the next sampling period
                     vector<UIntN> domainsToUnlimit = chooseDomainsToUnlimitForSource(getTarget(), *source);
-                    postDebugMessage(PolicyMessage(FLF, constructMessageForSourceDomains("unlimit", getTarget(), *source, domainsToUnlimit)));
+                    getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(FLF, constructMessageForSourceDomains("unlimit", getTarget(), *source, domainsToUnlimit)));
                     for (auto domain = domainsToUnlimit.begin(); domain != domainsToUnlimit.end(); domain++)
                     {
                         unlimitDomain(*source, *domain);
@@ -71,13 +69,13 @@ void TargetUnlimitAction::execute()
             ParticipantProxy& participant = getParticipantTracker()[getTarget()];
             auto hysteresis = participant.getTemperatureThresholds().getHysteresis();
             auto currentTemperature =
-                participant[0].getTemperatureProperty().getCurrentTemperature().getTemperature();
+                participant[0].getTemperatureProperty().getCurrentTemperature();
             auto passiveTripPoints = participant.getPassiveTripPointProperty().getTripPoints();
             auto psv = passiveTripPoints.getItem(ParticipantSpecificInfoKey::PSV);
 
             // if temperature is between psv and (psv - hysteresis) then schedule another callback, otherwise stop
             // monitoring the target as there is nothing else to unlimit.
-            if ((currentTemperature < psv) && (currentTemperature >= (psv - hysteresis)))
+            if ((currentTemperature < Temperature(psv)) && (currentTemperature >= Temperature(psv - hysteresis)))
             {
                 getCallbackScheduler()->scheduleCallbackAfterShortestSamplePeriod(getTarget());
             }
@@ -89,7 +87,7 @@ void TargetUnlimitAction::execute()
     }
     catch (...)
     {
-        postWarningMessage(PolicyMessage(FLF, "Failed to unlimit source(s) for target.", getTarget()));
+        getPolicyServices().messageLogging->writeMessageWarning(PolicyMessage(FLF, "Failed to unlimit source(s) for target.", getTarget()));
     }
 }
 
@@ -199,7 +197,7 @@ std::vector<UIntN> TargetUnlimitAction::chooseDomainsToUnlimitForSource(UIntN ta
 
 UIntN TargetUnlimitAction::getDomainWithLowestTemperature(UIntN source, std::vector<UIntN> domainsWithControlKnobsToTurn)
 {
-    pair<Temperature, UIntN> domainWithLowestTemperature(Constants::Invalid, Constants::Invalid);
+    pair<Temperature, UIntN> domainWithLowestTemperature(Temperature::createInvalid(), Constants::Invalid);
     for (auto domain = domainsWithControlKnobsToTurn.begin();
         domain != domainsWithControlKnobsToTurn.end();
         domain++)
@@ -208,7 +206,15 @@ UIntN TargetUnlimitAction::getDomainWithLowestTemperature(UIntN source, std::vec
         {
             Temperature domainTemperature =
                 getParticipantTracker()[source][*domain].getTemperatureProperty().getCurrentTemperature();
-            if (domainTemperature.getTemperature() < domainWithLowestTemperature.first.getTemperature())
+            if (domainWithLowestTemperature.first.isValid())
+            {
+                if (domainTemperature < domainWithLowestTemperature.first)
+                {
+                    domainWithLowestTemperature.first = domainTemperature;
+                    domainWithLowestTemperature.second = *domain;
+                }
+            }
+            else
             {
                 domainWithLowestTemperature.first = domainTemperature;
                 domainWithLowestTemperature.second = *domain;

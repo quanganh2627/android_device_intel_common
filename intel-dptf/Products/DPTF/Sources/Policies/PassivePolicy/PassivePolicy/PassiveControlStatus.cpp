@@ -17,7 +17,6 @@
 ******************************************************************************/
 
 #include "PassiveControlStatus.h"
-#include <sstream>
 using namespace std;
 
 PassiveControlStatus::PassiveControlStatus(const ThermalRelationshipTable& trt, ParticipantTracker& trackedParticipants)

@@ -33,5 +33,5 @@ Percentage UtilizationStatus::getCurrentUtilization(void) const
 
 XmlNode* UtilizationStatus::getXml(std::string tag)
 {
-    return XmlNode::createDataElement(tag, friendlyValue(m_currentUtilization));
+    return XmlNode::createDataElement(tag, m_currentUtilization.toString());
 }

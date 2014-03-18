@@ -21,7 +21,7 @@ include $(CLEAR_VARS)
 
 LOCAL_CFLAGS    := -O0 -g -DESIF_ATTR_OS_ANDROID -DESIF_ATTR_USER -Wno-multichar -Wno-error=sequence-point
 LOCAL_MODULE    := esif_ufd
-LOCAL_SHARED_LIBRARIES := libdl
+LOCAL_SHARED_LIBRARIES := libdl liblog
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/ESIF_CM/Sources $(LOCAL_PATH)/ESIF_UF/Sources $(LOCAL_PATH)/ESIF_WS/Sources $(LOCAL_PATH)/ESIF_LIB/Sources
 
@@ -49,7 +49,7 @@ LOCAL_SRC_FILES += ESIF_UF/Sources/esif_uf_event.c
 LOCAL_SRC_FILES += ESIF_UF/Sources/esif_uf_ipc.c
 LOCAL_SRC_FILES += ESIF_UF/Sources/esif_uf_pm.c
 LOCAL_SRC_FILES += ESIF_UF/Sources/esif_uf_primitive.c
-LOCAL_SRC_FILES += ESIF_UF/Sources/esif_uf_rest.c
+#LOCAL_SRC_FILES += ESIF_UF/Sources/esif_uf_rest.c
 LOCAL_SRC_FILES += ESIF_UF/Sources/esif_uf_service.c
 LOCAL_SRC_FILES += ESIF_UF/Sources/esif_uf_shell.c
 LOCAL_SRC_FILES += ESIF_UF/Sources/esif_uf_test.c

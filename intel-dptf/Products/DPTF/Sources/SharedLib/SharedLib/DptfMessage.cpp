@@ -18,7 +18,6 @@
 
 #include "DptfMessage.h"
 #include "Ver.h"
-#include "GccFix.h"
 
 DptfMessage::DptfMessage(const std::string& fileName, UIntN lineNumber, const std::string& executingFunctionName) :
     m_dptfVersion(VERSION_STR),

@@ -72,7 +72,7 @@ void DomainDisplayControl_001::setDisplayControl(UIntN participantIndex, UIntN d
 
     if (displayControlIndex == m_currentDisplayControlIndex)
     {
-        m_participantServicesInterface->writeMessageInfo(
+        m_participantServicesInterface->writeMessageDebug(
             ParticipantMessage(FLF, "Requested limit = current limit.  Ignoring."));
         return;
     }
@@ -147,7 +147,7 @@ void DomainDisplayControl_001::createDisplayControlDynamicCaps(UIntN domainIndex
     // FIXME:  ESIF treats this as a UInt32 but we treat this as a percentage.  Need to get this in sync.
     uint32val = m_participantServicesInterface->primitiveExecuteGetAsUInt32(
         esif_primitive_type::GET_DISPLAY_DEPTH_LIMIT, domainIndex);
-    Percentage lowerLimitBrightness = static_cast<double>(uint32val) / 100.0;
+    Percentage lowerLimitBrightness = Percentage::fromWholeNumber(uint32val / 100);
     lowerLimitIndex = m_displayControlSet->getControlIndex(lowerLimitBrightness);
 
     try
@@ -161,7 +161,7 @@ void DomainDisplayControl_001::createDisplayControlDynamicCaps(UIntN domainIndex
     catch (...)
     {
         // DDPC is optional
-        m_participantServicesInterface->writeMessageInfo(
+        m_participantServicesInterface->writeMessageDebug(
             ParticipantMessage(FLF, "DDPC was not present.  Setting upper limit to 100."));
         upperLimitIndex = 0; // Max brightness
     }

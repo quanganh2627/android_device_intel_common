@@ -52,3 +52,11 @@ FILE_LIST := $(wildcard $(LOCAL_PATH)/$(DPTF_SRC)/Manager/Manager/*.cpp)
 LOCAL_SRC_FILES := $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 include $(BUILD_SHARED_LIBRARY)
+
+# Install miscellaneous files
+include $(CLEAR_VARS)
+LOCAL_MODULE := combined.xsl
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT)/etc/dptf/bin
+LOCAL_SRC_FILES := $(DPTF_SRC)/Resources/combined.xsl
+include $(BUILD_PREBUILT)

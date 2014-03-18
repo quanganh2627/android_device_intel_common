@@ -48,9 +48,3 @@ XmlNode* DomainPowerControl_000::getXml(UIntN domainIndex)
 {
     throw not_implemented();
 }
-
-void DomainPowerControl_000::updateBasedOnConfigTdpInformation(UIntN participantIndex, UIntN domainIndex,
-    ConfigTdpControlSet configTdpControlSet, ConfigTdpControlStatus configTdpControlStatus)
-{
-    throw not_implemented();
-}

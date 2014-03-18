@@ -17,7 +17,6 @@
 ******************************************************************************/
 
 #include "CallbackScheduler.h"
-#include "GccFix.h"
 
 using namespace std;
 
@@ -74,7 +73,7 @@ void CallbackScheduler::scheduleCallbackAsSoonAsPossible(UIntN target, UIntN sou
         m_sourceAvailability.setSourceAsBusy(source, timeNow + timeDelta);
     }
 
-    m_policyServices.messageLogging->writeMessageInfo(PolicyMessage(FLF,
+    m_policyServices.messageLogging->writeMessageDebug(PolicyMessage(FLF,
         "Scheduled a callback in " + GccFix::to_string(timeDelta) + " ms" +
         " for target " + GccFix::to_string(target) + " source " + GccFix::to_string(source) + ".", target));
 }
@@ -88,7 +87,7 @@ void CallbackScheduler::scheduleCallbackAfterShortestSamplePeriod(UIntN target)
         m_targetScheduler.scheduleCallback(target, timeDelta);
     }
 
-    m_policyServices.messageLogging->writeMessageInfo(PolicyMessage(FLF,
+    m_policyServices.messageLogging->writeMessageDebug(PolicyMessage(FLF,
         "Scheduled a callback in " + GccFix::to_string(timeDelta) + " ms" +
         " for target " + GccFix::to_string(target) + ".", target));
 }
@@ -106,7 +105,7 @@ void CallbackScheduler::scheduleCallbackAfterNextSamplingPeriod(UIntN target, UI
         m_sourceAvailability.setSourceAsBusy(source, timeNow + minimumSamplePeriod);
     }
 
-    m_policyServices.messageLogging->writeMessageInfo(PolicyMessage(FLF,
+    m_policyServices.messageLogging->writeMessageDebug(PolicyMessage(FLF,
         "Scheduled a callback in " + GccFix::to_string(timeDelta) + " ms" +
         " for target " + GccFix::to_string(target) + " source " + GccFix::to_string(source) + ".", target));
 }

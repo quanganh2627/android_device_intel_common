@@ -45,8 +45,3 @@ PolicyServicesInterfaceContainer ControlKnobBase::getPolicyServices() const
 {
     return m_policyServices;
 }
-
-void ControlKnobBase::postDebugMessage(const PolicyMessage& message)
-{
-    m_policyServices.messageLogging->writeMessageDebug(message);
-}

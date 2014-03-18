@@ -33,7 +33,8 @@ DomainProxy::DomainProxy(
     m_policyServices(policyServices),
     m_temperatureProperty(participantIndex, domainIndex, domainProperties, policyServices),
     m_activeCoolingControl(participantIndex, domainIndex, domainProperties, participantProperties, policyServices),
-    m_domainPriorityProperty(participantIndex, domainIndex, domainProperties, policyServices)
+    m_domainPriorityProperty(participantIndex, domainIndex, domainProperties, policyServices),
+    m_tstateUtilizationThreshold(Percentage(0.0))
 {
     // create control facades
     m_performanceControl = std::make_shared<PerformanceControlFacade>(
@@ -76,7 +77,8 @@ DomainProxy::DomainProxy()
     m_domainPriorityProperty(Constants::Invalid, Constants::Invalid, m_domainProperties,
         PolicyServicesInterfaceContainer()),
     m_activeCoolingControl(Constants::Invalid, Constants::Invalid, m_domainProperties, m_participantProperties,
-        PolicyServicesInterfaceContainer())
+        PolicyServicesInterfaceContainer()),
+    m_tstateUtilizationThreshold(Percentage(0.0))
 {
 }
 
@@ -97,6 +99,11 @@ UIntN DomainProxy::getDomainIndex() const
 const DomainProperties& DomainProxy::getDomainProperties() const
 {
     return m_domainProperties;
+}
+
+const ParticipantProperties& DomainProxy::getParticipantProperties() const
+{
+    return m_participantProperties;
 }
 
 TemperatureProperty& DomainProxy::getTemperatureProperty()
@@ -160,7 +167,8 @@ void DomainProxy::clearTemperatureThresholds()
     {
         if (m_temperatureProperty.supportsProperty())
         {
-            m_temperatureProperty.setTemperatureNotificationThresholds(Constants::Invalid, Constants::Invalid);
+            m_temperatureProperty.setTemperatureNotificationThresholds(
+                Temperature::createInvalid(), Temperature::createInvalid());
         }
     }
     catch (...)
@@ -289,7 +297,7 @@ Bool DomainProxy::limitTstatesAndContinue()
     {
         if (m_tstateControlKnob->canLimit())
         {
-            UtilizationStatus utilization = UtilizationStatus(Percentage());
+            UtilizationStatus utilization = UtilizationStatus(Percentage::createInvalid());
             try
             {
                 utilization = getUtilizationStatus();
@@ -301,7 +309,7 @@ Bool DomainProxy::limitTstatesAndContinue()
             }
 
             // only limit t-states if domain is not idle
-            if (utilization.getCurrentUtilization() > Percentage(0.0))
+            if (utilization.getCurrentUtilization() > m_tstateUtilizationThreshold.getCurrentUtilization())
             {
                 m_tstateControlKnob->limit();
                 return false;
@@ -447,6 +455,11 @@ Bool DomainProxy::canUnlimit(void)
         m_coreControlKnob->canUnlimit() ||
         m_pstateControlKnob->canUnlimit() ||
         m_powerControlKnob->canUnlimit();
+}
+
+void DomainProxy::setTstateUtilizationThreshold(UtilizationStatus tstateUtilizationThreshold)
+{
+    m_tstateUtilizationThreshold = tstateUtilizationThreshold;
 }
 
 XmlNode* DomainProxy::getXmlForPassiveControlKnobs()

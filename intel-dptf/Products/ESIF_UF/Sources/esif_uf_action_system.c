@@ -29,8 +29,57 @@
 #endif
 
 /*
-** Handle ESIF Action Request
-*/
+ * Handle ESIF Action "Get" Request
+ */
+static eEsifError ActionSystemGet(
+	const void *actionHandle,
+	const EsifString devicePathPtr,
+	const EsifDataPtr p1Ptr,
+	const EsifDataPtr p2Ptr,
+	const EsifDataPtr p3Ptr,
+	const EsifDataPtr p4Ptr,
+	const EsifDataPtr p5Ptr,
+	const EsifDataPtr requestPtr,
+	const EsifDataPtr responsePtr
+	)
+{
+	eEsifError esifStatus = ESIF_E_UNSUPPORTED_ACTION_TYPE;
+	EsifString command = NULL;
+
+	UNREFERENCED_PARAMETER(actionHandle);
+	UNREFERENCED_PARAMETER(devicePathPtr);
+	UNREFERENCED_PARAMETER(p2Ptr);
+	UNREFERENCED_PARAMETER(p3Ptr);
+	UNREFERENCED_PARAMETER(p4Ptr);
+	UNREFERENCED_PARAMETER(p5Ptr);
+	UNREFERENCED_PARAMETER(requestPtr);
+
+	ESIF_ASSERT(NULL != responsePtr);
+	ESIF_ASSERT(NULL != responsePtr->buf_ptr);
+
+	ESIF_ASSERT(NULL != p1Ptr);
+	ESIF_ASSERT(NULL != p1Ptr->buf_ptr);
+	ESIF_ASSERT(ESIF_DATA_STRING == p1Ptr->type);
+
+	command = (EsifString)p1Ptr->buf_ptr;
+
+	if (!strcmp("SYSTEM_GET_CDPNAME0", command)) {
+		esifStatus = system_get_ctdp_name(responsePtr, 0);
+
+	} else if (!strcmp("SYSTEM_GET_CDPNAME1", command)) {
+		esifStatus = system_get_ctdp_name(responsePtr, 1);
+
+	} else if (!strcmp("SYSTEM_GET_CDPNAME2", command)) {
+		esifStatus = system_get_ctdp_name(responsePtr, 2);
+	} 
+
+	return esifStatus;
+}
+
+
+/*
+ * Handle ESIF Action "Set" Request
+ */
 static eEsifError ActionSystemSet(
 	const void *actionHandle,
 	const EsifString devicePathPtr,
@@ -42,6 +91,7 @@ static eEsifError ActionSystemSet(
 	const EsifDataPtr requestPtr
 	)
 {
+	eEsifError esifStatus = ESIF_OK;
 	EsifString command = NULL;
 
 	UNREFERENCED_PARAMETER(actionHandle);
@@ -81,19 +131,31 @@ static eEsifError ActionSystemSet(
 	} else if (!strcmp("SYSTEM_REBOOT", command)) {
 		esif_ccb_reboot();
 
-	} else if (!strcmp("SYSTEM_REMPOL", command)) {
-		//esif_ccb_remove_policy(requestPtr);
+	} else if (!strcmp("SYSTEM_REM_PWRSETTING", command)) {
+		esifStatus = esif_ccb_remove_power_setting(requestPtr);
+		
+	} else if (!strcmp("SYSTEM_CTDPCLR", command)) {
+		esifStatus = system_clear_ctdp_names();
+
+	} else if (!strcmp("SYSTEM_SET_CTDPNAME0", command)) {
+		esifStatus = system_set_ctdp_name(requestPtr, 0);
+
+	} else if (!strcmp("SYSTEM_SET_CTDPNAME1", command)) {
+		esifStatus = system_set_ctdp_name(requestPtr, 1);
+
+	} else if (!strcmp("SYSTEM_SET_CTDPNAME2", command)) {
+		esifStatus = system_set_ctdp_name(requestPtr, 2);
 
 	} else {
 		system(command);
 	}
-	return ESIF_OK;
+	return esifStatus;
 }
 
 
 /*
  *******************************************************************************
- ** Register ACTION with ESIF
+ * Register ACTION with ESIF
  *******************************************************************************
  */
 extern EsifActMgr g_actMgr;
@@ -114,7 +176,7 @@ static EsifActType g_system = {
 	IS_KERNEL,
 	IS_PLUGIN,
 	{PAD},
-	NULL,
+	ActionSystemGet,
 	ActionSystemSet
 };
 

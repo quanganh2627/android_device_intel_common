@@ -116,6 +116,7 @@ void FrameworkEventInfo::initializeEvents()
     INIT_EVENT_WITH_GUID(DptfConnectedStandbyEntry, 0, CONNECTED_STANDBY_ENTRY);
     INIT_EVENT_WITH_GUID(DptfConnectedStandbyExit, 0, CONNECTED_STANDBY_EXIT);
     INIT_EVENT(DptfGetStatus, 0);
+    INIT_EVENT_WITH_GUID(DptfLogVerbosityChanged, 0, LOG_VERBOSITY_CHANGED);
 
     // Participant and Domain events
     INIT_EVENT(ParticipantAllocate, 31);

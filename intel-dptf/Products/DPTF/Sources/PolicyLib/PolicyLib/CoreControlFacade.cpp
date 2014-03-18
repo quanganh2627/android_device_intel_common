@@ -17,7 +17,6 @@
 ******************************************************************************/
 
 #include "CoreControlFacade.h"
-#include <sstream>
 #include "StatusFormat.h"
 using namespace std;
 using namespace StatusFormat;
@@ -31,9 +30,9 @@ CoreControlFacade::CoreControlFacade(
     m_domainIndex(domainIndex),
     m_domainProperties(domainProperties),
     m_policyServices(policyServices),
-    m_status(participantIndex, domainIndex, domainProperties, policyServices),
     m_capabilities(participantIndex, domainIndex, domainProperties, policyServices),
     m_preferences(participantIndex, domainIndex, domainProperties, policyServices),
+    m_lastSetCoreControlStatus(0),
     m_controlsHaveBeenInitialized(false)
 {
 }
@@ -50,7 +49,7 @@ Bool CoreControlFacade::supportsCoreControls()
 CoreControlStatus CoreControlFacade::getStatus()
 {
     initializeControlsIfNeeded();
-    return m_status.getStatus();
+    return m_lastSetCoreControlStatus;
 }
 
 void CoreControlFacade::setControl(CoreControlStatus status)
@@ -59,7 +58,7 @@ void CoreControlFacade::setControl(CoreControlStatus status)
     {
         m_policyServices.domainCoreControl->setActiveCoreControl(
             m_participantIndex, m_domainIndex, status);
-        m_status.invalidate();
+        m_lastSetCoreControlStatus = status;
     }
     else
     {
@@ -67,15 +66,9 @@ void CoreControlFacade::setControl(CoreControlStatus status)
     }
 }
 
-void CoreControlFacade::refreshStatus()
-{
-    m_status.refresh();
-}
-
 void CoreControlFacade::refreshCapabilities()
 {
     m_capabilities.refresh();
-    m_status.invalidate();
 }
 
 void CoreControlFacade::refreshPreferences()
@@ -100,7 +93,7 @@ CoreControlLpoPreference CoreControlFacade::getPreferences()
 
 void CoreControlFacade::initializeControlsIfNeeded()
 {
-    if (m_controlsHaveBeenInitialized == false)
+    if (supportsCoreControls() && getPreferences().isLpoEnabled() && (m_controlsHaveBeenInitialized == false))
     {
         CoreControlDynamicCaps caps = getDynamicCapabilities();
         UIntN maxActiveCores = caps.getMaxActiveCores();

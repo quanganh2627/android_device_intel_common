@@ -38,7 +38,11 @@ class EsifServices
 {
 public:
 
-    EsifServices(const DptfManager* dptfManager, const void* esifHandle, const EsifInterfacePtr esifInterfacePtr);
+    EsifServices(const DptfManager* dptfManager, const void* esifHandle, const EsifInterfacePtr esifInterfacePtr,
+        eLogType currentLogVerbosityLevel);
+
+    eLogType getCurrentLogVerbosityLevel(void) const;
+    void setCurrentLogVerbosityLevel(eLogType currentLogVerbosityLevel);
 
     // Read/write configuration data.
 
@@ -145,6 +149,13 @@ public:
         UIntN domainIndex = Constants::Esif::NoDomain,
         UInt8 instance = Constants::Esif::NoInstance);
 
+    void primitiveExecuteSetAsString(
+        esif_primitive_type primitive,
+        std::string stringValue,
+        UIntN participantIndex = Constants::Esif::NoParticipant,
+        UIntN domainIndex = Constants::Esif::NoDomain,
+        UInt8 instance = Constants::Esif::NoInstance);
+
     void primitiveExecuteGet(
         esif_primitive_type primitive,
         esif_data_type esifDataType,
@@ -194,8 +205,9 @@ private:
     const DptfManager* m_dptfManager;
     const void* m_esifHandle;
     EsifInterface m_esifInterface;
+    eLogType m_currentLogVerbosityLevel;
 
-    void writeMessage(eLogType logType, MessageCategory::Type messageCategory, const std::string& message);
+    void writeMessage(eLogType messageLevel, MessageCategory::Type messageCategory, const std::string& message);
 
     std::string getParticipantName(UIntN participantIndex);
     std::string getDomainName(UIntN participantIndex, UIntN domainIndex);

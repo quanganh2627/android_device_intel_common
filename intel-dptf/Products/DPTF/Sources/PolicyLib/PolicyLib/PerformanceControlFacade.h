@@ -47,8 +47,7 @@ public:
     // properties
     void refreshCapabilities();
     void refreshControls();
-    void invalidateStatus();
-    const PerformanceControlStatus& getStatus();
+    PerformanceControlStatus getStatus() const;
     const PerformanceControlSet& getControls();
     const PerformanceControlDynamicCaps& getDynamicCapabilities();
 
@@ -64,7 +63,8 @@ private:
 
     // control properties
     PerformanceControlSetCachedProperty m_performanceControlSetProperty;
-    PerformanceControlStatusCachedProperty m_performanceControlStatusProperty;
     PerformanceControlCapabilitiesCachedProperty m_performanceControlCapabilitiesProperty;
     Bool m_controlsHaveBeenInitialized;
+    UIntN m_lastIssuedPerformanceControlIndex;
+    Bool m_isLimited;
 };

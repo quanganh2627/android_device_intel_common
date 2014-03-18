@@ -33,7 +33,7 @@ ActiveCoolingControl::ActiveCoolingControl(
     m_domainProperties(domainProperties),
     m_participantProperties(participantProperties),
     m_staticCaps(participantIndex, domainIndex, domainProperties, policyServices),
-    m_lastFanSpeedRequest(Percentage()),
+    m_lastFanSpeedRequest(Percentage::createInvalid()),
     m_lastFanSpeedRequestIndex(Constants::Invalid)
 {
 }
@@ -62,7 +62,7 @@ void ActiveCoolingControl::requestFanSpeedPercentage(UIntN requestorIndex, const
     {
         updateFanSpeedRequestTable(requestorIndex, fanSpeed);
         Percentage highestFanSpeed = chooseHighestFanSpeedRequest();
-        if (highestFanSpeed != m_lastFanSpeedRequest)
+        if ((m_lastFanSpeedRequest.isValid() == false) || (highestFanSpeed != m_lastFanSpeedRequest))
         {
             m_policyServices.domainActiveControl->setActiveControl(
                 m_participantIndex, m_domainIndex, highestFanSpeed);
@@ -165,7 +165,7 @@ XmlNode* ActiveCoolingControl::getXml()
     status->addChild(XmlNode::createDataElement("name", m_participantProperties.getAcpiInfo().getAcpiScope()));
     if (supportsFineGrainControl())
     {
-        status->addChild(XmlNode::createDataElement("speed", friendlyValue(chooseHighestFanSpeedRequest() * 100)));
+        status->addChild(XmlNode::createDataElement("speed", chooseHighestFanSpeedRequest().toString()));
     }
     else
     {

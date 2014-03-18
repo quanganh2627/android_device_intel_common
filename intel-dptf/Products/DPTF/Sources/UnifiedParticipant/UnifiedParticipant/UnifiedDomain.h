@@ -95,7 +95,6 @@ public:
     // power control
     DomainPowerControlInterface* getPowerControlInterfacePtr(void);
     ComponentExtendedInterface* getPowerControlInterfaceExPtr(void);
-    ConfigTdpDataSyncInterface* getPowerControlConfigTdpSyncInterfacePtr(void);
 
     // power status
     DomainPowerStatusInterface* getPowerStatusInterfacePtr(void);

@@ -35,7 +35,8 @@
 #include "XmlNode.h"
 #include "ParticipantStatusMap.h"
 #include "EsifDataString.h"
-#include "GccFix.h"
+
+static const Guid FormatId(0x3E, 0x58, 0x63, 0x46, 0xF8, 0xF7, 0x45, 0x4A, 0xA8, 0xF7, 0xDE, 0x7E, 0xC6, 0xF7, 0x61, 0xA8);
 
 DptfStatus::DptfStatus(DptfManager* dptfManager) :
     m_dptfManager(dptfManager)
@@ -332,7 +333,7 @@ std::string DptfStatus::getXmlForFramework(UInt32 moduleIndex, eEsifError* retur
         case 0:
         {
             frameworkRoot = XmlNode::createRoot();
-            XmlNode* formatId = XmlNode::createComment("format_id=BEEFCAFEBEEFCAFEBEEFCAFEBEEFCAFE");
+            XmlNode* formatId = XmlNode::createComment("format_id=" + FormatId.toString());
             frameworkRoot->addChild(formatId);
 
             XmlNode* dppmRoot = XmlNode::createWrapperElement("dppm_status");

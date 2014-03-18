@@ -89,15 +89,13 @@ Bool PowerControlDynamicCaps::operator!=(const PowerControlDynamicCaps& rhs) con
 XmlNode* PowerControlDynamicCaps::getXml(void)
 {
     XmlNode* root = XmlNode::createWrapperElement("power_control_dynamic_caps");
-
     root->addChild(XmlNode::createDataElement("control_type", PowerControlType::ToString(m_powerControlType)));
-    root->addChild(m_maxPowerLimit.getXml("max_power_limit"));
-    root->addChild(m_minPowerLimit.getXml("min_power_limit"));
-    root->addChild(m_powerStepSize.getXml("power_step_size"));
+    root->addChild(XmlNode::createDataElement("max_power_limit", m_maxPowerLimit.toString()));
+    root->addChild(XmlNode::createDataElement("min_power_limit", m_minPowerLimit.toString()));
+    root->addChild(XmlNode::createDataElement("power_step_size", m_powerStepSize.toString()));
     root->addChild(XmlNode::createDataElement("max_time_window", StatusFormat::friendlyValue(m_maxTimeWindow)));
     root->addChild(XmlNode::createDataElement("min_time_window", StatusFormat::friendlyValue(m_minTimeWindow)));
-    root->addChild(m_maxDutyCycle.getXml("max_duty_cycle"));
-    root->addChild(m_minDutyCycle.getXml("min_duty_cycle"));
-
+    root->addChild(XmlNode::createDataElement("max_duty_cycle", m_maxDutyCycle.toString()));
+    root->addChild(XmlNode::createDataElement("min_duty_cycle", m_minDutyCycle.toString()));
     return root;
 }

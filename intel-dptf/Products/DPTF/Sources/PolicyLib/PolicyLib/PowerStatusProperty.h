@@ -24,27 +24,22 @@
 #include "PowerStatus.h"
 #include "DomainProperty.h"
 
-class dptf_export PowerStatusCachedProperty : public CachedProperty, DomainProperty
+class dptf_export PowerStatusProperty : public DomainProperty
 {
 public:
 
-    PowerStatusCachedProperty(
+    PowerStatusProperty(
         UIntN participantIndex,
         UIntN domainIndex,
         const DomainProperties& domainProperties,
         const PolicyServicesInterfaceContainer& policyServices);
-    ~PowerStatusCachedProperty(void);
+    ~PowerStatusProperty(void);
 
-    const PowerStatus& getStatus();
+    PowerStatus getStatus();
     virtual Bool supportsProperty() override;
 
 protected:
 
-    virtual void refreshData() override;
-
     Bool implementsPowerStatusInterface();
 
-private:
-
-    PowerStatus m_powerStatus;
 };

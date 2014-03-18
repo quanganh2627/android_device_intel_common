@@ -18,32 +18,38 @@
 
 #include "Frequency.h"
 #include "DptfExceptions.h"
-#include "StatusFormat.h"
-#include "XmlNode.h"
-#include "GccFix.h"
 
-Frequency::Frequency(void) : m_frequency(invalidFrequency)
+Frequency::Frequency(void)
+    : m_frequency(0), m_valid(false)
 {
 }
 
-Frequency::Frequency(UInt64 frequency) : m_frequency(frequency)
+Frequency::Frequency(UInt64 frequency)
+    : m_frequency(frequency), m_valid(true)
 {
 }
 
-UInt64 Frequency::getFrequency() const
+Frequency Frequency::createInvalid()
 {
-    return m_frequency;
-}
-
-Bool Frequency::isFrequencyValid() const
-{
-    return (m_frequency != invalidFrequency);
+    return Frequency();
 }
 
 Bool Frequency::operator==(const Frequency& rhs) const
 {
     // Do not throw an exception if frequency is not valid.
-    return (this->getFrequency() == rhs.getFrequency());
+
+    if (this->isValid() == true && rhs.isValid() == true)
+    {
+        return (this->m_frequency == rhs.m_frequency);
+    }
+    else if (this->isValid() == false && rhs.isValid() == false)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 Bool Frequency::operator!=(const Frequency& rhs) const
@@ -54,72 +60,91 @@ Bool Frequency::operator!=(const Frequency& rhs) const
 
 Bool Frequency::operator>(const Frequency& rhs) const
 {
-    throwIfFrequencyNotValid(this->getFrequency(), rhs.getFrequency());
-    return (this->getFrequency() > rhs.getFrequency());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return (this->m_frequency > rhs.m_frequency);
 }
 
 Bool Frequency::operator>=(const Frequency& rhs) const
 {
-    throwIfFrequencyNotValid(this->getFrequency(), rhs.getFrequency());
-    return (this->getFrequency() >= rhs.getFrequency());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return (this->m_frequency >= rhs.m_frequency);
 }
 
 Bool Frequency::operator<(const Frequency& rhs) const
 {
-    throwIfFrequencyNotValid(this->getFrequency(), rhs.getFrequency());
-    return (this->getFrequency() < rhs.getFrequency());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return (this->m_frequency < rhs.m_frequency);
 }
 
 Bool Frequency::operator<=(const Frequency& rhs) const
 {
-    throwIfFrequencyNotValid(this->getFrequency(), rhs.getFrequency());
-    return (this->getFrequency() <= rhs.getFrequency());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return (this->m_frequency <= rhs.m_frequency);
 }
 
 Frequency Frequency::operator+(const Frequency& rhs) const
 {
-    throwIfFrequencyNotValid(this->getFrequency(), rhs.getFrequency());
-    return Frequency(this->getFrequency() + rhs.getFrequency());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return Frequency(this->m_frequency + rhs.m_frequency);
 }
 
 Frequency Frequency::operator-(const Frequency& rhs) const
 {
-    throwIfFrequencyNotValid(this->getFrequency(), rhs.getFrequency());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
 
-    if (rhs.getFrequency() > this->getFrequency())
+    if (rhs.m_frequency > this->m_frequency)
     {
         throw dptf_exception("Invalid frequency subtraction requested.  rhs > lhs.");
     }
 
-    return Frequency(this->getFrequency() - rhs.getFrequency());
+    return Frequency(this->m_frequency - rhs.m_frequency);
 }
 
 Frequency Frequency::operator*(const Frequency& rhs) const
 {
-    throwIfFrequencyNotValid(this->getFrequency(), rhs.getFrequency());
-    return Frequency(this->getFrequency() * rhs.getFrequency());
+    throwIfInvalid(*this);
+    throwIfInvalid(rhs);
+    return Frequency(this->m_frequency * rhs.m_frequency);
+}
+
+std::ostream& operator<<(std::ostream& os, const Frequency& frequency)
+{
+    os << frequency.toString();
+    return os;
+}
+
+Frequency::operator UInt64(void) const
+{
+    throwIfInvalid(*this);
+    return m_frequency;
+}
+
+Bool Frequency::isValid() const
+{
+    return m_valid;
 }
 
 std::string Frequency::toString() const
 {
-    if (isFrequencyValid())
+    if (isValid())
     {
-        return GccFix::to_string(m_frequency) + "Hz";
+        return GccFix::to_string(m_frequency);
     }
     else
     {
-        return "_Hz";
+        return std::string(Constants::InvalidString);
     }
 }
 
-XmlNode* Frequency::getXml(std::string tag) const
+void Frequency::throwIfInvalid(const Frequency& frequency) const
 {
-    return XmlNode::createDataElement(tag, StatusFormat::friendlyValue(m_frequency));
-}
-
-void Frequency::throwIfFrequencyNotValid(UInt64 lhs, UInt64 rhs) const
-{
-    if (lhs == invalidFrequency || rhs == invalidFrequency)
+    if (frequency.isValid() == false)
     {
         throw dptf_exception("Frequency is not valid.");
     }

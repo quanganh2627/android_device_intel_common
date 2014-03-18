@@ -17,8 +17,6 @@
 ******************************************************************************/
 
 #include "DomainSetCachedProperty.h"
-#include "GccFix.h"
-
 using namespace std;
 
 DomainSetCachedProperty::DomainSetCachedProperty(PolicyServicesInterfaceContainer policyServices, UIntN participantIndex)

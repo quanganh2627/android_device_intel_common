@@ -37,7 +37,6 @@ public:
         ThermalRelationshipTable& trt,
         std::shared_ptr<CallbackScheduler> callbackScheduler,
         TargetMonitor& targetMonitor,
-        UtilizationStatus utilizationBiasThreshold,
         UIntN target);
     virtual ~TargetActionBase();
 
@@ -52,12 +51,9 @@ protected:
     ThermalRelationshipTable& getTrt() const;
     std::shared_ptr<CallbackScheduler> getCallbackScheduler() const;
     TargetMonitor& getTargetMonitor() const;
-    UtilizationStatus getUtilizationBiasThreshold() const;
     UIntN getTarget() const;
 
     // messaging
-    void postDebugMessage(const PolicyMessage& message);
-    void postWarningMessage(const PolicyMessage& message);
     std::string constructMessageForSources(
         std::string actionName, UIntN target, const std::vector<UIntN>& sources);
     std::string constructMessageForSourceDomains(
@@ -89,6 +85,5 @@ private:
     ThermalRelationshipTable& m_trt;
     std::shared_ptr<CallbackScheduler> m_callbackScheduler;
     TargetMonitor& m_targetMonitor;
-    UtilizationStatus m_utilizationBiasThreshold;
     UIntN m_target;
 };

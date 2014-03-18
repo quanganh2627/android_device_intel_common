@@ -41,18 +41,18 @@ void PowerControlKnob::limit()
     {
         try
         {
-            postDebugMessage(PolicyMessage(FLF, "Attempting to limit power.", getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(
+                PolicyMessage(FLF, "Attempting to limit power.", getParticipantIndex(), getDomainIndex()));
 
             // get current power
-            m_powerControl->refreshStatus();
-            const PowerStatus& currentPowerStatus = m_powerControl->getStatus();
+            const PowerStatus& currentPowerStatus = m_powerControl->getCurrentPower();
             Power currentPower = currentPowerStatus.getCurrentPower();
-            postDebugMessage(PolicyMessage(
+            getPolicyServices().messageLogging->writeMessageDebug(PolicyMessage(
                 FLF, "Current power is " + currentPower.toString() + ".", getParticipantIndex(), getDomainIndex()));
 
             // get current power limit
             UIntN pl1Index = m_powerControl->getPl1ControlSetIndex();
-            const PowerControlStatus& currentControlStatus = m_powerControl->getControls()[pl1Index];
+            PowerControlStatus currentControlStatus = m_powerControl->getLastIssuedPowerLimit();
             Power currentPowerLimit = currentControlStatus.getCurrentPowerLimit();
 
             // get min power limit and step size
@@ -74,11 +74,13 @@ void PowerControlKnob::limit()
 
             stringstream message;
             message << "Limited power to " << newStatus.getCurrentPowerLimit().toString() << ".";
-            postDebugMessage(PolicyMessage(FLF, message.str(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(
+                PolicyMessage(FLF, message.str(), getParticipantIndex(), getDomainIndex()));
         }
         catch (std::exception& ex)
         {
-            postDebugMessage(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(
+                PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
             throw ex;
         }
     }
@@ -90,13 +92,14 @@ void PowerControlKnob::unlimit()
     {
         try
         {
-            postDebugMessage(PolicyMessage(FLF, "Attempting to unlimit power.", getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(
+                PolicyMessage(FLF, "Attempting to unlimit power.", getParticipantIndex(), getDomainIndex()));
 
             UIntN pl1Index = m_powerControl->getPl1ControlSetIndex();
             const PowerControlDynamicCaps& pl1Capabilities = m_powerControl->getCapabilities()[pl1Index];
-            const PowerControlStatus& currentStatus = m_powerControl->getControls()[pl1Index];
+            const PowerControlStatus& currentStatus = m_powerControl->getLastIssuedPowerLimit();
             Power nextPowerAfterStep = currentStatus.getCurrentPowerLimit() + pl1Capabilities.getPowerStepSize();
-            Power nextPowerLimit(std::min(nextPowerAfterStep.getPower(), pl1Capabilities.getMaxPowerLimit().getPower()));
+            Power nextPowerLimit(std::min(nextPowerAfterStep, pl1Capabilities.getMaxPowerLimit()));
             PowerControlStatus newStatus(
                 currentStatus.getPowerControlType(),
                 std::min(nextPowerLimit, pl1Capabilities.getMaxPowerLimit()),
@@ -106,11 +109,13 @@ void PowerControlKnob::unlimit()
 
             stringstream message;
             message << "Unlimited power to " << newStatus.getCurrentPowerLimit().toString() << ".";
-            postDebugMessage(PolicyMessage(FLF, message.str(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(
+                PolicyMessage(FLF, message.str(), getParticipantIndex(), getDomainIndex()));
         }
         catch (std::exception& ex)
         {
-            postDebugMessage(PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
+            getPolicyServices().messageLogging->writeMessageDebug(
+                PolicyMessage(FLF, ex.what(), getParticipantIndex(), getDomainIndex()));
             throw ex;
         }
     }
@@ -125,7 +130,7 @@ Bool PowerControlKnob::canLimit()
             UIntN pl1Index = m_powerControl->getPl1ControlSetIndex();
             const PowerControlDynamicCaps& pl1Capabilities =
                 m_powerControl->getCapabilities()[pl1Index];
-            const PowerControlStatus& currentStatus = m_powerControl->getControls()[pl1Index];
+            const PowerControlStatus& currentStatus = m_powerControl->getLastIssuedPowerLimit();
             return (currentStatus.getCurrentPowerLimit() > pl1Capabilities.getMinPowerLimit());
         }
         else
@@ -148,7 +153,7 @@ Bool PowerControlKnob::canUnlimit()
             UIntN pl1Index = m_powerControl->getPl1ControlSetIndex();
             const PowerControlDynamicCaps& pl1Capabilities =
                 m_powerControl->getCapabilities()[pl1Index];
-            const PowerControlStatus& currentStatus = m_powerControl->getControls()[pl1Index];
+            const PowerControlStatus& currentStatus = m_powerControl->getLastIssuedPowerLimit();
             return (currentStatus.getCurrentPowerLimit() < pl1Capabilities.getMaxPowerLimit());
         }
         else
@@ -165,7 +170,7 @@ Bool PowerControlKnob::canUnlimit()
 Power PowerControlKnob::calculateNextLowerPowerLimit(
     Power currentPower, Power minimumPowerLimit, Power stepSize, Power currentPowerLimit)
 {
-    Power nextPowerLimit(Constants::Invalid);
+    Power nextPowerLimit(Power::createInvalid());
     if (currentPower > minimumPowerLimit)
     {
         if (stepSize > currentPower)
@@ -193,7 +198,7 @@ XmlNode* PowerControlKnob::getXml() const
         UIntN pl1Index = m_powerControl->getPl1ControlSetIndex();
         PowerControlDynamicCaps pl1Capabilities = m_powerControl->getCapabilities()[pl1Index];
         knobStatus->addChild(pl1Capabilities.getXml());
-        PowerControlStatus currentControlStatus = m_powerControl->getControls()[pl1Index];
+        PowerControlStatus currentControlStatus = m_powerControl->getLastIssuedPowerLimit();
         knobStatus->addChild(currentControlStatus.getXml());
     }
     return knobStatus;

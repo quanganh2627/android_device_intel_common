@@ -72,12 +72,10 @@ Bool CoreControlLpoPreference::operator!=(const CoreControlLpoPreference& rhs) c
 XmlNode* CoreControlLpoPreference::getXml(void)
 {
     XmlNode* root = XmlNode::createWrapperElement("core_control_lpo_preference");
-
     root->addChild(XmlNode::createDataElement("lpo_enabled", StatusFormat::friendlyValue(m_lpoEnabled)));
     root->addChild(XmlNode::createDataElement("start_p_state", StatusFormat::friendlyValue(m_startPState)));
-    root->addChild(m_stepSize.getXml("step_size"));
+    root->addChild(XmlNode::createDataElement("step_size", m_stepSize.toString()));
     root->addChild(XmlNode::createDataElement("power_control_offlining_mode", CoreControlOffliningMode::ToString(m_powerControlOffliningMode)));
     root->addChild(XmlNode::createDataElement("performance_control_offlining_mode", CoreControlOffliningMode::ToString(m_performanceControlOffliningMode)));
-
     return root;
 }

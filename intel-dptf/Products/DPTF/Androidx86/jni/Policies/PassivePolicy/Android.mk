@@ -50,3 +50,14 @@ LOCAL_STATIC_LIBRARIES := DptfPolicy DptfParticipant DptfShared
 FILE_LIST := $(wildcard $(LOCAL_PATH)/$(DPTF_SRC)/Policies/PassivePolicy/PassivePolicy/*.cpp)
 LOCAL_SRC_FILES := $(FILE_LIST:$(LOCAL_PATH)/%=%)
 include $(BUILD_SHARED_LIBRARY)
+
+SYMLINKS := $(TARGET_OUT)/etc/dptf/bin/$(LOCAL_MODULE).so
+$(SYMLINKS): POLICY_LIB := /system/lib/$(LOCAL_MODULE).so
+$(SYMLINKS): $(LOCAL_INSTALLED_MODULE) $(LOCAL_PATH)/Android.mk
+	@echo "Symlink: $@ -> $(POLICY_LIB)"
+	@mkdir -p $(dir $@)
+	@rm -rf $@
+	$(hide) ln -sf $(POLICY_LIB) $@
+
+ALL_DEFAULT_INSTALLED_MODULES += $(SYMLINKS)
+
