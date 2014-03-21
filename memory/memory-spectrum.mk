@@ -4,6 +4,7 @@ ifeq ($(BOARD_HAVE_SMALL_RAM),true)
   NO_LIVEWALLPAPER := true
   SMALL_CODE_SIZE := true
   CAMERA_NO_REPOOL := true
+  NO_MPM := true
 endif
 
 ## Small and mid ram device definition
