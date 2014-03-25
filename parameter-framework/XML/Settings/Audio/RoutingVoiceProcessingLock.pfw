@@ -1,0 +1,26 @@
+domainGroup: Routing.Lpe
+
+	#########################################
+	################ Enable #################
+	#########################################
+
+	domainGroup: Enable
+		RoutageState Includes Path
+
+		domainGroup: VoiceProcessingLock
+			domain: Uplink
+				conf: Locked
+					ClosingCaptureRoutes Includes VoiceProcessingLock
+					/Audio/lpe/pipe/tx_speech_loop/lock/locked = 1
+
+				conf: UnLocked
+					/Audio/lpe/pipe/tx_speech_loop/lock/locked = 0
+
+			domain: Downlink
+				conf: Locked
+					ClosingPlaybackRoutes Includes VoiceProcessingLock
+					/Audio/lpe/pipe/rx_speech_loop/lock/locked = 1
+
+				conf: UnLocked
+					/Audio/lpe/pipe/rx_speech_loop/lock/locked = 0
+

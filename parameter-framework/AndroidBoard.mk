@@ -31,6 +31,13 @@ LOCAL_REQUIRED_MODULES :=  \
     PowerSubsystem.xml
 include $(BUILD_PHONY_PACKAGE)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE := parameter-framework.audio.voice_processing_lock.module
+LOCAL_MODULE_TAGS := optional
+LOCAL_REQUIRED_MODULES :=  \
+    ModuleVoiceProcessingLock_V1_0.xml
+include $(BUILD_PHONY_PACKAGE)
+
 ##################################################
 
 ifeq ($(TARGET_BUILD_VARIANT),eng)
@@ -89,7 +96,6 @@ LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := XML/Structure/Audio/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
-
 include $(CLEAR_VARS)
 LOCAL_MODULE := parameter-framework.audio.cme.subsystem
 LOCAL_MODULE_STEM := CMESubsystem.xml
@@ -97,6 +103,14 @@ LOCAL_REQUIRED_MODULES := libremoteparameter-subsystem
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := XML/Structure/Audio/$(LOCAL_MODULE_STEM)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := ModuleVoiceProcessingLock_V1_0.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio/intel
+LOCAL_SRC_FILES := XML/Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 ##################################################
