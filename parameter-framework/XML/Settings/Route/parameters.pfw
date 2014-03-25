@@ -509,6 +509,41 @@ supDomain: Parameter
 			component: /Route/ROUTEMGR/CRITERIA/BT_HEADSET_BAND_CRITERIA/
 				BANDS = NB
 
+	supDomain: PreProcessor
+
+		domain: Aec
+			conf: Enabled
+				MicMute Is True
+
+				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+					Aec = 1
+
+			conf: Disabled
+				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+					Aec = 0
+
+		domain: Agc
+			conf: Enabled
+				MicMute Is True
+
+				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+					Agc = 1
+
+			conf: Disabled
+				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+					Agc = 0
+
+		domain: Ns
+			conf: Enabled
+				MicMute Is True
+
+				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+					Ns = 1
+
+			conf: Disabled
+				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+					Ns = 0
+
 	domain: Hac
 		conf: Enabled
 			HacSelected Is True
