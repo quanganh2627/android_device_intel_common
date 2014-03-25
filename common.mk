@@ -68,6 +68,13 @@ PRODUCT_PACKAGES += \
     product_name_mapping \
     sign_target_files_apks
 
+#Add CCF App
+PRODUCT_PACKAGES += \
+    FileTransfer \
+    MultiConnect \
+    SimpleChat \
+    SimpleDiscovery
+
 #Houdini prebuilt
 HOUDINI_ARM_PREBUILTS_DIR := vendor/intel/houdini/arm
 houdini_prebuilt_stamp := $(HOUDINI_ARM_PREBUILTS_DIR)/stamp-prebuilt-done
