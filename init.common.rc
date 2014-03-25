@@ -155,6 +155,7 @@ service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
 
 service ct_monitor /system/bin/ct_monitor
     class core
+    oneshot
     user root
 
 service charger_app /charger
