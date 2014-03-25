@@ -82,7 +82,7 @@ static void UpInitializeOriginLF(
 	esif_ccb_strcpy(upPtr->fMetadata.fDevicePath, metadata_ptr->device_path, ESIF_PATH_LEN);
 
 	/* ACPI */
-	upPtr->fMetadata.fAcpiUID  = metadata_ptr->acpi_uid;
+	esif_ccb_strcpy(upPtr->fMetadata.fAcpiUID, metadata_ptr->acpi_uid, sizeof(upPtr->fMetadata.fAcpiUID));
 	upPtr->fMetadata.fAcpiType = metadata_ptr->acpi_type;
 	esif_ccb_strcpy(upPtr->fMetadata.fAcpiDevice, metadata_ptr->acpi_device, ESIF_NAME_LEN);
 	esif_ccb_strcpy(upPtr->fMetadata.fAcpiScope, metadata_ptr->acpi_scope, ESIF_SCOPE_LEN);

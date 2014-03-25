@@ -94,7 +94,11 @@ void PolicyManager::createPolicy(const std::string& policyFileName)
         message.setPolicyIndex(firstAvailableIndex);
         message.addMessage("Policy Index", firstAvailableIndex);
         message.addMessage("Policy File Name", policyFileName);
-        m_dptfManager->getEsifServices()->writeMessageDebug(message);
+        m_dptfManager->getEsifServices()->writeMessageInfo(message);
+    }
+    catch (policy_not_in_idsp_list ex)
+    {
+        destroyPolicy(firstAvailableIndex);
     }
     catch (...)
     {

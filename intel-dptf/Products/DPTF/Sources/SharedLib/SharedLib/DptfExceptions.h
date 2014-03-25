@@ -88,6 +88,13 @@ public:
     policy_index_invalid();
 };
 
+class policy_not_in_idsp_list : public dptf_exception
+{
+public:
+
+    policy_not_in_idsp_list();
+};
+
 class participant_index_invalid : public dptf_exception
 {
 public:

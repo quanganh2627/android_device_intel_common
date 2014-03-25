@@ -89,8 +89,6 @@ typedef enum e_esif_pathtype {
 	ESIF_PATHTYPE_UI,		// UI and HTML files
 } esif_pathtype;
 
-#define ESIF_PATHTYPE_MAX	(ESIF_PATHTYPE_UI + 1)
-
 extern esif_string esif_build_path(
 	esif_string buffer, 
 	size_t buf_len, 

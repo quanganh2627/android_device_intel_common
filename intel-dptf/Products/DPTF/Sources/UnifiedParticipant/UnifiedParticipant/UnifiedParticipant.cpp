@@ -574,13 +574,28 @@ void UnifiedParticipant::connectedStandbyEntry(void)
 {
     // FIXME:  Not sure if the participant needs to do anything here.  If we do, we will probably have different
     // functionality for different participants and will need a class factory to create the versions.
-    throw implement_me();
+    //throw implement_me();
 }
 
 void UnifiedParticipant::connectedStandbyExit(void)
 {
-    // FIXME:  See note above (connectedStandbyEntry)
-    throw implement_me();
+    // FIXME:  Not sure if the participant needs to do anything here.  If we do, we will probably have different
+    // functionality for different participants and will need a class factory to create the versions.
+    //throw implement_me();
+}
+
+void UnifiedParticipant::suspend(void)
+{
+    // FIXME:  Not sure if the participant needs to do anything here.  If we do, we will probably have different
+    // functionality for different participants and will need a class factory to create the versions.
+    //throw implement_me();
+}
+
+void UnifiedParticipant::resume(void)
+{
+    // FIXME:  Not sure if the participant needs to do anything here.  If we do, we will probably have different
+    // functionality for different participants and will need a class factory to create the versions.
+    //throw implement_me();
 }
 
 void UnifiedParticipant::domainConfigTdpCapabilityChanged(void)

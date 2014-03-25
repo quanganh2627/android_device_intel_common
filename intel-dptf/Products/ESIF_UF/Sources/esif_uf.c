@@ -384,7 +384,7 @@ static enum esif_rc get_participant_data(
 	/* ACPI */
 	esif_ccb_strcpy(pi_ptr->acpi_device, data_ptr->acpi_device, ESIF_NAME_LEN);
 	esif_ccb_strcpy(pi_ptr->acpi_scope, data_ptr->acpi_scope, ESIF_SCOPE_LEN);
-	pi_ptr->acpi_uid  = data_ptr->acpi_uid;
+	esif_ccb_strcpy(pi_ptr->acpi_uid, data_ptr->acpi_uid, sizeof(pi_ptr->acpi_uid));
 	pi_ptr->acpi_type = data_ptr->acpi_type;
 
 	/* PCI */
@@ -543,13 +543,16 @@ int esif_ccb_makepath (char *path)
 // Load Custom Paths from configuration file, overriding defaults?
 static char *esif_custom_path(esif_pathtype type)
 {
+	static char *names[] = {"HOME","TEMP","DV","LOG","BIN","LOCK","EXE","DLL","DPTF","DSP","CMD","UI",0};
 	static char *conf_buffer=0;
-	static char *custom_path[ESIF_PATHTYPE_MAX] = {0};
+	static char **custom_path = NULL;
+	static int  num_pathtypes = (sizeof(names)/sizeof(char *)) - 1;
 	char *result = NULL;
 
 	if (type == PATHTYPE_EXIT) {
-		esif_ccb_memset(custom_path, 0, sizeof(custom_path));
+		esif_ccb_free(custom_path);
 		esif_ccb_free(conf_buffer);
+		custom_path = 0;
 		conf_buffer = 0;
 		g_custom_path_initialized = 0;
 		return result;
@@ -564,17 +567,21 @@ static char *esif_custom_path(esif_pathtype type)
 		if (esif_ccb_stat(filename, &st) == 0 && esif_ccb_fopen(&fp, ESIF_CUSTOM_PATH_FILENAME, "rb") == 0) {
 			char *ctxt = 0;
 			conf_buffer = (char *) esif_ccb_malloc(st.st_size + 1);
-			if (esif_ccb_fread(conf_buffer, st.st_size, sizeof(char), st.st_size, fp) == st.st_size) {
+			custom_path = (char **)esif_ccb_malloc(num_pathtypes * sizeof(char *));
+
+			if (conf_buffer == NULL || custom_path == NULL) {
+				result = esif_custom_path(PATHTYPE_EXIT);
+			}
+			else if (esif_ccb_fread(conf_buffer, st.st_size, sizeof(char), st.st_size, fp) == (size_t)st.st_size) {
 				char *keypair = esif_ccb_strtok(conf_buffer, "\r\n", &ctxt);
 				char *value = 0;
-				char *names[ESIF_PATHTYPE_MAX+1] = {"HOME","TEMP","DV","LOG","BIN","LOCK","EXE","DLL","DPTF","DSP","CMD","UI",0};
-				u32  id=0;
+				int  id=0;
 
 				while (keypair != NULL) {
 					value = esif_ccb_strchr(keypair, '=');
 					if (value) {
 						*value++ = 0;
-						for (id=0; id < ESIF_PATHTYPE_MAX && names[id]; id++) {
+						for (id=0; id < num_pathtypes && names[id]; id++) {
 							if (esif_ccb_stricmp(keypair, names[id]) == 0) {
 								custom_path[(esif_pathtype)id] = value;
 								break;
@@ -588,7 +595,7 @@ static char *esif_custom_path(esif_pathtype type)
 		}
 	}
 
-	if (conf_buffer && type < ESIF_PATHTYPE_MAX) {
+	if (conf_buffer && custom_path && type < num_pathtypes) {
 		result = custom_path[type];
 	}
 	return result;

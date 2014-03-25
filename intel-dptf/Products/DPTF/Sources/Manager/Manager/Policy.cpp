@@ -17,6 +17,7 @@
 ******************************************************************************/
 
 #include "DptfManager.h"
+#include "EsifServices.h"
 #include "Policy.h"
 #include "PolicyServicesInterfaceContainer.h"
 #include "PolicyServicesDomainActiveControl.h"
@@ -90,7 +91,8 @@ void Policy::createPolicy(const std::string& policyFileName, UIntN newPolicyInde
     {
         std::stringstream message;
         message << "Policy [" << m_policyFileName << "] will not be loaded.  GUID not in supported policy list [" << m_guid << "]";
-        throw dptf_exception(message.str());
+        m_dptfManager->getEsifServices()->writeMessageWarning(message.str());
+        throw policy_not_in_idsp_list();
     }
 
     // create all of the classes necessary to fill in the policy services interface container
@@ -191,6 +193,22 @@ void Policy::executeConnectedStandbyExit(void)
     if (isEventRegistered(PolicyEvent::DptfConnectedStandbyExit))
     {
         m_theRealPolicy->connectedStandbyExit();
+    }
+}
+
+void Policy::executeSuspend(void)
+{
+    if (isEventRegistered(PolicyEvent::DptfSuspend))
+    {
+        m_theRealPolicy->suspend();
+    }
+}
+
+void Policy::executeResume(void)
+{
+    if (isEventRegistered(PolicyEvent::DptfResume))
+    {
+        m_theRealPolicy->resume();
     }
 }
 

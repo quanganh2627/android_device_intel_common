@@ -50,27 +50,36 @@ static ESIF_INLINE int esif_ccb_fopen(
 }
 
 #ifdef ESIF_ATTR_OS_LINUX
+    #include <sys/stat.h>
     #define esif_ccb_fgets(buf, siz, fp)                fgets(buf, siz, fp)
     #define esif_ccb_fread(buf, bsiz, siz, count, fp)   fread(buf, siz, count, fp)
     #define esif_ccb_fwrite(buf, siz, count, fp)        fwrite(buf, siz, count, fp)
-    #define esif_ccb_fprintf(fp, fmt, ...)              fprintf(fp, fmt,##__VA_ARGS__)
+    #define esif_ccb_fprintf(fp, fmt, ...)              fprintf(fp, fmt, ##__VA_ARGS__)
+    #define esif_ccb_vfprintf(fp, fmt, vargs)           vfprintf(fp, fmt, vargs)
     #define esif_ccb_fseek(fp, off, org)                fseek(fp, off, org)
     #define esif_ccb_ftell(fp)                          ftell(fp)
     #define esif_ccb_fclose(fp)                         fclose(fp)
     #define esif_ccb_unlink(fname)                      unlink(fname)
     #define esif_ccb_rename(oldname, newname)           rename(oldname, newname)
+    #define esif_ccb_mkdir(dir)                         mkdir(dir, 755)
 #endif
 #ifdef ESIF_ATTR_OS_WINDOWS
+    #include <direct.h>
     #define esif_ccb_fgets(buf, siz, fp)                fgets(buf, siz, fp)
     #define esif_ccb_fread(buf, bsiz, siz, count, fp)   fread_s(buf, bsiz, siz, count, fp)
     #define esif_ccb_fwrite(buf, siz, count, fp)        fwrite(buf, siz, count, fp)
-    #define esif_ccb_fprintf(fp, fmt, ...)              fprintf_s(fp, fmt,##__VA_ARGS__)
+    #define esif_ccb_fprintf(fp, fmt, ...)              fprintf_s(fp, fmt, ##__VA_ARGS__)
+    #define esif_ccb_vfprintf(fp, fmt, vargs)           vfprintf_s(fp, fmt, vargs)
     #define esif_ccb_fseek(fp, off, org)                fseek(fp, off, org)
     #define esif_ccb_ftell(fp)                          ftell(fp)
     #define esif_ccb_fclose(fp)                         fclose(fp)
     #define esif_ccb_unlink(fname)                      _unlink(fname)
     #define esif_ccb_rename(oldname, newname)           rename(oldname, newname)
+    #define esif_ccb_mkdir(dir)                         _mkdir(dir)
 #endif
+
+extern int esif_ccb_makepath (char *path); // Recursively create a path if it does not exist
+
 
 /*
  *******************************************************************************

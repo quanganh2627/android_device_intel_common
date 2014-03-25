@@ -54,6 +54,15 @@ static esif_string g_qualifiers[] = {
 	"D9"
 };
 
+static eEsifError EsifAppSpecialEventHandler(
+	EsifAppPtr theAppPtr,
+	UInt8 participantId,
+	UInt16 domainId,
+	EsifDataPtr eventData,
+	eEsifEventType eventType
+);
+
+
 /* Data For Interface Marshaling */
 static AppDataPtr CreateAppData(esif_string pathBuf)
 {
@@ -62,7 +71,6 @@ static AppDataPtr CreateAppData(esif_string pathBuf)
 	if (NULL == pathBuf) {
 		goto exit;
 	}
-
 
 	esif_build_path(pathBuf, ESIF_PATH_LEN, ESIF_PATHTYPE_DPTF, NULL, NULL);
 	ESIF_TRACE_DEBUG("%s\n\n", (esif_string)pathBuf);
@@ -163,6 +171,54 @@ static eEsifError AppCreate(
 		appPtr->fInterface.fDomainSetStateFuncPtr == NULL ||
 		appPtr->fInterface.fAppSetStateFuncPtr == NULL) {
 		rc = ESIF_E_PARAMETER_IS_NULL;
+		ESIF_TRACE_DEBUG("fIfaceType = %d\n", appPtr->fInterface.fIfaceType);
+		ESIF_TRACE_DEBUG("fIfaceSize = %d, expected size = %d\n", appPtr->fInterface.fIfaceSize,\
+						 (UInt16)sizeof(AppInterface));
+		ESIF_TRACE_DEBUG("fIfaceVersion = %d\n", appPtr->fInterface.fIfaceVersion);
+
+		ESIF_TRACE_DEBUG("fAppAllocateHandleFuncPtr = 0x%x \n \
+			fAppCreateFuncPtr = 0x%x \n \
+			fAppDestoryFuncPtr = 0x%x \n \
+			fAppCommandFuncPtr = 0x%x \n \
+			fAppEventFuncPtr = 0x%x \n \
+			fAppGetAboutFuncPtr = 0x%x \n \
+			fAppGetBannerFuncPtr = 0x%x \n \
+			fAppGetDescriptionFuncPtr = 0x%x \n \
+			fAppGetGuidFuncPtr = 0x%x \n \
+			fAppGetNameFuncPtr = 0x%x \n \
+			fAppGetStatusFuncPtr = 0x%x \n \
+			fAppGetVersionFuncPtr = 0x%x \n \
+			fParticipantAllocateHandleFuncPtr = 0x%x \n \
+			fParticipantCreateFuncFuncPtr = 0x%x \n \
+			fParticipantDestroyFuncPtr = 0x%x \n \
+			fParticipantSetStateFuncPtr = 0x%x \n \
+			fDomainAllocateHandleFuncPtr = 0x%x \n \
+			fDomainCreateFuncPtr = 0x%x \n \
+			fDomainDestroyFuncPtr = 0x%x \n \
+			fDomainSetStateFuncPtr = 0x%x \n \
+			fAppSetStateFuncPtr = 0x%x \n", \
+						 (unsigned int) appPtr->fInterface.fAppAllocateHandleFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fAppCreateFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fAppDestroyFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fAppCommandFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fAppEventFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fAppGetAboutFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fAppGetBannerFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fAppGetDescriptionFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fAppGetGuidFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fAppGetNameFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fAppGetStatusFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fAppGetVersionFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fParticipantAllocateHandleFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fParticipantCreateFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fParticipantDestroyFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fParticipantSetStateFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fDomainAllocateHandleFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fDomainCreateFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fDomainDestroyFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fDomainSetStateFuncPtr, \
+						 (unsigned int) appPtr->fInterface.fAppSetStateFuncPtr);
+
 		goto exit;
 	}
 
@@ -411,7 +467,7 @@ static AppParticipantDataPtr CreateParticipantData(
 	ASSIGN_DATA_STRING(app_data_ptr->fAcpiDevice, upDataPtr->fAcpiDevice, ESIF_NAME_LEN);
 	ASSIGN_DATA_STRING(app_data_ptr->fAcpiScope, upDataPtr->fAcpiScope, ESIF_SCOPE_LEN);
 	app_data_ptr->fAcpiType = upDataPtr->fAcpiType;
-	app_data_ptr->fAcpiUID  = upDataPtr->fAcpiUID;
+	ASSIGN_DATA_STRING(app_data_ptr->fAcpiUID, upDataPtr->fAcpiUID, sizeof(app_data_ptr->fAcpiUID));
 
 	/* PCI Device */
 	app_data_ptr->fPciVendor    = upDataPtr->fPciVendor;
@@ -751,6 +807,12 @@ eEsifError EsifAppEvent(
 	ESIF_TRACE_DEBUG("%s:\n", ESIF_FUNC);
 
 	if (0 == participantId) {
+		EsifAppSpecialEventHandler(theAppPtr,
+								   participantId,
+								   domainId,
+								   eventData,
+								   eventType);
+
 		// Application Event?
 		if (isEventRegistered(theAppPtr->fRegisteredEvents, eventType)) {
 			struct esif_fpc_event *event_ptr = NULL;
@@ -829,6 +891,52 @@ exit:
 
 	return rc;
 }
+
+
+static eEsifError EsifAppSpecialEventHandler(
+	EsifAppPtr theAppPtr,
+	UInt8 participantId,
+	UInt16 domainId,
+	EsifDataPtr eventData,
+	eEsifEventType eventType
+	)
+{
+	eEsifError rc = ESIF_OK;
+
+	UNREFERENCED_PARAMETER(domainId);
+	UNREFERENCED_PARAMETER(eventData);
+
+	//
+	// Only handle participant 0 at this time
+	//
+	if (participantId != 0) {
+		goto exit;
+	}
+
+	//
+	// Special handling for suspend/resume events
+	//
+	switch (eventType)
+	{
+	case ESIF_EVENT_PARTICIPANT_SUSPEND:
+		ESIF_TRACE_INFO("System suspend event received\n");
+		if (NULL != theAppPtr) {
+			theAppPtr->fInterface.fAppSuspendFuncPtr(theAppPtr->fHandle);
+		}
+		break;
+	case ESIF_EVENT_PARTICIPANT_RESUME:
+		ESIF_TRACE_INFO("System resume event received\n");
+		if (NULL != theAppPtr) {
+			theAppPtr->fInterface.fAppResumeFuncPtr(theAppPtr->fHandle);
+		}
+		break;
+	default:
+		break;
+	}
+exit:
+	return rc;
+}
+
 
 
 eEsifError EsifAppInit()

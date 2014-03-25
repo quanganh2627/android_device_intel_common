@@ -40,8 +40,8 @@ extern "C" {
 #define VER_MINOR_STR   "9999"
 #define VER_HOTFIX       0
 #define VER_HOTFIX_STR  "0"
-#define VER_BUILD       12
-#define VER_BUILD_STR   "12"
+#define VER_BUILD       14
+#define VER_BUILD_STR   "14"
 
 //#define VER_BUILD_TIMESTAMP "20130101 00:00:00"
 
@@ -94,6 +94,10 @@ extern "C" {
  **************************/
 
 #endif // _VER_H_
+
+
+
+
 
 
 

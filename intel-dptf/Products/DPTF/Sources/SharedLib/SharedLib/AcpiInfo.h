@@ -25,17 +25,17 @@ class AcpiInfo final
 public:
 
     AcpiInfo(void);
-    AcpiInfo(const std::string& acpiDevice, const std::string& acpiScope, UInt32 acpiUid, UInt32 acpiType);
+    AcpiInfo(const std::string& acpiDevice, const std::string& acpiScope, std::string acpiUid, UInt32 acpiType);
 
     std::string getAcpiDevice(void) const;
     std::string getAcpiScope(void) const;
-    UInt32 getAcpiUid(void) const;
+    std::string getAcpiUid(void) const;
     UInt32 getAcpiType(void) const;
 
 private:
 
     std::string m_acpiDevice;
     std::string m_acpiScope;
-    UInt32 m_acpiUid;
+    std::string m_acpiUid;
     UInt32 m_acpiType;
 };

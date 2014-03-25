@@ -17,24 +17,15 @@
 ******************************************************************************/
 
 #pragma once
-#include "Dptf.h"
-#include "XmlNode.h"
 
-// responsible for tracking what targets are currently being monitored for limiting/unlimiting
-class dptf_export TargetMonitor
+#include "WorkItem.h"
+
+class WIDptfSuspend : public WorkItem
 {
 public:
 
-    TargetMonitor();
-    ~TargetMonitor();
+    WIDptfSuspend(DptfManager* dptfManager);
+    virtual ~WIDptfSuspend(void);
 
-    void startMonitoring(UIntN target);
-    void stopMonitoring(UIntN target);
-    Bool isMonitoring(UIntN target);
-    std::set<UIntN> getMonitoredTargets() const;
-    XmlNode* getXml() const;
-
-private:
-
-    std::set<UIntN> m_targetsMonitored;
+    virtual void execute(void) override final;
 };

@@ -33,7 +33,7 @@ PerformanceControlFacade::PerformanceControlFacade(
     m_performanceControlSetProperty(participantIndex, domainIndex, domainProperties, policyServices),
     m_performanceControlCapabilitiesProperty(participantIndex, domainIndex, domainProperties, policyServices),
     m_controlsHaveBeenInitialized(false),
-    m_lastIssuedPerformanceControlIndex(0)
+    m_lastIssuedPerformanceControlIndex(Constants::Invalid)
 {
 }
 
@@ -50,11 +50,9 @@ void PerformanceControlFacade::setControl(UIntN performanceControlIndex)
 {
     if (supportsPerformanceControls())
     {
-        m_lastIssuedPerformanceControlIndex = performanceControlIndex;
-        const PerformanceControlDynamicCaps& caps = getDynamicCapabilities();
-        m_isLimited = m_lastIssuedPerformanceControlIndex > caps.getCurrentUpperLimitIndex();
         m_policyServices.domainPerformanceControl->setPerformanceControl(
             m_participantIndex, m_domainIndex, performanceControlIndex);
+        m_lastIssuedPerformanceControlIndex = performanceControlIndex;
         
     }
     else
@@ -94,7 +92,6 @@ void PerformanceControlFacade::initializeControlsIfNeeded()
     {
         const PerformanceControlDynamicCaps& caps = getDynamicCapabilities();
         UIntN upperLimitIndex = caps.getCurrentUpperLimitIndex();
-        UIntN lowerLimitIndex = caps.getCurrentLowerLimitIndex();
         if (m_controlsHaveBeenInitialized == false)
         {
             setControl(upperLimitIndex);
@@ -102,24 +99,9 @@ void PerformanceControlFacade::initializeControlsIfNeeded()
         }
         else
         {
-            if (m_isLimited)
+            if (m_lastIssuedPerformanceControlIndex != upperLimitIndex)
             {
-                if (m_lastIssuedPerformanceControlIndex < upperLimitIndex)
-                {
-                    setControl(upperLimitIndex);
-                }
-
-                if (m_lastIssuedPerformanceControlIndex > lowerLimitIndex)
-                {
-                    setControl(lowerLimitIndex);
-                }
-            }
-            else
-            {
-                if (m_lastIssuedPerformanceControlIndex != upperLimitIndex)
-                {
-                    setControl(upperLimitIndex);
-                }
+                setControl(upperLimitIndex);
             }
         }
     }

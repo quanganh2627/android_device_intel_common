@@ -68,5 +68,4 @@ private:
     PowerControlCapabilitiesCachedProperty m_powerControlCapabilitiesProperty;
     Bool m_controlsHaveBeenInitialized;
     PowerControlStatus m_lastIssuedPowerControlStatus;
-    Bool m_isLimited;
 };

@@ -69,7 +69,7 @@ void PassivePolicy::onCreate(void)
         m_utilizationBiasThreshold = Percentage(0.0);
     }
 
-    m_callbackScheduler.reset(new CallbackScheduler(getPolicyServices(), m_trt, getTime()));
+    m_callbackScheduler.reset(new CallbackScheduler(getPolicyServices(), m_trt, &m_targetMonitor, getTime()));
 }
 
 void PassivePolicy::onDestroy(void)
@@ -165,6 +165,7 @@ void PassivePolicy::onUnbindParticipant(UIntN participantIndex)
     m_callbackScheduler->removeParticipantFromSchedule(participantIndex);
     m_callbackScheduler->setTrt(m_trt);
     m_targetMonitor.stopMonitoring(participantIndex);
+    removeAllRequestsForTarget(participantIndex);
     getParticipantTracker().forget(participantIndex);
 }
 
@@ -253,6 +254,7 @@ void PassivePolicy::onDomainPowerControlCapabilityChanged(UIntN participantIndex
                 if (domain.getPowerControl().supportsPowerControls())
                 {
                     domain.getPowerControl().refreshCapabilities();
+                    domain.clearAllPowerControlRequests();
                     domain.getPowerControl().initializeControlsIfNeeded();
                 }
             }
@@ -279,6 +281,7 @@ void PassivePolicy::onDomainPerformanceControlCapabilityChanged(UIntN participan
                 if (domain.getPerformanceControl().supportsPerformanceControls())
                 {
                     domain.getPerformanceControl().refreshCapabilities();
+                    domain.clearAllPerformanceControlRequests();
                     domain.getPerformanceControl().initializeControlsIfNeeded();
                 }
             }
@@ -330,6 +333,8 @@ void PassivePolicy::onDomainCoreControlCapabilityChanged(UIntN participantIndex)
                 if (domain.getCoreControl().supportsCoreControls())
                 {
                     domain.getCoreControl().refreshCapabilities();
+                    domain.clearAllCoreControlRequests();
+                    domain.getCoreControl().initializeControlsIfNeeded();
                 }
             }
             catch (std::exception& ex)
@@ -355,6 +360,7 @@ void PassivePolicy::onDomainDisplayControlCapabilityChanged(UIntN participantInd
                 if (domain.getDisplayControl().supportsDisplayControls())
                 {
                     domain.getDisplayControl().refreshCapabilities();
+                    domain.clearAllDisplayControlRequests();
                 }
             }
             catch (std::exception& ex)
@@ -573,6 +579,24 @@ void PassivePolicy::reloadTrtAndCheckAllTargets()
             setParticipantTemperatureThresholdNotification(getParticipantTracker()[*index], currentTemperature);
             notifyPlatformOfDeviceTemperature(getParticipantTracker()[*index], currentTemperature);
             takeThermalActionForTarget(*index);
+        }
+    }
+}
+
+void PassivePolicy::removeAllRequestsForTarget(UIntN target)
+{
+    if (participantIsTargetDevice(target))
+    {
+        vector<UIntN> participantIndexes = getParticipantTracker().getAllTrackedIndexes();
+        for (auto participantIndex = participantIndexes.begin(); 
+            participantIndex != participantIndexes.end(); 
+            participantIndex++)
+        {
+            vector<UIntN> domainIndexes = getParticipantTracker()[*participantIndex].getDomainIndexes();
+            for (auto domainIndex = domainIndexes.begin(); domainIndex != domainIndexes.end(); domainIndex++)
+            {
+                getParticipantTracker()[*participantIndex][*domainIndex].clearAllRequestsForTarget(target);
+            }
         }
     }
 }

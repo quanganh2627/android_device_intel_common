@@ -19,11 +19,11 @@
 #include "AcpiInfo.h"
 #include "BinaryParse.h" // TODO: Remove this eventually when we move the ACPI scope normalization
 
-AcpiInfo::AcpiInfo(void) : m_acpiDevice(std::string()), m_acpiScope(std::string()), m_acpiUid(0), m_acpiType(0)
+AcpiInfo::AcpiInfo(void) : m_acpiDevice(std::string()), m_acpiScope(std::string()), m_acpiUid("0"), m_acpiType(0)
 {
 }
 
-AcpiInfo::AcpiInfo(const std::string& acpiDevice, const std::string& acpiScope, UInt32 acpiUid, UInt32 acpiType) :
+AcpiInfo::AcpiInfo(const std::string& acpiDevice, const std::string& acpiScope, std::string acpiUid, UInt32 acpiType) :
     m_acpiDevice(acpiDevice), m_acpiScope(acpiScope), m_acpiUid(acpiUid), m_acpiType(acpiType)
 {
     m_acpiScope = BinaryParse::normalizeAcpiScope(m_acpiScope);
@@ -39,7 +39,7 @@ std::string AcpiInfo::getAcpiScope(void) const
     return m_acpiScope;
 }
 
-UInt32 AcpiInfo::getAcpiUid(void) const
+std::string AcpiInfo::getAcpiUid(void) const
 {
     return m_acpiUid;
 }

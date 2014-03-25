@@ -514,7 +514,7 @@ static int esif_ws_server_write_to_socket (
 {
 	ssize_t ret=0;
 	
-	ret = send(connection->socket, (char*)buffer, (int)bufferSize, 0);
+	ret = send(connection->socket, (char*)buffer, (int)bufferSize, ESIF_WS_SEND_FLAGS);
 	if (ret == -1 || ret != (ssize_t)bufferSize) {
 		esif_ccb_socket_close(connection->socket);
 		connection->socket = INVALID_SOCKET;

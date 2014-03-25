@@ -28,6 +28,7 @@ typedef HINSTANCE esif_lib_t;
 #define ESIF_LIB_EXT "dll"
 #else
 #include <dlfcn.h>
+#include <ctype.h>
 typedef void *esif_lib_t;
 #define ESIF_LIB_EXT "so"
 #endif

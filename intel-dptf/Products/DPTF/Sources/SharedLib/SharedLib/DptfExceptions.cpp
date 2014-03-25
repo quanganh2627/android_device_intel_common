@@ -67,6 +67,11 @@ policy_index_invalid::policy_index_invalid()
 {
 }
 
+policy_not_in_idsp_list::policy_not_in_idsp_list()
+    : dptf_exception("The policy is not in the IDSP list.")
+{
+}
+
 participant_index_invalid::participant_index_invalid()
     : dptf_exception("The participant index is not valid.")
 {

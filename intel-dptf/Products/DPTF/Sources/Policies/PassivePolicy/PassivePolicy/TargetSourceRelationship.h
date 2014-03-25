@@ -18,23 +18,21 @@
 
 #pragma once
 #include "Dptf.h"
-#include "XmlNode.h"
 
-// responsible for tracking what targets are currently being monitored for limiting/unlimiting
-class dptf_export TargetMonitor
+class TargetSourceRelationship
 {
 public:
-
-    TargetMonitor();
-    ~TargetMonitor();
-
-    void startMonitoring(UIntN target);
-    void stopMonitoring(UIntN target);
-    Bool isMonitoring(UIntN target);
-    std::set<UIntN> getMonitoredTargets() const;
-    XmlNode* getXml() const;
+    TargetSourceRelationship();
+    TargetSourceRelationship(UIntN newTarget, UIntN newSource);
+    Bool operator<(const TargetSourceRelationship& rhs) const;
+    Bool operator==(const TargetSourceRelationship& rhs) const;
+    
+    UIntN target;
+    UIntN source;
 
 private:
 
-    std::set<UIntN> m_targetsMonitored;
+    void throwIfNotValid() const;
+
+    Bool m_valid;
 };

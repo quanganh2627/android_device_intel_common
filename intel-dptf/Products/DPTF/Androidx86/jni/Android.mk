@@ -30,3 +30,4 @@ include $(TOP_PATH)/Policies/PassivePolicy/Android.mk
 include $(TOP_PATH)/Policies/ActivePolicy/Android.mk
 include $(TOP_PATH)/Policies/CriticalPolicy/Android.mk
 include $(TOP_PATH)/Manager/Android.mk
+include $(TOP_PATH)/Resources/Android.mk

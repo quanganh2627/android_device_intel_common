@@ -76,7 +76,7 @@ void Participant::createParticipant(UIntN participantIndex, const AppParticipant
                 participantDataPtr->fPciBusDevice, participantDataPtr->fPciFunction, participantDataPtr->fPciRevision,
                 participantDataPtr->fPciClass, participantDataPtr->fPciSubClass, participantDataPtr->fPciProgIf),
             AcpiInfo(EsifDataString(&participantDataPtr->fAcpiDevice), EsifDataString(&participantDataPtr->fAcpiScope),
-                participantDataPtr->fAcpiUID, participantDataPtr->fAcpiType),
+                EsifDataString(&participantDataPtr->fAcpiUID), participantDataPtr->fAcpiType),
             m_participantServices);
     }
     catch (...)
@@ -341,6 +341,22 @@ void Participant::connectedStandbyExit(void)
     if (isEventRegistered(ParticipantEvent::DptfConnectedStandbyExit))
     {
         m_theRealParticipant->connectedStandbyExit();
+    }
+}
+
+void Participant::suspend(void)
+{
+    if (isEventRegistered(ParticipantEvent::DptfSuspend))
+    {
+        m_theRealParticipant->suspend();
+    }
+}
+
+void Participant::resume(void)
+{
+    if (isEventRegistered(ParticipantEvent::DptfResume))
+    {
+        m_theRealParticipant->resume();
     }
 }
 

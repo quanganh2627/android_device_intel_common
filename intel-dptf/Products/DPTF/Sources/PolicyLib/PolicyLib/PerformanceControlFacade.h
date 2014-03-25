@@ -66,5 +66,4 @@ private:
     PerformanceControlCapabilitiesCachedProperty m_performanceControlCapabilitiesProperty;
     Bool m_controlsHaveBeenInitialized;
     UIntN m_lastIssuedPerformanceControlIndex;
-    Bool m_isLimited;
 };

@@ -67,7 +67,7 @@ typedef struct _t_AppParticipantData {
     /* ACPI */
     esif::EsifData              fAcpiDevice;                        /* ACPI Device */
     esif::EsifData              fAcpiScope;                         /* ACPI Scope/Object ID \_SB_.IETM */
-    UInt32                      fAcpiUID;                           /* ACPI Unique ID */
+    esif::EsifData              fAcpiUID;                           /* ACPI Unique ID */
     eDomainType                 fAcpiType;                          /* ACPI Domain/Participant Type e.g. THermalSensor, Power, Etc. */
 
     /* PCI */
@@ -154,6 +154,16 @@ typedef eEsifError (*AppCreateFunction)(
 
 /* Destroy */
 typedef eEsifError (*AppDestroyFunction)(void* appHandle);
+
+/* Suspend */
+typedef eEsifError (*AppSuspendFunction)(
+    const void*                 appHandle                           /* Allocated handle for application */
+);
+
+/* Resume */
+typedef eEsifError (*AppResumeFunction)(
+    const void*                 appHandle                           /* Allocated handle for application */
+);
 
 /* Banner */
 typedef eEsifError (*AppGetBannerFunction)(
@@ -323,6 +333,8 @@ struct _t_AppInterface {
     AppAllocateHandle               fAppAllocateHandleFuncPtr;
     AppCreateFunction               fAppCreateFuncPtr;
     AppDestroyFunction              fAppDestroyFuncPtr;
+    AppSuspendFunction              fAppSuspendFuncPtr;
+    AppResumeFunction               fAppResumeFuncPtr;
 
     AppCommandFunction              fAppCommandFuncPtr;
     AppGetAboutFunction             fAppGetAboutFuncPtr;

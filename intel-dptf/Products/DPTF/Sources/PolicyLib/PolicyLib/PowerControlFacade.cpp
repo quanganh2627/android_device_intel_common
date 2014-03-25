@@ -32,8 +32,7 @@ PowerControlFacade::PowerControlFacade(
     m_powerStatusProperty(participantIndex, domainIndex, domainProperties, policyServices),
     m_powerControlCapabilitiesProperty(participantIndex, domainIndex, domainProperties, policyServices),
     m_controlsHaveBeenInitialized(false),
-    m_lastIssuedPowerControlStatus(PowerControlType::pl1, Power(0), 0, Percentage(0.0)),
-    m_isLimited(false)
+    m_lastIssuedPowerControlStatus(PowerControlType::pl1, Power(0), 0, Percentage(0.0))
 {
 }
 
@@ -55,9 +54,9 @@ void PowerControlFacade::setControl(const PowerControlStatus& powerControlStatus
 {
     if (supportsPowerControls())
     {
+        const PowerControlDynamicCapsSet& caps = getCapabilities();
         vector<PowerControlStatus> powerControlList;
-        PowerControlStatusSet currentSet = getControls();
-        UIntN setSize = currentSet.getCount();
+        UIntN setSize = caps.getCount();
         for (UIntN setIndex = 0; setIndex < setSize; setIndex++)
         {
             if (setIndex == controlSetIndex)
@@ -66,14 +65,13 @@ void PowerControlFacade::setControl(const PowerControlStatus& powerControlStatus
             }
             else
             {
-                powerControlList.push_back(currentSet[setIndex]);
+                PowerControlStatus status = PowerControlStatus(
+                    caps[setIndex].getPowerControlType(), caps[setIndex].getMaxPowerLimit(), 
+                    caps[setIndex].getMaxTimeWindow(), caps[setIndex].getMaxDutyCycle());
+                powerControlList.push_back(status);
             }
         }
-
         m_lastIssuedPowerControlStatus = powerControlStatus;
-        const PowerControlDynamicCapsSet& caps = getCapabilities();
-        UIntN pl1Index = getPl1ControlSetIndex();
-        m_isLimited = m_lastIssuedPowerControlStatus.getCurrentPowerLimit() < caps[pl1Index].getMaxPowerLimit();
         m_policyServices.domainPowerControl->setPowerControl(
             m_participantIndex, m_domainIndex, PowerControlStatusSet(powerControlList));
         m_powerControlSetProperty.invalidate();
@@ -159,39 +157,14 @@ void PowerControlFacade::initializeControlsIfNeeded()
         else
         {
             UIntN pl1Index = getPl1ControlSetIndex();
-            Power lastIssuedPowerLimit = m_lastIssuedPowerControlStatus.getCurrentPowerLimit();
-            Power maxPowerLimit = caps[pl1Index].getMaxPowerLimit();
-            Power minPowerLimit = caps[pl1Index].getMinPowerLimit();
-            if (m_isLimited)
+            PowerControlStatus newStatus(
+                caps[pl1Index].getPowerControlType(), 
+                caps[pl1Index].getMaxPowerLimit(), 
+                caps[pl1Index].getMaxTimeWindow(), 
+                caps[pl1Index].getMaxDutyCycle());
+            if (m_lastIssuedPowerControlStatus != newStatus)
             {
-                if (lastIssuedPowerLimit > maxPowerLimit)
-                {
-                    setControl(PowerControlStatus(
-                        caps[pl1Index].getPowerControlType(), 
-                        caps[pl1Index].getMaxPowerLimit(), 
-                        caps[pl1Index].getMaxTimeWindow(), 
-                        caps[pl1Index].getMaxDutyCycle()), 0);
-                }
-
-                if (lastIssuedPowerLimit < minPowerLimit)
-                {
-                    setControl(PowerControlStatus(
-                        caps[pl1Index].getPowerControlType(), 
-                        caps[pl1Index].getMinPowerLimit(), 
-                        caps[pl1Index].getMaxTimeWindow(), 
-                        caps[pl1Index].getMaxDutyCycle()), 0);
-                }
-            }
-            else
-            {
-                if (lastIssuedPowerLimit != maxPowerLimit)
-                {
-                    setControl(PowerControlStatus(
-                        caps[pl1Index].getPowerControlType(), 
-                        caps[pl1Index].getMaxPowerLimit(), 
-                        caps[pl1Index].getMaxTimeWindow(), 
-                        caps[pl1Index].getMaxDutyCycle()), 0);
-                }
+                setControl(newStatus, pl1Index);
             }
         }
     }

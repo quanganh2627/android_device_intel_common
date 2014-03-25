@@ -134,6 +134,8 @@ static ESIF_INLINE void esif_ccb_shutdown(
 	system("shutdown /s /f /t 0");
 #elif defined(ESIF_ATTR_OS_CHROME)
 	system("shutdown -P now");
+#elif defined(ESIF_ATTR_OS_ANDROID)
+	system("reboot -p");
 #else
 	system("shutdown -h now");
 #endif
@@ -160,6 +162,8 @@ static ESIF_INLINE void esif_ccb_suspend()
 	SetSuspendState(0, 1, 0);
 #elif defined(ESIF_ATTR_OS_CHROME)
 	system("powerd_dbus_suspend");
+#elif defined(ESIF_ATTR_OS_ANDROID)
+	system("input keyevent 26");
 #else
 	system("pm-suspend");
 #endif

@@ -187,9 +187,9 @@ static int esif_ws_http_process_static_pages (
 				(long)st.st_size, 
 				content_disposition);
 
-	send(connection->socket, buffer, (int)esif_ccb_strlen(buffer, BUFFER_LENGTH), 0);
+	send(connection->socket, buffer, (int)esif_ccb_strlen(buffer, BUFFER_LENGTH), ESIF_WS_SEND_FLAGS);
 	while ((ret = (int)fread(buffer, 1, BUFFER_LENGTH, file_fp)) > 0) {
-		send(connection->socket, buffer, (int)ret, 0);
+		send(connection->socket, buffer, (int)ret, ESIF_WS_SEND_FLAGS);
 	}
 	fclose(file_fp);
 
@@ -336,6 +336,6 @@ static void esif_ws_http_send_error_code (
 
 	esif_ccb_sprintf(sizeof(buffer), buffer, (char*)"HTTP/1.1 %d %s\r\n\r\n<h1>%d %s</h1>", error_code, message, error_code, message);
 
-	send(connection->socket, buffer, (int)esif_ccb_strlen(buffer, sizeof(buffer)), 0);
+	send(connection->socket, buffer, (int)esif_ccb_strlen(buffer, sizeof(buffer)), ESIF_WS_SEND_FLAGS);
 	esif_ws_close_socket(connection);
 }

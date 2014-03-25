@@ -80,6 +80,7 @@ private:
     TargetActionBase* determineAction(UIntN target);
     void takeThermalActionForAllTargetsForSource(UIntN source);
     void takeThermalActionForTarget(UIntN target);
+    void removeAllRequestsForTarget(UIntN target);
     
     // TRT actions
     void associateParticipantInTrt(ParticipantProxy& trackedParticipants);

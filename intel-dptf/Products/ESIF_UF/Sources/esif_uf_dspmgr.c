@@ -26,6 +26,7 @@
 #include "esif_lib_esifdata.h"
 #include "esif_lib_databank.h"
 #include "esif_uf_cfgmgr.h"
+#include "esif_participant.h"
 
 #ifdef ESIF_ATTR_OS_WINDOWS
 //
@@ -1103,10 +1104,12 @@ EsifString esif_uf_dm_select_dsp_for_participant(
 			esif_acpi_device_str(data_ptr->acpi_device),
 			data_ptr->acpi_scope);
 
-		if (data_ptr->acpi_uid != 0xFFFFFFFF) {
-			ESIF_TRACE_DEBUG("ACPI UID:       0x%x\n",
-								data_ptr->acpi_uid);
+		if (!strcmp(data_ptr->acpi_uid, ESIF_PARTICIPANT_INVALID_UID)) {
+			ESIF_TRACE_DEBUG("ACPI UID:       %s\n",
+								 data_ptr->acpi_uid);
 		}
+
+
 
 		if (data_ptr->acpi_type != 0xFFFFFFFF) {
 			ESIF_TRACE_DEBUG("ACPI Type:      0x%x %s\n",
@@ -1118,7 +1121,6 @@ EsifString esif_uf_dm_select_dsp_for_participant(
 			struct esif_uf_dm_query_acpi qry = {0};
 			#define TEMP_LEN 12
 			char temp_type[TEMP_LEN]    = {0};
-			char temp_uid[TEMP_LEN]		= {0};
 
 			EsifString acpi_device = "*";
 			EsifString acpi_type   = "*";
@@ -1126,7 +1128,6 @@ EsifString esif_uf_dm_select_dsp_for_participant(
 			EsifString acpi_scope  = "*";
 
 			int type = data_ptr->acpi_type;
-			int uid  = data_ptr->acpi_uid;
 
 			if (esif_ccb_strlen(data_ptr->acpi_device, ESIF_NAME_LEN) > 0) {
 				acpi_device = data_ptr->acpi_device;
@@ -1140,9 +1141,8 @@ EsifString esif_uf_dm_select_dsp_for_participant(
 				acpi_type = temp_type;
 			}
 
-			if (uid >= 0) {
-				esif_ccb_sprintf(TEMP_LEN, temp_uid, "%d", uid);
-				acpi_uid = temp_uid;
+			if (esif_ccb_strlen(data_ptr->acpi_uid, sizeof(data_ptr->acpi_uid)) > 0) {
+				acpi_uid = data_ptr->acpi_uid;
 			}
 
 			qry.acpi_device = acpi_device;

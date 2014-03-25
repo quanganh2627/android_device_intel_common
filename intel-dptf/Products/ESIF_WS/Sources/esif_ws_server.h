@@ -22,6 +22,12 @@
 #include "esif.h"
 #include "esif_ws_socket.h"
 
+#ifdef MSG_NOSIGNAL
+#define ESIF_WS_SEND_FLAGS MSG_NOSIGNAL
+#else
+#define ESIF_WS_SEND_FLAGS 0
+#endif
+
 typedef struct s_clientRecord {
 	esif_ccb_socket_t socket;
 	enum socketState  state;
