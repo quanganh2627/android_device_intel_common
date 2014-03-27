@@ -7,7 +7,7 @@ config=`cat /config/local_config`
 ln -s /system/etc/catalog/$config $CONFIG_PATH
 
 # read all FeatureTeam's init.props file
-for f in `find $CONFIG_PATH/ -name $PROPS_FILE`
+for f in $CONFIG_PATH/*/$PROPS_FILE
 do
     cat $f >> /config.prop
 done
