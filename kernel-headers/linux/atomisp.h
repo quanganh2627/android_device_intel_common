@@ -785,7 +785,7 @@ struct v4l2_private_int_data {
 #endif
 
 #define ATOMISP_IOC_G_3A_STAT \
-	_IOW('v', BASE_VIDIOC_PRIVATE + 7, struct atomisp_3a_statistics)
+	_IOWR('v', BASE_VIDIOC_PRIVATE + 7, struct atomisp_3a_statistics)
 #define ATOMISP_IOC_G_ISP_PARM \
 	_IOR('v', BASE_VIDIOC_PRIVATE + 8, struct atomisp_parm)
 #define ATOMISP_IOC_S_ISP_PARM \
