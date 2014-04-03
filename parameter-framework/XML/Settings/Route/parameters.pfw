@@ -485,6 +485,17 @@ supDomain: Parameter
 			component: /Route/ROUTEMGR/CRITERIA/BYPASS_NON_LINEAR_PP/
 				STATE = Off
 
+	domain: BypassLinearPp
+		conf: On
+			BypassLinearPp Is True
+
+			component: /Route/ROUTEMGR/CRITERIA/BYPASS_LINEAR_PP/
+				STATE = On
+
+		conf: Off
+			component: /Route/ROUTEMGR/CRITERIA/BYPASS_LINEAR_PP/
+				STATE = Off
+
 	domain: MicMute
 		conf: Muted
 			MicMute Is True
