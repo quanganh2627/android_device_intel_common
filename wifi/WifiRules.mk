@@ -35,7 +35,7 @@ HOSTAPD_CONF_PATH_ON_TARGET   = $(CONF_PATH_ON_TARGET)/$(HOSTAPD_CONF_FILE_NAME)
 
 include $(COMMON)/ComboChipVendor.mk
 
-BCM43xx_BASEDIR:=linux/modules/wlan/PRIVATE/bcm43xx
+BCM43xx_BASEDIR:=linux/modules/wlan/broadcom/bcm43xx
 define include-bcm-wifi-src-or-prebuilt
   BCM43xx_CHIP:=$(1)
   ifneq ($(wildcard $(TOP)/$(BCM43xx_BASEDIR)),$(empty))
@@ -47,6 +47,10 @@ endef
 
 ifneq (,$(filter wifi_ti,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
   include $(TOP)/hardware/ti/wlan/wl12xx-compat/AndroidWl12xxCompat.mk
+endif
+
+ifneq (,$(filter wifi_bcm_43362,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+  $(eval $(call include-bcm-wifi-src-or-prebuilt,43362))
 endif
 
 ifneq (,$(filter wifi_bcm_43241,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))

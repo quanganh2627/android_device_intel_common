@@ -6,8 +6,12 @@ COMBO_CHIP_VENDOR:=ti
 COMBO_CHIP:=ti
 endif
 
-ifneq (,$(filter wifi_bcm_4354 wifi_bcm_43241 wifi_bcm_4334 wifi_bcm_4335 wifi_bcm_4339 wifi_bcm_4334x bt_bcm,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+ifneq (,$(filter wifi_bcm_43362 wifi_bcm_4354 wifi_bcm_43241 wifi_bcm_4334 wifi_bcm_4335 wifi_bcm_4339 wifi_bcm_4334x bt_bcm,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
 COMBO_CHIP_VENDOR:=bcm
+    
+    ifneq (,$(filter wifi_bcm_43362,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+    COMBO_CHIP:=bcm43362
+    endif
 
     ifneq (,$(filter wifi_bcm_4354,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
     COMBO_CHIP:=bcm4354

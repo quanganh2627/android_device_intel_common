@@ -47,6 +47,7 @@ mod:bcm43241		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmwar
 mod:bcm4334x		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
 mod:bcm4334		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
 mod:bcm4354		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
+mod:bcm43362		firmware_path=/system/etc/firmware/ nvram_path=/system/etc/firmware/
 
 mod:8723bs		ifname=wlan0 if2name=p2p0 rtw_power_mgnt=2 rtw_hwpwrp_detect=1
 mod:8189es		ifname=wlan0 if2name=p2p0 rtw_power_mgnt=2 rtw_hwpwrp_detect=1

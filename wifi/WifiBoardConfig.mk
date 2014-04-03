@@ -22,6 +22,10 @@ WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
 # device/intel/common/wifi/bcm_specific/load_bcmdriver so make sure to change
 # at both places with one patch (libhardware_legacy makes use of these
 # defines).
+WIFI_DRIVER_43362_FW_PATH_STA     := "/system/etc/firmware/fw_bcmdhd_43362.bin"
+WIFI_DRIVER_43362_FW_PATH_P2P     := "/system/etc/firmware/fw_bcmdhd_43362.bin"
+WIFI_DRIVER_43362_FW_PATH_AP      := "/system/etc/firmware/fw_bcmdhd_43362_apsta.bin"
+
 WIFI_DRIVER_43241_FW_PATH_STA     := "/system/etc/firmware/fw_bcmdhd_43241.bin"
 WIFI_DRIVER_43241_FW_PATH_P2P     := "/system/etc/firmware/fw_bcmdhd_43241.bin"
 WIFI_DRIVER_43241_FW_PATH_AP      := "/system/etc/firmware/fw_bcmdhd_43241_apsta.bin"
