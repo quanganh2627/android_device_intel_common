@@ -532,7 +532,7 @@ supDomain: Parameter
 
 		domain: Aec
 			conf: Enabled
-				MicMute Is True
+				PreProcessorRequestedByActiveInput Includes Aec
 
 				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
 					Aec = 1
@@ -543,7 +543,7 @@ supDomain: Parameter
 
 		domain: Agc
 			conf: Enabled
-				MicMute Is True
+				PreProcessorRequestedByActiveInput Includes Agc
 
 				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
 					Agc = 1
@@ -554,7 +554,7 @@ supDomain: Parameter
 
 		domain: Ns
 			conf: Enabled
-				MicMute Is True
+				PreProcessorRequestedByActiveInput Includes Ns
 
 				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
 					Ns = 1
