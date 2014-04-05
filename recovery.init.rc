@@ -1,7 +1,7 @@
 import /recovery.init.${ro.hardware}.rc
 import /init.recovery.debug.rc
 import /init.watchdog.rc
-import /init.partlink.rc
+import /init.diskd.rc
 import /init.firmware.rc
 
 on early-init
@@ -19,8 +19,6 @@ on init
     mkdir /system
 
     mount /tmp /tmp tmpfs
-
-    start partlink
 
     chown root shell /tmp
     chmod 0775 /tmp

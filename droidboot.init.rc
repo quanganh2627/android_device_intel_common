@@ -1,7 +1,7 @@
 import /droidboot.init.${ro.hardware}.rc
 import /init.droidboot.debug.rc
 import /init.watchdog.rc
-import /init.partlink.rc
+import /init.diskd.rc
 import /init.firmware.rc
 
 on early-init
@@ -13,9 +13,6 @@ on init
     export ANDROID_DATA /data
 
     symlink /system/etc /etc
-
-    start partlink
-    wait /dev/block/platform/intel/by-label/data 1
 
     mount /tmp /tmp tmpfs
     mount /data /data tmpfs
@@ -123,7 +120,6 @@ on property:sys.partitioning=0
     mkdir /logs/flashing
     write /logs/flashing/blankphone_file ""
     start apk_logfs
-    start partlink
 
 service factory2tmp /system/bin/cp -a /factory /tmp
     oneshot

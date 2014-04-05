@@ -3,8 +3,8 @@
 		"partition_format" : "%sp%d",
 		"format_table" : "gpt",
 			"gpt" : {
-				"base_name_label": "/dev/block/platform/intel/by-label/",
-				"base_name_uuid": "/dev/block/platform/intel/by-uuid/",
+				"base_name_label": "/dev/disk/by-label/",
+				"base_name_uuid": "/dev/disk/by-uuid/",
 				"uuid_prefix": "80868086-8086-8086-8086-",
 				"lba_start_offset": 40,
 				"lba_end_offset": 40

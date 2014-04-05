@@ -31,9 +31,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     fast_click.pcm
 
-#Use partlink block devices
+#Use diskd block devices
 PRODUCT_PACKAGES += \
-    partlink
+    diskd
 
 # SpeechRecorder for eng build variant
 PRODUCT_PACKAGES_ENG += \
@@ -97,7 +97,7 @@ PRODUCT_COPY_FILES += \
         $(COMMON_PATH)/init.rc:root/init.rc \
         $(COMMON_PATH)/props.rc:root/props.rc \
         $(COMMON_PATH)/ueventd.modules.blacklist:root/ueventd.modules.blacklist \
-        $(COMMON_PATH)/init.partlink.rc:root/init.partlink.rc
+        $(COMMON_PATH)/init.diskd.rc:root/init.diskd.rc
 
 PERMISSIONS_PATH := frameworks/native/data/etc
 PRODUCT_COPY_FILES += \

@@ -1,0 +1,5 @@
+on early-init
+    start diskd
+
+service diskd /sbin/diskd
+    critical
