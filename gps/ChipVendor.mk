@@ -31,3 +31,8 @@ ifneq (,$(filter gps_bcm_47531%,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)
 GPS_CHIP_VENDOR := bcm
 GPS_CHIP := 47531
 endif
+
+ifneq (,$(filter gps_intel_cg2000%,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+GPS_CHIP_VENDOR := intel
+GPS_CHIP := cg2000
+endif
