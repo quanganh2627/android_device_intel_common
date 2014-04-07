@@ -188,6 +188,31 @@ supDomain: Parameter
 				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
 					Back = 0
 
+		# Ambient mic: activated when we have a dual-mic situation (incall + Earpiece or IHF or Headphones)
+		domain: Ambient
+			conf: Selected
+				ANY
+					ALL
+						ANY
+							OutputDevices Includes Earpiece
+							OutputDevices Includes IHF
+							OutputDevices Includes Headphones
+						ANY
+							AndroidMode Is InVoipCall
+							ALL
+								AndroidMode Is InCsvCall
+								ANY
+									ModemAudioStatus Is True
+									CmeDirectStreamCapture Is True
+					InputDevices Includes Ambient
+
+				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+					Ambient = 1
+
+			conf: NotSelected
+				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+					Ambient = 0
+
 	supDomain: InputSources
 
 		domain: Mic
