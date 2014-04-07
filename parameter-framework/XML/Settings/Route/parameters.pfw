@@ -87,12 +87,17 @@ supDomain: Parameter
 			conf: Selected
 				ANY
 					ALL
-						AndroidMode Is InCsvCall
 						OutputDevices Includes Earpiece
 						ANY
-							ModemAudioStatus Is True
-							CmeDirectStreamCapture Is True
-					InputDevices Includes Main
+							AndroidMode Is InVoipCall
+							ALL
+								AndroidMode Is InCsvCall
+								ANY
+									ModemAudioStatus Is True
+									CmeDirectStreamCapture Is True
+					ALL
+						AndroidMode Is Normal
+						InputDevices Includes Main
 					ALL
 						AlwaysListening Is True
 						LpalDevice Is Main
@@ -164,10 +169,13 @@ supDomain: Parameter
 			conf: Selected
 				ANY
 					ALL
-						AndroidMode Is InCsvCall
 						ANY
-							ModemAudioStatus Is True
-							CmeDirectStreamCapture Is True
+							AndroidMode Is InVoipCall
+							ALL
+								AndroidMode Is InCsvCall
+								ANY
+									ModemAudioStatus Is True
+									CmeDirectStreamCapture Is True
 						ANY
 							OutputDevices Includes Headphones
 							OutputDevices Includes IHF
