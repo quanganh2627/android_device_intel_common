@@ -89,5 +89,15 @@ LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := XML/Structure/Audio/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := parameter-framework.audio.cme.subsystem
+LOCAL_MODULE_STEM := CMESubsystem.xml
+LOCAL_REQUIRED_MODULES := libremoteparameter-subsystem
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
+LOCAL_SRC_FILES := XML/Structure/Audio/$(LOCAL_MODULE_STEM)
+include $(BUILD_PREBUILT)
+
 ##################################################
 
