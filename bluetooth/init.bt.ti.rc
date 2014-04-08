@@ -1,6 +1,0 @@
-########################################################
-#  BLUETOOTH CONFIGURATION - TI SPECIFIC
-########################################################
-
-on property:init.svc.uim=running
-    insmod /lib/modules/tty_hci.ko

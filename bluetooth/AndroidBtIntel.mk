@@ -11,9 +11,9 @@ LOCAL_REQUIRED_MODULES :=  \
 # appended in each product-specific makefile (victoriabay.mk etc)
 #
 # Still, bt_intel is kept instead of pointing directly to bt_common in
-# victoriabay.mk, etc for the following reasons:
+# $(PRODUCT_DEVICE).mk for the following reasons:
 #  1) Placeholder for additional modules required by all Intel-based platforms
-#  2) Symetrical code with TI and BCM
+#  2) Symetrical code with others vendors
 #  3) [most important] bt_intel is used in ComboChipVendor.mk to know if this is a Intel chip
 
 include $(BUILD_PHONY_PACKAGE)

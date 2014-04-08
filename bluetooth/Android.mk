@@ -17,7 +17,6 @@
 LOCAL_DIR := $(call my-dir)
 
 include  $(LOCAL_DIR)/AndroidBtCommon.mk
-include  $(LOCAL_DIR)/AndroidBtTI.mk
 include  $(LOCAL_DIR)/AndroidBtBCM.mk
 include  $(LOCAL_DIR)/AndroidBtIntel.mk
 include  $(LOCAL_DIR)/AndroidBtRTL.mk
