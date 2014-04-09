@@ -56,7 +56,7 @@ NO_FW_RELOAD_FOR_SOFTAP := true
 
 # Used to compile Driver
 BOARD_USING_INTEL_IWL := true
-INTEL_IWL_BOARD_CONFIG :=  iwlwifi-public-android
+INTEL_IWL_BOARD_CONFIG :=  iwlwifi-public-android-pcie-suspend
 INTEL_IWL_USE_COMPAT_INSTALL := y
 INTEL_IWL_USE_RM_MAC_CFG := y
 WPA_SUPPLICANT_VERSION ?= VER_0_8_X
