@@ -35,7 +35,9 @@ endif
 ifeq ($(strip $(DOLBY_DAP)),true)
 PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):dolby_ds
 endif
-TARGET_ENVIRON_RC_IN := $(COMMON_PATH)/init.environ.rc.in
+
+# Appends path to ARM libs for Houdini
+PRODUCT_LIBRARY_PATH := $(PRODUCT_LIBRARY_PATH):/system/lib/arm
 
 # By default, signing is performed using ISU (Intel Signing Utility).  Can be
 # overridden on specific target BoardConfig.mk.  Currently supported values for
