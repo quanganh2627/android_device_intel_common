@@ -253,7 +253,7 @@ endif
 
 USE_BL_SERIALNO ?= false
 ifeq ($(USE_BL_SERIALNO), false)
-	cmdline_extra += androidboot.serialno=01234567890123456789012345678901
+	cmdline_extra += androidboot.serialno=01234567890123456789
 endif
 
 STORAGE_CFLAGS ?= -DSTORAGE_BASE_PATH=\"/dev/block/mmcblk0\" -DSTORAGE_PARTITION_FORMAT=\"%sp%d\"
