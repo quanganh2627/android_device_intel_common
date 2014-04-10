@@ -823,10 +823,10 @@ struct psb_gtt_mapping_arg {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
 struct drm_psb_getpageaddrs_arg {
- uint32_t handle;
- unsigned long *page_addrs;
+ uint64_t handle;
+ uint64_t page_addrs;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- unsigned long gtt_offset;
+ uint64_t gtt_offset;
 };
 #define MAX_SLICES_PER_PICTURE 72
 struct psb_msvdx_mb_region {
