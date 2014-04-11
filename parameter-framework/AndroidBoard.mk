@@ -72,6 +72,139 @@ include $(BUILD_PREBUILT)
 
 ##################################################
 
+
+ifeq ($(TARGET_BUILD_VARIANT),eng)
+
+### Engineering build: Tuning allowed
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := ParameterFrameworkConfigurationRoute.xml
+LOCAL_MODULE_STEM := ParameterFrameworkConfigurationRoute.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework
+LOCAL_SRC_FILES := XML/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+else
+
+### Userdebug build: NoTuning allowed
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := ParameterFrameworkConfigurationRouteNoTuning.xml
+LOCAL_MODULE_STEM := ParameterFrameworkConfigurationRoute.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework
+LOCAL_SRC_FILES := XML/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+endif
+
+######### Vibrator Structures #########
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := MiscConfigurationSubsystem.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Vibrator
+LOCAL_SRC_FILES := XML/Structure/Vibrator/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+
+ifeq ($(TARGET_BUILD_VARIANT),eng)
+
+# Engineering build: Tuning allowed
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := ParameterFrameworkConfigurationVibrator.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework
+LOCAL_SRC_FILES := XML/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+else
+
+# Userdebug build: NoTuning allowed
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := ParameterFrameworkConfigurationVibratorNoTuning.xml
+LOCAL_MODULE_STEM := ParameterFrameworkConfigurationVibrator.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework
+LOCAL_SRC_FILES := XML/ParameterFrameworkConfigurationVibratorNoTuning.xml
+include $(BUILD_PREBUILT)
+
+endif
+
+######### Route Structures #########
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := RouteClass.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Route
+LOCAL_SRC_FILES := XML/Structure/Route/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := DebugFsSubsystem.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Route
+LOCAL_SRC_FILES := XML/Structure/Route/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+######### Audio Structures #########
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := UTASubsystem.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
+LOCAL_SRC_FILES := XML/Structure/Audio/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := DSPSubsystem.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
+LOCAL_SRC_FILES := XML/Structure/Audio/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := WM8958Subsystem.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
+# get to know if acoustics-in-modem architecture will be
+# used or not.
+ifeq ($(BOARD_USES_MODEM_CENTRIC_ARCHITECTURE),true)
+    LOCAL_SRC_FILES := XML/Structure/Audio/WM8958Subsystem.modem_centric.xml
+else
+    LOCAL_SRC_FILES := XML/Structure/Audio/$(LOCAL_MODULE)
+endif
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := VirtualDevicesSubsystem.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
+LOCAL_SRC_FILES := XML/Structure/Audio/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := SysfsAudioSubsystem.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
+LOCAL_SRC_FILES := XML/Structure/Audio/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
 include $(CLEAR_VARS)
 LOCAL_MODULE := ConfigurationSubsystem.xml
 LOCAL_MODULE_TAGS := optional
@@ -103,6 +236,15 @@ LOCAL_REQUIRED_MODULES := libremoteparameter-subsystem
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := XML/Structure/Audio/$(LOCAL_MODULE_STEM)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := PropertySubsystem.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
+LOCAL_SRC_FILES := XML/Structure/Audio/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
 
 ######### Audio Algos #########
 
