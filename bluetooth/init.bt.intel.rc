@@ -6,7 +6,6 @@
 #Intel FM solution depends on BT
 import init.fm.vendor.rc
 on init
-    insmod /lib/modules/bcm_bt_lpm.ko
     insmod /lib/modules/lnp_ldisc.ko
 
 on post-fs
