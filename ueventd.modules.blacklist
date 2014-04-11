@@ -15,3 +15,8 @@ blacklist snd-soc-sst-platform
 blacklist snd-intel-sst
 blacklist snd-merr-dpcm-wm8958
 blacklist snd-merr-saltbay-wm8958
+blacklist arizona-i2c
+blacklist snd-soc-florida
+blacklist snd-moor-dpcm-florida
+blacklist snd-soc-arizona
+blacklist snd-soc-wm-adsp
