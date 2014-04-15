@@ -60,6 +60,7 @@ extern int g_repeat_delay;
 extern int g_soe;
 extern int g_shell_enabled;
 extern int g_cmdshell_enabled;
+extern char *g_DataVaultStartScript;
 
 /* Worker Thread in esif_uf */
 esif_thread_t g_thread;
@@ -284,6 +285,7 @@ static int run_as_daemon(int start_with_pipe, int start_with_log)
 	** Start The Daemon
 	*/
 	g_cmdshell_enabled = 0;
+	g_DataVaultStartScript = ESIF_STARTUP_SCRIPT_DAEMON_MODE;
 	esif_uf_init(HOME_DIRECTORY);
 	ipc_resync();
 	esif_ccb_thread_create(&g_thread, esif_event_worker_thread, "Daemon");
@@ -355,6 +357,7 @@ static int run_as_server(FILE* input, char* command, int quit_after_command)
 		return ESIF_FALSE;
 	}
 	g_shell_enabled = 1; /* enabled in shell mode by default */
+	g_DataVaultStartScript = ESIF_STARTUP_SCRIPT_SERVER_MODE;
 
 	esif_uf_init(HOME_DIRECTORY);
 	ipc_resync();
