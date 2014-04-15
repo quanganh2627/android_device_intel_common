@@ -23,7 +23,7 @@ ExclusiveCriterion HasModem			:	False			True
 ExclusiveCriterion ModemState			:	False			True
 ExclusiveCriterion ScreenOn			: 	False			True
 ExclusiveCriterion BypassNonLinearPp		: 	False			True
-ExclusiveCriterion BypassLinearPp		:	False			True
+ExclusiveCriterion BypassLinearPp		: 	False			True
 ExclusiveCriterion MicMute			:	False			True
 ExclusiveCriterion CmeDirectStreamCapture	:	False			True
 ExclusiveCriterion CmeDirectStreamPlayback	:	False			True
