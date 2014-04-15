@@ -149,7 +149,6 @@ struct atomisp_dvs_envelop {
  unsigned int height;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
-#ifdef ATOMISP_CSS2
 struct atomisp_grid_info {
  uint32_t enable;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -165,26 +164,6 @@ struct atomisp_grid_info {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t elem_bit_depth;
 };
-#else
-struct atomisp_grid_info {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- unsigned int isp_in_width;
- unsigned int isp_in_height;
- unsigned int s3a_width;
- unsigned int s3a_height;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- unsigned int s3a_bqs_per_grid_cell;
- unsigned int dis_width;
- unsigned int dis_aligned_width;
- unsigned int dis_height;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- unsigned int dis_aligned_height;
- unsigned int dis_bqs_per_grid_cell;
- unsigned int dis_hor_coef_num;
- unsigned int dis_ver_coef_num;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-};
-#endif
 struct atomisp_dis_vector {
  int x;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -206,17 +185,10 @@ struct atomisp_dvs2_stat_types {
  int __user *even_imag;
 };
 struct atomisp_dis_coefficients {
-#ifdef ATOMISP_CSS2
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct atomisp_dvs_grid_info grid_info;
  struct atomisp_dvs2_coef_types hor_coefs;
  struct atomisp_dvs2_coef_types ver_coefs;
-#else
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- struct atomisp_grid_info grid_info;
- short __user *vertical_coefficients;
- short __user *horizontal_coefficients;
-#endif
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
 struct atomisp_dvs2_statistics {
@@ -226,16 +198,9 @@ struct atomisp_dvs2_statistics {
  struct atomisp_dvs2_stat_types ver_prod;
 };
 struct atomisp_dis_statistics {
-#ifdef ATOMISP_CSS2
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct atomisp_dvs2_statistics dvs2_stat;
  uint32_t exp_id;
-#else
- struct atomisp_grid_info grid_info;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- int __user *vertical_projections;
- int __user *horizontal_projections;
-#endif
 };
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct atomisp_3a_rgby_output {
@@ -253,7 +218,6 @@ struct atomisp_metadata {
 	uint32_t exp_id; /* exposure ID */
 	uint32_t *effective_width; /* mipi packets valid data size */
 };
-#ifdef ATOMISP_CSS2
 struct atomisp_3a_statistics {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct atomisp_grid_info grid_info;
@@ -262,13 +226,6 @@ struct atomisp_3a_statistics {
  uint32_t exp_id; /* exposure ID */
 };
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#else
-struct atomisp_3a_statistics {
- struct atomisp_grid_info grid_info;
- struct atomisp_3a_output __user *data;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-};
-#endif
 struct atomisp_cont_capture_conf {
  int num_captures;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -297,37 +254,23 @@ struct atomisp_de_config {
  unsigned int c2_coring_threshold;
 };
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#ifdef ATOMISP_CSS2
 struct atomisp_ce_config {
  unsigned char uv_level_min;
  unsigned char uv_level_max;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
-#else
-struct atomisp_ce_config {
- unsigned int uv_level_min;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- unsigned int uv_level_max;
-};
-#endif
 struct atomisp_dp_config {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int threshold;
  unsigned int gain;
-#ifdef ATOMISP_CSS21
  unsigned int gr;
  unsigned int r;
  unsigned int b;
  unsigned int gb;
-#endif
 };
 struct atomisp_xnr_config {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#ifdef ATOMISP_CSS21
  __u16 threshold;
-#else
- unsigned int threshold;
-#endif
 };
 
 /* metadata config */
@@ -339,10 +282,8 @@ struct atomisp_metadata_config {
 struct atomisp_parm {
  struct atomisp_grid_info info;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#ifdef ATOMISP_CSS2
  struct atomisp_dvs_grid_info dvs_grid;
  struct atomisp_dvs_envelop dvs_envelop;
-#endif
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct atomisp_wb_config wb_config;
  struct atomisp_cc_config cc_config;
@@ -390,7 +331,6 @@ struct atomisp_dvs_6axis_config {
  uint32_t *ycoords_uv;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
-#ifdef ATOMISP_CSS2
 struct atomisp_parameters {
  struct atomisp_wb_config *wb_config;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -442,32 +382,6 @@ struct atomisp_parameters {
  struct atomisp_capture_config *capture_config;
  struct atomisp_anr_thres *anr_thres;
 };
-#else
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-struct atomisp_parameters {
- struct atomisp_wb_config *wb_config;
- struct atomisp_cc_config *cc_config;
- struct atomisp_ob_config *ob_config;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- struct atomisp_de_config *de_config;
- struct atomisp_ce_config *ce_config;
- struct atomisp_dp_config *dp_config;
- struct atomisp_nr_config *nr_config;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- struct atomisp_ee_config *ee_config;
- struct atomisp_tnr_config *tnr_config;
- struct atomisp_shading_table *shading_table;
- struct atomisp_morph_table *morph_table;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- struct atomisp_macc_config *macc_config;
- struct atomisp_gamma_table *gamma_table;
- struct atomisp_ctc_table *ctc_table;
- struct atomisp_xnr_config *xnr_config;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- struct atomisp_gc_config *gc_config;
- struct atomisp_3a_config *a3a_config;
-};
-#endif
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define ATOMISP_GAMMA_TABLE_SIZE 1024
 struct atomisp_gamma_table {
@@ -476,10 +390,8 @@ struct atomisp_gamma_table {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define ATOMISP_MORPH_TABLE_NUM_PLANES 6
 struct atomisp_morph_table {
-#ifdef ATOMISP_CSS2
  unsigned int enabled;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#endif
  unsigned int height;
  unsigned int width;
  unsigned short __user *coordinates_x[ATOMISP_MORPH_TABLE_NUM_PLANES];
@@ -489,7 +401,6 @@ struct atomisp_morph_table {
 #define ATOMISP_NUM_SC_COLORS 4
 #define ATOMISP_SC_FLAG_QUERY (1 << 0)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#ifdef ATOMISP_CSS2
 struct atomisp_shading_table {
  __u32 enable;
  __u32 sensor_width;
@@ -501,21 +412,6 @@ struct atomisp_shading_table {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  __u16 *data[ATOMISP_NUM_SC_COLORS];
 };
-#else
-struct atomisp_shading_table {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- __u8 flags;
- __u8 enable;
- __u32 sensor_width;
- __u32 sensor_height;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- __u32 width;
- __u32 height;
- __u32 fraction_bits;
- __u16 __user *data[ATOMISP_NUM_SC_COLORS];
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-};
-#endif
 struct atomisp_makernote_info {
  unsigned int focal_length;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -776,13 +672,8 @@ struct v4l2_private_int_data {
 #define ATOMISP_IOC_S_DIS_COEFS \
 	_IOW('v', BASE_VIDIOC_PRIVATE + 6, struct atomisp_dis_coefficients)
 
-#ifdef ATOMISP_CSS2
 #define ATOMISP_IOC_S_DIS_VECTOR \
 	_IOW('v', BASE_VIDIOC_PRIVATE + 6, struct atomisp_dvs_6axis_config)
-#else
-#define ATOMISP_IOC_S_DIS_VECTOR \
-	_IOW('v', BASE_VIDIOC_PRIVATE + 6, struct atomisp_dis_vector)
-#endif
 
 #define ATOMISP_IOC_G_3A_STAT \
 	_IOWR('v', BASE_VIDIOC_PRIVATE + 7, struct atomisp_3a_statistics)
