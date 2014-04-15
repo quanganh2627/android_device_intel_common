@@ -64,6 +64,7 @@ PRODUCT_PACKAGES_DEBUG += \
     camtest_Features \
     kcmdline \
     peeknpoke \
+    powerbot \
     purgatory-i386 \
     kexec-i386 \
     phonemonitor \
