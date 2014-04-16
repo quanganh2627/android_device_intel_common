@@ -186,7 +186,7 @@
 				"length": 0,
 				"mount_point": null,
 				"mount_options": "nosuid,nodev,barrier=1,data=ordered",
-				"fs_mgr": "wait"
+				"fs_mgr": "wait,check"
 			},
 
 			"system":
