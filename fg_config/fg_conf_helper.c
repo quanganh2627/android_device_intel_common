@@ -11,7 +11,7 @@
 typedef enum {FALSE = 0, TRUE} bool;
 
 #define PRIMARY_FILE "/system/etc/fg_config.bin"
-#define SECONDARY_FILE "/data/system/battid.dat"
+#define SECONDARY_FILE "/config/em/battid.dat"
 #define DEV_FILE "/dev/fg"
 #define POWER_SUPPLY_PATH "/sys/class/power_supply/"
 #define MAX_COMMAND_LINE_BUF	1024

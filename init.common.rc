@@ -80,6 +80,9 @@ on fs
     mkdir /config/wifi
     chown system wifi /config/wifi
     chmod 0770 /config/wifi
+    mkdir /config/em
+    chown system system /config/em
+    chmod 0770 /config/em
 
 on post-fs
 # create virtual SD card at /mnt/sdcard, based on the /data/media directory
