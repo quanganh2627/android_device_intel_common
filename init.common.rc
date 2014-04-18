@@ -143,7 +143,7 @@ on post-fs-data
     setprop ro.fmrx.sound.forced 1
 
     # Set this property to enable Thermal service
-    setprop persist.service.thermal 1
+    setprop persist.service.thermal 0
     # Properties for Thermal Service
     setprop persist.thermal.debug.xml 0
     setprop ro.thermal.ituxversion 3.0
