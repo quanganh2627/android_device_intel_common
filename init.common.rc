@@ -134,6 +134,29 @@ on post-fs-data
     setprop persist.thermal.shutdown.tone 1
     setprop persist.thermal.display.msg 1
     setprop persist.thermal.display.vibra 1
+    # Permissions for Thermal Management
+    chown system system /sys/class/thermal/thermal_zone0/trip_point_0_temp
+    chown system system /sys/class/thermal/thermal_zone0/trip_point_1_temp
+    chown system system /sys/class/thermal/thermal_zone1/trip_point_0_temp
+    chown system system /sys/class/thermal/thermal_zone1/trip_point_1_temp
+    chown system system /sys/class/thermal/thermal_zone2/trip_point_0_temp
+    chown system system /sys/class/thermal/thermal_zone2/trip_point_1_temp
+    chown system system /sys/class/thermal/thermal_zone3/trip_point_0_temp
+    chown system system /sys/class/thermal/thermal_zone3/trip_point_1_temp
+    chown system system /sys/class/thermal/thermal_zone4/trip_point_0_temp
+    chown system system /sys/class/thermal/thermal_zone4/trip_point_1_temp
+    chown system system /sys/class/thermal/thermal_zone5/trip_point_0_temp
+    chown system system /sys/class/thermal/thermal_zone5/trip_point_1_temp
+    chown system system /sys/class/thermal/thermal_zone6/trip_point_0_temp
+    chown system system /sys/class/thermal/thermal_zone6/trip_point_1_temp
+    chown system system /sys/class/thermal/thermal_zone7/trip_point_0_temp
+    chown system system /sys/class/thermal/thermal_zone7/trip_point_1_temp
+    chown system system /sys/class/thermal/thermal_zone8/trip_point_0_temp
+    chown system system /sys/class/thermal/thermal_zone8/trip_point_1_temp
+    chown system system /sys/class/thermal/thermal_zone9/trip_point_0_temp
+    chown system system /sys/class/thermal/thermal_zone9/trip_point_1_temp
+    chown system system /sys/class/thermal/thermal_zone10/trip_point_0_temp
+    chown system system /sys/class/thermal/thermal_zone10/trip_point_1_temp
 
 on charger
     chown system system /dev/dri/card0
