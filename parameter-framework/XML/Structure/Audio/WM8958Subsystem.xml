@@ -341,7 +341,7 @@
             <EnumParameter  Name="MUX" Size="8" Mapping="Control:Mono PCM Out Mux">
                 <ValuePair Literal="None" Numerical="0"/>
                 <ValuePair Literal="AIF2ADCL" Numerical="1"/>
-                <ValuePair Literal="AIF2ADCR" Numerical="1"/>
+                <ValuePair Literal="AIF2ADCR" Numerical="2"/>
             </EnumParameter>
         </ComponentType>
 

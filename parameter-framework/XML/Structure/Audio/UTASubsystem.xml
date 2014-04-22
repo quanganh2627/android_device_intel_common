@@ -17,7 +17,7 @@
         </ComponentType>
         <!-- SIMPLE TONES COMPONENT LIBRARY -->
         <ComponentType Name="SIMPLE_TONES_TYPE" Extends="SOURCE_TYPE">
-            <EnumParameter Name="SIMPLE_TONE" Mapping="SimpleTonesConfig">
+            <EnumParameter Name="SIMPLE_TONE" Mapping="SimpleTonesConfig" Size="8">
                 <ValuePair Literal="CALL_RECORDING_NOTIFICATION" Numerical="0"/>
             </EnumParameter>
         </ComponentType>
