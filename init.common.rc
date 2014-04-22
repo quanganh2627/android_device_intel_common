@@ -125,6 +125,9 @@ on post-fs-data
     # Set this property to avoid fm rx to be muted
     setprop ro.fmrx.sound.forced 1
 
+    # Set this property to enable DPTF service
+    setprop persist.service.dptf 1
+
     # Set this property to enable Thermal service
     setprop persist.service.thermal 0
     # Properties for Thermal Service

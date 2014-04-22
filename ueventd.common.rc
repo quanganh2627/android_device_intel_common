@@ -71,3 +71,6 @@ usbclass:224/1/1                             0660 bluetooth bluetooth suspend_au
 # Bluetooth rfkill nodes
 /sys/devices/*/bluetooth/hci0/rfkill* state  0660 bluetooth bluetooth
 /sys/devices/*/bluetooth/hci0/rfkill* type   0440 bluetooth bluetooth
+
+# DPTF
+/dev/esif_lf                                 0660 dptf dptf

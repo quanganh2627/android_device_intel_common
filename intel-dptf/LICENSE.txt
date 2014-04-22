@@ -1,5 +1,0 @@
-The contents of this repository is licenced under the Apache 2.0 for 
-DPTF libraries and a dual BSD/GPLv2 license for ESIF components.
-
-Please refer to each individual source code file for the appropriate 
-licenses.
