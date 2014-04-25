@@ -640,6 +640,8 @@ struct intel_sprite_context {
  uint32_t pipe;
  uint32_t cntr;
  uint32_t linoff;
+ uint32_t rotate_linoff;
+ uint32_t rotate_pos;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t stride;
  uint32_t pos;
@@ -1118,6 +1120,8 @@ typedef struct intel_dc_sprite_ctx {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t cntr;
  uint32_t linoff;
+ uint32_t rotate_linoff;
+ uint32_t rotate_pos;
  uint32_t stride;
  uint32_t pos;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -1138,6 +1142,8 @@ typedef struct intel_dc_primary_ctx {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t cntr;
  uint32_t linoff;
+ uint32_t rotate_linoff;
+ uint32_t rotate_pos;
  uint32_t stride;
  uint32_t pos;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
