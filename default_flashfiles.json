@@ -10,7 +10,7 @@
    {"type":"fflash", "partition":"fastboot", "target":"INSTALLED_DROIDBOOTIMAGE_TARGET"},
    {"type":"fflash", "partition":"boot", "target":"INSTALLED_BOOTIMAGE_TARGET"},
    {"type":"fflash", "partition":"recovery", "target":"INSTALLED_RECOVERYIMAGE_TARGET"},
-   {"type":"fflash", "partition":"system", "target":"INSTALLED_SYSTEMIMAGE", "timeout":"420000"},
+   {"type":"fflash", "partition":"system", "target":"INSTALLED_SYSTEMIMAGE", "timeout":420000},
    {"type":"fflash", "partition":"capsule", "target":"INSTALLED_CAPSULE_TARGET"},
-   {"type":"fflash", "partition":"radio", "target":"INSTALLED_MODEM_TARGET", "restrict":["full"], "timeout":"220000"},
+   {"type":"fflash", "partition":"radio", "target":"INSTALLED_MODEM_TARGET", "restrict":["full"], "timeout":220000},
    {"type":"fcontinue"}]}
