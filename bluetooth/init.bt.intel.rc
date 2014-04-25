@@ -9,6 +9,15 @@ on init
     insmod /lib/modules/bcm_bt_lpm.ko
     insmod /lib/modules/lnp_ldisc.ko
 
+on post-fs
+    mkdir /factory/bluetooth
+    chown system bluetooth /factory/bluetooth
+    chmod 0770 /factory/bluetooth
+
+on early-boot
+    chmod 0644 /factory/bluetooth/bd_addr.conf
+    setprop ro.bt.bdaddr_path "/factory/bluetooth/bd_addr.conf"
+
 service rfkill_bt /system/bin/sh /rfkill_bt.sh
     class core
     user root
