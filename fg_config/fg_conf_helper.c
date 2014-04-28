@@ -434,7 +434,7 @@ int get_fg_config_table(struct table_body *sec_tbl)
 
 	/* FIXME: Find a generic way to support multiple config structures */
 	if (is_xpwr) {
-		xpwr_sbuf = malloc(XPWR_CONFIG_SIZE);
+		xpwr_sbuf = malloc(XPWR_SEC_CONFIG_SIZE);
 		if (xpwr_sbuf == NULL) {
 			LOGE("%s:%d:insufficient memory\n", __func__, __LINE__);
 			return ENOMEM;
