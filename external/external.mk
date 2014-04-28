@@ -1,8 +1,8 @@
-ifneq (,$(findstring intel_prebuilts,$(MAKECMDGOALS)))
+ifneq (,$(filter intel_prebuilts,$(MAKECMDGOALS)))
 # at the moment we only generate prebuilts for userdebug builds
 # this is a safety feature, eng, user, and userdebug binaries should be the same
 # so intel_prebuilts should be used only for one variant anyway.
-ifneq (,$(findstring userdebug,$(TARGET_BUILD_VARIANT)))
+ifeq (userdebug,$(TARGET_BUILD_VARIANT))
 
 # GENERATE_INTEL_PREBUILTS is used to indicate we are generating intel_prebuilts
 # so that the tests above are not duplicated in different portions of the code.

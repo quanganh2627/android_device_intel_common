@@ -36,10 +36,9 @@ PRODUCT_PACKAGES += \
     partlink
 
 # SpeechRecorder for eng build variant
-ifneq ($(filter $(TARGET_BUILD_VARIANT),eng),)
-PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES_ENG += \
     SpeechRecorder
-endif
+
 #AESNI for bouncycastle
 PRODUCT_PACKAGES += \
         libaesni
@@ -90,7 +89,7 @@ endif
 #GMS package
 -include vendor/google/PRIVATE/gms/products/gms.mk
 
-ifneq ($(strip $(TARGET_BUILD_VARIANT)),user)
+ifneq ($(TARGET_BUILD_VARIANT),user)
 PRODUCT_COPY_FILES += \
         $(COMMON_PATH)/atproxy_usbreset:system/bin/atproxy_usbreset
 endif
@@ -108,15 +107,13 @@ PRODUCT_COPY_FILES += \
         $(PERMISSIONS_PATH)/android.hardware.touchscreen.multitouch.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.xml
 
 # Valgrind for eng build variant
-ifneq ($(filter $(TARGET_BUILD_VARIANT),eng),)
-PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES_ENG += \
     valgrind_pack
-endif
 
 # Power Debug Tools
 -include vendor/intel/hardware/PRIVATE/platform_test/power-debug/power-debug.mk
 
-ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
+ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 # memmonitor (not for user builds)
 -include vendor/intel/tools/PRIVATE/log_infra/monitor/memmonitor/memmonitor.mk
 
@@ -147,19 +144,15 @@ vendor/intel/tools/log_capture/crashlog/dumpstate_dropbox.sh:system/bin/dumpstat
 $(call inherit-product-if-exists, frameworks/base/data/videos/VideoPackage2.mk)
 
 # PSI Recorder (not for user builds)
-ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
- PRODUCT_PACKAGES += \
-     PSI_Recorder
-endif
+PRODUCT_PACKAGES_DEBUG += \
+    PSI_Recorder
 
 # AudioToolBox (for eng builds)
-ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng"))
- PRODUCT_PACKAGES += \
-     AudioToolBox
-endif
+PRODUCT_PACKAGES_ENG += \
+    AudioToolBox
 
 # network (wifi, bt) data dump (tcpdump is present only in eng. builds)
-ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
+ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
  PRODUCT_COPY_FILES += \
      $(COMMON_PATH)/init.dump.rc:root/init.dump.rc
 endif

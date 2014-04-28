@@ -6,7 +6,7 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     fm_common
 
-ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
+ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 LOCAL_REQUIRED_MODULES += fmr_test
 endif
 

@@ -118,11 +118,11 @@ $(call add-path-map, stlport:external/stlport/stlport \
 
 #Platform
 #Enable display driver debug interface for eng and userdebug builds
-ifneq (user,$(findstring $(TARGET_BUILD_VARIANT),user))
+ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 export DISPLAY_DRIVER_DEBUG_INTERFACE=true
 endif
 #Enable ODEX for userdebug and user builds
-ifneq (,$(findstring $(TARGET_BUILD_VARIANT),userdebug user))
+ifneq (,$(filter $(TARGET_BUILD_VARIANT),userdebug user))
 WITH_DEXPREOPT := true
 # enable dex-preopt on prebuilt apks
 WITH_DEXPREOPT_PREBUILT := true
@@ -130,7 +130,7 @@ endif
 
 # Enabling logs into file system for eng and user debug builds
 ifeq ($(PRODUCT_MANUFACTURER),intel)
-ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
+ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 ADDITIONAL_DEFAULT_PROPERTIES += persist.service.apklogfs.enable=1
 endif
 

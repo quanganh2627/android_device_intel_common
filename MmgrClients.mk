@@ -25,7 +25,7 @@ PRODUCT_PACKAGES += \
 
 # AMTL : Android Modem Traces and Logs
 # TelephonyEventsNotifier
-ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
+ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 PRODUCT_PACKAGES += \
     Amtl \
     libamtl_jni \
