@@ -49,7 +49,7 @@ endif
 ifneq ($(findstring isu,$(TARGET_OS_SIGNING_METHOD)),)
 $(MKBOOTIMG): isu isu_stream isu_wrapper
 endif
-$(MKBOOTIMG): xfstk-stitcher
+$(MKBOOTIMG): xfstk-stitcher-external
 endif
 
 # If the kernel source is present, AndroidBoard.mk will perform a kernel build.
