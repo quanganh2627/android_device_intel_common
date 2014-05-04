@@ -49,6 +49,10 @@ ifneq (,$(filter wifi_ti,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
   include $(TOP)/hardware/ti/wlan/wl12xx-compat/AndroidWl12xxCompat.mk
 endif
 
+ifneq (,$(filter wifi_bcm_4430f,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+  $(eval $(call include-bcm-wifi-src-or-prebuilt,4430f))
+endif
+
 ifneq (,$(filter wifi_bcm_43362,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
   $(eval $(call include-bcm-wifi-src-or-prebuilt,43362))
 endif
