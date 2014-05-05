@@ -41,6 +41,9 @@
 /sys/devices/pci* hsic_enable           0664   root       system
 /sys/devices/pci* L2_autosuspend_enable 0664   root       system
 
+# cpufreq sysfs interfaces permission
+/sys/devices/system/cpu/cpu* cpufreq/scaling_max_freq  0664  system   system
+
 # Define intel modules args
 mod:iwlwifi		nvm_file=iwl_nvm.bin
 
