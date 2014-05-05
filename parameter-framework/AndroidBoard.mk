@@ -337,6 +337,7 @@ LOCAL_REQUIRED_MODULES :=  \
     DualMicrophoneNoiseReduction_V1_5.xml \
     SpectralEchoReduction_V2_5.xml \
     BeamformingVoice_V1.1.xml \
+    BeamformingAudio_V1.0.xml \
     EchoDelayLine_V1_1.xml \
     GainLossControl_V1_0.xml \
     AcousticEchoCanceler_V1_6.xml \
@@ -433,6 +434,14 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := BeamformingVoice_V1.1.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio/intel
+LOCAL_SRC_FILES := XML/Structure/Audio/intel/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := BeamformingAudio_V1.0.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio/intel
