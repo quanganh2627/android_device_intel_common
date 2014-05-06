@@ -129,7 +129,7 @@ on post-fs-data
     setprop persist.service.thermal 1
     # Properties for Thermal Service
     setprop persist.thermal.debug.xml 0
-    setprop ro.thermal.ituxversion 2.0
+    setprop ro.thermal.ituxversion 2.5
     setprop persist.thermal.shutdown.msg 1
     setprop persist.thermal.shutdown.vibra 1
     setprop persist.thermal.shutdown.tone 1
