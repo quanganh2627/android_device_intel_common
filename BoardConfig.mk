@@ -328,6 +328,7 @@ TARGET_BIOS_TYPE ?= "iafw"
 
 ifeq ($(TARGET_BIOS_TYPE),"uefi")
 INSTALLED_ESPIMAGE_TARGET := $(PRODUCT_OUT)/esp.img
+ESPUPDATE_ZIP_TARGET := $(PRODUCT_OUT)/esp.zip
 endif
 
 # MKBOOTIMG is the tool that is used by AOSP build system to
