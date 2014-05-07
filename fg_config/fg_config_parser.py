@@ -6,6 +6,37 @@ import array
 
 numTables = 0
 
+def getXpwrConfig(xml, confFile):
+	numBytes = 0;
+	f = open(confFile, 'wb')
+	conf = minidom.parse(xml)
+	node = conf.documentElement
+	#parse the xpwr config
+	xpwrData = conf.getElementsByTagName("xpwr_config")
+	if xpwrData.length == 0:
+		f.close()
+		return
+	xpwr = []
+	for datum in xpwrData:
+		elements = datum.childNodes
+		for element in elements:
+			xpwr.append(element)
+	for top in xpwr:
+		nodes = top.childNodes
+		for node in nodes:
+			f.write(struct.pack("B", int(node.data, 16)))
+			numBytes += 1
+	f.close()
+
+	f = open(confFile, 'rb+')
+	#Compute checksum and write to file
+	f.seek(0)
+	tmp = f.read()
+	cksum = sum(array.array('B', tmp))
+	f.seek(numBytes)
+	f.write(struct.pack("H", cksum))
+	f.close()
+
 def getConfig(xml, confFile):
 	f = open(confFile, 'wb')
 	conf = minidom.parse(xml)
@@ -68,20 +99,23 @@ if __name__ == "__main__":
 	fsizeOffset = 2 #header contains file size value after the 2nd byte
 	cksumOffset = 4 #header contains checksum after the 4th byte
 
-	getConfig(xmlFile, confFile)
-	ip = open(confFile, 'rb+')
+	if ("xpwr" in confFile):
+		getXpwrConfig(xmlFile, confFile)
+	else:
+		getConfig(xmlFile, confFile)
+		ip = open(confFile, 'rb+')
 
-	#compute file size and write to the file
-	ip.seek(fsizeOffset)
-	format = "H"
-        data = struct.pack(format, numTables * 162 + 8)
-	ip.write(data)
+		#compute file size and write to the file
+		ip.seek(fsizeOffset)
+		format = "H"
+		data = struct.pack(format, numTables * 162 + 8)
+		ip.write(data)
 
-	#compute checksum and write to the file
-	ip.seek(0)
-	headerBytes = ip.read()
-	cksum = sum( array.array('B', headerBytes))
-	format = "H"
-        data = struct.pack(format, cksum)
-	ip.seek(cksumOffset)
-	ip.write(data)
+		#compute checksum and write to the file
+		ip.seek(0)
+		headerBytes = ip.read()
+		cksum = sum( array.array('B', headerBytes))
+		format = "H"
+		data = struct.pack(format, cksum)
+		ip.seek(cksumOffset)
+		ip.write(data)
