@@ -3,6 +3,8 @@ override PRODUCT_BRAND := intel
 
 COMMON_PATH := device/intel/common
 
+include $(COMMON_PATH)/memory/memory-spectrum.mk
+
 #Add Power HAL Package
 PRODUCT_PACKAGES += \
     power.$(PRODUCT_DEVICE)
