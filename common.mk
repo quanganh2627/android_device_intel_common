@@ -1,6 +1,8 @@
 PRODUCT_MANUFACTURER := intel
 override PRODUCT_BRAND := intel
 
+include $(COMMON_PATH)/memory/memory-spectrum.mk
+
 # These goals don't need to collect and include Android.mks/CleanSpec.mks
 # in the source tree.
 intel_dont_bother_goals := build_kernel-nodeps \
