@@ -158,6 +158,17 @@ on post-fs-data
     chown system system /sys/class/thermal/thermal_zone9/trip_point_1_temp
     chown system system /sys/class/thermal/thermal_zone10/trip_point_0_temp
     chown system system /sys/class/thermal/thermal_zone10/trip_point_1_temp
+    chown system system /sys/class/thermal/thermal_zone0/emul_temp
+    chown system system /sys/class/thermal/thermal_zone1/emul_temp
+    chown system system /sys/class/thermal/thermal_zone2/emul_temp
+    chown system system /sys/class/thermal/thermal_zone3/emul_temp
+    chown system system /sys/class/thermal/thermal_zone4/emul_temp
+    chown system system /sys/class/thermal/thermal_zone5/emul_temp
+    chown system system /sys/class/thermal/thermal_zone6/emul_temp
+    chown system system /sys/class/thermal/thermal_zone7/emul_temp
+    chown system system /sys/class/thermal/thermal_zone8/emul_temp
+    chown system system /sys/class/thermal/thermal_zone9/emul_temp
+    chown system system /sys/class/thermal/thermal_zone10/emul_temp
 
 on charger
     chown system system /dev/dri/card0
