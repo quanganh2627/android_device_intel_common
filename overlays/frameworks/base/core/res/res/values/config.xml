@@ -134,5 +134,6 @@
     <!-- Set to true this config item, audio path opening sequence will be well triggered
          by framework in case of incoming call. -->
     <bool name="config_speed_up_audio_on_mt_calls">true</bool>
-
+    <!-- If this is true, the screen will come on when you unplug usb/power/whatever. -->
+    <bool name="config_unplugTurnsOnScreen">true</bool>
 </resources>
