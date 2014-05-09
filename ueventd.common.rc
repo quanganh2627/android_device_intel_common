@@ -13,6 +13,7 @@
 /dev/video*                             0660   root       camera
 /dev/v4l-subdev*                        0660   root       camera
 /dev/media*                             0660   root       camera
+/dev/ipu-psys*                          0660   root       camera
 
 # Intel SCU watchdog
 /dev/watchdog                           0600   system     system
