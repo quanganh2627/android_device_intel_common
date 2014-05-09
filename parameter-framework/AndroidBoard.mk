@@ -348,6 +348,7 @@ LOCAL_REQUIRED_MODULES :=  \
     DynamicRangeProcessor_V1_4.xml \
     BandWidthExtender_V1_0.xml \
     WindNoiseReductionVoice_V1_0.xml \
+    WindNoiseReductionAudio_V1_0.xml \
     SlowVoice_V1_0.xml \
     MultibandDynamicRangeProcessor_V1_0.xml
 
@@ -523,6 +524,14 @@ include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := WindNoiseReductionVoice_V1_0.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio/intel
+LOCAL_SRC_FILES := XML/Structure/Audio/intel/$(LOCAL_MODULE)
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := WindNoiseReductionAudio_V1_0.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio/intel
