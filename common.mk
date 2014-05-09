@@ -104,6 +104,12 @@ PRODUCT_PACKAGES += \
     valgrind_pack
 endif
 
+#Set ro.adb.secure to 0 for user build
+ifeq ($(TARGET_BUILD_VARIANT), user)
+ADDITIONAL_DEFAULT_PROPERTIES += \
+                                ro.adb.secure=1
+endif
+
 # Power Debug Tools
 -include vendor/intel/hardware/PRIVATE/platform_test/power-debug/power-debug.mk
 
