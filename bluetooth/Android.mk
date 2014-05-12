@@ -21,3 +21,6 @@ include  $(LOCAL_DIR)/AndroidBtTI.mk
 include  $(LOCAL_DIR)/AndroidBtBCM.mk
 include  $(LOCAL_DIR)/AndroidBtIntel.mk
 include  $(LOCAL_DIR)/AndroidBtRTL.mk
+include  $(LOCAL_DIR)/AndroidBtMRVL.mk
+
+

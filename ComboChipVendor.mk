@@ -56,3 +56,18 @@ COMBO_CHIP_VENDOR:=rtl
 COMBO_CHIP:=rtl8189
 endif
 
+ifneq (,$(filter marvell88w8777,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+BOARD_WIFI_VENDOR := marvell
+COMBO_CHIP_VENDOR:=marvell
+ifeq ($(BOARD_WIFI_VENDOR), marvell)
+        WPA_SUPPLICANT_VERSION := VER_0_8_X
+        BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+#        BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_mrvl
+        BOARD_HOSTAPD_DRIVER := NL80211
+#        BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_mrvl
+
+        SW_BOARD_USR_WIFI := 88W8777
+        BOARD_WLAN_DEVICE := 88W8777
+endif
+endif
+

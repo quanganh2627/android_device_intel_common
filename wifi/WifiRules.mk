@@ -81,6 +81,12 @@ ifneq (,$(filter wifi_rtl_8189,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES))
   -include $(TOP)/linux/modules/wlan/realtek/AndroidRtl8189es.mk
 endif
 
+ifneq (,$(filter marvell88w8777,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+  -include $(TOP)/linux/modules/wlan/marvell/88W8777/AndroidMrvl8777.mk
+  -include $(TOP)/linux/modules/bt/marvell/88W8777/AndroidMrvl8777.mk
+endif
+
+
 ####################################
 # Configuration files
 ####################################
