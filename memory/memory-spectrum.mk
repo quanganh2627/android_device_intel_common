@@ -18,3 +18,8 @@ ifneq (,$(filter true,$(BOARD_HAVE_MID_RAM) $(BOARD_HAVE_SMALL_RAM)))
 endif
 
 
+# KSM activation
+ifeq ($(BOARD_HAVE_KSM),true)
+    PRODUCT_COPY_FILES += \
+        $(COMMON_PATH)/memory/init.ksm.rc:root/init.ksm.rc
+endif
