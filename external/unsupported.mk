@@ -7,10 +7,7 @@ $(foreach project, $(_prebuilt_projects),\
     $(eval _need_prebuilts := true)))
 
 ifeq (true,$(_need_prebuilts))
-$(info Error in $(LOCAL_PATH).)
-$(info Cannot be used in binary released PRIVATE directories.)
-$(info Please ask support for external release/buildbot team if you really need it.)
-$(error Abort prebuilts!)
+$(warning intel_prebuilts - unsupported $(LOCAL_MODULE) in $(LOCAL_MODULE_MAKEFILE).)
 endif # _need_prebuilts
 endif # PRIVATE
 
