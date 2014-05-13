@@ -25,6 +25,7 @@
   <java-symbol type="bool" name="config_usage_oem_hooks_supported"/>
   <java-symbol type="bool" name="gsm_call_status_polling_enable" />
   <java-symbol type="bool" name="config_track_get_operator_polling" />
+  <java-symbol type="bool" name="config_signalStrengthExt" />
   <java-symbol type="string" name="hotspot_active" />
   <java-symbol type="string" name="hotspot_no_connections" />
   <java-symbol type="string" name="hotspot_multiple_devices_connected" />

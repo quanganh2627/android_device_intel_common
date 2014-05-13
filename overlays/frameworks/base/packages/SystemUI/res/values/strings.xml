@@ -20,4 +20,8 @@
     <!-- Content description of the IMS icon in the notification panel for IMS registration status (not shown on the screen). [CHAR LIMIT=NONE] -->
     <add-resource type="string" name="accessibility_ims_enabled"/>
     <string name="accessibility_ims_enabled">IMS enabled</string>
+
+    <!-- Content description of the phone signal when it is four bars for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <add-resource type="string" name="accessibility_phone_four_bars"/>
+    <string name="accessibility_phone_four_bars">Phone four bars.</string>
 </resources>

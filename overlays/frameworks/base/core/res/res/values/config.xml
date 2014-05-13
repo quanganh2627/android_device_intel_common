@@ -136,4 +136,8 @@
     <bool name="config_speed_up_audio_on_mt_calls">true</bool>
     <!-- If this is true, the screen will come on when you unplug usb/power/whatever. -->
     <bool name="config_unplugTurnsOnScreen">true</bool>
+
+    <!-- When true, 5 level signal bar is shown in status bar -->
+    <add-resource type="bool" name="config_signalStrengthExt" />
+    <bool name="config_signalStrengthExt">false</bool>
 </resources>
