@@ -387,6 +387,8 @@ struct atomisp_parameters {
  void *dm_2500_config;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  void *rgbpp_2500_config;
+ void *dvs_stat_2500_config;
+ void *lace_stat_2500_config;
  void *yuvp1_2500_config;
  void *yuvp2_2500_config;
  void *tnr_2500_config;
