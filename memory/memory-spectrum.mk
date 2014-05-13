@@ -10,6 +10,7 @@ endif
 ## Small and mid ram device definition
 
 ifneq (,$(filter true,$(BOARD_HAVE_MID_RAM) $(BOARD_HAVE_SMALL_RAM)))
+  BOARD_HAVE_COMPACTION := true
   MINIMIZE_MALLOC_ALIGNMENT := true
   BOARD_HAVE_KSM := true
   BOARD_HAVE_ZRAM := true
@@ -30,4 +31,9 @@ ifeq ($(BOARD_HAVE_ZRAM),true)
   PRODUCT_COPY_FILES += \
                         $(COMMON_PATH)/memory/init.zram.rc:root/init.zram.rc \
                         $(COMMON_PATH)/memory/fstab.zram:root/fstab.zram
+endif
+
+# Kernel Compaction
+ifeq ($(BOARD_HAVE_COMPACTION),true)
+    KERNEL_DIFFCONFIG += $(COMMON_PATH)/memory/compaction_diffconfig
 endif
