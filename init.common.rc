@@ -4,6 +4,7 @@ import /init.partlink.rc
 import /init.intel.feature.asf.rc
 import /init.intel.features.rc
 import /init.ksm.rc
+import /init.readahead.rc
 
 on early-init
     # set permission for charger-mode
