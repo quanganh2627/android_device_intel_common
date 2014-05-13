@@ -23,3 +23,11 @@ ifeq ($(BOARD_HAVE_KSM),true)
     PRODUCT_COPY_FILES += \
         $(COMMON_PATH)/memory/init.ksm.rc:root/init.ksm.rc
 endif
+
+# Zram introduction
+ifeq ($(BOARD_HAVE_ZRAM),true)
+    KERNEL_DIFFCONFIG += $(COMMON_PATH)/memory/zram_diffconfig
+    OVERRIDE_PARTITION_FILE := $(LOCAL_PATH)/storage/part_mount_override_zram.json
+    PRODUCT_COPY_FILES += \
+        $(COMMON_PATH)/memory/init.zram.rc:root/init.zram.rc
+endif
