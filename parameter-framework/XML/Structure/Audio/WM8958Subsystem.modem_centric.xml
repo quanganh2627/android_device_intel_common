@@ -347,11 +347,31 @@
 
         <!-- AIF / DRC common settings -->
         <ComponentType Name="DRC_CONTROL_TYPE">
-            <IntegerParameter Name="DRC_CONTROLS" Min="0" Max="15" Size="8" ArrayLength="10" Mapping="Control:%1%2 DRC"/>
+            <BitParameterBlock Name="CONTROL_1" Size="16">
+                <BitParameter Name="SIG_DET_RMS" Size="5" Pos="3" Description="Signal Dectect RMS Threshold"/>
+                <BitParameter Name="SIG_DET_PK" Size="2" Pos="1" Description="Signal Dectect Peak Threshold"/>
+                <BitParameter Name="NG_ENABLED" Size="1" Pos="0" Description="Noise Gate enable"/>
+                <BitParameter Name="SIG_DET_MODE" Size="1" Pos="15" Description="Signal Detect Mode"/>
+                <BitParameter Name="SIG_DET_ENABLED" Size="1" Pos="14" Description="Signal Detect enable"/>
+                <BitParameter Name="KNEE2_OP_ENABLED" Size="1" Pos="13" Description="Gate threshold 'Knee2' output enable"/>
+                <BitParameter Name="QR_ENABLED" Size="1" Pos="12" Description="Quick-release enable"/>
+                <BitParameter Name="ANTICLIP_ENABLED" Size="1" Pos="11" Description="Anti-clip enable"/>
+            </BitParameterBlock>
+            <IntegerParameter Name="CONTROL_2" Size="16"/>
+            <BitParameterBlock Name="CONTROL_3" Size="16">
+                <BitParameter Name="NG_MIN_GAIN" Size="4" Pos="4" Description="Minimum gain to attenuate audio signals when the noise gate is activated"/>
+                <BitParameter Name="NG_EXP" Size="2" Pos="2" Description="Noise Gate slope"/>
+                <BitParameter Name="QR_THR" Size="2" Pos="0" Description="Quick-release threshold (crest factor in dB)"/>
+                <BitParameter Name="QR_DCY" Size="2" Pos="14" Description="Quick-release decay rate (seconds/6dB)"/>
+                <BitParameter Name="HI_COMP" Size="3" Pos="11" Description="Compressor slope (upper region)"/>
+                <BitParameter Name="LO_COMP" Size="3" Pos="8" Description="Compressor slope (lower region)"/>
+            </BitParameterBlock>
+            <IntegerParameter Name="CONTROL_4" Size="16"/>
+            <IntegerParameter Name="CONTROL_5" Size="16"/>
         </ComponentType>
         <ComponentType Name="DRC_CONTROLS_TYPE">
-            <Component Name="1" Type="DRC_CONTROL_TYPE" Mapping="Amend2:.1"/>
-            <Component Name="2" Type="DRC_CONTROL_TYPE" Mapping="Amend2:.2"/>
+            <Component Name="1" Type="DRC_CONTROL_TYPE" Mapping="ByteControl:%1.1 DRC"/>
+            <Component Name="2" Type="DRC_CONTROL_TYPE" Mapping="ByteControl:%1.2 DRC"/>
         </ComponentType>
 
         <!-- AIF / Root Component -->
@@ -365,7 +385,7 @@
             <IntegerParameter Name="BOOST" Min="0" Max="3" Size="8" Mapping="Control:%1 Boost Volume" Description="Limits: 0 - 3"/>
             <Component Name="DAC" Type="AIF2DAC_TYPE" Mapping="Amend2:DAC,Amend4:"/>
             <Component Name="ADC" Type="AIF2ADC_TYPE" Mapping="Amend2:ADC"/>
-            <Component Name="DRC_SETTINGS" Type="DRC_CONTROL_TYPE" Mapping="Amend2:"/>
+            <Component Name="DRC_SETTINGS" Type="DRC_CONTROL_TYPE" Mapping="ByteControl:%1 DRC"/>
         </ComponentType>
         <ComponentType Name="AIF3_TYPE">
             <IntegerParameter Name="BOOST" Min="0" Max="3" Size="8" Mapping="Control:%1 Boost Volume" Description="Limits: 0 - 3"/>
