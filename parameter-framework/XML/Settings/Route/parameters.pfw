@@ -572,6 +572,17 @@ supDomain: Parameter
 				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
 					Ns = 0
 
+		domain: Bmf
+			conf: Enabled
+				PreProcessorRequestedByActiveInput Includes Bmf
+
+				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+					Bmf = 1
+
+			conf: Disabled
+				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+					Bmf = 0
+
 	domain: Hac
 		conf: Enabled
 			HacSelected Is True
