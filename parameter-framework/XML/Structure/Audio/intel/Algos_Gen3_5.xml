@@ -11,7 +11,7 @@
     <xi:include href="AutomaticGainControl_V1_3.xml"/>
     <xi:include href="DualMicrophoneNoiseReduction_V1_5.xml"/>
     <xi:include href="SpectralEchoReduction_V2_5.xml"/>
-    <xi:include href="Beamforming_V1.1.xml"/>
+    <xi:include href="BeamformingVoice_V1.1.xml"/>
     <xi:include href="EchoDelayLine_V1_1.xml"/>
     <xi:include href="GainLossControl_V1_0.xml"/>
     <xi:include href="AcousticEchoCanceler_V1_6.xml"/>
