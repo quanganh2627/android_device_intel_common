@@ -90,7 +90,7 @@
             Description="Minimum value of step size multiplier during ST talk. Class I parameter. Default=11469"/>
         <FixedPointParameter Name="st_step_max" Size="16" Integral="0" Fractional="15" Min="0" Max="31130"
             Description="Maximum value of step size multiplier during ST talk. Class I parameter. Default=31130"/>
-        <FixedPointParameter Name="st_step_mult" Size="16" Integral="4" Fractional="11" Min="4096" Max="32767"
+        <FixedPointParameter Name="st_step_mult" Size="16" Integral="3" Fractional="12" Min="4096" Max="32767"
             Description="Old step size multiplier in ST. Class I parameter. Default=28672"/>
         <FixedPointParameter Name="dt_step_mult" Size="16" Integral="0" Fractional="15" Min="0" Max="32767"
             Description="Old step size multiplier in DT. Class II parameter. Default=16384"/>
