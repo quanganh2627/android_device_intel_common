@@ -18,5 +18,5 @@ ExclusiveCriterion  ScreenState            :  Off               On
 ExclusiveCriterion  BypassNonLinearPp      :  Off               On
 ExclusiveCriterion  BypassLinearPp         :  Off               On
 ExclusiveCriterion  MicMute                :  Off               On
-InclusiveCriterion  PreProcessorRequested  :  Aec               Agc              Ns              Bmf
-InclusiveCriterion  PreProcEnabled         :  Aec               Agc              Ns              Bmf
+InclusiveCriterion  PreProcessorRequested  :  Aec               Agc              Ns              Bmf              Wnr
+InclusiveCriterion  PreProcEnabled         :  Aec               Agc              Ns              Bmf              Wnr
