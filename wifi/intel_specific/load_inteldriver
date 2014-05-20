@@ -1,0 +1,5 @@
+#!/system/bin/sh
+
+dir=`find /sys/devices/ -name mmc2`
+echo on > $dir/power/control
+echo on > $dir/../../power/control
