@@ -331,7 +331,7 @@ LOCAL_REQUIRED_MODULES :=  \
     NoiseReduction_V1_1.xml \
     ComfortNoiseInjector_V1_1.xml \
     ComfortNoiseInjector_V1_2.xml \
-    AutomaticGainControl_V1_3.xml \
+    AutomaticGainControlVoice_V1_3.xml \
     FbaFir_V1_1.xml \
     FbaIir_V1_1.xml \
     DualMicrophoneNoiseReduction_V1_5.xml \
@@ -409,7 +409,7 @@ LOCAL_SRC_FILES := XML/Structure/Audio/intel/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := AutomaticGainControl_V1_3.xml
+LOCAL_MODULE := AutomaticGainControlVoice_V1_3.xml
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio/intel
