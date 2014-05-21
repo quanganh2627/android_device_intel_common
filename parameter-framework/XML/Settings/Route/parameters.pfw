@@ -356,12 +356,17 @@ supDomain: Parameter
 			ALL
 				AndroidMode Is InCsvCall
 				ModemAudioStatus IsNot True
-				#When 2 devices are selected we need to set this mode.
-				#May impact shutter tone use case.
-				OutputDevices IsNot none
 				ANY
 					CmeDirectStreamPlayback Is True
 					CmeDirectStreamCapture Is True
+				ANY
+					OutputDevices Is IHF
+					OutputDevices Is Headset
+					OutputDevices Is Headphones
+					OutputDevices Is Earpiece
+					OutputDevices Is SCO
+					OutputDevices Is SCO_Headset
+					OutputDevices Is SCO_CarKit
 
 			component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
 				MODES = InImsCall
