@@ -5753,7 +5753,7 @@
       mcc="310"
       mnc="410"
       apn="phone"
-      type="default,mms,supl,fota"
+      type="default,mms,hipri,supl,fota"
       mmsc="http://mmsc.mobile.att.net"
       mmsproxy="proxy.mobile.att.net"
       mmsport="80"
