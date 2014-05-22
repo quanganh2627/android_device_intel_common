@@ -140,4 +140,8 @@
     <!-- When true, 5 level signal bar is shown in status bar -->
     <add-resource type="bool" name="config_signalStrengthExt" />
     <bool name="config_signalStrengthExt">false</bool>
+
+    <!-- When true, setting of preferred rat is allowed -->
+    <add-resource type="bool" name="config_set_preferred_rat_allowed" />
+    <bool name="config_set_preferred_rat_allowed">true</bool>
 </resources>
