@@ -1,8 +1,8 @@
 domainGroup: Routing
-	domainGroup: Mute
-		RoutageState Includes Flow
+	domainGroup: Enable
+		RoutageState Includes Path
 
-		domainGroup: CME
+		domainGroup: Cme
 
 			domain: Capture
 
