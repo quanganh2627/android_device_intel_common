@@ -169,6 +169,7 @@ on post-fs-data
     chown system system /sys/class/thermal/thermal_zone8/emul_temp
     chown system system /sys/class/thermal/thermal_zone9/emul_temp
     chown system system /sys/class/thermal/thermal_zone10/emul_temp
+    chown system system /sys/class/drm/card0/gt_max_freq_mhz
 
 on charger
     chown system system /dev/dri/card0
