@@ -23,4 +23,7 @@ endif
 
 include $(BUILD_PHONY_PACKAGE)
 
+# Add intel ld driver
+include linux/modules/drivers/misc/intel_ld/AndroidLd.mk
+
 ##################################################
