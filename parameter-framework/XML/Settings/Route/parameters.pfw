@@ -96,12 +96,10 @@ supDomain: Parameter
 									ModemAudioStatus Is True
 									CmeDirectStreamCapture Is True
 					ALL
-						AndroidMode Is Normal
-						InputDevices Includes Main
-					ALL
 						AlwaysListening Is True
 						LpalDevice Is Main
 						InputSources Is none
+					InputDevices Includes Main
 
 				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
 					Main = 1
