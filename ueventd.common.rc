@@ -63,10 +63,10 @@ uevent:sdio:c*v024Cd*	setprop wlan.driver.vendor rtl
 uevent:usb:v1519p0452d* setprop sys.usb.modemevt 1
 
 # Bluedroid uhid support
-/dev/uhid                                    0660 bluetooth bluetooth
+/dev/uhid                                    0660 net_bt net_bt
 
 # USB bluetooth devices
-usbclass:224/1/1                             0660 bluetooth bluetooth suspend_auto,pwr_ctrl_perm
+usbclass:224/1/1                             0660 net_bt net_bt suspend_auto,pwr_ctrl_perm
 
 # Bluetooth rfkill nodes
 /sys/devices/*/bluetooth/hci0/rfkill* state  0660 bluetooth bluetooth
