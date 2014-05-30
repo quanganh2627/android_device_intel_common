@@ -8,14 +8,6 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES +=  \
      load_inteldriver
 
-ifeq ($(TARGET_BUILD_VARIANT),eng)
-LOCAL_REQUIRED_MODULES += \
-     wpa_supplicant_intel  \
-     hostapd_intel \
-     wpa_cli_intel \
-     hostapd_cli_intel
-endif
-
 # Wifi user space components
 LOCAL_REQUIRED_MODULES +=  \
     wifi_intel_usc
