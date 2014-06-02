@@ -26,13 +26,3 @@ LOCAL_REQUIRED_MODULES :=  \
 include $(BUILD_PHONY_PACKAGE)
 
 ##################################################
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := gps_bcm_$(GPS_CHIP)_extlna
-LOCAL_MODULE_TAGS := optional
-LOCAL_REQUIRED_MODULES :=  \
-    gps_bcm_$(GPS_CHIP)
-
-include $(BUILD_PHONY_PACKAGE)
-
-##################################################
