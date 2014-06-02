@@ -832,6 +832,20 @@
       mvno_type="gid"
   />
 
+  <apn carrier="C4I internet"
+      mcc="208"
+      mnc="92"
+      apn="internet.v4.pft"
+      type="default"
+  />
+
+  <apn carrier="C4I IMS"
+      mcc="208"
+      mnc="92"
+      apn="ims"
+      type="ims"
+  />
+
   <apn carrier="Internet movil"
       mcc="214"
       mnc="01"
