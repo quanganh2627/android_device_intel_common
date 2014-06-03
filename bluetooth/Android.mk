@@ -17,6 +17,16 @@
 LOCAL_DIR := $(call my-dir)
 
 include  $(LOCAL_DIR)/AndroidBtCommon.mk
+
+# Broadcom specific
+ifeq ($(COMBO_CHIP_VENDOR),bcm)
 include  $(LOCAL_DIR)/AndroidBtBCM.mk
+endif
+# INTEL specific
+ifeq ($(COMBO_CHIP_VENDOR),intel)
 include  $(LOCAL_DIR)/AndroidBtIntel.mk
+endif
+# Realtek specific
+ifeq ($(COMBO_CHIP_VENDOR),rtl)
 include  $(LOCAL_DIR)/AndroidBtRTL.mk
+endif
