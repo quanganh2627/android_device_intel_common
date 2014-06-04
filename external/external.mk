@@ -43,6 +43,11 @@ endef
 #
 define external-gather-files
 $(if $(filter $(1),$(_metatarget)), \
+    $(if $(findstring /PRIVATE/, $(LOCAL_SRC_FILES) $(LOCAL_PREBUILT_MODULE_FILE)), \
+        $(info PRIVATE module [$(LOCAL_MODULE)] cannot use another PRIVATE module files directly to prevent IP violation) \
+        $(foreach s, $(LOCAL_SRC_FILES) $(LOCAL_PREBUILT_MODULE_FILE), $(if $(findstring /PRIVATE/, $(s)), $(info >    [$(s)]))) \
+        $(error Stop) \
+    ) \
     $(eval $(my).$(module_type).$(2).LOCAL_INSTALLED_STEM_MODULES := $($(my).$(module_type).$(2).LOCAL_INSTALLED_STEM_MODULES) $(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM)) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE := $(strip $(LOCAL_MODULE))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_IS_HOST_MODULE := $(strip $(LOCAL_IS_HOST_MODULE))) \
