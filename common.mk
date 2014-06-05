@@ -147,6 +147,10 @@ $(call inherit-product-if-exists, frameworks/base/data/videos/VideoPackage2.mk)
 PRODUCT_PACKAGES_DEBUG += \
     PSI_Recorder
 
+# Autocall (not for user builds)
+PRODUCT_PACKAGES_DEBUG += \
+    Autocall
+
 # AudioToolBox (for eng builds)
 PRODUCT_PACKAGES_ENG += \
     AudioToolBox
