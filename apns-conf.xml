@@ -15361,7 +15361,7 @@
       mcc="460"
       mnc="00"
       apn="cmnet"
-      type="default,supl"
+      type="default,supl,hipri"
   />
 
   <apn carrier="中国移动 (China Mobile) WAP"
@@ -15389,7 +15389,7 @@
       mcc="460"
       mnc="01"
       apn="3gnet"
-      type="default,supl"
+      type="default,supl,hipri"
   />
 
   <apn carrier="沃3G手机上网 (China Unicom)"
@@ -15405,7 +15405,7 @@
       mcc="460"
       mnc="01"
       apn="uninet"
-      type="default,supl"
+      type="default,supl,hipri"
   />
 
   <apn carrier="联通彩信 (China Unicom)"
@@ -15432,7 +15432,7 @@
       mcc="460"
       mnc="02"
       apn="cmnet"
-      type="default,supl"
+      type="default,supl,hipri"
   />
 
   <apn carrier="中国移动 (China Mobile) WAP"
@@ -15460,7 +15460,7 @@
       mcc="460"
       mnc="07"
       apn="cmnet"
-      type="default,supl"
+      type="default,supl,hipri"
   />
 
   <apn carrier="中国移动 (China Mobile) WAP"
