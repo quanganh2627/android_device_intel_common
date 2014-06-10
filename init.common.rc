@@ -21,6 +21,8 @@ on init
 
     mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
     mkdir /mnt/media_rw/usbcard1 0700 media_rw media_rw
+    mkdir /mnt/media_rw/usbcard2 0700 media_rw media_rw
+    mkdir /mnt/media_rw/usbcard3 0700 media_rw media_rw
 
     export EXTERNAL_STORAGE /storage/emulated/legacy
     export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
@@ -40,6 +42,8 @@ on init
 
     # Support USB Disk
     mkdir /storage/usbcard1 0700 root root
+    mkdir /storage/usbcard2 0700 root root
+    mkdir /storage/usbcard3 0700 root root
 
 on boot
     chown system system /dev/pvr_sync
@@ -107,6 +111,14 @@ service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw
     disabled
 
 service fuse_usbcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/usbcard1 /storage/usbcard1
+    class late_start
+    disabled
+
+service fuse_usbcard2 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/usbcard2 /storage/usbcard2
+    class late_start
+    disabled
+
+service fuse_usbcard3 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/usbcard3 /storage/usbcard3
     class late_start
     disabled
 
