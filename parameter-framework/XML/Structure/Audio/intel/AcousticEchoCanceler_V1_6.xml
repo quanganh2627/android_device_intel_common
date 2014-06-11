@@ -4,7 +4,7 @@
     <ComponentType Name="AcousticEchoCanceler" Mapping="ByteControlWithLength:%1 %2 %3 params aec">
         <Component Name="switch" Type="SwitchParam"/>
         <BitParameterBlock Name="sw_flag" Size="16"
-            Description="AEC Version">
+            Description="This parameter controls the version of current AEC.">
             <BitParameter Name="aec_1_2"  Size="1" Pos="0"/>
             <BitParameter Name="aec_1_3"  Size="1" Pos="1"/>
             <BitParameter Name="aec_1_41" Size="1" Pos="2"/>
