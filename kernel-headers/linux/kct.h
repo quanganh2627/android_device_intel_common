@@ -42,8 +42,14 @@ enum ct_attchmt_type {
 	CT_ATTCHMT_DATA5,
 	/* Always add new types after DATA5 */
 	CT_ATTCHMT_BINARY,
-	CT_ATTCHMT_FILELIST
+	CT_ATTCHMT_FILELIST,
+	CT_ATTCHMT_ADDITIONAL
 };
+
+#define CT_ADDITIONAL_NONE         0
+#define CT_ADDITIONAL_APLOG        (1<<0)
+#define CT_ADDITIONAL_LAST_KMSG    (1<<1)
+#define CT_ADDITIONAL_FWMSG        (1<<2)
 
 struct ct_attchmt {
 	__u32 size; /* sizeof(data) */
