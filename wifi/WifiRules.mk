@@ -86,7 +86,7 @@ ifneq (,$(filter wifi_rtl_8723,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES))
 endif
 
 ifneq (,$(filter wifi_rtl_8189,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  -include $(TOP)/linux/modules/wlan/realtek/AndroidRtl8189es.mk
+  -include $(TOP)/linux/modules/wlan/realtek/rtl8189/AndroidRtl8189es.mk
 endif
 
 ifneq (,$(filter marvell88w8777,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
