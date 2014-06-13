@@ -132,6 +132,10 @@ ADDITIONAL_DEFAULT_PROPERTIES += persist.service.profile.enable=1
 ADDITIONAL_DEFAULT_PROPERTIES += persist.service.kdumpd.enable=0
 endif
 
+ifeq ($(BOARD_HAVE_SMALL_RAM),true)
+ADDITIONAL_DEFAULT_PROPERTIES += ro.config.low_ram=true
+endif
+
 # This will be replaced by the OEM/carrier with a string like android-<carrier>-us
 ADDITIONAL_DEFAULT_PROPERTIES += ro.com.google.clientidbase=android-google
 endif
@@ -208,7 +212,12 @@ IA_PANORAMA_VERSION := 1.0
 TARGET_USE_GR_STATIC_RECT_VB := true
 
 # customize the malloced address to be 16-byte aligned
-BOARD_MALLOC_ALIGNMENT := 16
+ifeq ($(MINIMIZE_MALLOC_ALIGNMENT),true)
+  BOARD_MALLOC_ALIGNMENT := 8
+else
+  BOARD_MALLOC_ALIGNMENT := 16
+endif
+
 
 # Enabled Bluetooth GAP test build in bluez
 BUILD_BT_GAP_TEST := true

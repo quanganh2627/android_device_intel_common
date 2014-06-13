@@ -3,6 +3,8 @@ override PRODUCT_BRAND := intel
 
 COMMON_PATH := device/intel/common
 
+include $(COMMON_PATH)/memory/memory-spectrum.mk
+
 #Add Power HAL Package
 PRODUCT_PACKAGES += \
     power.$(PRODUCT_DEVICE)
@@ -120,8 +122,10 @@ ifneq (, $(findstring "$(TARGET_BUILD_VARIANT)", "eng" "userdebug"))
 # thermal debug tools/scripts (not for user builds)
 -include vendor/intel/tools/PRIVATE/debug_internal_tools/thermal/thermal.mk
 
+ifneq ($(BOARD_HAVE_SMALL_RAM),true)
 # MPM (formely Kratos) (not for user builds)
 -include vendor/intel/apps/PRIVATE/Kratos/products/MPM.mk
+endif
 
 # vTunes binaires (not for user builds)
 -include vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/bin/sepbin.mk
