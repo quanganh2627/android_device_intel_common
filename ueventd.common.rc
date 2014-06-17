@@ -76,6 +76,9 @@ uevent:sdio:c*v024Cd*	setprop wlan.driver.vendor rtl
 # Modem
 uevent:usb:v1519p0452d* setprop sys.usb.modemevt 1
 
+# DPTF
+/dev/esif_lf                                 0660 dptf dptf
+
 # Define ro.nfc.nfcc for different vendors
 uevent:i2c:pn54*        setprop ro.nfc.nfcc pn547
 uevent:i2c:NXP547*      setprop ro.nfc.nfcc pn547
