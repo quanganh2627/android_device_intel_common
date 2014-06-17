@@ -129,12 +129,12 @@
     <add-resource type="bool" name="config_track_get_operator_polling" />
     <bool name="config_track_get_operator_polling">true</bool>
 
-    <!-- set the IMS phone creator jar property -->
-    <add-resource type="string" name="ims_creator_jar_file_property" />
-    <string name="ims_creator_jar_file_property">/system/framework/com.intel.internal.telephony.ims.jar</string>
-    <!-- set the IMS phone creator class property -->
-    <add-resource type="string" name="ims_creator_class_property" />
-    <string name="ims_creator_class_property">com.intel.internal.telephony.ims.PhoneCreator</string>
+    <!-- set the VoLte phone creator jar property -->
+    <add-resource type="string" name="volte_creator_jar_file_property" />
+    <string name="volte_creator_jar_file_property">/system/framework/com.intel.internal.telephony.ims.jar</string>
+    <!-- set the volte phone creator class property -->
+    <add-resource type="string" name="volte_creator_class_property" />
+    <string name="volte_creator_class_property">com.intel.internal.telephony.ims.PhoneCreator</string>
     <!-- Set to true this config item, audio path opening sequence will be well triggered
          by framework in case of incoming call. -->
     <bool name="config_speed_up_audio_on_mt_calls">true</bool>
