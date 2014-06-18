@@ -1,4 +1,4 @@
-domainGroup: Routing.Lpe
+domainGroup: Routing.Sst
 
 	#########################################
 	################ Enable #################
@@ -6,7 +6,7 @@ domainGroup: Routing.Lpe
 
 	# Lock Fba Ul/Dl at Disable stage
 	# Unlock Fba Ul/Dl at Enable stage
-	# No LPE overload while Speech is Off
+	# No SST overload while Speech is Off
 
 	domainGroup: Enable
 		RoutageState Includes Path
@@ -15,16 +15,16 @@ domainGroup: Routing.Lpe
 			domain: Uplink
 				conf: Locked
 					RoutageState Is Path
-					/Audio/lpe/pipe/tx_speech_loop/lock/locked = 1
+					/Audio/sst/pipe/tx_speech_loop/lock/locked = 1
 
 				conf: UnLocked
-					/Audio/lpe/pipe/tx_speech_loop/lock/locked = 0
+					/Audio/sst/pipe/tx_speech_loop/lock/locked = 0
 
 			domain: Downlink
 				conf: Locked
 					RoutageState Is Path
-					/Audio/lpe/pipe/rx_speech_loop/lock/locked = 1
+					/Audio/sst/pipe/rx_speech_loop/lock/locked = 1
 
 				conf: UnLocked
-					/Audio/lpe/pipe/rx_speech_loop/lock/locked = 0
+					/Audio/sst/pipe/rx_speech_loop/lock/locked = 0
 

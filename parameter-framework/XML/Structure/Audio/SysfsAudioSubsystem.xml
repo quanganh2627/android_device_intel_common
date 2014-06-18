@@ -6,6 +6,6 @@
         </ComponentType>
     </ComponentLibrary>
     <InstanceDefinition>
-        <Component Name="LPE_SETTINGS" Type="THRESHOLD_FILES" Mapping="Directory:/sys/devices/platform/sst-platform/"/>
+        <Component Name="SST_SETTINGS" Type="THRESHOLD_FILES" Mapping="Directory:/sys/devices/platform/sst-platform/"/>
     </InstanceDefinition>
 </Subsystem>
