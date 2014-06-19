@@ -144,4 +144,8 @@
     <!-- When true, setting of preferred rat is allowed -->
     <add-resource type="bool" name="config_set_preferred_rat_allowed" />
     <bool name="config_set_preferred_rat_allowed">true</bool>
+
+    <!-- When true, operator name display is customzied -->
+    <add-resource type="bool" name="config_customize_operator_name_display" />
+    <bool name="config_customize_operator_name_display">false</bool>
 </resources>

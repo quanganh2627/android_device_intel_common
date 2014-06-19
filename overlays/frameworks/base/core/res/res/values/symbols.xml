@@ -27,6 +27,7 @@
   <java-symbol type="bool" name="config_track_get_operator_polling" />
   <java-symbol type="bool" name="config_signalStrengthExt" />
   <java-symbol type="bool" name="config_set_preferred_rat_allowed" />
+  <java-symbol type="bool" name="config_customize_operator_name_display" />
   <java-symbol type="string" name="hotspot_active" />
   <java-symbol type="string" name="hotspot_no_connections" />
   <java-symbol type="string" name="hotspot_multiple_devices_connected" />
