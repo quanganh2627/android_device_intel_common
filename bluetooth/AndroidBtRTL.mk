@@ -16,6 +16,8 @@ LOCAL_REQUIRED_MODULES :=  \
 #  2) Symetrical code with others vendors
 #  3) [most important] bt_rtl is used in ComboChipVendor.mk to know if this is a RTL chip
 
+USE_AOSP_BLUEDROID := true
+
 include $(BUILD_PHONY_PACKAGE)
 
 ##################################################

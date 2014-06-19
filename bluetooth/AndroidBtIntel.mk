@@ -23,6 +23,11 @@ endif
 
 include $(BUILD_PHONY_PACKAGE)
 
+# set this flag to true to use default AOSP bluedroid stack for WCS
+USE_AOSP_BLUEDROID := false
+# set this flag to true to use WCS specific Bluetooth apk
+USE_SPECIFIC_BT_WCS := false
+
 # Add intel ld driver
 include linux/modules/drivers/misc/intel_ld/AndroidLd.mk
 
