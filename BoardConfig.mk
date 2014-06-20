@@ -19,7 +19,7 @@ KERNEL_SRC_DIR ?= linux/kernel
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 
 # Customization of BOOTCLASSPATH and init.environ.rc
-PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.multidisplay:com.intel.config:com.intel.cam.api
+PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.multidisplay:com.intel.config
 ifeq ($(strip $(INTEL_FEATURE_AWARESERVICE)),true)
 PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.aware.awareservice
 endif

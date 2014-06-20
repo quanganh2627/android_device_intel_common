@@ -202,6 +202,3 @@ PRODUCT_PACKAGES += libcrash
 # include test suite for eng and userdebug builds
 include $(COMMON_PATH)/test_suites.mk
 
-# CAM
-PRODUCT_PACKAGES += \
-    cam_mandatory
