@@ -26,6 +26,8 @@
 
 # Device needed by FM
 /dev/radio0                             0666   bluetooth  bluetooth
+# Bluetooth and V4L2 FM
+/dev/brcm_bt_drv                        0660    bluetooth   bluetooth
 
 # Device needed by security functionalities
 /dev/sep_sec_driver                     0660   system     system

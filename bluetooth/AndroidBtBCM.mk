@@ -7,6 +7,12 @@ LOCAL_MODULE := bt_bcm
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     bt_common
+
+ifeq ($(BLUEDROID_ENABLE_V4L2),true)
+LOCAL_REQUIRED_MODULES += \
+       fm_bcm
+endif
+
 # Note: additional modules for the Bluetooth firmware are
 # appended in each product-specific makefile (victoriabay.mk etc)
 #

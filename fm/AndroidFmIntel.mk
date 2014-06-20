@@ -22,6 +22,6 @@ endif
 include $(BUILD_PHONY_PACKAGE)
 
 # Add FMR V4L2 driver
--include linux/modules/fm/PRIVATE/intel/lnp/fmr-v4l2/AndroidFmr.mk
+include linux/modules/fm/PRIVATE/intel/lnp/fmr-v4l2/AndroidFmr.mk
 
 ##################################################

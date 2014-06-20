@@ -20,3 +20,9 @@ ifeq ($(COMBO_CHIP_VENDOR), intel) # only Intel vendor FM solution is supported
 include  $(LOCAL_DIR)/AndroidFmCommon.mk
 include  $(LOCAL_DIR)/AndroidFmIntel.mk
 endif
+ifeq ($(COMBO_CHIP_VENDOR), bcm) # only BCM vendor FM solution is supported
+ifeq ($(BLUEDROID_ENABLE_V4L2),true)
+include  $(LOCAL_DIR)/AndroidFmCommon.mk
+include  $(LOCAL_DIR)/AndroidFmBCM.mk
+endif
+endif
