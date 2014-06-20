@@ -335,43 +335,48 @@ supDomain: Parameter
 			component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
 				MODES = RingTone
 
-		#In case of shutter tone during a call, we limit to 1 output device the call mode selection
-		confGroup: OneOutputDevice
-			ANY
-				OutputDevices Is IHF
-				OutputDevices Is Headset
-				OutputDevices Is Headphones
-				OutputDevices Is Earpiece
-				OutputDevices Is SCO
-				OutputDevices Is SCO_Headset
-				OutputDevices Is SCO_CarKit
+		conf: IN_CALL
+			ALL
+				AndroidMode Is InCsvCall
+				ModemState Is True
+				ModemAudioStatus Is True
 
-			conf: IN_CALL
-				ALL
-					AndroidMode Is InCsvCall
-					ModemState Is True
-					ModemAudioStatus Is True
+			component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
+				MODES = InCsvCall
 
-				component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
-					MODES = InCsvCall
+		conf: IN_IMS
+			ALL
+				AndroidMode Is InCsvCall
+				ModemAudioStatus IsNot True
+				ANY
+					CmeDirectStreamPlayback Is True
+					CmeDirectStreamCapture Is True
+				ANY
+					OutputDevices Is IHF
+					OutputDevices Is Headset
+					OutputDevices Is Headphones
+					OutputDevices Is Earpiece
+					OutputDevices Is SCO
+					OutputDevices Is SCO_Headset
+					OutputDevices Is SCO_CarKit
 
-			conf: IN_IMS
-				ALL
-					AndroidMode Is InCsvCall
-					ModemAudioStatus IsNot True
-					ANY
-						CmeDirectStreamPlayback Is True
-						CmeDirectStreamCapture Is True
+			component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
+				MODES = InImsCall
 
-				component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
-					MODES = InImsCall
+		conf: IN_COMMUNICATION
+			ALL
+				AndroidMode Is InVoipCall
+				ANY
+					OutputDevices Is IHF
+					OutputDevices Is Headset
+					OutputDevices Is Headphones
+					OutputDevices Is Earpiece
+					OutputDevices Is SCO
+					OutputDevices Is SCO_Headset
+					OutputDevices Is SCO_CarKit
 
-			conf: IN_COMMUNICATION
-				ALL
-					AndroidMode Is InVoipCall
-
-				component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
-					MODES = InVoipCall
+			component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
+				MODES = InVoipCall
 
 		conf: NORMAL
 
