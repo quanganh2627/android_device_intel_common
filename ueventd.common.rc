@@ -66,6 +66,8 @@ uevent:sdio:c*v024Cd*	setprop wlan.driver.vendor rtl
 
 # Modem
 uevent:usb:v1519p0452d* setprop sys.usb.modemevt 1
+uevent:usb:v1519p0421d* setprop sys.usb.modemevt 1
+uevent:usb:v1519p1451d* setprop sys.usb.modemevt 1
 
 # Define ro.nfc.nfcc for different vendors
 uevent:i2c:pn54*        setprop ro.nfc.nfcc pn547
