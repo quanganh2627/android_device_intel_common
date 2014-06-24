@@ -5,6 +5,9 @@ LOCAL_PATH := $(call my-dir)
 ACS_BUILDBOT_PATH := vendor/intel/PRIVATE/buildbot_acs
 PERMISSIONS_PATH := frameworks/native/data/etc
 
+EFILINUX_FAKEBATT_CFG := $(LOCAL_PATH)/config/efilinux_fakebatt.cfg
+$(EFILINUX_FAKEBATT_CFG):
+
 include $(LOCAL_PATH)/util.mk
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := mrst_keypad.kcm

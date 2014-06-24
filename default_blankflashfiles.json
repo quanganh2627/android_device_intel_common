@@ -1,7 +1,7 @@
 {"config":
   [{"filename":"flash.xml", "name":"default", "flashtype":"fastboot_dnx"},
    {"filename":"flash-buildbot.xml", "name":"default", "flashtype":"fastboot_dnx"},
-   {"filename":"installer.cmd", "name":"erase_factory"},
+   {"filename":"installer.cmd", "name":"no_dnx"},
    {"filename":"flash-EraseFactory.xml", "name":"erase_factory", "flashtype":"fastboot_dnx"},
    {"filename":"flash-no-dnx.xml", "name":"no_dnx", "flashtype":"fastboot"}
   ],
