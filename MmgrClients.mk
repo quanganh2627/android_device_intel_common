@@ -6,7 +6,7 @@
 # NVM Server
 # Modem Image Updater
 # Modem files
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     librapid-ril-core \
     librapid-ril-util \
     libmamgr-xmm \
@@ -19,14 +19,14 @@ PRODUCT_PACKAGES += \
     modem
 
 #OemTelephony for OEM HOOK API
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     com.intel.internal.telephony.OemTelephony \
     com.intel.internal.telephony.OemTelephony.xml
 
 # AMTL : Android Modem Traces and Logs
 # TelephonyEventsNotifier
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
-PRODUCT_PACKAGES += \
+#PRODUCT_PACKAGES += \
     Amtl \
     libamtl_jni \
     TelephonyEventsNotifier

@@ -8,7 +8,7 @@ TARGET_CPU_ABI := x86
 TARGET_CPU_SMP := true
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
-TARGET_NO_RECOVERY := false
+TARGET_NO_RECOVERY := true
 TARGET_PRELINK_MODULE := false
 TARGET_PROVIDES_INIT_RC := true
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -17,24 +17,9 @@ TARGET_BOARD_KERNEL_HEADERS := $(COMMON_PATH)/kernel-headers
 KERNEL_SRC_DIR ?= linux/kernel
 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
+PRODUCT_OUT ?= out/target/product/mofd_v1
 
 # Customization of BOOTCLASSPATH and init.environ.rc
-PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.multidisplay:com.intel.config
-ifeq ($(strip $(INTEL_FEATURE_AWARESERVICE)),true)
-PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.aware.awareservice
-endif
-ifeq ($(strip $(INTEL_FEATURE_LPAL)),true)
-PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.vtsv.service
-endif
-ifeq ($(strip $(INTEL_FEATURE_ASF)),true)
-PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.asf
-endif
-ifeq ($(strip $(INTEL_FEATURE_ARKHAM)),true)
-PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.arkham.services
-endif
-ifeq ($(strip $(DOLBY_DAP)),true)
-PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):dolby_ds
-endif
 
 # Appends path to ARM libs for Houdini
 PRODUCT_LIBRARY_PATH := $(PRODUCT_LIBRARY_PATH):/system/lib/arm
@@ -121,12 +106,6 @@ $(call add-path-map, stlport:external/stlport/stlport \
 #Enable display driver debug interface for eng and userdebug builds
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 export DISPLAY_DRIVER_DEBUG_INTERFACE=true
-endif
-#Enable ODEX for userdebug and user builds
-ifneq (,$(filter $(TARGET_BUILD_VARIANT),userdebug user))
-WITH_DEXPREOPT := true
-# enable dex-preopt on prebuilt apks
-WITH_DEXPREOPT_PREBUILT := true
 endif
 
 # Enabling logs into file system for eng and user debug builds
@@ -336,6 +315,7 @@ endif
 # stitch kernel. We overide the default script to
 # adapt to out own IAFW format.
 ifeq ($(TARGET_PARTITIONING_SCHEME),"osip-gpt")
+BOARD_CUSTOM_MKBOOTIMG := $(SUPPORT_PATH)/mkbootimg
 MKBOOTIMG := $(SUPPORT_PATH)/mkbootimg
 endif
 

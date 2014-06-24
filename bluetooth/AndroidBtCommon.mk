@@ -47,8 +47,8 @@ include $(BUILD_PREBUILT)
 
 ##################################################
 
-ifeq ($(COMBO_CHIP_VENDOR),bcm)
-LIBBT_CONF_PATH := hardware/broadcom/libbt/conf/intel
-include $(LIBBT_CONF_PATH)/Android.mk
-endif
+#ifeq ($(COMBO_CHIP_VENDOR),bcm)
+#LIBBT_CONF_PATH := hardware/broadcom/libbt/conf/intel
+#include $(LIBBT_CONF_PATH)/Android.mk
+#endif
 
