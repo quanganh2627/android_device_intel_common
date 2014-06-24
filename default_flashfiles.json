@@ -1,6 +1,7 @@
 {"config":
   [{"filename":"flash.xml", "name":"full", "flashtype":"fastboot"},
    {"filename":"installer.cmd", "name":"full"},
+   {"filename":"flash_all.sh", "name":"full"},
    {"filename":"no-modem-reflash.xml", "name":"no_modem", "flashtype":"fastboot"},
    {"filename":"no-capsule.xml", "name":"no_capsule", "flashtype":"fastboot"}],
 "commands":
