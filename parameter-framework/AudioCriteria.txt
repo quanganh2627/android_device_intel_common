@@ -19,3 +19,7 @@ ExclusiveCriterion  BypassNonLinearPp      :  Off               On
 ExclusiveCriterion  BypassLinearPp         :  Off               On
 ExclusiveCriterion  MicMute                :  Off               On
 InclusiveCriterion  PreProcEnabled         :  Aec               Agc              Ns              Bmf              Wnr
+ExclusiveCriterion BmfCameraOrientation    :  False             True
+ExclusiveCriterion BmfCameraLocation       :  False             True
+ExclusiveCriterion BmfAudioFromSource      :  False             True
+ExclusiveCriterion BmfAudioCommentary      :  False             True
