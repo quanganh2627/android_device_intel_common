@@ -17,6 +17,9 @@ on early-init
     # This should occur before anything else (e.g. ueventd) is started.
     setcon u:r:init:s0
 
+    # Set the security context of /adb_keys if present.
+    # restorecon /adb_keys
+
     start ueventd
 
 # create mountpoints
