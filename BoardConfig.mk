@@ -17,7 +17,7 @@ TARGET_BOARD_KERNEL_HEADERS := $(COMMON_PATH)/kernel-headers
 KERNEL_SRC_DIR ?= linux/kernel
 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
-PRODUCT_OUT ?= out/target/product/mofd_v1
+PRODUCT_OUT ?= out/target/product/$(TARGET_DEVICE)
 
 # Customization of BOOTCLASSPATH and init.environ.rc
 
