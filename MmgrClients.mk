@@ -9,7 +9,7 @@
 PRODUCT_PACKAGES += \
     librapid-ril-core \
     librapid-ril-util \
-    libmamgr-xmm \
+    mamgr \
     proxy \
     mts \
     mmgr \
