@@ -62,6 +62,10 @@ PRODUCT_PACKAGES += \
     product_name_mapping \
     sign_target_files_apks
 
+#Touch Filter prebuilt
+PRODUCT_PACKAGES += \
+    libeventprocessing
+
 #Houdini prebuilt
 HOUDINI_ARM_PREBUILTS_DIR := vendor/intel/houdini/arm
 houdini_prebuilt_stamp := $(HOUDINI_ARM_PREBUILTS_DIR)/stamp-prebuilt-done
