@@ -22,4 +22,8 @@
          ignored and manual operator selection will always be available. See
          CPHS4_2.WW6, CPHS B.4.7.1 for more information -->
     <bool name="csp_enabled">true</bool>
+
+    <!-- If true, registration denied reason will be shown to the user -->
+    <add-resource type="bool" name="config_show_registration_denied_reason" />
+    <bool name="config_show_registration_denied_reason">false</bool>
 </resources>
