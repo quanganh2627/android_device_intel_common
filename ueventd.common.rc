@@ -2,8 +2,15 @@
 /dev/matrix                             0640   root       diag
 
 # modem tty node change to radio user can read and write
-/dev/gsmtty*                            0660   radio      system
-/dev/ttyMFD*                            0660   radio      system
+/dev/gsmtty*              0660   radio      system
+/dev/ttyMFD*              0660   radio      system
+/dev/ttyACM*              0660   root       radio
+/dev/ttyPTI1              0660   root       radio
+/dev/ttyGS0               0660   root       radio
+/dev/mdmTrace             0660   root       radio
+/dev/mdm_ctrl             0660   root       radio
+/dev/ttyIFX0              0660   root       radio
+/dev/ttyIFX1              0660   root       radio
 
 # Audience device to audio group
 /dev/audience_es305                     0770   audio      audio
