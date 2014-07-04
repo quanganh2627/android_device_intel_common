@@ -148,4 +148,9 @@
     <!-- When true, operator name display is customzied -->
     <add-resource type="bool" name="config_customize_operator_name_display" />
     <bool name="config_customize_operator_name_display">false</bool>
+
+    <add-resource type="array" name="config_operatorConsideredRoaming" />
+    <!-- Use roaming icon for considered operators -->
+    <string-array translatable="false" name="config_operatorConsideredRoaming">
+    </string-array>
 </resources>
