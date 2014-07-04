@@ -53,6 +53,10 @@
      <add-resource type="bool" name="config_wifi_scanalways_support"></add-resource>
      <bool translatable="false" name="config_wifi_scanalways_support">true</bool>
 
+    <!-- Boolean indicating whether the wifi chipset supports multi-role multi-channel -->
+    <add-resource type="bool" name="config_wifi_multirole_multichannel_support"></add-resource>
+    <bool translatable="false" name="config_wifi_multirole_multichannel_support">true</bool>
+
     <!-- Boolean indicating whether the wifi chipset has dual frequency band support -->
     <bool translatable="false" name="config_wifi_dual_band_support">true</bool>
 
