@@ -397,7 +397,9 @@ supDomain: Parameter
 					ANY
 						CmeDirectStreamPlayback Is True
 						CmeDirectStreamCapture Is True
-				VoIPBandType Is NB
+				ALL
+					VoIPBandType Is NB
+					AndroidMode IsNot InCsvCall
 
 			component: /Route/ROUTEMGR/CRITERIA/BAND_TYPE_CRITERIA/
 				BANDS = NB
@@ -414,7 +416,9 @@ supDomain: Parameter
 					ANY
 						CmeDirectStreamPlayback Is True
 						CmeDirectStreamCapture Is True
-				VoIPBandType Is WB
+				ALL
+					VoIPBandType Is WB
+					AndroidMode IsNot InCsvCall
 
 			component: /Route/ROUTEMGR/CRITERIA/BAND_TYPE_CRITERIA/
 				BANDS = WB
@@ -431,7 +435,9 @@ supDomain: Parameter
 					ANY
 						CmeDirectStreamPlayback Is True
 						CmeDirectStreamCapture Is True
-				VoIPBandType Is SuperWB
+				ALL
+					VoIPBandType Is SuperWB
+					AndroidMode IsNot InCsvCall
 
 			component: /Route/ROUTEMGR/CRITERIA/BAND_TYPE_CRITERIA/
 				BANDS = SuperWB
