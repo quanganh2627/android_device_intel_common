@@ -47,9 +47,6 @@ PRODUCT_PACKAGES_DEBUG += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_CONF_PATH)/init.modem.rc:root/init.modem.rc
 
-# Enable LTE telephony framework support
-PRODUCT_PROPERTY_OVERRIDES += persist.tel.lteOnGsmDevice=true
-
 # Set default network type to LTE/GSM/WCDMA (9)
 PRODUCT_PROPERTY_OVERRIDES += ro.telephony.default_network=9
 
