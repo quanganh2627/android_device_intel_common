@@ -21,12 +21,13 @@ include $(CLEAR_VARS)
 
 LOCAL_REQUIRED_MODULES := \
     init.chub.rc \
-    chub_fw \
-    libchss \
+    chub_fw.bin \
     libcosai \
-    chssd \
+    libchss \
     libchssflib \
+    chssd \
     info_manager.db \
+    chss_tools \
 
 LOCAL_MODULE := chub
 LOCAL_MODULE_TAGS := optional
