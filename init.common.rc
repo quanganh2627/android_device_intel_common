@@ -116,6 +116,9 @@ on post-fs-data
 
     mkdir /mnt/asec/media 0770 media media
 
+    # Disable data roaming option enabled by default
+    setprop ro.com.android.dataroaming false
+
     # Set indication (checked by vold) that we have finished this action
     setprop vold.post_fs_data_done 1
 
