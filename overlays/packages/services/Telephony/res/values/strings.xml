@@ -30,4 +30,14 @@
     </string-array>
 
     <string name="personalisation_puklocked">Network Unlock request Failed, Device PUK Locked.</string>
+
+    <!-- Mobile network settings screen, femtocell enabling name -->
+    <add-resource type="string" name="femtocell_enabled" />
+    <string name="femtocell_enabled">Search for Microcell</string>
+
+    <add-resource type="string" name="femtocell_enabled_progress" />
+    <string name="femtocell_enabled_progress">Searching\u2026</string>
+
+    <add-resource type="string" name="femtocell_enabled_failed" />
+    <string name="femtocell_enabled_failed">Error while searching</string>
 </resources>
