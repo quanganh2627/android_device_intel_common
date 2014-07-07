@@ -3,6 +3,8 @@
     xsi:noNamespaceSchemaLocation="../../../../../Schemas/ComponentTypeSet.xsd">
     <ComponentType Name="AutomaticGainControlAudio" Mapping="ByteControlWithLength:%1 %2 %3 params">
         <Component Name="switch" Type="SwitchParam"/>
+        <IntegerParameter Name="sw_flag" Size="16"
+                          Description="This parameter controls the version of current AGC: 0 is v1.0"/>
         <FixedPointParameter Name="maximum_level" Size="32" Integral="17" Fractional="14" Min="-327680" Max="-164" Signed="true"
                           Description="The (absolute) level to which the signal peak is scaled by AGC specified in dB this is a value very
                           close to, and less than 0. Default value:  -164"/>
