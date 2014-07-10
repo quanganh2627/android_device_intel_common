@@ -7,7 +7,7 @@ on boot
 service wlan_prov /system/bin/wlan_prov
     class main
     user root
-    group system wifi security
+    group system wifi
     disabled
     oneshot
 

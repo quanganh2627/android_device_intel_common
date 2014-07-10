@@ -542,7 +542,7 @@ service mtpd /system/bin/mtpd
 service keystore /system/bin/keystore /data/misc/keystore
     class main
     user keystore
-    group keystore drmrpc security
+    group keystore drmrpc system
 
 service dumpstate /system/bin/dumpstate -s
     class main
