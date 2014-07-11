@@ -8,7 +8,7 @@
 /dev/ttyPTI1              0660   root       radio
 /dev/ttyGS0               0660   root       radio
 /dev/mdmTrace             0660   root       radio
-/dev/mdm_ctrl             0660   root       radio
+/dev/mdm_ctrl*            0660   root       radio
 /dev/ttyIFX0              0660   root       radio
 /dev/ttyIFX1              0660   root       radio
 
