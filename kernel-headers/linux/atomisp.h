@@ -240,6 +240,13 @@ struct atomisp_ext_isp_ctrl {
  uint32_t id;
  uint32_t data;
 };
+struct atomisp_ae_window {
+	int x_left;
+	int x_right;
+	int y_top;
+	int y_bottom;
+	int weight;
+};
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct atomisp_3a_statistics {
  struct atomisp_grid_info grid_info;
@@ -838,6 +845,7 @@ struct v4l2_private_int_data {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define ATOMISP_IOC_G_FORMATS_CONFIG   _IOR('v', BASE_VIDIOC_PRIVATE + 39, struct atomisp_formats_config)
 #define ATOMISP_IOC_S_FORMATS_CONFIG   _IOW('v', BASE_VIDIOC_PRIVATE + 39, struct atomisp_formats_config)
+#define ATOMISP_IOC_S_EXPOSURE_WINDOW  _IOW('v', BASE_VIDIOC_PRIVATE + 40, struct atomisp_ae_window)
 #define V4L2_CID_ATOMISP_BAD_PIXEL_DETECTION   (V4L2_CID_PRIVATE_BASE + 0)
 #define V4L2_CID_ATOMISP_POSTPROCESS_GDC_CAC   (V4L2_CID_PRIVATE_BASE + 1)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -889,6 +897,7 @@ struct v4l2_private_int_data {
 #define V4L2_CID_START_ZSL_CAPTURE (V4L2_CID_CAMERA_LASTP1 + 28)
 #define V4L2_CID_ENABLE_RAW_BUFFER_LOCK (V4L2_CID_CAMERA_LASTP1 + 29)
 #define V4L2_CID_DEPTH_MODE (V4L2_CID_CAMERA_LASTP1 + 30)
+#define V4L2_CID_EXPOSURE_ZONE_NUM	(V4L2_CID_CAMERA_LASTP1 + 31)
 #define V4L2_BUF_FLAG_BUFFER_INVALID 0x0400
 #define V4L2_BUF_FLAG_BUFFER_VALID 0x0800
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
