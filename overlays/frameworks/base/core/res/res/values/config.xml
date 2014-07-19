@@ -141,6 +141,11 @@
     <!-- If this is true, the screen will come on when you unplug usb/power/whatever. -->
     <bool name="config_unplugTurnsOnScreen">true</bool>
 
+    <!-- Configure mobile network MTU (MTU size - 1358 is the value recommended in 3GPP 23.060 for
+         both support of IPv4 and IPv6 traffic)>. The overlay default is set
+         here but each carrier may have a specific value set in an overlay config.xml file. -->
+    <integer name="config_mobile_mtu">1358</integer>
+
     <!-- When true, 5 level signal bar is shown in status bar -->
     <add-resource type="bool" name="config_signalStrengthExt" />
     <bool name="config_signalStrengthExt">false</bool>
