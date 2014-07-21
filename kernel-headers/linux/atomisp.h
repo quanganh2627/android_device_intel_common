@@ -226,6 +226,23 @@ struct atomisp_3a_rgby_output {
  uint32_t y;
 };
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+enum atomisp_metadata_type {
+ ATOMISP_MAIN_METADATA = 0,
+ ATOMISP_SEC_METADATA,
+ ATOMISP_METADATA_TYPE_NUM,
+};
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+struct atomisp_metadata_with_type {
+ enum atomisp_metadata_type type;
+ void __user *data;
+ uint32_t width;
+ uint32_t height;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+ uint32_t stride;
+ uint32_t exp_id;
+ uint32_t *effective_width;
+};
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct atomisp_metadata {
  void __user *data;
  uint32_t width;
@@ -837,6 +854,7 @@ struct v4l2_private_int_data {
 #define ATOMISP_IOC_S_PARAMETERS   _IOW('v', BASE_VIDIOC_PRIVATE + 32, struct atomisp_parameters)
 #define ATOMISP_IOC_S_CONT_CAPTURE_CONFIG   _IOWR('v', BASE_VIDIOC_PRIVATE + 33, struct atomisp_cont_capture_conf)
 #define ATOMISP_IOC_G_METADATA   _IOWR('v', BASE_VIDIOC_PRIVATE + 34, struct atomisp_metadata)
+#define ATOMISP_IOC_G_METADATA_BY_TYPE   _IOWR('v', BASE_VIDIOC_PRIVATE + 34, struct atomisp_metadata_with_type)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define ATOMISP_IOC_EXT_ISP_CTRL   _IOWR('v', BASE_VIDIOC_PRIVATE + 35, struct atomisp_ext_isp_ctrl)
 #define ATOMISP_IOC_EXP_ID_UNLOCK   _IOW('v', BASE_VIDIOC_PRIVATE + 36, int)
