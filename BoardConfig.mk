@@ -12,7 +12,7 @@ TARGET_RIL_DISABLE_STATUS_POLLING := true
 TARGET_BOARD_KERNEL_HEADERS := device/intel/common/kernel-headers
 KERNEL_SRC_DIR ?= linux/kernel
 
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1610612736
 
 # Customization of BOOTCLASSPATH and init.environ.rc
 PRODUCT_BOOT_JARS := $(PRODUCT_BOOT_JARS):com.intel.multidisplay:com.intel.config
