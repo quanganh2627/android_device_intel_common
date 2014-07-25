@@ -319,13 +319,6 @@ BOARD_CUSTOM_MKBOOTIMG := $(SUPPORT_PATH)/mkbootimg
 MKBOOTIMG := $(SUPPORT_PATH)/mkbootimg
 endif
 
-# Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
-# Add dependancy on ISU packages only if ISU method is used as ISU might not be delivered.
-ifneq ($(findstring isu,$(TARGET_OS_SIGNING_METHOD)),)
-$(MKBOOTIMG): isu isu_stream isu_wrapper
-endif
-$(MKBOOTIMG): xfstk-stitcher
-
 # If the kernel source is present, AndroidBoard.mk will perform a kernel build.
 # otherwise, AndroidBoard.mk will find the kernel binaries in a tarball.
 ifneq ($(wildcard $(KERNEL_SRC_DIR)/Makefile),)

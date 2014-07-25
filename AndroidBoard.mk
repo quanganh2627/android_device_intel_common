@@ -41,6 +41,13 @@ include $(BUILD_PREBUILT)
 #Publish parameter
 LEGACY_PUBLISH ?= true
 
+# Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
+# Add dependancy on ISU packages only if ISU method is used as ISU might not be delivered.
+ifneq ($(findstring isu,$(TARGET_OS_SIGNING_METHOD)),)
+$(MKBOOTIMG): isu isu_stream isu_wrapper
+endif
+$(MKBOOTIMG): xfstk-stitcher
+
 # Add sepdk driver
 -include vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/src/AndroidSEP.mk
 -include linux/modules/debug_tools/vtunedk/src/pax/AndroidPAX.mk
