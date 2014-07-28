@@ -24,3 +24,4 @@ ExclusiveCriterion BmfCameraLocation       :  False             True
 ExclusiveCriterion BmfAudioFromSource      :  False             True
 ExclusiveCriterion BmfAudioCommentary      :  False             True
 ExclusiveCriterion  FeNsActivated          :  False             True
+ExclusiveCriterion  SlvActivated           :  False             True
