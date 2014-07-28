@@ -39,7 +39,11 @@ LOCAL_MODULE_PATH := $(TARGET_OUT_KEYLAYOUT)
 include $(BUILD_PREBUILT)
 
 #Publish parameter
-LEGACY_PUBLISH ?= true
+# LPDK modified # LEGACY_PUBLISH ?= true
+LEGACY_PUBLISH ?= false
+FLASHFILES_CONFIG ?= $(COMMON_PATH)/lpdk_flashfiles.json
+BLANK_FLASHFILES_CONFIG ?= $(COMMON_PATH)/lpdk_blankflashfiles.json
+OTA_CONFIG ?= $(COMMON_PATH)/lpdk_ota_flashfiles.json
 
 # Intel Signing Utility and xfstk-stitcher, required by mkbootimg to sign images.
 # Add dependancy on ISU packages only if ISU method is used as ISU might not be delivered.

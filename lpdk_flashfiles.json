@@ -1,0 +1,10 @@
+{"config":
+  [{"filename":"flash.xml", "name":"full", "flashtype":"fastboot"}],
+"commands":
+  [{"type":"prop", "target":"INSTALLED_BUILD_PROP_TARGET"},
+   {"type":"ferase", "partition":"data"},
+   {"type":"ferase", "partition":"cache"},
+   {"type":"ferase", "partition":"system"},
+   {"type":"fflash", "partition":"boot", "target":"INSTALLED_BOOTIMAGE_TARGET"},
+   {"type":"fflash", "partition":"system", "target":"INSTALLED_SYSTEMIMAGE", "timeout":420000},
+   {"type":"fcontinue"}]}
