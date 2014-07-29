@@ -37,7 +37,7 @@ INTEL_TEST_CAMERA := true
 
 BOARD_GPFLAG := 0x80000045
 
-USE_PRIVATE_LIBM := true
+#USE_PRIVATE_LIBM := true
 
 ifneq ($(wildcard vendor/intel/PRIVATE/cert/testkey*),)
 PRODUCT_DEFAULT_DEV_CERTIFICATE := vendor/intel/PRIVATE/cert/testkey
