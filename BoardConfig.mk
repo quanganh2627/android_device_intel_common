@@ -8,7 +8,7 @@ TARGET_CPU_ABI := x86
 TARGET_CPU_SMP := true
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
-TARGET_NO_RECOVERY := true
+TARGET_NO_RECOVERY := false
 TARGET_PRELINK_MODULE := false
 TARGET_PROVIDES_INIT_RC := true
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -17,7 +17,11 @@ TARGET_BOARD_KERNEL_HEADERS := $(COMMON_PATH)/kernel-headers
 KERNEL_SRC_DIR ?= linux/kernel
 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
+
+# PRODUCT_OUT and HOST_OUT are now defined after BoardConfig is included.
+# Add early definition here
 PRODUCT_OUT ?= out/target/product/$(TARGET_DEVICE)
+HOST_OUT ?= out/host/$(HOST_OS)-$(HOST_ARCH)
 
 # Customization of BOOTCLASSPATH and init.environ.rc
 

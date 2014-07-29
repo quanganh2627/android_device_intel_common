@@ -6,17 +6,17 @@
 # NVM Server
 # Modem Image Updater
 # Modem files
-#PRODUCT_PACKAGES += \
-    librapid-ril-core \
-    librapid-ril-util \
-    libmamgr-xmm \
-    proxy \
-    mts \
-    mmgr \
-    libmodemupdate \
-    nvm_server \
-    miu-app \
+PRODUCT_PACKAGES += \
     modem
+    # librapid-ril-core \
+    # librapid-ril-util \
+    # libmamgr-xmm \
+    # proxy \
+    # mts \
+    # mmgr \
+    # libmodemupdate \
+    # nvm_server \
+    # miu-app \
 
 #OemTelephony for OEM HOOK API
 #PRODUCT_PACKAGES += \
