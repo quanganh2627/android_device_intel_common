@@ -26,3 +26,4 @@ ExclusiveCriterion BmfAudioCommentary      :  False             True
 ExclusiveCriterion  FeNsActivated          :  False             True
 ExclusiveCriterion  SlvActivated           :  False             True
 ExclusiveCriterion  BwxActivated           :  False             True
+ExclusiveCriterion PersonalEqualization    :  None              Slight          Medium           Strong
