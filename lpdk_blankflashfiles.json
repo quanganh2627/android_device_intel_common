@@ -1,4 +1,0 @@
-{"config":
-  [{"filename":"flash.xml", "name":"default", "flashtype":"fastboot"}],
-"commands":
-  [{"type":"fcontinue"}]}
