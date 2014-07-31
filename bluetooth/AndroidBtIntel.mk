@@ -6,6 +6,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := bt_intel
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
+    bt_vendor.conf \
     bt_common
 # Note: additional modules for the Bluetooth firmware are
 # appended in each product-specific makefile (victoriabay.mk etc)

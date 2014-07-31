@@ -6,12 +6,11 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := bt_common
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := \
-	bd_prov \
-	init.bt.rc \
-	init.bt.vendor.rc \
-	libbt-vendor \
-	bt_vendor.conf \
-	rfkill_bt.sh
+    bd_prov \
+    init.bt.rc \
+    init.bt.vendor.rc \
+    libbt-vendor \
+    rfkill_bt.sh
 
 include $(BUILD_PHONY_PACKAGE)
 
