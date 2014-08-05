@@ -13,10 +13,9 @@ typedef enum {FALSE = 0, TRUE} bool;
 /* FIXME: Find a generic way to support multiple config structures */
 static bool is_xpwr = 0;
 #define XPWR_PRIMARY_FILE "/system/etc/fg_config_xpwr.bin"
-#define XPWR_CONFIG_SIZE	38
-#define XPWR_SEC_CONFIG_SIZE	40
+#define XPWR_CONFIG_SIZE	36
+#define XPWR_MAX_TABLES		10
 #define INTEL_FG_DEV_FILE	"/dev/intel_fg"
-
 #define PRIMARY_FILE "/system/etc/fg_config.bin"
 #define SECONDARY_FILE "/config/em/battid.dat"
 #define DEV_FILE "/dev/fg"
@@ -56,12 +55,27 @@ struct __attribute__((__packed__)) sec_file_body {
 	char serial_num[MAX_SERIAL_NUM_SIZE + 1];
 };
 
+
+struct __attribute__((__packed__)) xpwr_config_table {
+	char battid[MAX_BATTID_SIZE];
+	unsigned char fg_config[XPWR_CONFIG_SIZE];
+};
+
+struct __attribute__((__packed__)) xpwr_config_sec_data {
+	struct xpwr_config_table conf_table;
+	unsigned short prim_cksum;
+	unsigned short sec_cksum;
+};
+#define XPWR_SEC_CONFIG_SIZE	 sizeof(struct xpwr_config_sec_data)
+
 #define MAX_FG_TABLES	15
 #define MAX_PRIM_FILE_SIZE (sizeof(struct primary_header) +\
 	MAX_FG_TABLES * sizeof(struct table_body))
 
 
 #define LOG_TAG "EM FG User Space:"
+
+unsigned short checksum(void *, int);
 
 int read_primary_header(struct primary_header *pheader)
 {
@@ -100,21 +114,72 @@ int read_primary_file(unsigned char *buf, int size)
 	return 0;
 }
 
-int read_xpwr_primary_file(unsigned char *buf, int size)
+int read_xpwr_matched_primary_conf(struct xpwr_config_sec_data *prim_conf,
+					char *battid)
 {
 	int fd, ret;
+	int i,size;
+	unsigned char numTables;
+	struct xpwr_config_table *conf;
+	unsigned char *buf;
+	unsigned short cksum,tmp;
+
 	fd = open(XPWR_PRIMARY_FILE, O_RDONLY);
 	if (fd < 0)
 		return errno;
-
-	ret = read(fd, buf, size);
-	if (ret != size) {
-		LOGI("requested bytes:%d read bytes:%d\n", size, ret);
+	/* First byte of primary file give number of config tables */
+	size = 1;
+	ret = read(fd, &numTables, size);
+	if (numTables > XPWR_MAX_TABLES) {
+		LOGI("Primary file as %d,but supported upto %d tables\n",
+			numTables, XPWR_MAX_TABLES );
 		close(fd);
 		return ENODATA;
 	}
+
+	LOGI("read_xpwr_matched_primary_conf: numTables=%d\n", numTables);
+	size += (sizeof(struct xpwr_config_table)*numTables) + sizeof(cksum);
+	buf = malloc(size);
+	if (!buf) {
+		LOGI("Memory allocation failed\n");
+		close(fd);
+		return ENODATA;
+	}
+	buf[0] = numTables;
+	ret = read(fd, &buf[1], size+1);
+	if (ret != size-1) {
+		LOGI("requested bytes:%d read bytes:%d\n", size, ret);
+		ret = ENODATA;
+		goto xpwr_prim_read_fail;
+	}
+	cksum = checksum(buf, (size - sizeof(cksum)));
+	if ( cksum != *((unsigned short *)&buf[size-2])) {
+		LOGI("Primary checksum not valid\n");
+		ret = ENODATA;
+		goto xpwr_prim_read_fail;
+
+	}
+	ret = ENODATA;
+	/*Get fg config matched with battid*/
+	conf = (struct xpwr_config_table *)&buf[1];
+	for (i = 0; i<numTables;i++) {
+		/*If battid matched, extract config*/
+		if (!strncmp(conf->battid, battid, MODEL_NAME_SIZE)) {
+			LOGI("Found matching primary table for batid:%s\n",
+				battid);
+			memcpy(&prim_conf->conf_table,conf,
+				sizeof(struct xpwr_config_table));
+			prim_conf->prim_cksum = cksum;
+			ret = 0;
+			break;
+		}
+		/*Move to next config*/
+		conf = conf+1;
+	}
+xpwr_prim_read_fail:
+	free(buf);
 	close(fd);
-	return 0;
+	return ret;
 }
 
 int read_secondary_file(struct sec_file_body *sbuf)
@@ -133,14 +198,23 @@ int read_secondary_file(struct sec_file_body *sbuf)
 	return 0;
 }
 
-int read_xpwr_secondary_file(unsigned char *buf)
+int read_xpwr_secondary_conf(struct xpwr_config_sec_data *conf)
 {
 	int fd, ret;
+	int size = XPWR_SEC_CONFIG_SIZE;
+	unsigned short cksum;
+
 	fd = open(SECONDARY_FILE, O_RDONLY);
 	if (fd < 0)
 		return errno;
-	ret = read(fd, buf, XPWR_SEC_CONFIG_SIZE);
-	if (ret != XPWR_SEC_CONFIG_SIZE) {
+	ret = read(fd, conf, size);
+	if (ret != size) {
+		close(fd);
+		return ENODATA;
+	}
+	cksum = checksum(conf, size - sizeof(cksum));
+	if (cksum != conf->sec_cksum) {
+		LOGI("Secodary file checksum not valid\n");
 		close(fd);
 		return ENODATA;
 	}
@@ -222,7 +296,7 @@ int get_battid(char *battid)
 	if (fd < 0)
 		return errno;
 
-	ret = read(fd, battid, MODEL_NAME_SIZE);
+	ret = read(fd, battid, MAX_BATTID_SIZE);
 	if (ret < 0) {
 		close(fd);
 		return errno;
@@ -414,8 +488,8 @@ int get_fg_config_table(struct table_body *sec_tbl)
 	char battid[MAX_BATTID_SIZE];
 	char serial_num[MAX_SERIAL_NUM_SIZE + 1] = {'\0'};
 	unsigned char *pbuf;
-	unsigned char *xpwr_pbuf;
-	unsigned char *xpwr_sbuf;
+	struct xpwr_config_sec_data xpwr_prim_conf;
+	struct xpwr_config_sec_data xpwr_sec_conf;
 	int is_pcksum_ok = 0;
 	int is_scksum_ok = 0;
 	struct primary_header pheader;
@@ -434,48 +508,28 @@ int get_fg_config_table(struct table_body *sec_tbl)
 
 	/* FIXME: Find a generic way to support multiple config structures */
 	if (is_xpwr) {
-		xpwr_sbuf = malloc(XPWR_SEC_CONFIG_SIZE);
-		if (xpwr_sbuf == NULL) {
-			LOGE("%s:%d:insufficient memory\n", __func__, __LINE__);
-			return ENOMEM;
-		}
-		xpwr_pbuf = malloc(XPWR_CONFIG_SIZE);
-		if (xpwr_pbuf == NULL) {
-			LOGE("%s:%d:insufficient memory\n", __func__, __LINE__);
-			return ENOMEM;
-		}
-		if (read_xpwr_secondary_file(xpwr_sbuf))
+		if (read_xpwr_secondary_conf(&xpwr_sec_conf))
 			LOGE("Secondary file could not be read");
-		else {
-			scksum = checksum(xpwr_sbuf, XPWR_SEC_CONFIG_SIZE - 2);
-			tmp = *(unsigned short *)&xpwr_sbuf[XPWR_SEC_CONFIG_SIZE - 2];
-			if (scksum != tmp)
-				LOGE("Secondary checksum mismatch");
-			else
-				use_sec_file = 1;
-		}
-		if (read_xpwr_primary_file(xpwr_pbuf, XPWR_CONFIG_SIZE)) {
+		else
+			use_sec_file = 1;
+		if (read_xpwr_matched_primary_conf(&xpwr_prim_conf,battid)) {
 			LOGE("Primary file could not be read");
-			return EINVAL;
-		} else {
-			pcksum = checksum(xpwr_pbuf, XPWR_CONFIG_SIZE - 2);
-			tmp = *(unsigned short *)&xpwr_pbuf[XPWR_CONFIG_SIZE - 2];
-			if (pcksum != tmp) {
-				LOGE("Primary checksum mismatch");
-				if (!use_sec_file) {
-					LOGE("Cannot get config from either file");
-					return EINVAL;
-				}
+			if (!use_sec_file) {
+				LOGE("Cannot get config from either files");
+				return EINVAL;
 			}
+			LOGI("Considering seconday config for write\n");
+			return write_to_intel_fg_dev(xpwr_sec_conf.conf_table.fg_config);
 		}
-		if (use_sec_file && pcksum
-			== *(unsigned short *)&xpwr_sbuf[XPWR_SEC_CONFIG_SIZE - 4]) {
-			LOGI("Using data from secondary file");
-			return write_to_intel_fg_dev(xpwr_sbuf);
-		} else {
-			LOGI("Using data from primary file");
-			return write_to_intel_fg_dev(xpwr_pbuf);
+
+		if (use_sec_file
+			&& xpwr_sec_conf.prim_cksum
+			== xpwr_prim_conf.prim_cksum) {
+			LOGI("Considering seconday config for write\n");
+			return write_to_intel_fg_dev(xpwr_sec_conf.conf_table.fg_config);
 		}
+		LOGI("Considering primary config for write\n");
+		return write_to_intel_fg_dev(xpwr_prim_conf.conf_table.fg_config);
 	}
 
 	/* get serial number */
@@ -570,20 +624,23 @@ read_pri_config:
 	return 0;
 }
 
-int write_xpwr_sec(unsigned char *buf)
+int write_xpwr_sec(struct xpwr_config_sec_data *sec_conf)
 {
-	int fds, ret, cksum;
-	unsigned char tmp[XPWR_SEC_CONFIG_SIZE];
+	int fds, ret;
+	unsigned short cksum;
+	struct xpwr_config_sec_data prim_conf;
+
 	fds = open(SECONDARY_FILE, O_WRONLY|O_CREAT, S_IRWXU|S_IRWXG|S_IRWXO);
 	if (fds < 0) {
 		LOGE("Error(%d) in opening %s:%s\n", errno, SECONDARY_FILE, strerror(errno));
 		return errno;
 	}
-	if (!read_xpwr_primary_file(tmp, XPWR_CONFIG_SIZE))
-		memcpy(buf + XPWR_SEC_CONFIG_SIZE - 4, tmp + XPWR_CONFIG_SIZE - 2, 2);
-	cksum = checksum(buf, XPWR_SEC_CONFIG_SIZE - 2);
-	memcpy(buf + XPWR_SEC_CONFIG_SIZE - 2, &cksum, 2);
-	ret = write(fds, buf, XPWR_SEC_CONFIG_SIZE);
+	memset(&prim_conf, 0, XPWR_SEC_CONFIG_SIZE);
+	if (!read_xpwr_matched_primary_conf(&prim_conf, sec_conf->conf_table.battid))
+		sec_conf->prim_cksum = prim_conf.prim_cksum;
+	cksum = checksum(sec_conf, XPWR_SEC_CONFIG_SIZE - sizeof(cksum));
+	sec_conf->sec_cksum = cksum;
+	ret = write(fds, sec_conf, XPWR_SEC_CONFIG_SIZE);
 	if (ret != XPWR_SEC_CONFIG_SIZE) {
 		LOGE("Error in writing secondary file\n");
 		close(fds);
@@ -670,28 +727,31 @@ int  read_fg_write_sec()
 	int fdd, ret;
 	unsigned char fg_config[MAX_FG_CONFIG_SIZE];
 	struct sec_file_body sbuf;
-	unsigned char xpwr_sbuf[XPWR_SEC_CONFIG_SIZE];
-	char path[PATH_MAX];
+	char battid[MAX_BATTID_SIZE];
+	struct xpwr_config_sec_data xpwr_sec_conf;
 
-	if (!get_battery_ps_name(path) && is_xpwr) {
+	if (!get_battid(battid) && is_xpwr) {
 		fdd = open(INTEL_FG_DEV_FILE, O_RDONLY);
 		if (fdd <0) {
 			LOGE("Error(%d) in opening %s:%s\n", errno,
 				INTEL_FG_DEV_FILE, strerror(errno));
 			return errno;
 		}
-		ret = read(fdd, xpwr_sbuf, XPWR_CONFIG_SIZE - 2);
-		if (ret != XPWR_CONFIG_SIZE - 2) {
+		ret = read(fdd, &xpwr_sec_conf.conf_table.fg_config,
+				XPWR_CONFIG_SIZE);
+		if (ret != XPWR_CONFIG_SIZE) {
 			close(fdd);
 			LOGE("Error(%d) in reading %s:%s requested=%d read=%d\n", errno,
 							INTEL_FG_DEV_FILE, strerror(errno),
-							XPWR_CONFIG_SIZE - 2, ret);
+							XPWR_CONFIG_SIZE, ret);
 			if (ret < 0)
 				return errno;
 			else
 				return ENODATA;
 		}
-		ret = write_xpwr_sec(xpwr_sbuf);
+		memcpy(xpwr_sec_conf.conf_table.battid,
+				battid,MAX_BATTID_SIZE);
+		ret = write_xpwr_sec(&xpwr_sec_conf);
 		if (ret)
 			LOGE("Eror in writing to secondary file");
 		return ret;

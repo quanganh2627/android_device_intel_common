@@ -24,8 +24,15 @@ def getXpwrConfig(xml, confFile):
 	for top in xpwr:
 		nodes = top.childNodes
 		for node in nodes:
-			f.write(struct.pack("B", int(node.data, 16)))
-			numBytes += 1
+			try:
+				if node.parentNode.nodeName == "battid":
+					f.write(node.data) #write the characters as such
+					numBytes +=8
+				else:
+					f.write(struct.pack("B", int(node.data, 16)))
+					numBytes += 1
+			except Exception, e:
+				print e
 	f.close()
 
 	f = open(confFile, 'rb+')
