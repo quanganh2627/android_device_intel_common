@@ -1,7 +1,6 @@
 import /recovery.init.${ro.hardware}.rc
 import /init.recovery.debug.rc
 import /init.watchdog.rc
-import /init.diskd.rc
 import /init.firmware.rc
 
 on early-init
