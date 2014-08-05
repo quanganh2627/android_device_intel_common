@@ -42,6 +42,7 @@
 /dev/meimm                              0660   system     security
 
 # Android sync framework sw driver
+/dev/pvr_sync                            0666   system     system
 /dev/sw_sync                            0660   system     system
 
 # NFCC devices
