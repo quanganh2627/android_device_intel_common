@@ -121,7 +121,7 @@ ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 -include vendor/intel/tools/PRIVATE/debug_internal_tools/thermal/thermal.mk
 
 # MPM (formely Kratos) (not for user builds)
--include vendor/intel/apps/PRIVATE/Kratos/products/MPM.mk
+#-include vendor/intel/apps/PRIVATE/Kratos/products/MPM.mk
 
 # vTunes binaires (not for user builds)
 -include vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/bin/sepbin.mk
