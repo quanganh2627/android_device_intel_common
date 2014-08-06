@@ -6,3 +6,4 @@ service chssd /system/bin/chssd
     class main
     user system
     group system
+    disabled
