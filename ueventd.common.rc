@@ -43,7 +43,8 @@
 /dev/meimm                              0660   system     system
 
 # Android sync framework sw driver
-/dev/pvr_sync                            0666   system     system
+/dev/card0                              0666   system     system
+/dev/pvr_sync                           0666   system     system
 /dev/sw_sync                            0660   system     system
 
 # NFCC devices
