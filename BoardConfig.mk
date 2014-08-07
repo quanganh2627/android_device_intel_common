@@ -21,7 +21,7 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 # PRODUCT_OUT and HOST_OUT are now defined after BoardConfig is included.
 # Add early definition here
 PRODUCT_OUT ?= out/target/product/$(TARGET_DEVICE)
-HOST_OUT ?= out/host/$(HOST_OS)-$(HOST_ARCH)
+HOST_OUT ?= out/host/$(HOST_OS)-$(HOST_PREBUILT_ARCH)
 
 # Customization of BOOTCLASSPATH and init.environ.rc
 
