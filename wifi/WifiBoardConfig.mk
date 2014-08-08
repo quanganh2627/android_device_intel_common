@@ -5,6 +5,7 @@ CUSTOM_WPA_SUPPLICANT_CONF := true
 
 BOARD_WPA_SUPPLICANT_DRIVER    := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB      :=
+BOARD_HOSTAPD_DRIVER           := NL80211
 
 ifeq (ti,$(findstring ti,$(COMBO_CHIP_VENDOR)))
 WPA_SUPPLICANT_VERSION := VER_0_8_X
@@ -12,17 +13,20 @@ BOARD_WLAN_DEVICE := wl12xx-compat
 endif
 
 ifeq (bcm,$(findstring bcm,$(COMBO_CHIP_VENDOR)))
+BOARD_WLAN_DEVICE := bcmdhd
+WPA_SUPPLICANT_VERSION := VER_0_8_X
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
+BOARD_HOSTAPD_PRIVATE_LIB   += lib_driver_cmd_bcmdhd
+WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
 endif
 
 ifneq (,$(filter wifi_rtl%,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB += lib_driver_cmd_rtl
-BOARD_HOSTAPD_DRIVER        := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB   += lib_driver_cmd_rtl
 endif
 
 ifeq (intel,$(findstring intel,$(COMBO_CHIP_VENDOR)))
 BOARD_WLAN_DEVICE     := iwlwifi
-BOARD_HOSTAPD_DRIVER  := NL80211
 #WPA_SUPPLICANT_VERSION := VER_0_8_X
 WPA_SUPPLICANT_VERSION := VER_2_1_DEVEL_WCS
 PRIVATE_WPA_SUPPLICANT_CONF := y
