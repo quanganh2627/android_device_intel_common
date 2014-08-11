@@ -123,6 +123,9 @@ ADDITIONAL_DEFAULT_PROPERTIES += persist.service.profile.enable=1
 ADDITIONAL_DEFAULT_PROPERTIES += persist.service.kdumpd.enable=0
 endif
 
+# Logcat use android kernel logger
+TARGET_USES_LOGD := false
+
 # This will be replaced by the OEM/carrier with a string like android-<carrier>-us
 ADDITIONAL_DEFAULT_PROPERTIES += ro.com.google.clientidbase=android-google
 endif
