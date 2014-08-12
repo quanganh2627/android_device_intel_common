@@ -16,7 +16,7 @@
 
 			"sdcard": {
 				"used": 1,
-				"fstab_entry" : [ "*/block/mmcblk1",
+				"fstab_entry" : [ "*/block/mmcblk1*",
 				"\t",
 				"auto",
 				"\t",
@@ -40,7 +40,7 @@
 
 			"usbcard": {
 				"used": 1,
-				"fstab_entry" : [ "*/block/sd",
+				"fstab_entry" : [ "*/block/sda*",
 				"\t",
 				"auto",
 				"\t",
