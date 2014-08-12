@@ -58,7 +58,7 @@ service ueventd /sbin/ueventd
 service console /system/bin/sh
     console
 
-service apk_logfs /system/bin/logcat -b system -b main -b radio -b kernel -n 20 -r5000 -v threadtime -f /logs/aplog
+service apk_logfs /system/bin/logcat -b system -b main -b radio -n 20 -r5000 -v threadtime -f /logs/aplog
     disabled
 
 on property:persist.service.apklogfs.enable=1
