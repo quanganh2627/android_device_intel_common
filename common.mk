@@ -89,7 +89,7 @@ PRODUCT_PACKAGES += libhoudini \
 endif
 
 #GMS package
-#-include vendor/google/PRIVATE/gms/products/gms.mk
+-include vendor/google/PRIVATE/gms/products/gms.mk
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 PRODUCT_COPY_FILES += \
