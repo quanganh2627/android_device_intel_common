@@ -13,9 +13,9 @@ PRODUCT_PACKAGES += \
     mmgr \
     libmodemupdate \
     nvm_server \
-    miu-app
-    # mamgr \
-    # proxy \
+    miu-app \
+    proxy
+    #mamgr \
     # mts
 
 #OemTelephony for OEM HOOK API
