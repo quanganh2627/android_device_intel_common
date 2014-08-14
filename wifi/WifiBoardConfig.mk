@@ -20,7 +20,9 @@ BOARD_HOSTAPD_PRIVATE_LIB   += lib_driver_cmd_bcmdhd
 WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
 endif
 
-ifneq (,$(filter wifi_rtl%,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+ifeq (rtl,$(findstring rtl,$(COMBO_CHIP_VENDOR)))
+BOARD_WLAN_DEVICE := rtl
+WPA_SUPPLICANT_VERSION := VER_0_8_X
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB += lib_driver_cmd_rtl
 BOARD_HOSTAPD_PRIVATE_LIB   += lib_driver_cmd_rtl
 endif
