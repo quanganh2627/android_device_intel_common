@@ -133,46 +133,13 @@ on post-fs-data
     setprop persist.service.thermal 1
     # Properties for Thermal Service
     setprop persist.thermal.debug.xml 0
-    setprop ro.thermal.ituxversion 2.5
+    setprop ro.thermal.ituxversion 3.0
     setprop persist.thermal.shutdown.msg 1
     setprop persist.thermal.shutdown.vibra 1
     setprop persist.thermal.shutdown.tone 1
     setprop persist.thermal.display.msg 1
     setprop persist.thermal.display.vibra 1
-    # Permissions for Thermal Management
-    chown system system /sys/class/thermal/thermal_zone0/trip_point_0_temp
-    chown system system /sys/class/thermal/thermal_zone0/trip_point_1_temp
-    chown system system /sys/class/thermal/thermal_zone1/trip_point_0_temp
-    chown system system /sys/class/thermal/thermal_zone1/trip_point_1_temp
-    chown system system /sys/class/thermal/thermal_zone2/trip_point_0_temp
-    chown system system /sys/class/thermal/thermal_zone2/trip_point_1_temp
-    chown system system /sys/class/thermal/thermal_zone3/trip_point_0_temp
-    chown system system /sys/class/thermal/thermal_zone3/trip_point_1_temp
-    chown system system /sys/class/thermal/thermal_zone4/trip_point_0_temp
-    chown system system /sys/class/thermal/thermal_zone4/trip_point_1_temp
-    chown system system /sys/class/thermal/thermal_zone5/trip_point_0_temp
-    chown system system /sys/class/thermal/thermal_zone5/trip_point_1_temp
-    chown system system /sys/class/thermal/thermal_zone6/trip_point_0_temp
-    chown system system /sys/class/thermal/thermal_zone6/trip_point_1_temp
-    chown system system /sys/class/thermal/thermal_zone7/trip_point_0_temp
-    chown system system /sys/class/thermal/thermal_zone7/trip_point_1_temp
-    chown system system /sys/class/thermal/thermal_zone8/trip_point_0_temp
-    chown system system /sys/class/thermal/thermal_zone8/trip_point_1_temp
-    chown system system /sys/class/thermal/thermal_zone9/trip_point_0_temp
-    chown system system /sys/class/thermal/thermal_zone9/trip_point_1_temp
-    chown system system /sys/class/thermal/thermal_zone10/trip_point_0_temp
-    chown system system /sys/class/thermal/thermal_zone10/trip_point_1_temp
-    chown system system /sys/class/thermal/thermal_zone0/emul_temp
-    chown system system /sys/class/thermal/thermal_zone1/emul_temp
-    chown system system /sys/class/thermal/thermal_zone2/emul_temp
-    chown system system /sys/class/thermal/thermal_zone3/emul_temp
-    chown system system /sys/class/thermal/thermal_zone4/emul_temp
-    chown system system /sys/class/thermal/thermal_zone5/emul_temp
-    chown system system /sys/class/thermal/thermal_zone6/emul_temp
-    chown system system /sys/class/thermal/thermal_zone7/emul_temp
-    chown system system /sys/class/thermal/thermal_zone8/emul_temp
-    chown system system /sys/class/thermal/thermal_zone9/emul_temp
-    chown system system /sys/class/thermal/thermal_zone10/emul_temp
+
     chown system system /sys/class/drm/card0/gt_max_freq_mhz
 
 on charger

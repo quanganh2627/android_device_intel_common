@@ -41,6 +41,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES_ENG += \
     SpeechRecorder
 
+#ituxd for intel thermal management
+PRODUCT_PACKAGES += \
+        ituxd
+
 #AESNI for bouncycastle
 PRODUCT_PACKAGES += \
         libaesni
