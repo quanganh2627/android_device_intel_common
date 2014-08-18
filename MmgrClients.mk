@@ -14,9 +14,9 @@ PRODUCT_PACKAGES += \
     libmodemupdate \
     nvm_server \
     miu-app \
-    proxy
+    proxy  \
+    mts
     #mamgr \
-    # mts
 
 #OemTelephony for OEM HOOK API
 #PRODUCT_PACKAGES += \
@@ -26,10 +26,10 @@ PRODUCT_PACKAGES += \
 # AMTL : Android Modem Traces and Logs
 # TelephonyEventsNotifier
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
-#PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES += \
     Amtl \
-    libamtl_jni \
-    TelephonyEventsNotifier
+    libamtl_jni
+    #TelephonyEventsNotifier
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_CONF_PATH)/activate_trace_modem:system/bin/activate_trace_modem \
