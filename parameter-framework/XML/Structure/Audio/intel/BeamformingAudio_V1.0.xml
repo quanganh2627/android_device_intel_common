@@ -33,8 +33,8 @@
                           Description="Enable gain before channel selection and mixing. Class 1 parameter. Default=0"/>
         <EnumParameter Name="spatialize" Size="16"
                           Description="Spatialization. Class 1 parameter. Default=no spatialization">
-            <ValuePair Literal="disable" Numerical="1" Description="Proper setting for DNR or SNS"/>
-            <ValuePair Literal="enable" Numerical="2" Description="Stereo recording, upmix/downmix"/>
+            <ValuePair Literal="disable" Numerical="1"/>
+            <ValuePair Literal="enable" Numerical="2"/>
         </EnumParameter>
         <ParameterBlock Name="switch_mat">
             <EnumParameter Name="in" Size="16" ArrayLength="32" Description="Specify microphones connexion for each input channel of the first switch matrix. Up to two microphones signals can be added or subtracted. Class 2 parameter. Default=0">

@@ -21,6 +21,11 @@ LOCAL_REQUIRED_MODULES :=          \
     p2p_supplicant.conf            \
     hostapd.conf
 
+ifeq ($(CAM_VERSION),VER_2_0)
+LOCAL_REQUIRED_MODULES += \
+    hs20-osu-client
+endif
+
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 #LOCAL_REQUIRED_MODULES += \
     wifi_wfa \

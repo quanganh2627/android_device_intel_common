@@ -95,6 +95,7 @@ supDomain: Parameter
 								ANY
 									ModemAudioStatus Is True
 									CmeDirectStreamCapture Is True
+									CmeModemStreamCapture Is True
 					ALL
 						AlwaysListening Is True
 						LpalDevice Is Main
@@ -117,6 +118,7 @@ supDomain: Parameter
 						ANY
 							ModemAudioStatus Is True
 							CmeDirectStreamCapture Is True
+							CmeModemStreamCapture Is True
 						ANY
 							OutputDevices Includes SCO
 							OutputDevices Includes SCO_Headset
@@ -138,6 +140,7 @@ supDomain: Parameter
 						ANY
 							ModemAudioStatus Is True
 							CmeDirectStreamCapture Is True
+							CmeModemStreamCapture Is True
 						OutputDevices Includes Headset
 					InputDevices Includes Headset
 					ALL
@@ -174,6 +177,7 @@ supDomain: Parameter
 								ANY
 									ModemAudioStatus Is True
 									CmeDirectStreamCapture Is True
+									CmeModemStreamCapture Is True
 						ANY
 							OutputDevices Includes Headphones
 							OutputDevices Includes IHF
@@ -202,6 +206,8 @@ supDomain: Parameter
 								ANY
 									ModemAudioStatus Is True
 									CmeDirectStreamCapture Is True
+									CmeModemStreamCapture Is True
+
 					InputDevices Includes Ambient
 
 				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
@@ -339,7 +345,10 @@ supDomain: Parameter
 			ALL
 				AndroidMode Is InCsvCall
 				ModemState Is True
-				ModemAudioStatus Is True
+				ANY
+					ModemAudioStatus Is True
+					CmeModemStreamPlayback Is True
+					CmeModemStreamCapture Is True
 
 			component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
 				MODES = InCsvCall
@@ -397,6 +406,8 @@ supDomain: Parameter
 					ANY
 						CmeDirectStreamPlayback Is True
 						CmeDirectStreamCapture Is True
+						CmeModemStreamPlayback Is True
+						CmeModemStreamCapture Is True
 				ALL
 					VoIPBandType Is NB
 					AndroidMode IsNot InCsvCall
@@ -416,6 +427,8 @@ supDomain: Parameter
 					ANY
 						CmeDirectStreamPlayback Is True
 						CmeDirectStreamCapture Is True
+						CmeModemStreamPlayback Is True
+						CmeModemStreamCapture Is True
 				ALL
 					VoIPBandType Is WB
 					AndroidMode IsNot InCsvCall
@@ -435,6 +448,8 @@ supDomain: Parameter
 					ANY
 						CmeDirectStreamPlayback Is True
 						CmeDirectStreamCapture Is True
+						CmeModemStreamPlayback Is True
+						CmeModemStreamCapture Is True
 				ALL
 					VoIPBandType Is SuperWB
 					AndroidMode IsNot InCsvCall

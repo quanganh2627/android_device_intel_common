@@ -1,6 +1,8 @@
 PRODUCT_MANUFACTURER := intel
 override PRODUCT_BRAND := intel
 
+include $(COMMON_PATH)/memory/memory-spectrum.mk
+
 # These goals don't need to collect and include Android.mks/CleanSpec.mks
 # in the source tree.
 intel_dont_bother_goals := build_kernel-nodeps \
@@ -120,8 +122,10 @@ ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 # thermal debug tools/scripts (not for user builds)
 -include vendor/intel/tools/PRIVATE/debug_internal_tools/thermal/thermal.mk
 
+ifneq ($(NO_MPM),true)
 # MPM (formely Kratos) (not for user builds)
 #-include vendor/intel/apps/PRIVATE/Kratos/products/MPM.mk
+endif
 
 # vTunes binaires (not for user builds)
 -include vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/bin/sepbin.mk

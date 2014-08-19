@@ -8,7 +8,7 @@
 /dev/ttyPTI1              0660   root       radio
 /dev/ttyGS0               0660   root       radio
 /dev/mdmTrace             0660   root       radio
-/dev/mdm_ctrl             0660   root       radio
+/dev/mdm_ctrl*            0660   root       radio
 /dev/ttyIFX0              0660   root       radio
 /dev/ttyIFX1              0660   root       radio
 
@@ -42,6 +42,7 @@
 /dev/meimm                              0660   system     security
 
 # Android sync framework sw driver
+/dev/pvr_sync                            0666   system     system
 /dev/sw_sync                            0660   system     system
 
 # NFCC devices
@@ -73,8 +74,6 @@ uevent:sdio:c*v024Cd*	setprop wlan.driver.vendor rtl
 
 # Modem
 uevent:usb:v1519p0452d* setprop sys.usb.modemevt 1
-uevent:usb:v1519p0421d* setprop sys.usb.modemevt 1
-uevent:usb:v1519p1451d* setprop sys.usb.modemevt 1
 
 # Define ro.nfc.nfcc for different vendors
 uevent:i2c:pn54*        setprop ro.nfc.nfcc pn547

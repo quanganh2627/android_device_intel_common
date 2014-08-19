@@ -12,7 +12,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 #    ro.hwui.drop_shadow_cache_size=2.0f
 #    ro.hwui.fbo_cache_size=16
 
-#    ro.hwui.texture_cache_flush_rate=0.6f
+#    ro.hwui.texture_cache_flushrate=0.6f
 
 #    ro.hwui.text_small_cache_width=1024
 #    ro.hwui.text_small_cache_height=256

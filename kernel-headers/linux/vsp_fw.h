@@ -207,360 +207,341 @@ enum VssStatus {
  VssCorruptFramecontinue_VP8 = 0x7
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
+enum VssWiDi_ComposeStatus {
+ VssInvalidFrameParameters = 1,
+ VssInitFailure,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+ VssReserved
+};
+enum BypassMode {
+ BP_NONE = 0,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+ BP_BLEND,
+ BP_UPSCALE,
+ BP_YUV
+};
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 enum FrcResponseType {
  VssOutputSurfaceFreeResponse = 0x0000F001,
  VssOutputSurfaceCrcResponse = 0x0000F002
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 enum vsp_format {
  VSP_NV12,
  VSP_YV12,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  VSP_UYVY,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  VSP_YUY2,
  VSP_NV11,
  VSP_NV16,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  VSP_IYUV,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  VSP_TYPE_ERROR
 };
 struct vsp_data {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int fw_state;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int uninit_req;
 };
 #define VSP_SECURE_BOOT_MAGIC_NR 0xb0070001
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 enum vsp_processor {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  vsp_sp0 = 0,
  vsp_sp1 = 1,
  vsp_vp0 = 2,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  vsp_vp1 = 3,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  vsp_mea = 4
 };
 struct vsp_secure_boot_header {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int magic_number;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int boot_text_offset;
  unsigned int boot_text_reg;
  unsigned int boot_icache_value;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int boot_icache_reg;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int boot_pc_value;
  unsigned int boot_pc_reg;
  unsigned int ma_header_offset;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int ma_header_reg;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int boot_start_value;
  unsigned int boot_start_reg;
 };
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define VSP_MULTI_APP_MAGIC_NR 0xb10b0005
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define VSP_MULTI_APP_MAX_APPS 16
 #define VSP_MULTI_APP_MAX_CONTEXTS 32
 #define VSP_API_GENERIC_CONTEXT_ID (0xffffffff)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct vsp_multi_app_blob_data {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int magic_number;
  unsigned int offset_from_start;
  unsigned int imr_state_buffer_addr;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int imr_state_buffer_size;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int apps_default_context_buffer_size;
  unsigned int genboot_helper_prog_offset;
  unsigned int application_blob_offsets[VSP_MULTI_APP_MAX_APPS];
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct vsp_multi_app_context_settings {
  unsigned int app_id;
  unsigned int usage;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct vsp_multi_app_imr_header {
  unsigned int vsp_and_imr_state;
  unsigned int reserved_1;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int reserved_2;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int reserved_3;
  unsigned int reserved_4;
  unsigned int reserved_5;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int reserved_6;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int reserved_7;
  struct vsp_multi_app_context_settings context_settings[VSP_MULTI_APP_MAX_CONTEXTS];
 };
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 enum vsp_imr_state{
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  vsp_imr_uninitialized = 0,
  vsp_imr_safe_to_resume = 1,
  vsp_imr_initialized = 2,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  vsp_imr_app_is_running = 3
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
 enum vsp_ctrl_reg_addr {
  VSP_SETTING_ADDR_REG = 3,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  VSP_SECBOOT_DEBUG_REG = 4,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  VSP_ENTRY_KIND_REG = 5,
  VSP_POWER_SAVING_MODE_REG = 6,
  VSP_MMU_TLB_SOFT_INVALIDATE_REG = 7,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  VSP_CMD_QUEUE_RD_REG = 12,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  VSP_CMD_QUEUE_WR_REG = 13,
  VSP_ACK_QUEUE_RD_REG = 14,
  VSP_ACK_QUEUE_WR_REG = 15
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct vsp_ctrl_reg {
  unsigned int reserved_2;
  unsigned int setting_addr;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int secboot_debug;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int entry_kind;
  unsigned int power_saving_mode;
  unsigned int mmu_tlb_soft_invalidate;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int reserved_8;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int reserved_9;
  unsigned int reserved_10;
  unsigned int reserved_11;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int cmd_rd;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int cmd_wr;
  unsigned int ack_rd;
  unsigned int ack_wr;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct vsp_settings_t {
  unsigned int reserved0;
  unsigned int command_queue_size;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int command_queue_addr;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int response_queue_size;
  unsigned int response_queue_addr;
  unsigned int reserved5;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int reserved6;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int reserved7;
 };
 enum vsp_context_usage {
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  vsp_context_unused = 0,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  vsp_context_deinit = 1,
  vsp_context_starting = 16,
  vsp_context_in_use = 17
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define VSP_SETTINGS_INITIALIZER {0, 0, 0, 0, 0, 0, 0, 0}
 enum vsp_entry_kind {
  vsp_entry_booted = 0,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  vsp_entry_init = 1,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  vsp_entry_resume = 2,
  vsp_exit = 3
 };
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 enum vsp_power_saving_mode {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  vsp_always_on = 0,
  vsp_suspend_on_empty_queue = 1,
  vsp_hw_idle_on_empty_queue = 2,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  vsp_suspend_and_hw_idle_on_empty_queue
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
 struct VssProcPictureVP8 {
  uint32_t surface_id;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t irq;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t base;
  uint32_t base_uv;
  uint32_t height;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t width;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t stride;
  uint32_t format;
 };
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 typedef enum {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  vss_vp8enc_seq_param_recon_buffer_mode_per_seq = 0,
  vss_vp8enc_seq_param_recon_buffer_mode_per_pic,
  vss_vp8enc_seq_param_recon_buffer_mode_cnt
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } vss_vp8enc_seq_param_recon_buffer_mode_t;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct VssVp8encSequenceParameterBuffer {
  uint32_t frame_width;
  uint32_t frame_height;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t frame_rate;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t error_resilient;
  uint32_t num_token_partitions;
  uint32_t kf_mode;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t kf_min_dist;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t kf_max_dist;
  uint32_t rc_target_bitrate;
  uint32_t rc_min_quantizer;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t rc_max_quantizer;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t rc_undershoot_pct;
  uint32_t rc_overshoot_pct;
  uint32_t rc_end_usage;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t rc_buf_sz;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t rc_buf_initial_sz;
  uint32_t rc_buf_optimal_sz;
  uint32_t max_intra_rate;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t cyclic_intra_refresh;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t concatenate_partitions;
  uint32_t recon_buffer_mode;
  uint32_t generate_skip_frames;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t max_num_dropped_frames;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t ts_number_layers;
  uint32_t ts_target_bitrate[3];
  uint32_t ts_rate_decimator[3];
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t ts_periodicity;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint8_t ts_layer_id[32];
  struct VssProcPictureVP8 ref_frame_buffers[4];
 };
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct VssVp8encEncodedFrame {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t frame_size;
  uint32_t status;
  uint32_t partitions;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t partition_size[9];
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t partition_start[9];
  uint32_t segments;
  uint32_t quantizer[4];
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t frame_flags;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t partition_id;
  uint32_t buffer_level[3];
  uint32_t quality;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t overflow_bytes;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t surfaceId_of_ref_frame[4];
  uint32_t reserved[15];
  uint32_t coded_data[1];
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct VssVp8encPictureParameterBuffer {
  struct VssProcPictureVP8 input_frame;
  struct VssProcPictureVP8 recon_frame;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t version;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t pic_flags;
  uint32_t prev_frame_dropped;
  uint32_t cpuused;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t sharpness;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t num_token_partitions;
  uint32_t encoded_frame_size;
  uint32_t encoded_frame_base;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 enum VssVp8encCommandType {
  VssVp8encSetSequenceParametersCommand = 123,
  VssVp8encEncodeFrameCommand,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  VssVp8encEndOfSequenceCommand,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  VssVp8encInit,
  Vss_Sys_Ref_Frame_COMMAND
 };
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 enum VssGenCommandType {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  VssGenInitializeContext = 0xab01,
  VssGenDestroyContext = 0xab02
 };
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 enum VssWiDi_ComposeCommandType {
- VssWiDi_ComposeSetSequenceParametersCommand = 200,
- VssWiDi_ComposeFrameCommand,
- VssWiDi_ComposeEndOfSequenceCommand
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+ VssWiDi_ComposeFrameCommand = 200,
+ VssWiDi_ComposeEndOfSequenceCommand,
+ VssWiDi_ComposeInit
 };
-enum VssWiDi_ComposeResponseType {
- VssWiDi_ComposeSetSequenceParametersResponse = 250,
- VssWiDi_ComposeFrameResponse,
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+enum VssWiDi_ComposeResponseType {
+ VssWiDi_ComposeFrameResponse = 250,
 };
 enum VssWiDi_ColorFormat {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  MonoChrome = 0,
  YUV_4_2_0,
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  YUV_4_2_0_NV12,
  YUV_4_2_2,
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  YUV_4_4_4
 };
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 struct VssWiDi_ComposeSequenceParameterBuffer {
- unsigned int R_Buffer;
- unsigned int G_Buffer;
- unsigned int B_Buffer;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int RGBA_Buffer;
- unsigned int Y_Buffer;
- unsigned int UV_Buffer;
- unsigned int U_Buffer;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- unsigned int V_Buffer;
- unsigned int A_Buffer;
- int ActualWidth;
- int ActualHeight;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- int ProcessedWidth;
- int ProcessedHeight;
- int TotalMBCount;
- int Stride;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- int Video_IN_xsize;
- int Video_IN_ysize;
- int Video_IN_stride;
- int Video_IN_yuv_format;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+ uint32_t RGB_Width;
+ uint32_t RGB_Height;
+ uint32_t RGBA_IN_Stride;
  unsigned int Video_IN_Y_Buffer;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int Video_IN_UV_Buffer;
- unsigned int Video_IN_U_Buffer;
- unsigned int Video_IN_V_Buffer;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- int Video_OUT_xsize;
- int Video_OUT_ysize;
- int Video_OUT_stride;
- int Video_OUT_yuv_format;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+ uint32_t Video_IN_Y_stride;
  unsigned int Video_OUT_Y_Buffer;
  unsigned int Video_OUT_UV_Buffer;
- unsigned int Video_OUT_V_Buffer;
- unsigned int scaled_width;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- unsigned int scaled_height;
- unsigned int scalefactor_dx;
- unsigned int scalefactor_dy;
- int Is_Blending_Enabled;
+ uint32_t Video_OUT_xsize;
+ uint32_t Video_OUT_ysize;
+ uint32_t Video_OUT_Y_stride;
+ uint32_t ROI_scaling_ip_width;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- int ROI_width;
- int ROI_height;
- int ROI_x1;
- int ROI_y1;
+ uint32_t ROI_scaling_ip_height;
+ uint32_t ROI_scaling_ip_x;
+ uint32_t ROI_scaling_ip_y;
+ uint32_t ROI_scaling_op_width;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- int ROI_x2;
- int ROI_y2;
- int alpha1;
- int alpha2;
+ uint32_t ROI_scaling_op_height;
+ uint32_t ROI_scaling_op_x;
+ uint32_t ROI_scaling_op_y;
+ uint32_t YUVscalefactor_dx;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- int Is_video_the_back_ground;
- int Is_source_1_image_available;
- int Is_source_2_image_available;
- int Is_alpha_channel_available;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
- int Video_TotalMBCount;
- int CSC_FormatSelect;
- int CSC_InputFormatSelect;
- unsigned int bypass_mode;
+ uint32_t YUVscalefactor_dy;
+ uint32_t Is_video_the_back_ground;
+ uint32_t RGBA_Format;
+ uint32_t bypass_mode;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 };
 #pragma pack()
 #endif
+

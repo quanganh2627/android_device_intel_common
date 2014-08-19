@@ -41,7 +41,7 @@ INTEL_TEST_CAMERA := true
 
 BOARD_GPFLAG := 0x80000045
 
-#USE_PRIVATE_LIBM := true
+#TARGET_USE_PRIVATE_LIBM := true
 
 ifneq ($(wildcard vendor/intel/PRIVATE/cert/testkey*),)
 PRODUCT_DEFAULT_DEV_CERTIFICATE := vendor/intel/PRIVATE/cert/testkey
@@ -126,6 +126,10 @@ endif
 # Logcat use android kernel logger
 TARGET_USES_LOGD := false
 
+ifeq ($(BOARD_HAVE_SMALL_RAM),true)
+ADDITIONAL_DEFAULT_PROPERTIES += ro.config.low_ram=true
+endif
+
 # This will be replaced by the OEM/carrier with a string like android-<carrier>-us
 ADDITIONAL_DEFAULT_PROPERTIES += ro.com.google.clientidbase=android-google
 endif
@@ -208,7 +212,12 @@ IA_PANORAMA_VERSION := 1.0
 TARGET_USE_GR_STATIC_RECT_VB := true
 
 # customize the malloced address to be 16-byte aligned
-BOARD_MALLOC_ALIGNMENT := 16
+ifeq ($(MINIMIZE_MALLOC_ALIGNMENT),true)
+  BOARD_MALLOC_ALIGNMENT := 8
+else
+  BOARD_MALLOC_ALIGNMENT := 16
+endif
+
 
 # Enabled Bluetooth GAP test build in bluez
 BUILD_BT_GAP_TEST := true

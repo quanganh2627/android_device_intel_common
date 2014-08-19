@@ -14,7 +14,7 @@ PRODUCT_PACKAGES += \
     libmodemupdate \
     nvm_server \
     miu-app
-    # libmamgr-xmm \
+    # mamgr \
     # proxy \
     # mts
 

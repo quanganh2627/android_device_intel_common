@@ -28,3 +28,5 @@ ExclusiveCriterion MicMute			:	False			True
 ExclusiveCriterion CmeDirectStreamCapture	:	False			True
 ExclusiveCriterion CmeDirectStreamPlayback	:	False			True
 ExclusiveCriterion ScoResourceRequested		:	False			True
+ExclusiveCriterion CmeModemStreamCapture	:	False			True
+ExclusiveCriterion CmeModemStreamPlayback	:	False			True

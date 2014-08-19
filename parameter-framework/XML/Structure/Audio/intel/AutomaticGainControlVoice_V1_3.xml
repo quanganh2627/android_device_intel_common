@@ -37,23 +37,23 @@
         <IntegerParameter Name="far_power_center" Size="16" Min="0" Max="16384"
                           Description="This parameter sets the threshold below which reference line power is over-estimated by 'Far Over Est R0' and above which it is over-estimated by 'Far Over Est R1'. It is proportional to dBFS (for n dBFS please enter 16384+1024*n/6, where n shall only be negative)."/>
         <IntegerParameter Name="far_power_distorted" Size="16" Min="0" Max="16384"
-                          Description="This parameter sets the threshold below which reference line power is over-estimated by 'Far Over Est R1' and above which it is over-estimated by 'Far Over Est R2'. It is proportional to dBFS (for n dBFS please enter 16384+1024*n/6, where n shall only be negative)."/>
-        <FixedPointParameter Name="far_over_est_r0" Size="16" Min="0" Max="14666" Integral="7" Fractional="8"
-                          Description="This parameter multiplies the reference line power for power levels below 'Far Power Center'. It is expressed in Q7,8 (for factor n please enter 256*n)."/>
-        <FixedPointParameter Name="far_over_est_r1" Size="16" Min="0" Max="14666" Integral="7" Fractional="8"
-                          Description="This parameter multiplies the reference line power for power levels between 'Far Power Center' and 'Far Power Distorted'. It is expressed in Q7,8 (for factor n please enter 256*n)."/>
-        <FixedPointParameter Name="far_over_est_r2" Size="16" Min="0" Max="14666" Integral="7" Fractional="8"
-                          Description="This parameter multiplies the reference line power for power levels above 'Far Power Distorted'. It is expressed in Q7,8 (for factor n please enter 256*n)."/>
+                          Description="Distortion threshold on far-end power. Class 1 parameter. Default=12288"/>
+        <FixedPointParameter Name="far_over_est_r0" Size="16" Integral="7" Fractional="8"
+                          Description="Lower over-estimation ratio. Class 1 parameter. Min=0 Max=14666 Default=256"/>
+        <FixedPointParameter Name="far_over_est_r1" Size="16" Integral="7" Fractional="8"
+                          Description="Middle over-estimation ratio. Class 1 parameter. Min=0 Max=14666 Default=282"/>
+        <FixedPointParameter Name="far_over_est_r2" Size="16" Integral="7" Fractional="8"
+                          Description="Upper over-estimation ratio. Class 1 parameter. Min=0 Max=14666 Default=307"/>
         <IntegerParameter Name="trigger_shift_ri" Size="16" Min="-36" Max="36" Signed="true"
                           Description="This parameter allows controlling gain release speed when near-talk appears or when echo is finished. It smooths the trigger signal when rising."/>
         <IntegerParameter Name="trigger_shift_fa" Size="16" Min="-36" Max="36" Signed="true"
                           Description="This parameter allows controlling gain trigger speed when echo is starting. It smooths the trigger signal when falling."/>
         <IntegerParameter Name="trigger_over_est_ratio" Size="16" Min="0" Max="14666"
                           Description="This parameter controls the attenuation gain regarding the signal-to-echo ratio. It is expressed in Q7,8 (for factor n please enter 256*n). "/>
-        <FixedPointParameter Name="miss_alignment_thresh" Size="16" Min="0" Max="32767" Integral="5" Fractional="10"
-                          Description="This parameter limits the upper/lower boundaries of mis-alignment variable sent from AEC. It is expressed in Q5.10 format." />
-        <FixedPointParameter Name="miss_alignment_mult" Size="16" Min="0" Max="32767" Integral="2" Fractional="13"
-                          Description="This parameter acts as a over/under estimation for of mis-alignment variable sent from AEC. It is expressed in Q2.13 format."/>
+        <FixedPointParameter Name="miss_alignment_thresh" Size="16" Integral="5" Fractional="10"
+                          Description="This parameter limits the upper/lower boundaries of mis-alignment variable sent from AEC. It is expressed in Q5.10 format. Min=0 Max=32767" />
+        <FixedPointParameter Name="miss_alignment_mult" Size="16" Integral="2" Fractional="13"
+                          Description="This parameter acts as a over/under estimation for of mis-alignment variable sent from AEC. It is expressed in Q2.13 format. Min=0 Max=32767"/>
         <FixedPointParameter Name="fb_coefs" Size="16" Integral="0" Fractional="15" ArrayLength="7"
                           Description="Coefficient of the filter bank which separates the upper band (where AGC gain is applied) from the lower band (where no AGC is applied). It is expressed in Q0.15 format."/>
     </ComponentType>

@@ -53,6 +53,10 @@
      <add-resource type="bool" name="config_wifi_scanalways_support"></add-resource>
      <bool translatable="false" name="config_wifi_scanalways_support">true</bool>
 
+    <!-- Boolean indicating whether the wifi chipset supports multi-role multi-channel -->
+    <add-resource type="bool" name="config_wifi_multirole_multichannel_support"></add-resource>
+    <bool translatable="false" name="config_wifi_multirole_multichannel_support">true</bool>
+
     <!-- Boolean indicating whether the wifi chipset has dual frequency band support -->
     <bool translatable="false" name="config_wifi_dual_band_support">true</bool>
 
@@ -125,17 +129,22 @@
     <add-resource type="bool" name="config_track_get_operator_polling" />
     <bool name="config_track_get_operator_polling">true</bool>
 
-    <!-- set the IMS phone creator jar property -->
-    <add-resource type="string" name="ims_creator_jar_file_property" />
-    <string name="ims_creator_jar_file_property">/system/framework/com.intel.internal.telephony.ims.jar</string>
-    <!-- set the IMS phone creator class property -->
-    <add-resource type="string" name="ims_creator_class_property" />
-    <string name="ims_creator_class_property">com.intel.internal.telephony.ims.PhoneCreator</string>
+    <!-- set the VoLte phone creator jar property -->
+    <add-resource type="string" name="volte_creator_jar_file_property" />
+    <string name="volte_creator_jar_file_property">/system/framework/com.intel.internal.telephony.ims.jar</string>
+    <!-- set the volte phone creator class property -->
+    <add-resource type="string" name="volte_creator_class_property" />
+    <string name="volte_creator_class_property">com.intel.internal.telephony.ims.PhoneCreator</string>
     <!-- Set to true this config item, audio path opening sequence will be well triggered
          by framework in case of incoming call. -->
     <bool name="config_speed_up_audio_on_mt_calls">true</bool>
     <!-- If this is true, the screen will come on when you unplug usb/power/whatever. -->
     <bool name="config_unplugTurnsOnScreen">true</bool>
+
+    <!-- Configure mobile network MTU (MTU size - 1358 is the value recommended in 3GPP 23.060 for
+         both support of IPv4 and IPv6 traffic)>. The overlay default is set
+         here but each carrier may have a specific value set in an overlay config.xml file. -->
+    <integer name="config_mobile_mtu">1358</integer>
 
     <!-- When true, 5 level signal bar is shown in status bar -->
     <add-resource type="bool" name="config_signalStrengthExt" />

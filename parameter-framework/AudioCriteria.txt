@@ -23,3 +23,7 @@ ExclusiveCriterion BmfCameraOrientation    :  False             True
 ExclusiveCriterion BmfCameraLocation       :  False             True
 ExclusiveCriterion BmfAudioFromSource      :  False             True
 ExclusiveCriterion BmfAudioCommentary      :  False             True
+ExclusiveCriterion  FeNsActivated          :  False             True
+ExclusiveCriterion  SlvActivated           :  False             True
+ExclusiveCriterion  BwxActivated           :  False             True
+ExclusiveCriterion PersonalEqualization    :  None              Slight          Medium           Strong

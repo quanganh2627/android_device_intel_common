@@ -213,6 +213,8 @@ LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := XML/Structure/Audio/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
+ifeq ($(BOARD_HAVE_MODEM), true)
+
 include $(CLEAR_VARS)
 LOCAL_MODULE := IMCSubsystem.xml
 LOCAL_MODULE_TAGS := optional
@@ -220,6 +222,19 @@ LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
 LOCAL_SRC_FILES := XML/Structure/Audio/$(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
+
+else
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := IMCSubsystem.xml
+LOCAL_MODULE_STEM := IMCSubsystem.xml
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/parameter-framework/Structure/Audio
+LOCAL_SRC_FILES := XML/Structure/Audio/IMCSubsystem_nomodem.xml
+include $(BUILD_PREBUILT)
+
+endif
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := PowerSubsystem.xml
