@@ -92,7 +92,7 @@ int read_primary_file(unsigned char *buf, int size)
 
 	ret = read(fd, buf, size);
 	if (ret != size) {
-		LOGI("requested bytes:%d read bytes:%d\n", size, ret);
+		ALOGI("requested bytes:%d read bytes:%d\n", size, ret);
 		close(fd);
 		return ENODATA;
 	}
@@ -109,7 +109,7 @@ int read_xpwr_primary_file(unsigned char *buf, int size)
 
 	ret = read(fd, buf, size);
 	if (ret != size) {
-		LOGI("requested bytes:%d read bytes:%d\n", size, ret);
+		ALOGI("requested bytes:%d read bytes:%d\n", size, ret);
 		close(fd);
 		return ENODATA;
 	}
@@ -195,7 +195,7 @@ int get_battery_ps_name(char *ps_battery_path)
 				return 0;
 			}
 
-			LOGI("Power Supply type=%.8s name=%s\n", buf, ps_name);
+			ALOGI("Power Supply type=%.8s name=%s\n", buf, ps_name);
 		}
 	}
 	closedir(dir);
@@ -210,13 +210,13 @@ int get_battid(char *battid)
 	char battid_path[PATH_MAX];
 	ret =  get_battery_ps_name(ps_batt_name);
 	if (ret) {
-		LOGE("Error(%d) in get_battery_ps_name:%s\n", ret, strerror(ret));
+		ALOGE("Error(%d) in get_battery_ps_name:%s\n", ret, strerror(ret));
 		return ret;
 	}
 
 	snprintf(battid_path, sizeof(battid_path), "%s/%s/model_name", POWER_SUPPLY_PATH, ps_batt_name);
 
-	LOGI("Reading battid from %s\n", battid_path);
+	ALOGI("Reading battid from %s\n", battid_path);
 	fd = open(battid_path, O_RDONLY);
 
 	if (fd < 0)
@@ -239,13 +239,13 @@ int get_serial_num(char *serial_num)
 	char serial_num_path[PATH_MAX];
 	ret =  get_battery_ps_name(ps_batt_name);
 	if (ret) {
-		LOGE("Error(%d) in get_battery_ps_name:%s\n", ret, strerror(ret));
+		ALOGE("Error(%d) in get_battery_ps_name:%s\n", ret, strerror(ret));
 		return ret;
 	}
 
 	snprintf(serial_num_path, sizeof(serial_num_path), "%s/%s/serial_number", POWER_SUPPLY_PATH, ps_batt_name);
 
-	LOGI("Reading serial number from %s\n", serial_num_path);
+	ALOGI("Reading serial number from %s\n", serial_num_path);
 
 	fd = open(serial_num_path, O_RDONLY);
 
@@ -271,7 +271,7 @@ bool is_prim_cksum_ok(unsigned char *buf, int size)
 	pheader->cksum = 0x00;
 
 	if (checksum(buf, size) != pcksum) {
-		LOGE("Primary checksum failed:%x:%x\n",
+		ALOGE("Primary checksum failed:%x:%x\n",
 				checksum(buf, size), pcksum);
 		pheader->cksum = pcksum;
 		return FALSE;
@@ -284,7 +284,7 @@ bool is_prim_cksum_ok(unsigned char *buf, int size)
 bool is_sec_cksum_ok(struct sec_file_body *sbuf, int len)
 {
 	if (checksum(sbuf, len - 2) != sbuf->tbl.cksum) {
-		LOGE("Secondary checksum failed:%x:%x\n", checksum(sbuf, len - 2), sbuf->tbl.cksum);
+		ALOGE("Secondary checksum failed:%x:%x\n", checksum(sbuf, len - 2), sbuf->tbl.cksum);
 		return FALSE;
 	} else
 		return TRUE;
@@ -343,7 +343,7 @@ int get_primary_fg_config(unsigned char *pbuf,
 
 	ret = get_battery_ps_name(ps_batt_name);
 	if (ret) {
-		LOGE("Error(%d) in get_battery_ps_name:%s\n", ret, strerror(ret));
+		ALOGE("Error(%d) in get_battery_ps_name:%s\n", ret, strerror(ret));
 		return ret;
 	}
 
@@ -352,20 +352,20 @@ int get_primary_fg_config(unsigned char *pbuf,
 	ptr  = (unsigned char *)pbuf;
 	ptr += size;
 
-	LOGI("pheader->file_size =%d\n", pheader->file_size);
+	ALOGI("pheader->file_size =%d\n", pheader->file_size);
 
 	while (size < pheader->file_size) {
 
 		temp_tbl = (struct table_body *)ptr;
-		LOGI("Table[%d].name:%.8s FG.name=%s\n", i, temp_tbl->table_name, ps_batt_name);
-		LOGI("Table[%d].Battid:%.8s FG.Battid:%.8s\n",
+		ALOGI("Table[%d].name:%.8s FG.name=%s\n", i, temp_tbl->table_name, ps_batt_name);
+		ALOGI("Table[%d].Battid:%.8s FG.Battid:%.8s\n",
 				i, temp_tbl->battid, battid);
 		/* FIXME: Read Table name from power_supply sysfs */
 		if (!strncmp(temp_tbl->table_name, ps_batt_name,
 					MAX_TABLE_NAME_SIZE)) {
 			if (!strncmp(temp_tbl->battid, battid,
 						MODEL_NAME_SIZE)) {
-				LOGI("Matching table_name and battid:%.8s:%.8s\n", temp_tbl->table_name, temp_tbl->battid);
+				ALOGI("Matching table_name and battid:%.8s:%.8s\n", temp_tbl->table_name, temp_tbl->battid);
 				memcpy(tbl, temp_tbl, sizeof(*tbl));
 				return 0;
 			}
@@ -388,12 +388,12 @@ static int isCOS()
 
 	fd = open("/proc/cmdline", O_RDONLY);
 	if (fd < 0) {
-		LOGI("%s:Unable to read commandline\n", __func__);
+		ALOGI("%s:Unable to read commandline\n", __func__);
 	} else {
 		size = read(fd, cmdline_buf, MAX_COMMAND_LINE_BUF);
 		cmdline_buf[MAX_COMMAND_LINE_BUF - 1] = '\0';
 		if ( size <= 0) {
-			LOGI("%s:error to read commandline\n", __func__);
+			ALOGI("%s:error to read commandline\n", __func__);
 		} else {
 			ptr = strstr(cmdline_buf, "androidboot.mode=");
 			if (ptr != NULL) {
@@ -428,7 +428,7 @@ int get_fg_config_table(struct table_body *sec_tbl)
 	/* get battid */
 	ret = get_battid(battid);
 	if (ret) {
-		LOGE("Error(%d) in get_battid:%s\n", ret, strerror(ret));
+		ALOGE("Error(%d) in get_battid:%s\n", ret, strerror(ret));
 		return ret;
 	}
 
@@ -436,27 +436,27 @@ int get_fg_config_table(struct table_body *sec_tbl)
 	if (is_xpwr) {
 		xpwr_sbuf = malloc(XPWR_SEC_CONFIG_SIZE);
 		if (xpwr_sbuf == NULL) {
-			LOGE("%s:%d:insufficient memory\n", __func__, __LINE__);
+			ALOGE("%s:%d:insufficient memory\n", __func__, __LINE__);
 			return ENOMEM;
 		}
 		xpwr_pbuf = malloc(XPWR_CONFIG_SIZE);
 		if (xpwr_pbuf == NULL) {
 			free(xpwr_sbuf);
-			LOGE("%s:%d:insufficient memory\n", __func__, __LINE__);
+			ALOGE("%s:%d:insufficient memory\n", __func__, __LINE__);
 			return ENOMEM;
 		}
 		if (read_xpwr_secondary_file(xpwr_sbuf))
-			LOGE("Secondary file could not be read");
+			ALOGE("Secondary file could not be read");
 		else {
 			scksum = checksum(xpwr_sbuf, XPWR_SEC_CONFIG_SIZE - 2);
 			tmp = *(unsigned short *)&xpwr_sbuf[XPWR_SEC_CONFIG_SIZE - 2];
 			if (scksum != tmp)
-				LOGE("Secondary checksum mismatch");
+				ALOGE("Secondary checksum mismatch");
 			else
 				use_sec_file = 1;
 		}
 		if (read_xpwr_primary_file(xpwr_pbuf, XPWR_CONFIG_SIZE)) {
-			LOGE("Primary file could not be read");
+			ALOGE("Primary file could not be read");
 			free(xpwr_pbuf);
 			free(xpwr_sbuf);
 			return EINVAL;
@@ -464,9 +464,9 @@ int get_fg_config_table(struct table_body *sec_tbl)
 			pcksum = checksum(xpwr_pbuf, XPWR_CONFIG_SIZE - 2);
 			tmp = *(unsigned short *)&xpwr_pbuf[XPWR_CONFIG_SIZE - 2];
 			if (pcksum != tmp) {
-				LOGE("Primary checksum mismatch");
+				ALOGE("Primary checksum mismatch");
 				if (!use_sec_file) {
-					LOGE("Cannot get config from either file");
+					ALOGE("Cannot get config from either file");
 					free(xpwr_pbuf);
 					free(xpwr_sbuf);
 					return EINVAL;
@@ -475,10 +475,10 @@ int get_fg_config_table(struct table_body *sec_tbl)
 		}
 		if (use_sec_file && pcksum
 			== *(unsigned short *)&xpwr_sbuf[XPWR_SEC_CONFIG_SIZE - 4]) {
-			LOGI("Using data from secondary file");
+			ALOGI("Using data from secondary file");
 			ret = write_to_intel_fg_dev(xpwr_sbuf);
 		} else {
-			LOGI("Using data from primary file");
+			ALOGI("Using data from primary file");
 			ret = write_to_intel_fg_dev(xpwr_pbuf);
 		}
 		free(xpwr_pbuf);
@@ -489,47 +489,47 @@ int get_fg_config_table(struct table_body *sec_tbl)
 	/* get serial number */
 	ret = get_serial_num(serial_num);
 	if (ret) {
-		LOGE("Error(%d) in get_serial_num:%s\n", ret, strerror(ret));
+		ALOGE("Error(%d) in get_serial_num:%s\n", ret, strerror(ret));
 		return ret;
 	}
 
 	/* read primary header */
 	ret = read_primary_header(&pheader);
 	if (ret) {
-		LOGE("Error(%d) in read_primary_header:%s\n", ret, strerror(ret));
+		ALOGE("Error(%d) in read_primary_header:%s\n", ret, strerror(ret));
 		return ret;
 	}
 
 	pbuf = malloc(pheader.file_size);
 
 	if (pbuf == NULL) {
-		LOGE("%s:%d:insufficient memory\n", __func__, __LINE__);
+		ALOGE("%s:%d:insufficient memory\n", __func__, __LINE__);
 		return ENOMEM;
 	}
 
 	/*read primary file including header */
 	ret = read_primary_file(pbuf, pheader.file_size);
 	if (ret) {
-		LOGE("Error(%d) in read_primary:%s\n", ret, strerror(ret));
+		ALOGE("Error(%d) in read_primary:%s\n", ret, strerror(ret));
 		free(pbuf);
 		return ret;
 	}
 
-	LOGI("pheader.size=%d\n", pheader.file_size);
+	ALOGI("pheader.size=%d\n", pheader.file_size);
 
 	is_pcksum_ok = is_prim_cksum_ok(pbuf, pheader.file_size);
 
 	/* read secondary */
 	ret = read_secondary_file(&sbuf);
 	if (ret) {
-		LOGE("Error(%d) in read_secondary_file:%s\n", ret, strerror(ret));
+		ALOGE("Error(%d) in read_secondary_file:%s\n", ret, strerror(ret));
 		goto read_pri_config;
 	} else
 		is_scksum_ok = is_sec_cksum_ok(&sbuf, sizeof(sbuf.tbl));
 
 	/* If primary checksum mismatch return error */
 	if (!(is_pcksum_ok) && !(is_scksum_ok)) {
-		LOGE("primary and secondary checksum failed.\n");
+		ALOGE("primary and secondary checksum failed.\n");
 		free(pbuf);
 		return EINVAL;
 	}
@@ -537,18 +537,18 @@ int get_fg_config_table(struct table_body *sec_tbl)
 	/* Read primary config if secondary battid doesn't match or
 	secondary checksum is not ok or primary file has a new config */
 	if (!is_scksum_ok)
-		LOGE("Secondary checksum failed\n");
+		ALOGE("Secondary checksum failed\n");
 	else if (strncmp(sbuf.tbl.battid, battid, MODEL_NAME_SIZE))
-		LOGE("Secondary Battid doesn't match %s:%s\n", sbuf.tbl.battid, battid);
+		ALOGE("Secondary Battid doesn't match %s:%s\n", sbuf.tbl.battid, battid);
 	else if ((strlen(sbuf.serial_num) !=
 		strnlen(serial_num, MAX_SERIAL_NUM_SIZE+1))
 		|| (strncmp(sbuf.serial_num, serial_num,
 		strnlen(serial_num, MAX_SERIAL_NUM_SIZE+1))))
-		LOGE("Secondary serial number doesn't match %s:%s\n", sbuf.serial_num, serial_num);
+		ALOGE("Secondary serial number doesn't match %s:%s\n", sbuf.serial_num, serial_num);
 	else if (pheader.cksum != sbuf.pcksum)
-		LOGE("Secondary.primary_checksum mismatch. New primary file detected\n");
+		ALOGE("Secondary.primary_checksum mismatch. New primary file detected\n");
 	else {
-		LOGI("Using FG data from %s\n", SECONDARY_FILE);
+		ALOGI("Using FG data from %s\n", SECONDARY_FILE);
 		memcpy(sec_tbl, &sbuf.tbl, sizeof(*sec_tbl));
 		free(pbuf);
 		return 0;
@@ -560,16 +560,16 @@ read_pri_config:
 		return -EINVAL;
 	}
 
-	LOGI("Using FG data from %s\n", PRIMARY_FILE);
+	ALOGI("Using FG data from %s\n", PRIMARY_FILE);
 	ret = get_primary_fg_config(pbuf, &sbuf.tbl, battid);
 	if (ret) {
-		LOGE("Error(%d) in get_primary_fg_config:%s\n", ret, strerror(ret));
+		ALOGE("Error(%d) in get_primary_fg_config:%s\n", ret, strerror(ret));
 		free(pbuf);
 		return ret;
 	}
 	/* WA to  set fg_config.config_init = 1 in COS */
 	inCOS = isCOS();
-	LOGI("inCOS=%d\n", inCOS);
+	ALOGI("inCOS=%d\n", inCOS);
 	if(inCOS)
 		sbuf.tbl.config_init = 1;
 	/* copy the secondary table */
@@ -584,7 +584,7 @@ int write_xpwr_sec(unsigned char *buf)
 	unsigned char tmp[XPWR_SEC_CONFIG_SIZE];
 	fds = open(SECONDARY_FILE, O_WRONLY|O_CREAT, S_IRWXU|S_IRWXG|S_IRWXO);
 	if (fds < 0) {
-		LOGE("Error(%d) in opening %s:%s\n", errno, SECONDARY_FILE, strerror(errno));
+		ALOGE("Error(%d) in opening %s:%s\n", errno, SECONDARY_FILE, strerror(errno));
 		return errno;
 	}
 	if (!read_xpwr_primary_file(tmp, XPWR_CONFIG_SIZE))
@@ -593,12 +593,12 @@ int write_xpwr_sec(unsigned char *buf)
 	memcpy(buf + XPWR_SEC_CONFIG_SIZE - 2, &cksum, 2);
 	ret = write(fds, buf, XPWR_SEC_CONFIG_SIZE);
 	if (ret != XPWR_SEC_CONFIG_SIZE) {
-		LOGE("Error in writing secondary file\n");
+		ALOGE("Error in writing secondary file\n");
 		close(fds);
 		return ENODATA;
         }
         close(fds);
-        LOGI("Wrote %d bytes to %s Size of table=%d\n", ret, SECONDARY_FILE, XPWR_SEC_CONFIG_SIZE);
+        ALOGI("Wrote %d bytes to %s Size of table=%d\n", ret, SECONDARY_FILE, XPWR_SEC_CONFIG_SIZE);
         return 0;
 }
 
@@ -610,7 +610,7 @@ int write_sec_config(struct sec_file_body *sbuf)
 	/* open secondary file in write mode */
 	fds = open(SECONDARY_FILE, O_WRONLY|O_CREAT, S_IRWXU|S_IRWXG|S_IRWXO);
 	if (fds < 0) {
-		LOGE("Error(%d) in opening %s:%s\n", errno, SECONDARY_FILE, strerror(errno));
+		ALOGE("Error(%d) in opening %s:%s\n", errno, SECONDARY_FILE, strerror(errno));
 		return errno;
 	}
 
@@ -619,7 +619,7 @@ int write_sec_config(struct sec_file_body *sbuf)
 	can be read from primary, instead of reading from secondary.*/
 	ret = read_primary_header(&pheader);
 	if (ret) {
-		LOGE("Error(%d) in read_primary_header:%s\n", ret, strerror(ret));
+		ALOGE("Error(%d) in read_primary_header:%s\n", ret, strerror(ret));
 		close(fds);
 		return ENODATA;
 	}
@@ -637,7 +637,7 @@ int write_sec_config(struct sec_file_body *sbuf)
 	 */
 	 ret = get_serial_num(serial_num);
 	 if (ret) {
-		LOGE("Error(%d) in get_serial_num%s\n", ret, strerror(ret));
+		ALOGE("Error(%d) in get_serial_num%s\n", ret, strerror(ret));
 		close(fds);
 		return ENODATA;
 	}
@@ -648,12 +648,12 @@ int write_sec_config(struct sec_file_body *sbuf)
 	/* write secondary file */
 	ret = write(fds, sbuf, sizeof(*sbuf));
 	if (ret != sizeof(*sbuf)) {
-		LOGE("Error in writing secondary file\n");
+		ALOGE("Error in writing secondary file\n");
 		close(fds);
 		return ENODATA;
 	}
 	close(fds);
-	LOGI("Wrote %d bytes to %s Size of table=%d\n", ret, SECONDARY_FILE, sizeof(sbuf->tbl));
+	ALOGI("Wrote %d bytes to %s Size of table=%d\n", ret, SECONDARY_FILE, sizeof(sbuf->tbl));
 	return 0;
 }
 
@@ -684,14 +684,14 @@ int  read_fg_write_sec()
 	if (!get_battery_ps_name(path) && is_xpwr) {
 		fdd = open(INTEL_FG_DEV_FILE, O_RDONLY);
 		if (fdd <0) {
-			LOGE("Error(%d) in opening %s:%s\n", errno,
+			ALOGE("Error(%d) in opening %s:%s\n", errno,
 				INTEL_FG_DEV_FILE, strerror(errno));
 			return errno;
 		}
 		ret = read(fdd, xpwr_sbuf, XPWR_CONFIG_SIZE - 2);
 		if (ret != XPWR_CONFIG_SIZE - 2) {
 			close(fdd);
-			LOGE("Error(%d) in reading %s:%s requested=%d read=%d\n", errno,
+			ALOGE("Error(%d) in reading %s:%s requested=%d read=%d\n", errno,
 							INTEL_FG_DEV_FILE, strerror(errno),
 							XPWR_CONFIG_SIZE - 2, ret);
 			if (ret < 0)
@@ -701,7 +701,7 @@ int  read_fg_write_sec()
 		}
 		ret = write_xpwr_sec(xpwr_sbuf);
 		if (ret)
-			LOGE("Eror in writing to secondary file");
+			ALOGE("Eror in writing to secondary file");
 		close(fdd);
 		return ret;
 	}
@@ -709,7 +709,7 @@ int  read_fg_write_sec()
 	/*open device file */
 	fdd = open(DEV_FILE, O_RDONLY);
 	if (fdd < 0) {
-		LOGE("Error(%d) in opening %s:%s\n", errno, DEV_FILE, strerror(errno));
+		ALOGE("Error(%d) in opening %s:%s\n", errno, DEV_FILE, strerror(errno));
 		return errno;
 	}
 
@@ -718,7 +718,7 @@ int  read_fg_write_sec()
 	if (ret != (sizeof(sbuf.tbl) - sizeof(sbuf.tbl.cksum))) {
 		close(fdd);
 
-		LOGE("Error(%d) in reading %s:%s requested=%d read=%d\n", errno, DEV_FILE, strerror(errno),
+		ALOGE("Error(%d) in reading %s:%s requested=%d read=%d\n", errno, DEV_FILE, strerror(errno),
 				(int)(sizeof(sbuf.tbl) - sizeof(sbuf.tbl.cksum)), ret);
 		if (ret < 0)
 			return errno;
@@ -728,7 +728,7 @@ int  read_fg_write_sec()
 
 	ret = write_sec_config(&sbuf);
 	if (ret) {
-		LOGE("Error(%d) in saving secondary:%s\n", ret, strerror(ret));
+		ALOGE("Error(%d) in saving secondary:%s\n", ret, strerror(ret));
 	}
 
 	close(fdd);
@@ -768,33 +768,33 @@ int dump_config(struct table_body *config)
 	int char_table_size;
 
 
-	LOGI("table_type:0x%x\n", (unsigned int)config->table_type);
-	LOGI("size:0x%x\n", config->size);
-	LOGI("revision:0x%x\n", (int)config->rev);
-	LOGI("table_name:%.8s\n", config->table_name);
-	LOGI("battid:%.8s\n", config->battid);
-	LOGI("reserved:0x%x\n", (unsigned int)config->config_init);
+	ALOGI("table_type:0x%x\n", (unsigned int)config->table_type);
+	ALOGI("size:0x%x\n", config->size);
+	ALOGI("revision:0x%x\n", (int)config->rev);
+	ALOGI("table_name:%.8s\n", config->table_name);
+	ALOGI("battid:%.8s\n", config->battid);
+	ALOGI("reserved:0x%x\n", (unsigned int)config->config_init);
 
 	while (cfg_name[i] != NULL)
-		LOGI("%s:0x%x\n", cfg_name[i++], *data_ptr++);
+		ALOGI("%s:0x%x\n", cfg_name[i++], *data_ptr++);
 
 	data_ptr--;
 
 	char_table_size = MAX_FG_CONFIG_SIZE / sizeof(unsigned short);
 
 	for (i = (i - 1); i < char_table_size; ++i)
-		LOGI("cell_char_tbl[%d]:0x%x\n", i, *data_ptr++);
+		ALOGI("cell_char_tbl[%d]:0x%x\n", i, *data_ptr++);
 
-	LOGI("checksum:0x%x\n", config->cksum);
+	ALOGI("checksum:0x%x\n", config->cksum);
 	return 0;
 }
 void dump_primary_header(struct primary_header pheader)
 {
-	LOGI("Primary Header\n===================\n");
-	LOGI("revision=0x%x\n", (unsigned short) pheader.rev);
-	LOGI("file_size=0x%x\n", (unsigned short) pheader.file_size);
-	LOGI("checksum=0x%x\n", (unsigned short) pheader.cksum);
-	LOGI("reserved=0x%x\n", (unsigned short) pheader.res);
+	ALOGI("Primary Header\n===================\n");
+	ALOGI("revision=0x%x\n", (unsigned short) pheader.rev);
+	ALOGI("file_size=0x%x\n", (unsigned short) pheader.file_size);
+	ALOGI("checksum=0x%x\n", (unsigned short) pheader.cksum);
+	ALOGI("reserved=0x%x\n", (unsigned short) pheader.res);
 
 }
 
@@ -813,7 +813,7 @@ int dump_fg_config(char sel)
 		/* read primary header */
 		ret = read_primary_header(&pheader);
 		if (ret) {
-			LOGE("Error(%d) in read_primary_header:%s\n", ret, strerror(ret));
+			ALOGE("Error(%d) in read_primary_header:%s\n", ret, strerror(ret));
 			return ret;
 		}
 
@@ -822,7 +822,7 @@ int dump_fg_config(char sel)
 		pbuf = malloc(pheader.file_size);
 
 		if (pbuf == NULL) {
-			LOGE("%s:%d:Error: Insufficient memory\n",
+			ALOGE("%s:%d:Error: Insufficient memory\n",
 					__func__, __LINE__);
 			return ENOMEM;
 		}
@@ -830,17 +830,17 @@ int dump_fg_config(char sel)
 		/*read primary file including header */
 		ret = read_primary_file(pbuf, pheader.file_size);
 		if (ret) {
-			LOGE("Error(%d) in read_primary:%s\n", ret, strerror(ret));
+			ALOGE("Error(%d) in read_primary:%s\n", ret, strerror(ret));
 			free(pbuf);
 			return ret;
 		}
 
 		offset += sizeof(pheader);
 		while (offset < pheader.file_size) {
-			LOGI("Table:%d\n=========================\n", i++);
+			ALOGI("Table:%d\n=========================\n", i++);
 			ret = dump_config((struct table_body *)(pbuf + offset));
 			if (ret) {
-				LOGE("Error(%d) in dump_config:%s\n", ret, strerror(ret));
+				ALOGE("Error(%d) in dump_config:%s\n", ret, strerror(ret));
 				free(pbuf);
 				return ret;
 			}
@@ -855,12 +855,12 @@ int dump_fg_config(char sel)
 	else if (sel == '\0')
 		ret = get_fg_config_table(&sbuf.tbl);
 	else {
-		LOGE("Invalid argument with -d\n");
+		ALOGE("Invalid argument with -d\n");
 		return EINVAL;
 	}
 
 	if (ret) {
-		LOGE("Error(%d) in reading config:%s\n", ret, strerror(ret));
+		ALOGE("Error(%d) in reading config:%s\n", ret, strerror(ret));
 		return ret;
 	}
 	return dump_config(&sbuf.tbl);
@@ -868,12 +868,12 @@ int dump_fg_config(char sel)
 
 void print_help(void)
 {
-	LOGI("\nfg_conf [-w/-r/-d/-ds/-dp]\n");
-	LOGI("-w - Read config and write to fg interface\n");
-	LOGI("-r - Read config from fg and save in secondary\n");
-	LOGI("-d - Dump the matching table from secondary/primary\n");
-	LOGI("-ds - Dump secondaty file\n");
-	LOGI("-dp -  Dump primary file\n");
+	ALOGI("\nfg_conf [-w/-r/-d/-ds/-dp]\n");
+	ALOGI("-w - Read config and write to fg interface\n");
+	ALOGI("-r - Read config from fg and save in secondary\n");
+	ALOGI("-d - Dump the matching table from secondary/primary\n");
+	ALOGI("-ds - Dump secondaty file\n");
+	ALOGI("-dp -  Dump primary file\n");
 
 }
 
@@ -881,7 +881,7 @@ int main(int argc, char *argv[])
 {
 	int ret = 0;
 	if (argc != 2) {
-		LOGE("Invalid argument list\n");
+		ALOGE("Invalid argument list\n");
 		return -EINVAL;
 	}
 
@@ -889,42 +889,42 @@ int main(int argc, char *argv[])
 		switch (argv[1][1]) {
 
 		case 'w':
-			LOGI("Invoked with -w\n");
+			ALOGI("Invoked with -w\n");
 			ret = write_fgdev_config();
 			if (ret) {
-				LOGE("Error(%d) in write_fgdev_config\n", ret);
+				ALOGE("Error(%d) in write_fgdev_config\n", ret);
 				return ret;
 			}
-			LOGI("Restored FG data successfully\n");
+			ALOGI("Restored FG data successfully\n");
 
 			break;
 		case 'r':
-			LOGI("Invoked with -r\n");
+			ALOGI("Invoked with -r\n");
 			ret = read_fg_write_sec();
 			if (ret) {
-				LOGE("Error(%d) in read_fg_write_sec\n", ret);
+				ALOGE("Error(%d) in read_fg_write_sec\n", ret);
 				return ret;
 			}
-			LOGI("Saved FG data successfully in %s\n", SECONDARY_FILE);
+			ALOGI("Saved FG data successfully in %s\n", SECONDARY_FILE);
 			break;
 		case 'd':
-			LOGI("Invoked with -d\n");
+			ALOGI("Invoked with -d\n");
 			ret =  dump_fg_config(argv[1][2]);
 			if (ret) {
-				LOGE("Error(%d) in dumping FG Config:%s\n", ret, strerror(ret));
+				ALOGE("Error(%d) in dumping FG Config:%s\n", ret, strerror(ret));
 				return ret;
 			}
 			break;
 		case 'h':
-			LOGI("Invoked with -h\n");
+			ALOGI("Invoked with -h\n");
 			print_help();
 			break;
 		default:
-			LOGE("Invoked with invalid argument\n");
+			ALOGE("Invoked with invalid argument\n");
 			return EINVAL;
 		}
 	} else  {
-		LOGE("Invoked with invalid argument\n");
+		ALOGE("Invoked with invalid argument\n");
 		return EINVAL;
 
 	}
