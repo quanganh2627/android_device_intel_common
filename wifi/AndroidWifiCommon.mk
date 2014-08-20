@@ -10,6 +10,7 @@ LOCAL_REQUIRED_MODULES :=          \
     libwpa_client                  \
     wpa_supplicant                 \
     hostapd                        \
+    wlan_prov                      \
     iw                             \
     init.wifi.rc                   \
     init.wifi.vendor.rc            \
