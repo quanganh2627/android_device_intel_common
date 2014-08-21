@@ -361,3 +361,6 @@ $(INSTALLED_RAMDISK_TARGET): build_kernel
 
 # external release
 include $(COMMON_PATH)/external/external.mk
+
+# Define platform battery healthd library
+BOARD_HAL_STATIC_LIBRARIES += libhealthd.intel
