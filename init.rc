@@ -515,6 +515,27 @@ service bootanim /system/bin/bootanimation
     disabled
     oneshot
 
+#persist color settings
+service persist_app /system/bin/igfxSettings
+    class main
+    user system
+    group system
+    disabled
+    oneshot
+
+on property:init.svc.bootanim=stopped
+    chown system system /sys/kernel/debug/dri/0/gamma_adjust
+    chown system system /sys/kernel/debug/dri/0/gamma_enable
+    chown system system /sys/kernel/debug/dri/0/csc_adjust
+    chown system system /sys/kernel/debug/dri/0/csc_enable
+    start persist_app
+
+on property:init.svc.persist_app=stopped
+    chown root root /sys/kernel/debug/dri/0/gamma_adjust
+    chown root root /sys/kernel/debug/dri/0/gamma_enable
+    chown root root /sys/kernel/debug/dri/0/csc_adjust
+    chown root root /sys/kernel/debug/dri/0/csc_enable
+
 service installd /system/bin/installd
     class main
     socket installd stream 600 system system
