@@ -25,7 +25,7 @@ endif
 include $(BUILD_PHONY_PACKAGE)
 
 # set this flag to true to use default AOSP bluedroid stack for WCS
-USE_AOSP_BLUEDROID := false
+USE_AOSP_BLUEDROID := true
 # set this flag to true to use WCS specific Bluetooth apk
 USE_SPECIFIC_BT_WCS := false
 
