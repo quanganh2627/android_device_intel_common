@@ -123,8 +123,8 @@ endif
 # vTunes binaires (not for user builds)
 -include vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/bin/sepbin.mk
 
-# VISA binaires (not for user builds)
--include vendor/intel/tools/PRIVATE/debug_internal_tools/visadk/bin/visabin.mk
+# SocPerf binaires (not for user builds)
+-include vendor/intel/tools/PRIVATE/debug_internal_tools/socperfdk/bin/socperfbin.mk
 endif
 
 # Crashinfo
