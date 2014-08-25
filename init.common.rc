@@ -205,8 +205,8 @@ service charger_app /charger
     class charger
     user root
 
-#Enable Houdini for execuable
-service enable_houdini /system/bin/enable_houdini
+# Enable Native bridge for executables
+service enable_native_bridge /system/bin/enable_native_bridge
     class main
     oneshot
 

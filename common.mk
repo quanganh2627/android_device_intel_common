@@ -69,24 +69,8 @@ PRODUCT_PACKAGES += \
     product_name_mapping \
     sign_target_files_apks
 
-#Houdini prebuilt
-HOUDINI_ARM_PREBUILTS_DIR := vendor/intel/houdini/arm
-houdini_prebuilt_stamp := $(HOUDINI_ARM_PREBUILTS_DIR)/stamp-prebuilt-done
-houdini_prebuilt_done := $(wildcard $(houdini_prebuilt_stamp))
-ifneq ($(houdini_prebuilt_done),)
-INTEL_HOUDINI := true
-#Houdini
-PRODUCT_PACKAGES += libhoudini \
-    houdini \
-    enable_houdini \
-    disable_houdini \
-    check.xml \
-    cpuinfo \
-    cpuinfo.neon
-
-#houdini arm libraries
--include vendor/intel/houdini/houdini.mk
-endif
+# Houdini prebuilt
+$(call inherit-product-if-exists, vendor/intel/houdini/houdini.mk)
 
 #GMS package
 -include vendor/google/PRIVATE/gms/products/gms.mk
