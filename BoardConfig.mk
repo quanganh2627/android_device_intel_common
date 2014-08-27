@@ -47,6 +47,28 @@ ifneq ($(wildcard vendor/intel/PRIVATE/cert/testkey*),)
 PRODUCT_DEFAULT_DEV_CERTIFICATE := vendor/intel/PRIVATE/cert/testkey
 endif
 
+### See upstream patch:
+### https://android-review.googlesource.com/#/c/64639/
+### Define in bsp until merged
+# Macro to add include directories of modules in pathmap_INCL
+# relative to root of source tree. Usage:
+# $(call add-path-map, project1:path1)
+# OR
+# $(call add-path-map, \
+#        project1:path1 \
+#        project2:path1)
+#
+define add-path-map
+$(eval pathmap_INCL += \
+    $(foreach path, $(1), \
+        $(if $(filter $(firstword $(subst :, ,$(path))):%, $(pathmap_INCL)), \
+            $(error Duplicate AOSP path map $(path)), \
+            $(path) \
+         ) \
+     ) \
+ )
+endef
+
 #Extend the AOSP path includes
 $(call add-path-map, stlport:external/stlport/stlport \
         alsa-lib:external/alsa-lib/include \
