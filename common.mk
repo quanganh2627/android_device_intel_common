@@ -17,6 +17,10 @@ endif
 PRODUCT_PACKAGES += \
     power.$(PRODUCT_DEVICE)
 
+#Add capped freq release app
+PRODUCT_PACKAGES += \
+    bcu_cpufreqrel
+
 #Add SensorCal App
 PRODUCT_PACKAGES += \
     SensorCal
