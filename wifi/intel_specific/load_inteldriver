@@ -4,8 +4,6 @@ dir=`find /sys/devices/ -name mmc2`
 echo on > $dir/power/control
 echo on > $dir/../../power/control
 
-setprop config.disable_bluetooth true
-
 insmod /lib/modules/compat.ko
 insmod /lib/modules/cfg80211.ko
 insmod /lib/modules/mac80211.ko
