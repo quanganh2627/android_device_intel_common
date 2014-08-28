@@ -10,13 +10,13 @@ PRODUCT_PACKAGES += \
     modem \
     librapid-ril-core \
     librapid-ril-util \
+    mamgr \
     mmgr \
     libmodemupdate \
     nvm_server \
     miu-app \
     proxy  \
     mts
-    #mamgr \
 
 #OemTelephony for OEM HOOK API
 #PRODUCT_PACKAGES += \
