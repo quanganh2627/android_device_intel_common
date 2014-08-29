@@ -130,7 +130,11 @@ endif
 ##################################################
 
 include $(CLEAR_VARS)
+ifneq (,$(filter wifi_bcm_%,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
+LOCAL_MODULE := wpa_supplicant_overlay.conf
+else
 LOCAL_MODULE := wpa_supplicant.conf
+endif
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_PATH := $(TARGET_OUT_ETC)/wifi
