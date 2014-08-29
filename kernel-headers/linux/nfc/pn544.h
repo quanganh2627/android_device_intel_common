@@ -29,3 +29,4 @@ struct pn544_i2c_platform_data {
  unsigned int firm_gpio;
  unsigned int max_i2c_xfer_size;
 };
+

@@ -81,3 +81,4 @@ struct usb_functionfs_event {
 #define FUNCTIONFS_ENDPOINT_REVMAP _IO('g', 129)
 #endif
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+

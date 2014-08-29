@@ -96,3 +96,4 @@ struct kct_packet {
 #define foreach_attchmt(Event, Attchmt)   if ((Event)->attchmt_size)   for ((Attchmt) = (Event)->attachments;   (Attchmt) < (typeof(Attchmt))(((char *)   (Event)->attachments) +   (Event)->attchmt_size);   (Attchmt) = (typeof(Attchmt))KCT_ALIGN(((size_t)(Attchmt))   + sizeof(*(Attchmt)) +   (Attchmt)->size, ATTCHMT_ALIGNMENT))
 #endif
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+
