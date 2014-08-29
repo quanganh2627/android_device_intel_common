@@ -134,6 +134,11 @@ ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 export DISPLAY_DRIVER_DEBUG_INTERFACE=true
 endif
 
+# Enable build-time pre-optimization for userdebug
+ifeq ($(TARGET_BUILD_VARIANT),userdebug)
+WITH_DEXPREOPT := true
+endif
+
 # Enabling logs into file system for eng and user debug builds
 ifeq ($(PRODUCT_MANUFACTURER),intel)
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
