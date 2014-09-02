@@ -747,6 +747,8 @@ struct drm_psb_register_rw_arg {
  uint32_t b_wms;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t buffer_handle;
+ uint32_t backbuf_index;
+ uint32_t backbuf_addr;
  } overlay;
  uint32_t vsync_operation_mask;
  struct {
