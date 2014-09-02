@@ -24,7 +24,7 @@ PRODUCT_OUT ?= out/target/product/$(TARGET_DEVICE)
 HOST_OUT ?= out/host/$(HOST_OS)-$(HOST_PREBUILT_ARCH)
 
 # Customization of BOOTCLASSPATH and init.environ.rc
-PRODUCT_BOOT_JARS += com.intel.config
+PRODUCT_BOOT_JARS += com.intel.config com.intel.multidisplay
 ifeq ($(strip $(INTEL_FEATURE_AWARESERVICE)),true)
 PRODUCT_BOOT_JARS += com.intel.aware.awareservice
 endif
