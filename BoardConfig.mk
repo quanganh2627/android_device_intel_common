@@ -389,5 +389,8 @@ $(INSTALLED_RAMDISK_TARGET): build_kernel
 # external release
 include $(COMMON_PATH)/external/external.mk
 
+BOARD_CHARGER_ENABLE_SUSPEND := true
+BOARD_CHARGER_DISABLE_INIT_BLANK := true
+
 # Define platform battery healthd library
 BOARD_HAL_STATIC_LIBRARIES += libhealthd.intel
