@@ -11,5 +11,19 @@ log -p i -t config_init "Activating configuration $config"
 # read all FeatureTeam's init.props file
 for f in $CONFIG_PATH/*/$PROPS_FILE
 do
-    cat $f >> /config.prop
+    while read l; do
+
+        # Ignore empty lines and comments
+        case "$l" in
+            ''|'#'*)
+                continue
+                ;;
+        esac
+
+        # Set property
+        setprop `echo ${l/=/ }`
+
+    done < $f
 done
+
+echo > /config_init.done

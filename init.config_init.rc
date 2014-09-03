@@ -1,6 +1,6 @@
 on fs
     start config_init
-    wait /config.prop
+    wait /config_init.done
 
 service config_init /system/bin/sh /system/etc/catalog/config_init.sh
     disabled
