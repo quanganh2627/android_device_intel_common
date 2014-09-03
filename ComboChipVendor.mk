@@ -83,7 +83,7 @@ ifeq ($(BOARD_WIFI_VENDOR), marvell)
 #        BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_mrvl
 
         SW_BOARD_USR_WIFI := 88W8777
-        BOARD_WLAN_DEVICE := 88W8777
+        BOARD_WLAN_DEVICE := mrvl
 endif
 endif
 
