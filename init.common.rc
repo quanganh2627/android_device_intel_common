@@ -84,6 +84,7 @@ on fs
     mkdir /config/em
     chown system system /config/em
     chmod 0770 /config/em
+    chown system system /sys/class/usb_otg/otg0/a_bus_drop
 
 on post-fs
 # create virtual SD card at /mnt/sdcard, based on the /data/media directory
