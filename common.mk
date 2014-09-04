@@ -46,6 +46,7 @@ PRODUCT_PACKAGES_ENG += \
     SpeechRecorder
 
 #ituxd for intel thermal management
+ENABLE_ITUXD := true
 PRODUCT_PACKAGES += \
         ituxd
 
