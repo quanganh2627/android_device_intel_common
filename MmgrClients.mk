@@ -19,9 +19,8 @@ PRODUCT_PACKAGES += \
     mts
 
 #OemTelephony for OEM HOOK API
-#PRODUCT_PACKAGES += \
-    com.intel.internal.telephony.OemTelephony \
-    com.intel.internal.telephony.OemTelephony.xml
+PRODUCT_PACKAGES += \
+    OemTelephonyApp
 
 # AMTL : Android Modem Traces and Logs
 # TelephonyEventsNotifier
