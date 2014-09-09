@@ -40,7 +40,7 @@
 
 			"usbcard": {
 				"used": 1,
-				"fstab_entry" : [ "*/block/sda*",
+				"fstab_entry" : [ "*/block/sd*",
 				"\t",
 				"auto",
 				"\t",
