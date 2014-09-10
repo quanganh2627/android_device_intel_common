@@ -48,6 +48,7 @@ $(if $(filter $(1),$(_metatarget)), \
         $(foreach s, $(LOCAL_SRC_FILES) $(LOCAL_PREBUILT_MODULE_FILE), $(if $(findstring /PRIVATE/, $(s)), $(info >    [$(s)]))) \
         $(error Stop) \
     ) \
+    $(eval LOCAL_INSTALLED_MODULE_STEM := $(my_installed_module_stem)) \
     $(eval $(my).$(module_type).$(2).LOCAL_INSTALLED_STEM_MODULES := $($(my).$(module_type).$(2).LOCAL_INSTALLED_STEM_MODULES) $(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM)) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE := $(strip $(LOCAL_MODULE))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_IS_HOST_MODULE := $(strip $(LOCAL_IS_HOST_MODULE))) \
@@ -55,13 +56,13 @@ $(if $(filter $(1),$(_metatarget)), \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_TAGS := $(strip $(LOCAL_MODULE_TAGS))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).OVERRIDE_BUILT_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(OVERRIDE_BUILT_MODULE_PATH))))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_UNINSTALLABLE_MODULE := $(strip $(LOCAL_UNINSTALLABLE_MODULE))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_BUILT_MODULE_STEM := $(strip $(LOCAL_BUILT_MODULE_STEM))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_BUILT_MODULE_STEM := $(strip $(my_built_module_stem))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_STRIP_MODULE := ) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_REQUIRED_MODULES := $(strip $(LOCAL_REQUIRED_MODULES))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_SHARED_LIBRARIES := $(strip $(LOCAL_SHARED_LIBRARIES))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_INSTALLED_MODULE_STEM := $(strip $(LOCAL_INSTALLED_MODULE_STEM))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_CERTIFICATE := $(strip $(notdir $(LOCAL_CERTIFICATE)))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(LOCAL_MODULE_PATH))))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(my_module_path))))) \
     $(eval ### prebuilts must copy the original source file as some post-processing may happen on the built file - others copy the built file) \
     $(if $(filter prebuilt,$(_metatarget)), \
         $(eval _input_file := $(firstword $(LOCAL_PREBUILT_MODULE_FILE) $(LOCAL_PATH)/$(LOCAL_SRC_FILES))), \

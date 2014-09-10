@@ -113,6 +113,13 @@ $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(ACP) $(EXTERNAL_BUILD_SYSTEM)/generic_rules
 	@echo 'endif' >> $@
 endif
 
+# When odex is generated, .dex files are removed but .dex files should
+# be saved for external release as they can be used to rebuild a component
+# while odex can't. This requires patches in AOSP /build/ project.
+ifeq (INTEL_PREBUILTS_JAVA_BACKUP_DEX, true)
+EXT_JAVA_BACKUP_SUFFIX := .dex
+endif
+
 # this implement mapping between metatarget names, and what prebuilt is waiting for
 $(call external-gather-files,executable,EXECUTABLES)
 $(call external-gather-files,shared_library,LIBS)
@@ -120,9 +127,9 @@ $(call external-gather-files,static_library,LIBS)
 $(call external-gather-files,host_executable,HOST_EXECUTABLES)
 $(call external-gather-files,host_shared_library,HOST_LIBS)
 $(call external-gather-files,host_static_library,HOST_LIBS)
-$(call external-gather-files,java_library,JAVA_LIBRARIES,$(EXT_JAVALIB_SUFFIX))
+$(call external-gather-files,java_library,JAVA_LIBRARIES,$(EXT_JAVA_BACKUP_SUFFIX))
 $(call external-gather-files,static_java_library,STATIC_JAVA_LIBRARIES)
-$(call external-gather-files,package,PACKAGES,.dex)
+$(call external-gather-files,package,PACKAGES,$(EXT_JAVA_BACKUP_SUFFIX))
 $(call external-gather-files,prebuilt,PREBUILT)
 
 # some metatargets also include copy_headers implicitly
@@ -161,9 +168,11 @@ ifneq ($(filter shared_library executable raw_executable package java_library na
         ALL_MODULES.$(LOCAL_INSTALLED_MODULE).PREBUILT_MAKEFILE := \
             $(sort $(strip $(ALL_MODULES.$(LOCAL_INSTALLED_MODULE).PREBUILT_MAKEFILE)) $(LOCAL_MODULE_PREBUILT_MAKEFILE))
     else
+        # This brings all uninstallable modules (mainly static libs).
         INTEL_PREBUILTS_MAKEFILE := $(sort $(strip $(INTEL_PREBUILTS_MAKEFILE)) $(LOCAL_MODULE_PREBUILT_MAKEFILE))
     endif
 else
+    # This brings all makefiles containing copy_headers (and others?).
     INTEL_PREBUILTS_MAKEFILE := $(sort $(strip $(INTEL_PREBUILTS_MAKEFILE)) $(LOCAL_MODULE_PREBUILT_MAKEFILE))
 endif
 
