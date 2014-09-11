@@ -74,7 +74,7 @@ ifneq (,$(filter wifi_bcm_4330,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES))
 endif
 
 ifneq (,$(filter wifi_intel_%,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
-  -include linux/modules/wlan/PRIVATE/iwlwifi/iwl-stack-dev/Android.mk
+  -include $(TOP)/vendor/intel/hardware/PRIVATE/wlan/iwlwifi/Android.mk
 endif
 
 ifneq (,$(filter wifi_rtl_8723,$(PRODUCTS.$(INTERNAL_PRODUCT).PRODUCT_PACKAGES)))
