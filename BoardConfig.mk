@@ -322,29 +322,14 @@ ifeq ($(TARGET_PARTITIONING_SCHEME),"full-gpt")
 endif
 
 ifeq ($(TARGET_PARTITIONING_SCHEME), "osip-gpt")
-	TARGET_MAKE_NO_DEFAULT_BOOTIMAGE := true
-	TARGET_MAKE_INTEL_BOOTIMAGE := true
-	TARGET_BOOTIMAGE_USE_EXT2 ?= true
-
-
-	INSTALLED_BOOTIMAGE_TARGET := $(PRODUCT_OUT)/boot.img
-
-	MAKE_NO_DEFAULT_BOOTIMAGE_ITEMS = $(MKBOOTIMG) \
-		$(INTERNAL_BOOTIMAGE_FILES) \
-		$(PRODUCT_OUT)/bootstub
-
-	# CAUTION: DO NOT CHANGE the flavor of COMMON_BOOTIMAGE_ARGS.  It must remain
-	# a recursively-expanded variable, i.e., it must be defined using the '=' sign.
-	COMMON_BOOTIMAGE_ARGS = --sign-with $(TARGET_OS_SIGNING_METHOD) \
+INSTALLED_BOOTIMAGE_TARGET := $(PRODUCT_OUT)/boot.img
+BOARD_CUSTOM_MKBOOTIMG := $(SUPPORT_PATH)/mkbootimg
+BOARD_CUSTOM_MAKE_RECOVERY_PATCH := vendor/intel/hardware/libintelprov/make_recovery_patch
+MKBOOTIMG := $(SUPPORT_PATH)/mkbootimg
+BOARD_MKBOOTIMG_ARGS += --sign-with $(TARGET_OS_SIGNING_METHOD) \
 	--bootstub $(PRODUCT_OUT)/bootstub
-	MAKE_NO_DEFAULT_BOOTIMAGE = \
-		LOCAL_SIGN=$(LOCAL_SIGN) \
-		$(MKBOOTIMG) \
-		$(COMMON_BOOTIMAGE_ARGS) \
-		$(INTERNAL_BOOTIMAGE_ARGS) \
-		--type mos \
-		--output $(INSTALLED_BOOTIMAGE_TARGET) \
-		$(ADDITIONAL_BOOTIMAGE_ARGS)
+
+$(INSTALLED_BOOTIMAGE_TARGET): $(PRODUCT_OUT)/bootstub
 endif
 
 # If LOCAL_SIGN is not set, sign the OS locally (don't use signing server)
@@ -359,14 +344,6 @@ TARGET_BIOS_TYPE ?= "iafw"
 ifeq ($(TARGET_BIOS_TYPE),"uefi")
 INSTALLED_ESPIMAGE_TARGET := $(PRODUCT_OUT)/esp.img
 ESPUPDATE_ZIP_TARGET := $(PRODUCT_OUT)/esp.zip
-endif
-
-# MKBOOTIMG is the tool that is used by AOSP build system to
-# stitch kernel. We overide the default script to
-# adapt to out own IAFW format.
-ifeq ($(TARGET_PARTITIONING_SCHEME),"osip-gpt")
-BOARD_CUSTOM_MKBOOTIMG := $(SUPPORT_PATH)/mkbootimg
-MKBOOTIMG := $(SUPPORT_PATH)/mkbootimg
 endif
 
 # If the kernel source is present, AndroidBoard.mk will perform a kernel build.
