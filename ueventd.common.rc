@@ -2,8 +2,8 @@
 /dev/matrix                             0640   root       diag
 
 # modem tty node change to radio user can read and write
-/dev/gsmtty*              0660   radio      system
-/dev/ttyMFD*              0660   radio      system
+/dev/gsmtty*              0660   system     radio
+/dev/ttyMFD*              0660   system     radio
 /dev/ttyACM*              0660   root       radio
 /dev/ttyPTI1              0660   root       radio
 /dev/ttyGS0               0660   root       radio
@@ -38,8 +38,8 @@
 
 # Device needed by security functionalities
 /dev/sep_sec_driver                     0660   system     system
-/dev/mei                                0660   system     security
-/dev/meimm                              0660   system     security
+/dev/mei                                0660   system     system
+/dev/meimm                              0660   system     system
 
 # Android sync framework sw driver
 /dev/pvr_sync                            0666   system     system

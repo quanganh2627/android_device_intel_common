@@ -17,6 +17,10 @@ endif
 PRODUCT_PACKAGES += \
     power.$(PRODUCT_DEVICE)
 
+#Add capped freq release app
+PRODUCT_PACKAGES += \
+    bcu_cpufreqrel
+
 #Add SensorCal App
 PRODUCT_PACKAGES += \
     SensorCal
@@ -42,6 +46,7 @@ PRODUCT_PACKAGES_ENG += \
     SpeechRecorder
 
 #ituxd for intel thermal management
+ENABLE_ITUXD := true
 PRODUCT_PACKAGES += \
         ituxd
 

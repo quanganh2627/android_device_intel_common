@@ -629,6 +629,69 @@ struct drm_psb_stolen_memory_arg {
 #define VSYNC_DISABLE (1 << 1)
 #define VSYNC_WAIT (1 << 2)
 #define GET_VSYNC_COUNT (1 << 3)
+/* Polyphase filter coefficients */
+#define N_HORIZ_Y_TAPS 5
+#define N_VERT_Y_TAPS 3
+#define N_HORIZ_UV_TAPS 3
+#define N_VERT_UV_TAPS 3
+#define N_PHASES 17
+#define MAX_TAPS 5
+
+struct overlay_ctrl_blk {
+	uint32_t OBUF_0Y;
+	uint32_t OBUF_1Y;
+	uint32_t OBUF_0U;
+	uint32_t OBUF_0V;
+	uint32_t OBUF_1U;
+	uint32_t OBUF_1V;
+	uint32_t OSTRIDE;
+	uint32_t YRGB_VPH;
+	uint32_t UV_VPH;
+	uint32_t HORZ_PH;
+	uint32_t INIT_PHS;
+	uint32_t DWINPOS;
+	uint32_t DWINSZ;
+	uint32_t SWIDTH;
+	uint32_t SWIDTHSW;
+	uint32_t SHEIGHT;
+	uint32_t YRGBSCALE;
+	uint32_t UVSCALE;
+	uint32_t OCLRC0;
+	uint32_t OCLRC1;
+	uint32_t DCLRKV;
+	uint32_t DCLRKM;
+	uint32_t SCHRKVH;
+	uint32_t SCHRKVL;
+	uint32_t SCHRKEN;
+	uint32_t OCONFIG;
+	uint32_t OCMD;
+	uint32_t RESERVED1;
+	uint32_t OSTART_0Y;
+	uint32_t OSTART_1Y;
+	uint32_t OSTART_0U;
+	uint32_t OSTART_0V;
+	uint32_t OSTART_1U;
+	uint32_t OSTART_1V;
+	uint32_t OTILEOFF_0Y;
+	uint32_t OTILEOFF_1Y;
+	uint32_t OTILEOFF_0U;
+	uint32_t OTILEOFF_0V;
+	uint32_t OTILEOFF_1U;
+	uint32_t OTILEOFF_1V;
+	uint32_t FASTHSCALE;
+	uint32_t UVSCALEV;
+
+	uint32_t RESERVEDC[(0x200 - 0xA8) / 4];
+	uint16_t Y_VCOEFS[N_VERT_Y_TAPS * N_PHASES];
+	uint16_t RESERVEDD[0x100 / 2 - N_VERT_Y_TAPS * N_PHASES];
+	uint16_t Y_HCOEFS[N_HORIZ_Y_TAPS * N_PHASES];
+	uint16_t RESERVEDE[0x200 / 2 - N_HORIZ_Y_TAPS * N_PHASES];
+	uint16_t UV_VCOEFS[N_VERT_UV_TAPS * N_PHASES];
+	uint16_t RESERVEDF[0x100 / 2 - N_VERT_UV_TAPS * N_PHASES];
+	uint16_t UV_HCOEFS[N_HORIZ_UV_TAPS * N_PHASES];
+	uint16_t RESERVEDG[0x100 / 2 - N_HORIZ_UV_TAPS * N_PHASES];
+};
+
 struct intel_overlay_context {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t index;
@@ -747,6 +810,8 @@ struct drm_psb_register_rw_arg {
  uint32_t b_wms;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  uint32_t buffer_handle;
+ uint32_t backbuf_index;
+ unsigned long backbuf_addr;
  } overlay;
  uint32_t vsync_operation_mask;
  struct {

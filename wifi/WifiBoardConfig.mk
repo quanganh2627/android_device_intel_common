@@ -1,8 +1,5 @@
 include $(COMMON_PATH)/ComboChipVendor.mk
 
-#Used for custom wpa_supplicant.conf location (device/intel)
-CUSTOM_WPA_SUPPLICANT_CONF := true
-
 BOARD_WPA_SUPPLICANT_DRIVER    := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB      :=
 BOARD_HOSTAPD_DRIVER           := NL80211

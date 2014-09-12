@@ -5,7 +5,7 @@ InclusiveCriterion InputSources			:	Default			Mic			VoiceUplink	VoiceDownlink	Vo
 InclusiveCriterion TtyDirection			: 	Downlink 		Uplink
 InclusiveCriterion PreProcessorRequestedByActiveInput			: 	Aec 		Agc			Ns			Bmf			Wnr
 InclusiveCriterion StatesChanged		: 	AndroidMode		HasModem	ModemState	ModemAudioStatus	HacSelected	TtyDirection	BtEnable 	BtHeadsetNrEc	BtHeadsetBandType	CsvBandType	VoIPBandType	ImsBandType	InputDevices	OutputDevices	InputSources	OutputFlags	DirectStream	ScreenOn	ContextAwareness	FmEnabled	AlwaysListening BypassNonLinearPp BypassLinearPp MicMute PreProcessorRequestedByActiveInput LpalDevice	ScoResourceRequested
-InclusiveCriterion LpalDevice			:	Main			Headset
+ExclusiveCriterion LpalDevice			:	Communication Ambient Main SCO_Headset Headset AuxDigital VoiceCall Back
 ExclusiveCriterion AndroidMode			:	Normal			RingTone	InCsvCall	InVoipCall
 ExclusiveCriterion BtEnable			: 	False			True
 ExclusiveCriterion DirectStream			: 	False			True

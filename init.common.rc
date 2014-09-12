@@ -84,6 +84,7 @@ on fs
     mkdir /config/em
     chown system system /config/em
     chmod 0770 /config/em
+    chown system system /sys/class/usb_otg/otg0/a_bus_drop
 
 on post-fs
 # create virtual SD card at /mnt/sdcard, based on the /data/media directory
@@ -142,6 +143,9 @@ on post-fs-data
 
     chown system system /sys/class/drm/card0/gt_max_freq_mhz
 
+on property:sys.boot_completed=1
+    start bcu_cpufreqrel
+
 on charger
     chown system system /dev/dri/card0
     chmod 0666 /dev/dri/card0
@@ -157,6 +161,10 @@ on charger
     #default setting to enable charging in COS
     setprop sys.usb.config charging
 
+service bcu_cpufreqrel /system/bin/bcu_cpufreqrel
+    group system
+    oneshot
+    disabled
 
 service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
     class core

@@ -19,6 +19,7 @@ LOCAL_REQUIRED_MODULES :=          \
     dhcp6c.wlan0.stateless.conf    \
     dhcp6c.wlan0.stateful.conf     \
     wpa_supplicant.conf            \
+    wpa_supplicant_overlay.conf    \
     p2p_supplicant.conf            \
     hostapd.conf
 

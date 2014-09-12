@@ -16,6 +16,9 @@
  ***
  ****************************************************************************
  ****************************************************************************/
+#ifdef ATOMISP_CSS15
+#include "atomisp_css15.h"
+#else
 #ifndef _ATOM_ISP_H
 #define _ATOM_ISP_H
 #include <linux/types.h>
@@ -963,3 +966,4 @@ enum {
 #endif
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 
+#endif
