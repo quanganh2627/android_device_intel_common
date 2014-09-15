@@ -45,6 +45,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES_ENG += \
     SpeechRecorder
 
+#Tcpdump for debug buid variant
+PRODUCT_PACKAGES_DEBUG += \
+    tcpdump
+
 #ituxd for intel thermal management
 ENABLE_ITUXD := true
 PRODUCT_PACKAGES += \
