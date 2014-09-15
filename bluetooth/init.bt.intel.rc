@@ -23,3 +23,5 @@ service rfkill_bt /system/bin/sh /rfkill_bt.sh
     user root
     oneshot
 
+on boot
+   write /sys/devices/pci0000:00/0000:00:04.1/power/control on
