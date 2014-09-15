@@ -28,8 +28,8 @@ PRODUCT_PACKAGES += \
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 PRODUCT_PACKAGES += \
     Amtl \
-    libamtl_jni
-    #TelephonyEventsNotifier
+    libamtl_jni \
+    TelephonyEventsNotifier
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_CONF_PATH)/activate_trace_modem:system/bin/activate_trace_modem \
