@@ -1,7 +1,3 @@
-on post-fs
-    mkdir /factory/wlan 0770 system wifi
-    start wlan_prov
-
 on boot
     setprop wifi.interface wlan0
     setprop ap.interface wlan0
@@ -10,6 +6,8 @@ on boot
     insmod /lib/modules/compat.ko
     insmod /lib/modules/cfg80211.ko
     insmod /lib/modules/mac80211.ko
+    insmod /lib/modules/iwlwifi.ko
+    insmod /lib/modules/iwlmvm.ko
 
 on post-fs-data
     mkdir /system/etc/wifi 0770 wifi wifi
