@@ -161,6 +161,14 @@ on charger
     #default setting to enable charging in COS
     setprop sys.usb.config charging
 
+    start thermald
+
+service thermald /sbin/thermald
+    class core
+    oneshot
+    disabled
+    user root
+
 service bcu_cpufreqrel /system/bin/bcu_cpufreqrel
     group system
     oneshot
