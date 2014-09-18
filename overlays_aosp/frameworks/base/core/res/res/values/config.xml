@@ -43,4 +43,8 @@
     <!-- Close low battery warning when battery level reaches the lowBatteryWarningLevel
          plus this -->
     <integer name="config_lowBatteryCloseWarningBump">1</integer>
+    <!-- Configure mobile network MTU (MTU size - 1358 is the value recommended in 3GPP 23.060 for
+         both support of IPv4 and IPv6 traffic)>. The overlay default is set
+         here but each carrier may have a specific value set in an overlay config.xml file. -->
+    <integer name="config_mobile_mtu">1358</integer>
 </resources>
