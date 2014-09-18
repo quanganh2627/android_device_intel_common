@@ -8,13 +8,6 @@ $(foreach project, $(_prebuilt_projects),\
   $(if $(findstring $(project), $(LOCAL_MODULE_MAKEFILE)),\
     $(eval _need_prebuilts := true)))
 
-# We don't handle multi_prebuilt directly,
-# but handle prebuilt metatarget when it is called by original multi_prebuilt
-ifeq (multi_prebuilt, $(_metatarget))
-_need_prebuilts :=
-_metatarget :=
-endif
-
 # Do not release prebuilts for tests modules
 ifneq (,$(filter $(LOCAL_MODULE_TAGS), tests))
 _need_prebuilts :=
@@ -120,6 +113,14 @@ ifeq (INTEL_PREBUILTS_JAVA_BACKUP_DEX, true)
 EXT_JAVA_BACKUP_SUFFIX := .dex
 endif
 
+ifeq ($(_metatarget),static_java_library)
+ifneq (, $(wildcard $(common_javalib.jar)))
+$(call external-gather-files,static_java_library,STATIC_JAVA_LIBRARIES)
+generate_intel_prebuilts: $(LOCAL_MODULE_PREBUILT_MAKEFILE)
+endif
+endif
+
+ifneq (, $(wildcard $(LOCAL_BUILT_MODULE)))
 # this implement mapping between metatarget names, and what prebuilt is waiting for
 $(call external-gather-files,executable,EXECUTABLES)
 $(call external-gather-files,shared_library,LIBS)
@@ -128,12 +129,14 @@ $(call external-gather-files,host_executable,HOST_EXECUTABLES)
 $(call external-gather-files,host_shared_library,HOST_LIBS)
 $(call external-gather-files,host_static_library,HOST_LIBS)
 $(call external-gather-files,java_library,JAVA_LIBRARIES,$(EXT_JAVA_BACKUP_SUFFIX))
-$(call external-gather-files,static_java_library,STATIC_JAVA_LIBRARIES)
 $(call external-gather-files,package,PACKAGES,$(EXT_JAVA_BACKUP_SUFFIX))
 $(call external-gather-files,prebuilt,PREBUILT)
+generate_intel_prebuilts: $(LOCAL_MODULE_PREBUILT_MAKEFILE)
+endif
 
 # some metatargets also include copy_headers implicitly
-ifneq ($(filter copy_headers executable shared_library static_library,$(_metatarget)),)
+ifneq ($(LOCAL_COPY_HEADERS),)
+   generate_intel_prebuilts: $(LOCAL_MODULE_PREBUILT_MAKEFILE)
    $(my).copyfiles := $($(my).copyfiles) $(foreach h,$(LOCAL_COPY_HEADERS),$(LOCAL_PATH)/$(h):$(dir $(my))include/$(notdir $(h)))
 ifeq ($(LOCAL_COPY_HEADERS_TO),)
    LOCAL_COPY_HEADERS_TO := _none_
@@ -151,30 +154,16 @@ endif
 # another special case with phony_package, which is a way to define a metapackage that justs
 # depends on other packages
 ifneq ($(filter phony_package,$(_metatarget)),)
+ifneq (, $(wildcard $(LOCAL_BUILT_MODULE)))
+   generate_intel_prebuilts: $(LOCAL_MODULE_PREBUILT_MAKEFILE)
    $(my).phony := $($(my).phony) $(LOCAL_MODULE)
    $(my).phony.$(LOCAL_MODULE).LOCAL_REQUIRED_MODULES := $(LOCAL_REQUIRED_MODULES)
+endif
 endif
 
 ###################################### dependencies #########################################
 $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(LOCAL_MODULE_MAKEFILE)
 $(LOCAL_MODULE_PREBUILT_MAKEFILE): $(call several-files-deps, $($(LOCAL_MODULE_PREBUILT_MAKEFILE).copyfiles))
-# If the module is installable, we store the prebuilt makefile to ALL_MODULES.$(LOCAL_INSTALLED_MODULE).PREBUILT_MAKEFILE.
-# This will allow to filter dependencies of intel_prebuilts target, based on what is installed.
-# For other modules like static or host classes, which are not installable, we store the prebuilt makefile to a single variable.
-# This is the same for copy_headers metatarget which does not define a module.
-# We use the sort function to remove duplicates from dependencies list.
-ifneq ($(filter shared_library executable raw_executable package java_library native_test prebuilt phony_package,$(_metatarget)),)
-    ifndef LOCAL_UNINSTALLABLE_MODULE
-        ALL_MODULES.$(LOCAL_INSTALLED_MODULE).PREBUILT_MAKEFILE := \
-            $(sort $(strip $(ALL_MODULES.$(LOCAL_INSTALLED_MODULE).PREBUILT_MAKEFILE)) $(LOCAL_MODULE_PREBUILT_MAKEFILE))
-    else
-        # This brings all uninstallable modules (mainly static libs).
-        INTEL_PREBUILTS_MAKEFILE := $(sort $(strip $(INTEL_PREBUILTS_MAKEFILE)) $(LOCAL_MODULE_PREBUILT_MAKEFILE))
-    endif
-else
-    # This brings all makefiles containing copy_headers (and others?).
-    INTEL_PREBUILTS_MAKEFILE := $(sort $(strip $(INTEL_PREBUILTS_MAKEFILE)) $(LOCAL_MODULE_PREBUILT_MAKEFILE))
-endif
 
 ###################################### cleanups of local variables #########################################
 

@@ -1,18 +1,42 @@
-ifneq (,$(filter intel_prebuilts,$(MAKECMDGOALS)))
-# at the moment we only generate prebuilts for userdebug builds
+# At the moment we only generate prebuilts for userdebug builds
 # this is a safety feature, eng, user, and userdebug binaries should be the same
 # so intel_prebuilts should be used only for one variant anyway.
 ifeq (userdebug,$(TARGET_BUILD_VARIANT))
 
+
+# Prebuilts generation for external release is now done in two steps
+# 1/ A full build is done
+# 2/ Based on the files generated in 1/, prepare the prebuilts
+#
+# Some modules do specific processing when prebuilts are generated.
+# Therefore, specific variables must be set for both all prebuilt targets.
+#
+# * intel_prebuilts target is built together with full image
+#   It also restarts a make with publish_intel_prebuilts target
+# * generate_intel_prebuilts target will pick built files and package them
+#   in out folder.
+# * publish_intel_prebuilts target takes the prebuilts from out folder
+#   packages them in a zip and publishes the zip in pub
+
+
+ifneq (,$(filter \
+    intel_prebuilts generate_intel_prebuilts publish_intel_prebuilts, \
+    $(MAKECMDGOALS)))
 # GENERATE_INTEL_PREBUILTS is used to indicate we are generating intel_prebuilts
 # so that the tests above are not duplicated in different portions of the code.
 GENERATE_INTEL_PREBUILTS:=true
+
+TARGET_OUT_prebuilts := $(PRODUCT_OUT)/prebuilts/intel
 
 # for easy porting to legacy branches, we setup REF_PRODUCT_NAME
 ifeq ($(REF_PRODUCT_NAME),)
 REF_PRODUCT_NAME:=$(TARGET_PRODUCT)
 endif
 
+endif # intel_prebuilts || generate_intel_prebuilts || publish_intel_prebuilts
+
+
+ifneq (,$(filter generate_intel_prebuilts publish_intel_prebuilts,$(MAKECMDGOALS)))
 # Projects that require prebuilt are defined in manifest as follow:
 # - project belongs to bsp-priv manifest group
 # - and project has g_external annotation set to 'bin' ('g' meaning 'generic' customer)
@@ -66,7 +90,11 @@ $(if $(filter $(1),$(_metatarget)), \
     $(eval ### prebuilts must copy the original source file as some post-processing may happen on the built file - others copy the built file) \
     $(if $(filter prebuilt,$(_metatarget)), \
         $(eval _input_file := $(firstword $(LOCAL_PREBUILT_MODULE_FILE) $(LOCAL_PATH)/$(LOCAL_SRC_FILES))), \
-        $(eval _input_file := $(LOCAL_BUILT_MODULE)$(3)) \
+        $(if $(filter java_library,$(_metatarget)), \
+            $(eval ### get unstripped jar) \
+            $(eval _input_file := $(common_javalib.jar)), \
+            $(eval _input_file := $(LOCAL_BUILT_MODULE)$(3)) \
+        ) \
     ) \
     $(eval $(my).copyfiles := $($(my).copyfiles) $(_input_file):$(dir $(my))$(module_type)/$(LOCAL_INSTALLED_MODULE_STEM)) \
     $(eval ### for java libraries, also keep jar with classes) \
@@ -151,8 +179,6 @@ endef
 
 EXTERNAL_BUILD_SYSTEM=device/intel/common/external
 
-TARGET_OUT_prebuilts := $(PRODUCT_OUT)/prebuilts/intel
-
 # hook all the build makefiles with our own version
 # most of them are only symlinks to "unsupported.mk", which will generate an
 # error if included from a "PRIVATE" dir
@@ -171,7 +197,6 @@ BUILD_PACKAGE:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/package.mk
 BUILD_PHONY_PACKAGE:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/phony_package.mk
 BUILD_HOST_PREBUILT:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/host_prebuilt.mk
 BUILD_PREBUILT:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/prebuilt.mk
-BUILD_MULTI_PREBUILT:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/multi_prebuilt.mk
 BUILD_JAVA_LIBRARY:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/java_library.mk
 BUILD_STATIC_JAVA_LIBRARY:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/static_java_library.mk
 BUILD_HOST_JAVA_LIBRARY:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/host_java_library.mk
@@ -180,8 +205,11 @@ BUILD_NATIVE_TEST := $(EXTERNAL_BUILD_SYSTEM)/symlinks/native_test.mk
 BUILD_HOST_NATIVE_TEST := $(EXTERNAL_BUILD_SYSTEM)/symlinks/host_native_test.mk
 BUILD_CUSTOM_EXTERNAL := $(EXTERNAL_BUILD_SYSTEM)/symlinks/custom_external.mk
 
+# No need to define rules for wrappers around targets we already support
+# BUILD_MULTI_PREBUILT -> relies on BUILD_PREBUILT
+
+endif # generate_intel_prebuilts || publish_intel_prebuilts
 endif # userdebug
-endif # intel_prebuilt
 
 # Convenient function to translate the path from internal to external.
 # It's available regardless of the prebuilt generation.
