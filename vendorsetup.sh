@@ -19,7 +19,7 @@ function mbimg
         return
     fi
     echo ===[ Building Kernel ]===
-    (\cd "$T" && make build_kernel-nodeps $*)
+    (\cd "$T" && make build_kernel-nodeps $*) || return
     echo ===[ Generating Ramdisk and ${ANDROID_PRODUCT_OUT}/boot.img]===
     (\cd "$T" && make ramdisk-nodeps bootimage-nodeps)
 }
@@ -34,7 +34,7 @@ function mkgdb
     fi
     echo ===[ Building Kernel with KGDB support ]===
     (\cd "$T" && touch device/intel/common/kgdb_diffconfig && \
-        make KERNEL_DIFFCONFIG=device/intel/common/kgdb_diffconfig build_kernel-nodeps $*)
+        make KERNEL_DIFFCONFIG=device/intel/common/kgdb_diffconfig build_kernel-nodeps $*) || return
     echo ===[ Generating Ramdisk and ${ANDROID_PRODUCT_OUT}/boot.img]===
     (\cd "$T" && make ramdisk-nodeps bootimage-nodeps)
 }
