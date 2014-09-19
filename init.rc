@@ -18,7 +18,7 @@ import /init.aosp.rc
 service media /system/bin/mediaserver
     class main
     user media
-    group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc mediadrm radio
+    group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc mediadrm radio system
     ioprio rt 4
 
 service keystore /system/bin/keystore /data/misc/keystore
