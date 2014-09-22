@@ -40,4 +40,7 @@
     <bool name="config_useDevInputEventForAudioJack">true</bool>
     <!-- If this is true, the screen will come on when you unplug usb/power/whatever. -->
     <bool name="config_unplugTurnsOnScreen">true</bool>
+    <!-- Close low battery warning when battery level reaches the lowBatteryWarningLevel
+         plus this -->
+    <integer name="config_lowBatteryCloseWarningBump">1</integer>
 </resources>

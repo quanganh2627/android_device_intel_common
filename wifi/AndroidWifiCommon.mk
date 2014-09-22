@@ -29,7 +29,7 @@ LOCAL_REQUIRED_MODULES += \
 endif
 
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
-#LOCAL_REQUIRED_MODULES += \
+LOCAL_REQUIRED_MODULES += \
     wifi_wfa \
     hostapd_cli  \
     wpa_cli

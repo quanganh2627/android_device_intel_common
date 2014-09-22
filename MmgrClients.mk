@@ -19,17 +19,16 @@ PRODUCT_PACKAGES += \
     mts
 
 #OemTelephony for OEM HOOK API
-#PRODUCT_PACKAGES += \
-    com.intel.internal.telephony.OemTelephony \
-    com.intel.internal.telephony.OemTelephony.xml
+PRODUCT_PACKAGES += \
+    OemTelephonyApp
 
 # AMTL : Android Modem Traces and Logs
 # TelephonyEventsNotifier
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 PRODUCT_PACKAGES += \
     Amtl \
-    libamtl_jni
-    #TelephonyEventsNotifier
+    libamtl_jni \
+    TelephonyEventsNotifier
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_CONF_PATH)/activate_trace_modem:system/bin/activate_trace_modem \

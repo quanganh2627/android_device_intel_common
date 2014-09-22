@@ -58,7 +58,7 @@ service ueventd /sbin/ueventd
 
 service recovery /sbin/recovery
 
-service adbd /sbin/adbd recovery
+service adbd /sbin/adbd --device_banner=recovery
     disabled
 
 service thermald /sbin/thermald ROS

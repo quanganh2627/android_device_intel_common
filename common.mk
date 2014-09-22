@@ -45,6 +45,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES_ENG += \
     SpeechRecorder
 
+#Tcpdump for debug buid variant
+PRODUCT_PACKAGES_DEBUG += \
+    tcpdump
+
 #ituxd for intel thermal management
 ENABLE_ITUXD := true
 PRODUCT_PACKAGES += \
@@ -123,8 +127,8 @@ endif
 # vTunes binaires (not for user builds)
 -include vendor/intel/tools/PRIVATE/debug_internal_tools/sepdk/bin/sepbin.mk
 
-# VISA binaires (not for user builds)
--include vendor/intel/tools/PRIVATE/debug_internal_tools/visadk/bin/visabin.mk
+# SocPerf binaires (not for user builds)
+-include vendor/intel/tools/PRIVATE/debug_internal_tools/socperfdk/bin/socperfbin.mk
 endif
 
 # Crashinfo

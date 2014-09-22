@@ -51,12 +51,10 @@ supDomain: StreamRoute
 					OutputDevices Includes Ihf
 					OutputDevices Includes Headset
 					OutputDevices Includes Headphones
-					ALL
-						BtEnable Is True
-						ANY
-							OutputDevices Includes Sco
-							OutputDevices Includes ScoHeadset
-							OutputDevices Includes ScoCarkit
+					ANY
+						OutputDevices Includes Sco
+						OutputDevices Includes ScoHeadset
+						OutputDevices Includes ScoCarkit
 				ANY
 					AndroidMode Is Normal
 					AndroidMode Is RingTone
@@ -73,9 +71,7 @@ supDomain: StreamRoute
 
 			conf: Applicable
 				ANY
-					ALL
-						BtEnable Is True
-						InputDevices Includes ScoHeadset
+					InputDevices Includes ScoHeadset
 					InputDevices Includes Main
 					InputDevices Includes Headset
 					InputDevices Includes Back
