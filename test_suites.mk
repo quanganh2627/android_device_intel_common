@@ -2,5 +2,6 @@
 
 PRODUCT_PACKAGES_DEBUG += \
     crashlogd \
-    iperf
+    iperf \
+    peeknpoke
 
