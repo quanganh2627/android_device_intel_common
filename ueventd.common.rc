@@ -98,3 +98,79 @@ uevent:i2c:NXP547*      setprop ro.nfc.nfcc pn547
 /sys/devices/virtual/thermal/thermal_zone*      trip_point_1_temp    0644 system system
 /sys/devices/virtual/thermal/thermal_zone*      trip_point_0_temp    0644 system system
 /sys/devices/virtual/thermal/thermal_zone*      emul_temp    0644 system system
+
+# Permissions for Sensor Hub
+/dev/iio:device*                                                                               0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  name                                   0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  uevent                                 0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  dev                                    0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  trigger/current_trigger                0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  buffer/enable                          0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  buffer/length                          0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  power/control                          0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  power/runtime_active_time              0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  power/runtime_status                   0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  power/runtime_suspended_time           0660   system  system
+
+# SENSOR_TYPE_ACCELEROMETER
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_accel_hysteresis                    0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_accel_sampling_frequency            0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_accel_offset                        0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_accel_scale                         0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_accel_x_en            0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_accel_y_en            0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_accel_z_en            0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_accel_x_index         0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_accel_y_index         0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_accel_z_index         0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_accel_x_type          0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_accel_y_type          0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_accel_z_type          0660   system  system
+
+# SENSOR_TYPE_GYROSCOPE
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_anglvel_hysteresis                  0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_anglvel_sampling_frequency          0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_anglvel_offset                      0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_anglvel_scale                       0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_anglvel_x_en          0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_anglvel_y_en          0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_anglvel_z_en          0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_anglvel_x_index       0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_anglvel_y_index       0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_anglvel_z_index       0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_anglvel_x_type        0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_anglvel_y_type        0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_anglvel_z_type        0660   system  system
+
+# SENSOR_TYPE_MAGNETIC_FIELD
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_magn_hysteresis                     0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_magn_sampling_frequency             0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_magn_offset                         0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_magn_scale                          0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_magn_x_en             0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_magn_y_en             0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_magn_z_en             0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_magn_x_index          0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_magn_y_index          0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_magn_z_index          0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_magn_x_type           0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_magn_y_type           0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_magn_z_type           0660   system  system
+
+# SENSOR_TYPE_LIGHT
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_intensity_hysteresis                0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_intensity_sampling_frequency        0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_intensity_offset                    0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_intensity_scale                     0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_intensity_both_en     0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_intensity_both_index  0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_intensity_both_type   0660   system  system
+
+# SENSOR_TYPE_PRESSURE
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_pressure_hysteresis                 0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_pressure_sampling_frequency         0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_pressure_offset                     0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  in_pressure_scale                      0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_pressure_en           0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_pressure_index        0660   system  system
+/sys/devices/pci*/*/i2c-*/*/*/HID-SENSOR-*/iio:device*  scan_elements/in_pressure_type         0660   system  system
