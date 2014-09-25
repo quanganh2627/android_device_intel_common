@@ -54,8 +54,12 @@ PRODUCT_PACKAGES += \
         ituxd
 
 #AESNI for bouncycastle
+# will only be needed for Alpha test phase, and never for 64 bits
+# a final solution will be designed by SSG to replace it
+ifneq ($(BOARD_USE_64BIT_USERSPACE),true)
 PRODUCT_PACKAGES += \
         libaesni
+endif
 
 # copy boot animation resources
 PRODUCT_COPY_FILES += \
