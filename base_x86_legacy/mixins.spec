@@ -28,3 +28,4 @@ factory-scripts: true
 sepolicy: permissive
 charger: false
 disk-bus: sata-1f.2
+fastboot: none
