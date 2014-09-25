@@ -93,6 +93,7 @@ PRODUCT_COPY_FILES += \
 endif
 PRODUCT_COPY_FILES += \
         $(COMMON_PATH)/init.rc:root/init.rc \
+        system/core/rootdir/init.rc:root/init.aosp.rc \
         $(COMMON_PATH)/props.rc:root/props.rc \
         $(COMMON_PATH)/ueventd.modules.blacklist:root/ueventd.modules.blacklist
 
