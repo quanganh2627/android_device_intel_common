@@ -22,6 +22,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     OemTelephonyApp
 
+#SARManager
+PRODUCT_PACKAGES += \
+    SARManager
+
 # AMTL : Android Modem Traces and Logs
 # TelephonyEventsNotifier
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
