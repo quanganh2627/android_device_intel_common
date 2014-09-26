@@ -107,7 +107,7 @@ on property:service.adb.root=1
 on property:sys.usb.config=adb
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 8087
-    write /sys/class/android_usb/android0/idProduct 09ef
+    write /sys/class/android_usb/android0/idProduct 0fff
     write /sys/class/android_usb/android0/iProduct "Android-Phone"
     write /sys/class/android_usb/android0/functions $sys.usb.config
     write /sys/class/android_usb/android0/enable 1
