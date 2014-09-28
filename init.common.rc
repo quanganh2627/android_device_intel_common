@@ -12,6 +12,8 @@ on early-init
     chown system system /dev/dri/card0
     chmod 0666 /dev/dri/card0
     symlink /dev/dri/card0 /dev/card0
+    # Enable native bridge for target executables
+    mount binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc
 
 on init
     # set usb serial number
@@ -187,10 +189,14 @@ service charger_app /charger
     class charger
     user root
 
-# Enable Native bridge for executables
-service native_bridge /system/bin/enable_native_bridge
-    class main
-    oneshot
+# Enable native bridge for target executables
+on property:ro.enable.native.bridge.exec=1
+    copy /system/etc/binfmt_misc/arm_exe /proc/sys/fs/binfmt_misc/register
+    copy /system/etc/binfmt_misc/arm_dyn /proc/sys/fs/binfmt_misc/register
+
+on property:ro.enable.native.bridge.exec=0
+    copy /system/etc/binfmt_misc/disable /proc/sys/fs/binfmt_misc/arm_exe
+    copy /system/etc/binfmt_misc/disable /proc/sys/fs/binfmt_misc/arm_dyn
 
 # This property trigger has added to imitiate the previous behavior of "adb root".
 # The adb gadget driver used to reset the USB bus when the adbd daemon exited,
