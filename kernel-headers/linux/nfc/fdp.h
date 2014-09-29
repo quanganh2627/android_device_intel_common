@@ -22,3 +22,13 @@
 #define FIELDSPEAK_IOC_RESET _IO(FIELDSPEAK_IOC_MAGIC, 0)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define FIELDSPEAK_MAX_IOCTL_VALUE 0
+#define NFC_HOST_INT_GPIO "NFC-intr"
+#define NFC_RESET_GPIO "NFC-enable"
+struct fdp_i2c_platform_data {
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+ unsigned int irq_gpio;
+ unsigned int rst_gpio;
+ unsigned int max_i2c_xfer_size;
+};
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+

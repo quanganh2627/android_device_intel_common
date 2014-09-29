@@ -49,6 +49,9 @@ PRODUCT_PACKAGES_ENG += \
 PRODUCT_PACKAGES_DEBUG += \
     tcpdump
 
+PRODUCT_PACKAGES += \
+        thermald
+
 #ituxd for intel thermal management
 ENABLE_ITUXD := true
 PRODUCT_PACKAGES += \

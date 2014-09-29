@@ -18,8 +18,10 @@
  ****************************************************************************/
 #ifndef _VXD_DRM_H_
 #define _VXD_DRM_H_
+
 #include "drm.h"
-#if defined(__linux__) && !defined(__KERNEL__)
+
+#ifdef __linux__
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #include <stdint.h>
 #include <linux/types.h>
@@ -57,7 +59,7 @@
 #define PSB_RELOC_ALSHIFT_MASK 0xFFFF0000
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define PSB_RELOC_ALSHIFT_SHIFT 16
-#define PSB_RELOC_OP_OFFSET 0  
+#define PSB_RELOC_OP_OFFSET 0
 struct drm_psb_reloc {
  uint32_t reloc_op;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -264,3 +266,4 @@ struct drm_psb_getpageaddrs_arg {
  uint64_t gtt_offset;
 };
 #endif
+

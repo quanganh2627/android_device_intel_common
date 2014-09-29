@@ -34,5 +34,21 @@ struct mei_connect_client_data {
  struct mei_client out_client_properties;
  };
 };
+#define IOCTL_MEI_SETUP_DMA_BUF _IOWR('H' , 0x02, struct mei_client_dma_data)
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+#define IOCTL_MEI_UNSET_DMA_BUF _IOW('H' , 0x03, struct mei_client_dma_handle)
+struct mei_client_dma_data {
+ union {
+ unsigned long userptr;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+ };
+ __u32 length;
+ __u32 handle;
+};
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+struct mei_client_dma_handle {
+ __u32 handle;
+};
 #endif
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+
