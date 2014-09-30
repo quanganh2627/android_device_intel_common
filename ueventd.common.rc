@@ -58,30 +58,6 @@
 # cpufreq sysfs interfaces permission
 /sys/devices/system/cpu/cpu* cpufreq/scaling_max_freq  0664  system   system
 
-# Define intel modules args
-mod:iwlwifi		nvm_file=iwl_nvm.bin
-
-mod:8723bs		ifname=wlan0 if2name=p2p0 rtw_power_mgnt=2 rtw_hwpwrp_detect=1
-
-# Define wlan.driver.vendor for different vendors
-# bcm
-uevent:sdio:c*v02D0d*   setprop wlan.driver.vendor bcm
-# ti
-uevent:sdio:c*v0097d*   setprop wlan.driver.vendor ti
-# mtk
-uevent:sdio:c*v037Ad*   setprop wlan.driver.vendor mtk
-# intel
-uevent:sdio:c*v0089d*   setprop wlan.driver.vendor intel
-# realtek
-uevent:sdio:c*v024Cd*	setprop wlan.driver.vendor rtl
-
-# Modem
-uevent:usb:v1519p0452d* setprop sys.usb.modemevt 1
-
-# Define ro.nfc.nfcc for different vendors
-uevent:i2c:pn54*        setprop ro.nfc.nfcc pn547
-uevent:i2c:NXP547*      setprop ro.nfc.nfcc pn547
-
 # itux properties
 /sys/devices/virtual/thermal/cooling_device*    cur_state            0644 system system
 /sys/devices/virtual/thermal/thermal_zone*      trip_point_1_temp    0644 system system
