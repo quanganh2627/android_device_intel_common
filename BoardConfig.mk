@@ -309,6 +309,7 @@ ifeq ($(TARGET_PARTITIONING_SCHEME),"full-gpt")
 	BOARD_KERNEL_PAGESIZE ?= 2048
 	BOARD_KERNEL_BASE ?= 0x80000000
 
+ifneq ($(TARGET_USE_KERNELFLINGER),true)
 	ifneq (, $(findstring isu,$(TARGET_OS_SIGNING_METHOD)))
 		BOARD_MKBOOTIMG_ARGS += --signsize 1024 --signexec "isu_wrapper.sh isu $(TARGET_BOOT_IMAGE_PRIV_KEY) $(TARGET_BOOT_IMAGE_PUB_KEY)"
 	endif
@@ -316,6 +317,28 @@ ifeq ($(TARGET_PARTITIONING_SCHEME),"full-gpt")
 	ifeq ($(TARGET_OS_SIGNING_METHOD),uefi)
 		BOARD_MKBOOTIMG_ARGS += --signsize 256 --signexec "openssl dgst -sha256 -sign $(TARGET_BOOT_IMAGE_PRIV_KEY)"
 	endif
+endif
+
+ifeq ($(TARGET_USE_KERNELFLINGER),true)
+	INSTALLED_BOOTIMAGE_TARGET := $(PRODUCT_OUT)/boot.img
+
+	MAKE_NO_DEFAULT_BOOTIMAGE_ITEMS = $(MKBOOTIMG) \
+		$(INTERNAL_BOOTIMAGE_FILES) \
+		$(PRODUCT_OUT)/bootstub
+
+	# CAUTION: DO NOT CHANGE the flavor of COMMON_BOOTIMAGE_ARGS.  It must remain
+	# a recursively-expanded variable, i.e., it must be defined using the '=' sign.
+	COMMON_BOOTIMAGE_ARGS = --sign-with $(TARGET_OS_SIGNING_METHOD) \
+	--bootstub $(PRODUCT_OUT)/bootstub
+	MAKE_NO_DEFAULT_BOOTIMAGE = \
+		LOCAL_SIGN=$(LOCAL_SIGN) \
+		$(MKBOOTIMG) \
+		$(COMMON_BOOTIMAGE_ARGS) \
+		$(INTERNAL_BOOTIMAGE_ARGS) \
+		--type mos \
+		--output $(INSTALLED_BOOTIMAGE_TARGET) \
+		$(ADDITIONAL_BOOTIMAGE_ARGS)
+endif
 endif
 
 ifeq ($(TARGET_PARTITIONING_SCHEME), "osip-gpt")
@@ -364,6 +387,11 @@ endif
 ifeq ($(TARGET_PARTITIONING_SCHEME),"osip-gpt")
 BOARD_CUSTOM_MKBOOTIMG := $(SUPPORT_PATH)/mkbootimg
 MKBOOTIMG := $(SUPPORT_PATH)/mkbootimg
+endif
+
+ifeq ($(TARGET_USE_KERNELFLINGER),true)
+BOARD_CUSTOM_MKBOOTIMG := out/host/linux-x86/bin/mkbootimg
+MKBOOTIMG := out/host/linux-x86/bin/mkbootimg
 endif
 
 # If the kernel source is present, AndroidBoard.mk will perform a kernel build.
