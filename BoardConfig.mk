@@ -399,3 +399,12 @@ BOARD_CHARGER_DISABLE_INIT_BLANK := true
 
 # Define platform battery healthd library
 BOARD_HAL_STATIC_LIBRARIES += libhealthd.intel
+
+# SELinux
+ifeq ($(TARGET_BUILD_VARIANT),eng)
+cmdline_extra += selinux=0
+else ifeq ($(TARGET_BUILD_VARIANT),userdebug)
+cmdline_extra += androidboot.selinux=permissive
+else ifeq ($(TARGET_BUILD_VARIANT),user)
+cmdline_extra += selinux=0
+endif
