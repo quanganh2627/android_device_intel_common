@@ -28,6 +28,9 @@ PRODUCT_BOOT_JARS += com.intel.config com.intel.multidisplay
 ifeq ($(strip $(INTEL_FEATURE_AWARESERVICE)),true)
 PRODUCT_BOOT_JARS += com.intel.aware.awareservice
 endif
+ifeq ($(strip $(DOLBY_DAP)),true)
+PRODUCT_BOOT_JARS += dolby_ds
+endif
 
 # Appends path to ARM libs for Houdini
 PRODUCT_LIBRARY_PATH := $(PRODUCT_LIBRARY_PATH):/system/lib/arm
