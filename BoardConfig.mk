@@ -38,7 +38,6 @@ PRODUCT_LIBRARY_PATH := $(PRODUCT_LIBRARY_PATH):/system/lib/arm
 TARGET_OS_SIGNING_METHOD ?= isu
 
 FLASHFILE_NO_OTA := true
-INTEL_CRASHLOGD := true
 INTEL_INGREDIENTS_VERSIONS := true
 INTEL_CAMERA := false
 INTEL_TEST_CAMERA := true
@@ -408,3 +407,21 @@ cmdline_extra += androidboot.selinux=permissive
 else ifeq ($(TARGET_BUILD_VARIANT),user)
 cmdline_extra += selinux=0
 endif
+
+# crashlogd configuration
+CRASHLOGD_FULL_REPORT ?= true
+CRASHLOGD_COREDUMP ?= true
+ifeq ($(TARGET_BIOS_TYPE),"uefi")
+CRASHLOGD_EFILINUX ?= true
+endif
+ifeq ($(TARGET_BIOS_TYPE),"iafw")
+CRASHLOGD_FDK ?= true
+endif
+CRASHLOGD_MODULE_IPTRAK ?= true
+CRASHLOGD_MODULE_SPID ?= true
+CRASHLOGD_MODULE_BACKTRACE ?= false
+CRASHLOGD_MODULE_KCT ?= true
+CRASHLOGD_MODULE_MODEM ?= true
+CRASHLOGD_MODULE_FABRIC ?= true
+CRASHLOGD_MODULE_FW_UPDATE ?= true
+CRASHLOGD_MODULE_RAMDUMP ?= true
