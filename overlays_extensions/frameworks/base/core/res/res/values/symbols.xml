@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-/*
-** Copyright 2009, The Android Open Source Project
+/* Copyright 2012, The Android Open Source Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -16,10 +15,11 @@
 ** limitations under the License.
 */
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Configure Group Owner Intent used to perform WiFi Display P2P connection. -->
-    <integer name="config_groupOwnerIntentWifiDisplay">14</integer>
-    <!-- Boolean indicating whether the wifi chipset supports multi-role multi-channel -->
-    <add-resource type="bool" name="config_wifi_multirole_multichannel_support"></add-resource>
-    <bool translatable="false" name="config_wifi_multirole_multichannel_support">true</bool>
+<resources>
+
+  <!-- We don't want to publish private symbols in android.R as part of the
+       SDK.  Instead, put them here. -->
+  <private-symbols package="com.android.internal" />
+
+  <java-symbol type="bool" name="config_wifi_multirole_multichannel_support" />
 </resources>
