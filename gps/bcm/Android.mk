@@ -17,7 +17,6 @@ LOCAL_MODULE := gps_bcm_$(GPS_CHIP)
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     gps_common \
-    flp.$(TARGET_DEVICE) \
     gpscerd \
     gpsd \
     gps.conf \
