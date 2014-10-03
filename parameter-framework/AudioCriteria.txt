@@ -27,3 +27,4 @@ ExclusiveCriterion  FeNsActivated          :  False             True
 ExclusiveCriterion  SlvActivated           :  False             True
 ExclusiveCriterion  BwxActivated           :  False             True
 ExclusiveCriterion PersonalEqualization    :  None              Slight          Medium           Strong
+ExclusiveCriterion ModemAudioIsSpeech      :  False             True
