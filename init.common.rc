@@ -1,6 +1,5 @@
 import /init.watchdog.rc
 import /init.firmware.rc
-import /init.diskd.rc
 import /init.intel.feature.asf.rc
 import /init.intel.features.rc
 import /init.ksm.rc
