@@ -428,3 +428,6 @@ CRASHLOGD_MODULE_MODEM ?= true
 CRASHLOGD_MODULE_FABRIC ?= true
 CRASHLOGD_MODULE_FW_UPDATE ?= true
 CRASHLOGD_MODULE_RAMDUMP ?= true
+
+# Build a verified /system partition
+PRODUCT_SYSTEM_VERITY_PARTITION := /dev/block/by-name/system

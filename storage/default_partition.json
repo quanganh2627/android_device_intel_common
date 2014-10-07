@@ -202,7 +202,7 @@
 				"length": 0,
 				"mount_point": null,
 				"mount_options": "ro,noatime",
-				"fs_mgr": "wait"
+				"fs_mgr": "wait,verify"
 			},
 
 			"data":
