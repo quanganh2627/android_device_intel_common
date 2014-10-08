@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-/* Copyright 2014, Intel Corporation, All Rights Reserved
+/* //device/apps/common/assets/res/any/strings.xml
+**
+** Copyright 2014, Intel Corporation, All Rights Reserved
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -15,14 +17,11 @@
 ** limitations under the License.
 */
 -->
-<resources>
-
-  <!-- We don't want to publish private symbols in android.R as part of the
-       SDK.  Instead, put them here. -->
-  <private-symbols package="com.android.internal" />
-
-  <java-symbol type="bool" name="config_wifi_multirole_multichannel_support" />
-
-  <java-symbol type="string" name="serviceUnknown" />
-  <java-symbol type="string" name="CnapMmi" />
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<!-- Displayed when a phone feature is at unknown state. -->
+<add-resource type="string" name="serviceUnknown" />
+<string name="serviceUnknown">Service state is unknown.</string>
+<!-- Displayed as the title for a caller name presentation query. -->
+<add-resource type="string" name="CnapMmi" />
+<string name="CnapMmi">Incoming caller name presentation service</string>
 </resources>
