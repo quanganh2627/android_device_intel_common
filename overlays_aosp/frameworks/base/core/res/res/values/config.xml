@@ -62,4 +62,6 @@
        <item>hspap:32768,262144,1048576,4096,16384,262144</item>
        <item>lte:655360,1310720,2621440,327680,655360,1310720</item>
     </string-array>
+    <!-- Flag indicating which package name can access the persistent data partition -->
+    <string name="config_persistentDataPackageName" translatable="false">com.google.android.gms</string>
 </resources>

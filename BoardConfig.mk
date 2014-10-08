@@ -154,6 +154,9 @@ ADDITIONAL_DEFAULT_PROPERTIES += persist.service.profile.enable=1
 ADDITIONAL_DEFAULT_PROPERTIES += persist.service.kdumpd.enable=0
 endif
 
+#Add persistent property to enable factoryreset protection
+ADDITIONAL_DEFAULT_PROPERTIES += ro.frp.pst=/dev/block/by-name/persistent
+
 # Logcat use android kernel logger
 TARGET_USES_LOGD := false
 
