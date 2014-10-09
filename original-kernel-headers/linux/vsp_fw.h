@@ -726,6 +726,9 @@ struct VssWiDi_ComposeSequenceParameterBuffer {
 	uint32_t RGBA_Format;
 	/*Bypass mode*/
 	uint32_t bypass_mode;
+	/* Tiling*/
+	uint32_t Is_input_tiled;
+	uint32_t Is_output_tiled;
 };
 
 #pragma pack()
