@@ -141,7 +141,7 @@ endif
 
 # Enable build-time pre-optimization for userdebug
 ifeq ($(TARGET_BUILD_VARIANT),userdebug)
-WITH_DEXPREOPT := true
+WITH_DEXPREOPT := false
 endif
 
 # Enabling logs into file system for eng and user debug builds
