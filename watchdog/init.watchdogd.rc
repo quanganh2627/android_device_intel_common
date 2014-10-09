@@ -1,6 +1,7 @@
 service watchdogd /sbin/watchdogd 60 20
     class core
     oneshot
+    seclabel u:r:watchdogd:s0
 
 service wdogcounter /system/bin/sh /init.watchdog.sh
     class core
