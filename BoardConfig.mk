@@ -247,11 +247,7 @@ IA_PANORAMA_VERSION := 1.0
 TARGET_USE_GR_STATIC_RECT_VB := true
 
 # customize the malloced address to be 16-byte aligned
-ifeq ($(MINIMIZE_MALLOC_ALIGNMENT),true)
-  BOARD_MALLOC_ALIGNMENT := 8
-else
-  BOARD_MALLOC_ALIGNMENT := 16
-endif
+BOARD_MALLOC_ALIGNMENT := 16
 
 
 # Enabled Bluetooth GAP test build in bluez

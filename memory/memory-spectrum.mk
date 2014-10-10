@@ -11,7 +11,6 @@ endif
 
 ifneq (,$(filter true,$(BOARD_HAVE_MID_RAM) $(BOARD_HAVE_SMALL_RAM)))
   BOARD_HAVE_COMPACTION := true
-  MINIMIZE_MALLOC_ALIGNMENT := true
   BOARD_HAVE_KSM := true
   BOARD_HAVE_ZRAM := true
   LIMIT_READAHEAD := true
