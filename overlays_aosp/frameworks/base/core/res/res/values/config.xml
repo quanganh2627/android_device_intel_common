@@ -47,4 +47,9 @@
          both support of IPv4 and IPv6 traffic)>. The overlay default is set
          here but each carrier may have a specific value set in an overlay config.xml file. -->
     <integer name="config_mobile_mtu">1358</integer>
+    <!-- Boolean indicating whether the wifi chipset supports background scanning mechanism.
+         This mechanism allows the host to remain in suspend state and the dongle to actively
+         scan and wake the host when a configured SSID is detected by the dongle. This chipset
+         capability can provide power savings when wifi needs to be always kept on. -->
+    <bool translatable="false" name="config_wifi_background_scan_support">true</bool>
 </resources>

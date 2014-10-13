@@ -13,7 +13,6 @@ on property:ro.spid.gps.tty=ttyMFD1
     chown gps gps /dev/ttyMFD1
     chmod 0660 /sys/class/tty/ttyMFD1/../../power/control
     chown system system /sys/class/tty/ttyMFD1/../../power/control
-    write /sys/class/tty/ttyMFD1/../../power/control auto
     mkdir /dev/gps 0770 gps system
     symlink /dev/ttyMFD1 /dev/gps/ttyGPS
     symlink /sys/class/tty/ttyMFD1/../../power/control /dev/gps/ttyGPSPowerControl
@@ -23,7 +22,6 @@ on property:ro.spid.gps.tty=ttyMFD3
     chown gps gps /dev/ttyMFD3
     chmod 0660 /sys/class/tty/ttyMFD3/../../power/control
     chown system system /sys/class/tty/ttyMFD3/../../power/control
-    write /sys/class/tty/ttyMFD3/../../power/control auto
     mkdir /dev/gps 0770 gps system
     symlink /dev/ttyMFD3 /dev/gps/ttyGPS
     symlink /sys/class/tty/ttyMFD3/../../power/control /dev/gps/ttyGPSPowerControl
@@ -33,7 +31,6 @@ on property:ro.spid.gps.tty=ttyS2
     chown gps gps /dev/ttyS2
     chmod 0660 /sys/class/tty/ttyS2/../../power/control
     chown system system /sys/class/tty/ttyS2/../../power/control
-    write /sys/class/tty/ttyS2/../../power/control auto
     mkdir /dev/gps 0770 gps system
     symlink /dev/ttyS2 /dev/gps/ttyGPS
     symlink /sys/class/tty/ttyS2/../../power/control /dev/gps/ttyGPSPowerControl
@@ -47,4 +44,4 @@ service gpscerd /system/bin/gpscerd /data/gps/gps.cer
 service gpsd /system/bin/gpsd -c /system/etc/gps.xml
     class main
     user gps
-    group system inet radio sdcard_rw
+    group system inet radio sdcard_rw net_admin

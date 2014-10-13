@@ -120,7 +120,7 @@ ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 
 ifneq ($(NO_MPM),true)
 # MPM (formely Kratos) (not for user builds)
-#-include vendor/intel/apps/PRIVATE/Kratos/products/MPM.mk
+-include vendor/intel/apps/PRIVATE/Kratos/products/MPM.mk
 endif
 
 # vTunes binaires (not for user builds)
@@ -189,6 +189,10 @@ PRODUCT_PACKAGES += \
         securityfileservice \
         securitydeviceservice \
         SecurityManagerService
+
+# Intel Security Assist
+PRODUCT_PACKAGES += \
+	IntelSecurityAssist
 
 # This library is required for Intel's implementation of Dalvik
 # libpcgdvmjit is a part of Dalvik JIT compiler

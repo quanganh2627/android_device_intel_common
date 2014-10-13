@@ -1,4 +1,4 @@
-VENDOR_PATH := bcm
+VENDOR_PATH := intel
 
 ##################################################
 
@@ -13,14 +13,14 @@ include $(BUILD_PREBUILT)
 ##################################################
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := gps_bcm_$(GPS_CHIP)
+LOCAL_MODULE := gps_intel_$(GPS_CHIP)
 LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES :=  \
     gps_common \
-    gpscerd \
-    gpsd \
-    gps.conf \
-    gps.xml
+    gnssCG2000 \
+    gnssStelp \
+    libgnssconf \
+    libgnsspatch
 
 include $(BUILD_PHONY_PACKAGE)
 
