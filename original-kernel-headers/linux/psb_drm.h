@@ -1056,8 +1056,6 @@ struct drm_psb_idle_ctrl {
 /****BEGIN HDMI TEST IOCTLS ****/
 #define DRM_PSB_HDMITEST                0x3A
 
-/* GET PANEL ORIENTATION INFO */
-#define DRM_PSB_PANEL_ORIENTATION       0x3B
 
 /* read an hdmi test register */
 #define HT_READ                         1
@@ -1077,7 +1075,11 @@ typedef struct tagHDMITESTREGREADWRITE {
 
 /**** END HDMI TEST IOCTLS ****/
 
+/* GET PANEL ORIENTATION INFO */
+#define DRM_PSB_PANEL_ORIENTATION       0x3B
 
+/* Update cursor position, input is intel_dc_cursor_ctx */
+#define DRM_PSB_UPDATE_CURSOR_POS       0x3C
 
 /* Do not use IOCTL between 0x40 and 0x4F */
 /* These will be reserved for OEM to use */
@@ -1251,6 +1253,7 @@ typedef enum intel_dc_plane_types {
 	DC_SPRITE_PLANE = 1,
 	DC_OVERLAY_PLANE,
 	DC_PRIMARY_PLANE,
+	DC_CURSOR_PLANE,
 	DC_PLANE_MAX,
 } DC_MRFLD_PLANE_TYPE;
 
@@ -1268,6 +1271,14 @@ typedef struct intel_dc_overlay_ctx {
 	uint32_t pipe;
 	uint32_t ovadd;
 } DC_MRFLD_OVERLAY_CONTEXT;
+
+typedef struct intel_dc_cursor_ctx {
+	uint32_t index;
+	uint32_t pipe;
+	uint32_t cntr;
+	uint32_t surf;
+	uint32_t pos;
+} DC_MRFLD_CURSOR_CONTEXT;
 
 typedef struct intel_dc_sprite_ctx {
 	uint32_t update_mask;
@@ -1321,6 +1332,7 @@ typedef struct intel_dc_plane_ctx {
 		struct intel_dc_overlay_ctx ov_ctx;
 		struct intel_dc_sprite_ctx sp_ctx;
 		struct intel_dc_primary_ctx prim_ctx;
+		struct intel_dc_cursor_ctx cs_ctx;
 	} ctx;
 } DC_MRFLD_SURF_CUSTOM;
 

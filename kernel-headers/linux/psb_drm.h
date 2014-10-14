@@ -18,7 +18,7 @@
  ****************************************************************************/
 #ifndef _PSB_DRM_H_
 #define _PSB_DRM_H_
-#ifdef __linux__
+#if defined(__linux__) && !defined(__KERNEL__)
 #include <stdbool.h>
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #include <stdint.h>
@@ -1000,18 +1000,19 @@ struct drm_psb_idle_ctrl {
 #define DRM_PSB_PANEL_QUERY 0x38
 #define DRM_PSB_IDLE_CTRL 0x39
 #define DRM_PSB_HDMITEST 0x3A
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
-#define DRM_PSB_PANEL_ORIENTATION 0x3B
 #define HT_READ 1
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define HT_WRITE 2
 #define HT_FORCEON 4
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 typedef struct tagHDMITESTREGREADWRITE {
  unsigned int reg;
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  unsigned int data;
  int mode;
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 } drm_psb_hdmireg_t, *drm_psb_hdmireg_p;
+#define DRM_PSB_PANEL_ORIENTATION 0x3B
+/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+#define DRM_PSB_UPDATE_CURSOR_POS 0x3C
 #define DRM_OEM_RESERVED_START 0x40
 #define DRM_OEM_RESERVED_END 0x4F
 #define DRM_PSB_PANEL_SWITCH 0x100
@@ -1022,11 +1023,12 @@ typedef struct tagHDMITESTREGREADWRITE {
 #define DRM_PSB_CMDBUF (PVR_DRM_DBGDRV_CMD + 1)
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #else
+/* WARNING: DO NOT EDIT, AUTO-GENERATEyyD CODE - SEE TOP FOR INSTRUCTIONS */
 #define DRM_PSB_CMDBUF (DRM_PSB_TTM_START)
 #endif
 #define DRM_PSB_SCENE_UNREF (DRM_PSB_CMDBUF + 1)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #define DRM_PSB_PLACEMENT_OFFSET (DRM_PSB_SCENE_UNREF + 1)
+/* WARNING: DO NOT EDIT, AUTO-GENERATEyyD CODE - SEE TOP FOR INSTRUCTIONS */
 #define DRM_PSB_DSR_ENABLE 0xfffffffe
 #define DRM_PSB_DSR_DISABLE 0xffffffff
 struct drm_psb_csc_matrix {
@@ -1173,6 +1175,7 @@ typedef enum intel_dc_plane_types {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  DC_OVERLAY_PLANE,
  DC_PRIMARY_PLANE,
+ DC_CURSOR_PLANE,
  DC_PLANE_MAX,
 } DC_MRFLD_PLANE_TYPE;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
@@ -1185,6 +1188,14 @@ typedef enum intel_dc_plane_types {
 #define SPRITE_UPDATE_CONSTALPHA (0x00000020UL)
 #define SPRITE_UPDATE_ALL (0x0000003fUL)
 #define MRFLD_PRIMARY_COUNT 3
+typedef struct intel_dc_cursor_ctx {
+ uint32_t index;
+ uint32_t pipe;
+ /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+ uint32_t cntr;
+ uint32_t surf;
+ uint32_t pos;
+} DC_MRFLD_CURSOR_CONTEXT;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 typedef struct intel_dc_overlay_ctx {
  uint32_t index;
@@ -1247,6 +1258,7 @@ typedef struct intel_dc_plane_ctx {
  struct intel_dc_sprite_ctx sp_ctx;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct intel_dc_primary_ctx prim_ctx;
+ struct intel_dc_cursor_ctx cs_ctx;
  } ctx;
 } DC_MRFLD_SURF_CUSTOM;
 #endif
