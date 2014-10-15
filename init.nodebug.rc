@@ -7,12 +7,10 @@ on early-boot
     chown system log /logs
     chmod 0770 /logs
 
-on post-fs
+on post-fs-data
     mkdir /data/tombstones 0755 system system
     mkdir /data/system/    0755 system system
     mkdir /data/system/dropbox 0700 system system
-
-on post-fs-data
     mkdir /logs/modemcrash 0775 system system
     mkdir /logs/aplogs 0775 system log
 
