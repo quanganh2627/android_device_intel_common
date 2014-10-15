@@ -22,6 +22,7 @@
   <private-symbols package="com.android.internal" />
 
   <java-symbol type="bool" name="config_wifi_multirole_multichannel_support" />
+  <java-symbol type="bool" name="config_discard_scan_when_p2p_connected" />
 
   <java-symbol type="string" name="serviceUnknown" />
   <java-symbol type="string" name="CnapMmi" />
