@@ -142,7 +142,9 @@ supDomain: Parameter
 							CmeDirectStreamCapture Is True
 							CmeModemStreamCapture Is True
 						OutputDevices Includes Headset
-					InputDevices Includes Headset
+					ALL
+						InputDevices Includes Headset
+						AndroidMode IsNot InCsvCall
 					ALL
 						AlwaysListening Is True
 						LpalDevice Is Headset
