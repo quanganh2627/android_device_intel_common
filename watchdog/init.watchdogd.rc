@@ -1,6 +1,5 @@
-service watchdogd /sbin/watchdogd
+service watchdogd /sbin/watchdogd 60 20
     class core
-    user root
     oneshot
 
 service wdogcounter /system/bin/sh /init.watchdog.sh
