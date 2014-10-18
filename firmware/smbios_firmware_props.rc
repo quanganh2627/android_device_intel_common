@@ -3,3 +3,4 @@ on boot
 
 service intel_fw_props /sbin/intel_fw_props
     oneshot
+    seclabel u:r:intel_fw_props:s0
