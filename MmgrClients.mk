@@ -7,14 +7,13 @@
 # Modem Image Updater
 # Modem files
 PRODUCT_PACKAGES += \
-    modem \
+    mdm_fw_pkg \
     librapid-ril-core \
     librapid-ril-util \
     mamgr \
     mmgr \
     libmodemupdate \
     nvm_server \
-    miu-app \
     proxy  \
     mts
 
@@ -44,7 +43,8 @@ PRODUCT_PACKAGES_ENG += mcd-test
 
 PRODUCT_PACKAGES_DEBUG += \
     run_test_ipc.sh \
-    mmgr-debug
+    mmgr-debug \
+    miu-app
 
 # Modem init actions
 PRODUCT_COPY_FILES += \

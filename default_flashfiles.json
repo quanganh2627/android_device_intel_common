@@ -2,7 +2,6 @@
   [{"filename":"flash.xml", "name":"full", "flashtype":"fastboot"},
    {"filename":"installer.cmd", "name":"full"},
    {"filename":"flash_all.sh", "name":"full"},
-   {"filename":"no-modem-reflash.xml", "name":"no_modem", "flashtype":"fastboot"},
    {"filename":"no-capsule.xml", "name":"no_capsule", "flashtype":"fastboot"}],
 "commands":
   [{"type":"prop", "target":"INSTALLED_BUILD_PROP_TARGET"},
@@ -13,6 +12,5 @@
    {"type":"fflash", "partition":"boot", "target":"INSTALLED_BOOTIMAGE_TARGET"},
    {"type":"fflash", "partition":"recovery", "target":"INSTALLED_RECOVERYIMAGE_TARGET"},
    {"type":"fflash", "partition":"system", "target":"INSTALLED_SYSTEMIMAGE", "timeout":420000},
-   {"type":"fflash", "partition":"capsule", "target":"INSTALLED_CAPSULE_TARGET", "restrict":["full", "no_modem"]},
-   {"type":"fflash", "partition":"radio", "target":"INSTALLED_MODEM_TARGET", "restrict":["full", "no_capsule"], "timeout":220000},
+   {"type":"fflash", "partition":"capsule", "target":"INSTALLED_CAPSULE_TARGET", "restrict":["full"]},
    {"type":"fcontinue"}]}

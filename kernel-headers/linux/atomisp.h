@@ -790,7 +790,27 @@ struct v4l2_private_int_data {
  void __user *data;
  __u32 reserved[2];
 };
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+
+enum atomisp_sensor_ae_bracketing_mode {
+ SENSOR_AE_BRACKETING_MODE_OFF = 0,
+ SENSOR_AE_BRACKETING_MODE_SINGLE,
+ SENSOR_AE_BRACKETING_MODE_SINGLE_TO_STREAMING,
+ SENSOR_AE_BRACKETING_MODE_LOOP,
+};
+struct atomisp_sensor_ae_bracketing_info {
+ unsigned int modes;
+ unsigned int lut_depth;
+};
+struct atomisp_sensor_ae_bracketing_lut_entry {
+ __u16 coarse_integration_time;
+ __u16 analog_gain;
+ __u16 digital_gain;
+};
+struct atomisp_sensor_ae_bracketing_lut {
+ struct atomisp_sensor_ae_bracketing_lut_entry *lut;
+ unsigned int lut_size;
+};
+
 #define ATOMISP_IOC_G_XNR   _IOR('v', BASE_VIDIOC_PRIVATE + 0, int)
 #define ATOMISP_IOC_S_XNR   _IOW('v', BASE_VIDIOC_PRIVATE + 0, int)
 #define ATOMISP_IOC_G_NR   _IOR('v', BASE_VIDIOC_PRIVATE + 1, struct atomisp_nr_config)
@@ -880,7 +900,11 @@ struct v4l2_private_int_data {
 #define ATOMISP_IOC_S_EXPOSURE_WINDOW   _IOW('v', BASE_VIDIOC_PRIVATE + 40, struct atomisp_ae_window)
 #define ATOMISP_IOC_S_ACC_STATE   _IOW('v', BASE_VIDIOC_PRIVATE + 41, struct atomisp_acc_state)
 #define ATOMISP_IOC_G_ACC_STATE   _IOR('v', BASE_VIDIOC_PRIVATE + 41, struct atomisp_acc_state)
-/* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+#define ATOMISP_IOC_INJECT_A_FAKE_EVENT _IOW('v', BASE_VIDIOC_PRIVATE + 42, int)
+#define ATOMISP_IOC_G_SENSOR_AE_BRACKETING_INFO _IOR('v', BASE_VIDIOC_PRIVATE + 43, struct atomisp_sensor_ae_bracketing_info)
+#define ATOMISP_IOC_S_SENSOR_AE_BRACKETING_MODE _IOW('v', BASE_VIDIOC_PRIVATE + 43, unsigned int)
+#define ATOMISP_IOC_G_SENSOR_AE_BRACKETING_MODE _IOR('v', BASE_VIDIOC_PRIVATE + 43, unsigned int)
+#define ATOMISP_IOC_S_SENSOR_AE_BRACKETING_LUT _IOW('v', BASE_VIDIOC_PRIVATE + 43, struct atomisp_sensor_ae_bracketing_lut)
 #define V4L2_CID_ATOMISP_BAD_PIXEL_DETECTION   (V4L2_CID_PRIVATE_BASE + 0)
 #define V4L2_CID_ATOMISP_POSTPROCESS_GDC_CAC   (V4L2_CID_PRIVATE_BASE + 1)
 #define V4L2_CID_ATOMISP_VIDEO_STABLIZATION   (V4L2_CID_PRIVATE_BASE + 2)

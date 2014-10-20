@@ -9,6 +9,7 @@
 /dev/ttyGS0               0660   root       radio
 /dev/mdmTrace             0660   root       radio
 /dev/mdm_ctrl*            0660   root       radio
+/dev/ttyXMM0              0660   root       radio
 /dev/ttyIFX0              0660   root       radio
 /dev/ttyIFX1              0660   root       radio
 
@@ -42,7 +43,8 @@
 /dev/meimm                              0660   system     system
 
 # Android sync framework sw driver
-/dev/pvr_sync                            0666   system     system
+/dev/card0                              0666   system     system
+/dev/pvr_sync                           0666   system     system
 /dev/sw_sync                            0660   system     system
 
 # NFCC devices
@@ -92,6 +94,10 @@ usbclass:224/1/1                             0660 bluetooth bluetooth suspend_au
 # Define ro.nfc.nfcc for different vendors
 uevent:i2c:pn54*        setprop ro.nfc.nfcc pn547
 uevent:i2c:NXP547*      setprop ro.nfc.nfcc pn547
+
+# Set persistent partition owner to system
+/dev/block/pci/pci0000:00/0000:00:01.0/by-name/persistent     0660  system  system
+/dev/block/platform/80860F14:00/by-name/persistent            0660  system  system
 
 # itux properties
 /sys/devices/virtual/thermal/cooling_device*    cur_state            0644 system system
