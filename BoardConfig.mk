@@ -400,3 +400,8 @@ BOARD_KERNEL_DROIDBOOT_EXTRA_CMDLINE += androidboot.selinux=permissive
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 cmdline_extra += androidboot.selinux=permissive
 endif
+
+BOARD_SEPOLICY_DIRS +=\
+        device/intel/common/sepolicy
+BOARD_SEPOLICY_UNION +=\
+        intel_prop.te
