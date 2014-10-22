@@ -30,6 +30,9 @@ ifeq ($(KERNEL_SOC),)
 $(error cannot build kernel, TARGET_BOARD_PLATFORM is not defined)
 endif
 
+# All targets (userspace 32b and userspace 64b) will use binder version 8.
+TARGET_USES_64_BIT_BINDER := true
+
 ifeq ($(BOARD_USE_64BIT_KERNEL),true)
 KERNEL_ARCH := x86_64
 else
