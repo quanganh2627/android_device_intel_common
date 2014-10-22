@@ -400,6 +400,3 @@ BOARD_KERNEL_DROIDBOOT_EXTRA_CMDLINE += androidboot.selinux=permissive
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 cmdline_extra += androidboot.selinux=permissive
 endif
-
-# Build a verified /system partition
-PRODUCT_SYSTEM_VERITY_PARTITION := /dev/block/by-name/system
