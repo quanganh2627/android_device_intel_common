@@ -198,6 +198,8 @@ PRODUCT_PACKAGES += \
 # Intel Security Assist
 PRODUCT_PACKAGES += \
 	IntelSecurityAssist
+PRODUCT_PACKAGES_ENG += \
+	IntelSecurityAssistTest
 
 # This library is required for Intel's implementation of Dalvik
 # libpcgdvmjit is a part of Dalvik JIT compiler
