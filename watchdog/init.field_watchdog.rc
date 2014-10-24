@@ -3,18 +3,12 @@ service watchdogd /sbin/watchdogd 60 20
     oneshot
     seclabel u:r:watchdogd:s0
 
-service wdogcounter /system/bin/sh /init.watchdog.sh
-    class core
-    user root
-    oneshot
-    disabled
-
 # Reset the watchdog counter once boot is completed
 on property:sys.boot_completed=1
-    start wdogcounter
+    write /sys/devices/virtual/misc/watchdog/counter "0"
 
 on property:init.svc.droidboot=running
-    start wdogcounter
+    write /sys/devices/virtual/misc/watchdog/counter "0"
 
 on property:init.svc.charger_app=running
-    start wdogcounter
+    write /sys/devices/virtual/misc/watchdog/counter "0"
