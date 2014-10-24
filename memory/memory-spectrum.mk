@@ -18,6 +18,10 @@ ifneq (,$(filter true,$(BOARD_HAVE_MID_RAM) $(BOARD_HAVE_SMALL_RAM)))
   MALLOC_IMPL := dlmalloc
 endif
 
+## Mid ram device definition
+ifeq ($(BOARD_HAVE_MID_RAM),true)
+  CAMERA_REPOOL_8MP := true
+endif
 
 # KSM activation
 ifeq ($(BOARD_HAVE_KSM),true)
