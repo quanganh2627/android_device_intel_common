@@ -52,6 +52,9 @@
 /sys/devices/pci* hsic_enable           0664   root       system
 /sys/devices/pci* L2_autosuspend_enable 0664   root       system
 
+# the 2nd modem UART interfaces should only be readable for other
+/sys/devices/pci0000:00/0000:00:04.3 power/control 0664   root       system
+
 # cpufreq sysfs interfaces permission
 /sys/devices/system/cpu/cpu* cpufreq/scaling_max_freq  0664  system   system
 
