@@ -108,10 +108,10 @@ endif
 
 # When odex is generated, .dex files are removed but .dex files should
 # be saved for external release as they can be used to rebuild a component
-# while odex can't. This requires patches in AOSP /build/ project.
-ifeq (INTEL_PREBUILTS_JAVA_BACKUP_DEX, true)
+# while odex can't.
+# This is not necessary for java libraries that have unstripped jar in out/target/common.
+# This requires patches in AOSP /build/ project to backup the .dex file.
 EXT_JAVA_BACKUP_SUFFIX := .dex
-endif
 
 ifeq ($(_metatarget),static_java_library)
 ifneq (, $(wildcard $(common_javalib.jar)))
@@ -128,7 +128,7 @@ $(call external-gather-files,static_library,LIBS)
 $(call external-gather-files,host_executable,HOST_EXECUTABLES)
 $(call external-gather-files,host_shared_library,HOST_LIBS)
 $(call external-gather-files,host_static_library,HOST_LIBS)
-$(call external-gather-files,java_library,JAVA_LIBRARIES,$(EXT_JAVA_BACKUP_SUFFIX))
+$(call external-gather-files,java_library,JAVA_LIBRARIES)
 $(call external-gather-files,package,PACKAGES,$(EXT_JAVA_BACKUP_SUFFIX))
 $(call external-gather-files,prebuilt,PREBUILT)
 generate_intel_prebuilts: $(LOCAL_MODULE_PREBUILT_MAKEFILE)
