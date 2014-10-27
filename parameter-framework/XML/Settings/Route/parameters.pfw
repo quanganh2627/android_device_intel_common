@@ -93,7 +93,7 @@ supDomain: Parameter
 							ALL
 								AndroidMode Is InCsvCall
 								ANY
-									ModemAudioStatus Is True
+									ModemAudioAvailable Is True
 									CmeDirectStreamCapture Is True
 									CmeModemStreamCapture Is True
 					ALL
@@ -116,7 +116,7 @@ supDomain: Parameter
 					ALL
 						AndroidMode Is InCsvCall
 						ANY
-							ModemAudioStatus Is True
+							ModemAudioAvailable Is True
 							CmeDirectStreamCapture Is True
 							CmeModemStreamCapture Is True
 						ANY
@@ -138,11 +138,13 @@ supDomain: Parameter
 					ALL
 						AndroidMode Is InCsvCall
 						ANY
-							ModemAudioStatus Is True
+							ModemAudioAvailable Is True
 							CmeDirectStreamCapture Is True
 							CmeModemStreamCapture Is True
 						OutputDevices Includes Headset
-					InputDevices Includes Headset
+					ALL
+						InputDevices Includes Headset
+						AndroidMode IsNot InCsvCall
 					ALL
 						AlwaysListening Is True
 						LpalDevice Is Headset
@@ -175,7 +177,7 @@ supDomain: Parameter
 							ALL
 								AndroidMode Is InCsvCall
 								ANY
-									ModemAudioStatus Is True
+									ModemAudioAvailable Is True
 									CmeDirectStreamCapture Is True
 									CmeModemStreamCapture Is True
 						ANY
@@ -204,7 +206,7 @@ supDomain: Parameter
 							ALL
 								AndroidMode Is InCsvCall
 								ANY
-									ModemAudioStatus Is True
+									ModemAudioAvailable Is True
 									CmeDirectStreamCapture Is True
 									CmeModemStreamCapture Is True
 
@@ -346,7 +348,7 @@ supDomain: Parameter
 				AndroidMode Is InCsvCall
 				ModemState Is True
 				ANY
-					ModemAudioStatus Is True
+					ModemAudioAvailable Is True
 					CmeModemStreamPlayback Is True
 					CmeModemStreamCapture Is True
 
@@ -356,7 +358,7 @@ supDomain: Parameter
 		conf: IN_IMS
 			ALL
 				AndroidMode Is InCsvCall
-				ModemAudioStatus IsNot True
+				ModemAudioAvailable IsNot True
 				ANY
 					CmeDirectStreamPlayback Is True
 					CmeDirectStreamCapture Is True
@@ -398,7 +400,7 @@ supDomain: Parameter
 			ANY
 				ALL
 					AndroidMode Is InCsvCall
-					ModemAudioStatus Is True
+					ModemAudioAvailable Is True
 					CsvBandType Is NB
 				ALL
 					AndroidMode Is InCsvCall
@@ -419,7 +421,7 @@ supDomain: Parameter
 			ANY
 				ALL
 					AndroidMode Is InCsvCall
-					ModemAudioStatus Is True
+					ModemAudioAvailable Is True
 					CsvBandType Is WB
 				ALL
 					AndroidMode Is InCsvCall
@@ -440,7 +442,7 @@ supDomain: Parameter
 			ANY
 				ALL
 					AndroidMode Is InCsvCall
-					ModemAudioStatus Is True
+					ModemAudioAvailable Is True
 					CsvBandType Is SuperWB
 				ALL
 					AndroidMode Is InCsvCall

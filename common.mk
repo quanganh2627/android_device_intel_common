@@ -166,6 +166,11 @@ ifneq ($(BOARD_HAVE_MODEM), false)
 -include vendor/intel/tools/log_capture/amtl/src/com/intel/amtl/config_catalog/amtl.mk
 endif
 
+ifeq ($(TARGET_BUILD_VARIANT),user)
+ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+     ro.adb.secure=1
+endif
+
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/init.common.rc:root/init.common.rc
 

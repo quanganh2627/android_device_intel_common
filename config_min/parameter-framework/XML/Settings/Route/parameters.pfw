@@ -92,7 +92,7 @@ supDomain: Parameter
 							AndroidMode Is InVoipCall
 							ALL
 								AndroidMode Is InCsvCall
-								ModemAudioStatus Is True
+								ModemAudioAvailable Is True
 					ALL
 						AndroidMode Is Normal
 						InputDevices Includes Main
@@ -110,7 +110,7 @@ supDomain: Parameter
 				ANY
 					ALL
 						AndroidMode Is InCsvCall
-						ModemAudioStatus Is True
+						ModemAudioAvailable Is True
 						ANY
 							OutputDevices Includes Sco
 							OutputDevices Includes ScoHeadset
@@ -129,7 +129,7 @@ supDomain: Parameter
 				ANY
 					ALL
 						AndroidMode Is InCsvCall
-						ModemAudioStatus Is True
+						ModemAudioAvailable Is True
 						OutputDevices Includes Headset
 					InputDevices Includes Headset
 
@@ -297,7 +297,7 @@ supDomain: Parameter
 			ALL
 				AndroidMode Is InCsvCall
 				ModemState Is True
-				ModemAudioStatus Is True
+				ModemAudioAvailable Is True
 				ANY
 					OutputDevices Is Ihf
 					OutputDevices Is Headset
@@ -336,7 +336,7 @@ supDomain: Parameter
 			ANY
 				ALL
 					AndroidMode Is InCsvCall
-					ModemAudioStatus Is True
+					ModemAudioAvailable Is True
 					CsvBandType Is NB
 				ALL
 					AndroidMode Is InVoipCall
@@ -349,7 +349,7 @@ supDomain: Parameter
 			ANY
 				ALL
 					AndroidMode Is InCsvCall
-					ModemAudioStatus Is True
+					ModemAudioAvailable Is True
 					CsvBandType Is WB
 				ALL
 					AndroidMode Is InVoipCall
@@ -362,7 +362,7 @@ supDomain: Parameter
 			ANY
 				ALL
 					AndroidMode Is InCsvCall
-					ModemAudioStatus Is True
+					ModemAudioAvailable Is True
 					CsvBandType Is SuperWB
 				ALL
 					AndroidMode Is InVoipCall

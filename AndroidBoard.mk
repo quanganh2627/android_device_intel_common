@@ -1,6 +1,10 @@
 # make file for common
 #
 
+ifeq ($(TARGET_PARTITIONING_SCHEME), "osip-gpt")
+export MKBOOTIMG=$(SUPPORT_PATH)/mkbootimg
+endif
+
 LOCAL_PATH := $(call my-dir)
 ACS_BUILDBOT_PATH := vendor/intel/PRIVATE/buildbot_acs
 PERMISSIONS_PATH := frameworks/native/data/etc

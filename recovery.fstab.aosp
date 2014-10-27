@@ -1,6 +1,0 @@
-# Dummy definition to allow AOSP based compilation
-# Those threee entries are mandatory, so filling them only to have compilation succeed
-/dev/block/by-name/boot       /boot       emmc      defaults        defaults
-/dev/block/by-name/system     /system     emmc      defaults        defaults
-/dev/block/by-name/recovery   /recovery   emmc      defaults        defaults
-

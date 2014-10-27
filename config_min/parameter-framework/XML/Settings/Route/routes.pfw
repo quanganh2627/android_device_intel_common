@@ -78,7 +78,7 @@ supDomain: StreamRoute
 					ALL
 						InputDevices Includes VoiceCall
 						AndroidMode Is InCsvCall
-						ModemAudioStatus Is True
+						ModemAudioAvailable Is True
 				ANY
 					InputSources Includes Mic
 					InputSources Includes Camcorder
