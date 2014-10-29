@@ -85,7 +85,9 @@ PRODUCT_PACKAGES += \
 $(call inherit-product-if-exists, vendor/intel/houdini/houdini.mk)
 
 #GMS package
--include vendor/google/PRIVATE/gms/products/gms.mk
+$(call inherit-product-if-exists, vendor/google/PRIVATE/gms/products/gms_full.mk)
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.com.google.clientidbase=android-intel
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 PRODUCT_COPY_FILES += \
