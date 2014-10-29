@@ -68,4 +68,7 @@
 
     <!-- Integer indicating wpa_supplicant scan interval when p2p is connected in milliseconds -->
     <integer translatable="false" name="config_wifi_scan_interval_p2p_connected">3600000</integer>
+
+    <add-resource type="bool" name="config_TerminalDetectWindowOrientation" />
+    <bool name="config_TerminalDetectWindowOrientation">false</bool>
 </resources>
