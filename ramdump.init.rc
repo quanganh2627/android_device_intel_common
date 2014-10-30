@@ -41,7 +41,6 @@ on boot
     class_start default
     class_start core
 
-    write /sys/module/g_android/parameters/fastboot 0
     setprop sys.usb.config adb
     start adbd
 
@@ -67,11 +66,6 @@ service thermald /sbin/thermald POS
 
 on property:sys.forcecoldboot=yes
     write /sys/module/intel_mid/parameters/force_cold_boot 1
-
-on property:sys.adb.config=fastboot
-    stop adbd
-    write /sys/module/g_android/parameters/fastboot 1
-    start droidboot
 
 service adbd /sbin/adbd
     class core
