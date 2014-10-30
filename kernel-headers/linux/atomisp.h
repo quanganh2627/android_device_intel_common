@@ -329,6 +329,32 @@ struct atomisp_metadata_config {
  uint32_t metadata_height;
  uint32_t metadata_stride;
 };
+/*
+ * Generic resolution structure.
+ */
+struct atomisp_resolution {
+	unsigned int width;  /**< Width */
+	unsigned int height; /**< Height */
+};
+/**
+  * This specifies the coordinates (x,y)
+  */
+struct atomisp_zoom_point {
+	int32_t x; /**< x coordinate */
+	int32_t y; /**< y coordinate */
+};
+/**
+  * This specifies the region
+  */
+struct atomisp_zoom_region {
+	struct atomisp_zoom_point origin; /* Starting point coordinates for the region */
+	struct atomisp_resolution resolution; /* Region resolution */
+};
+struct atomisp_dz_config {
+	uint32_t dx; /**< Horizontal zoom factor */
+	uint32_t dy; /**< Vertical zoom factor */
+	struct atomisp_zoom_region zoom_region; /**< region for zoom */
+};
 struct atomisp_parm {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct atomisp_grid_info info;
@@ -339,6 +365,7 @@ struct atomisp_parm {
  struct atomisp_cc_config cc_config;
  struct atomisp_ob_config ob_config;
  struct atomisp_de_config de_config;
+ struct atomisp_dz_config dz_config;
  struct atomisp_ce_config ce_config;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct atomisp_dp_config dp_config;
@@ -906,6 +933,7 @@ struct atomisp_sensor_ae_bracketing_lut {
 #define ATOMISP_IOC_G_SENSOR_AE_BRACKETING_MODE _IOR('v', BASE_VIDIOC_PRIVATE + 43, unsigned int)
 #define ATOMISP_IOC_S_SENSOR_AE_BRACKETING_LUT _IOW('v', BASE_VIDIOC_PRIVATE + 43, struct atomisp_sensor_ae_bracketing_lut)
 #define ATOMISP_IOC_G_INVALID_FRAME_NUM _IOR('v', BASE_VIDIOC_PRIVATE + 44, unsigned int)
+#define ATOMISP_IOC_G_EFFECTIVE_RESOLUTION _IOR('v', BASE_VIDIOC_PRIVATE + 45, struct atomisp_resolution)
 #define V4L2_CID_ATOMISP_BAD_PIXEL_DETECTION   (V4L2_CID_PRIVATE_BASE + 0)
 #define V4L2_CID_ATOMISP_POSTPROCESS_GDC_CAC   (V4L2_CID_PRIVATE_BASE + 1)
 #define V4L2_CID_ATOMISP_VIDEO_STABLIZATION   (V4L2_CID_PRIVATE_BASE + 2)
