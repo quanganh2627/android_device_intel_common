@@ -26,4 +26,7 @@
     <!-- Configure discarding WiFi scanning when P2P connected. -->
     <add-resource type="bool" name="config_discard_scan_when_p2p_connected" />
     <bool name="config_discard_scan_when_p2p_connected">true</bool>
+
+    <add-resource type="bool" name="config_TerminalDetectWindowOrientation" />
+    <bool name="config_TerminalDetectWindowOrientation">false</bool>
 </resources>
