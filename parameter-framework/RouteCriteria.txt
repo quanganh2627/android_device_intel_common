@@ -1,11 +1,11 @@
-InclusiveCriterion OutputDevices		:	Earpiece 		IHF			Headset		Headphones		SCO 		SCO_Headset		SCO_CarKit
-InclusiveCriterion InputDevices			:	Communication	Ambient		Main		SCO_Headset		Headset		VoiceCall		Back
-InclusiveCriterion OutputFlags			:	Direct			Primary		Fast		Deep			Offload		RemoteBgm
-InclusiveCriterion InputSources			:	Default			Mic			VoiceUplink	VoiceDownlink	VoiceCall	Camcorder		VoiceRecognition	VoiceCommunication
+InclusiveCriterion OutputDevices		:	Earpiece		Ihf			Headset		Headphones	Sco		ScoHeadset		ScoCarkit
+InclusiveCriterion InputDevices			:	Communication	Ambient		Main		ScoHeadset 	Headset 	AuxDigital	VoiceCall 	Back
+InclusiveCriterion OutputFlags			:	Direct			Primary		Fast		Deep		Offload     RemoteBgm
+InclusiveCriterion InputSources			:	Default			Mic			VoiceUplink	VoiceDownlink	VoiceCall	Camcorder	VoiceRecognition	VoiceCommunication
 InclusiveCriterion TtyDirection			: 	Downlink 		Uplink
 InclusiveCriterion PreProcessorRequestedByActiveInput			: 	Aec 		Agc			Ns			Bmf			Wnr
 InclusiveCriterion StatesChanged		: 	AndroidMode		HasModem	ModemState	ModemAudioAvailable	HacSelected	TtyDirection 	BtHeadsetNrEc	BtHeadsetBandType	CsvBandType	VoIPBandType	ImsBandType	InputDevices	OutputDevices	InputSources	OutputFlags	DirectStream	ScreenOn	ContextAwareness	FmEnabled	AlwaysListening BypassNonLinearPp BypassLinearPp MicMute PreProcessorRequestedByActiveInput LpalDevice BwxActivated
-ExclusiveCriterion LpalDevice			:	None Communication Ambient Main SCO_Headset Headset AuxDigital VoiceCall Back
+ExclusiveCriterion LpalDevice			:	None Communication Ambient Main ScoHeadset Headset AuxDigital VoiceCall Back
 ExclusiveCriterion AndroidMode			:	Normal			RingTone	InCsvCall	InVoipCall
 ExclusiveCriterion DirectStream			: 	False			True
 ExclusiveCriterion ModemAudioAvailable		: 	False			True
