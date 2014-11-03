@@ -8,6 +8,7 @@
                 <ValuePair Literal="RingTone" Numerical="1"/>
                 <ValuePair Literal="InCsvCall" Numerical="2"/>
                 <ValuePair Literal="InVoipCall" Numerical="3"/>
+                <ValuePair Literal="InImsCall" Numerical="4"/>
             </EnumParameter>
         </ComponentType>
 
@@ -94,6 +95,8 @@
                 <BitParameter Name="Aec" Size="1" Pos="0"/>
                 <BitParameter Name="Agc" Size="1" Pos="1"/>
                 <BitParameter Name="Ns" Size="1" Pos="2"/>
+                <BitParameter Name="Bmf" Size="1" Pos="3"/>
+                <BitParameter Name="Wnr" Size="1" Pos="4"/>
             </BitParameterBlock>
         </ComponentType>
 
@@ -110,6 +113,8 @@
             <Component Name="bt_headset_band_criterion" Type="Band" Mapping="Name:BtHeadsetBandType"/>
             <Component Name="hac_mode_criterion" Type="State" Mapping="Name:HAC"/>
             <Component Name="tty_direction_criterion" Type="TtyDirection" Mapping="Name:TTYDirection"/>
+            <Component Name="bypass_non_linear_pp_criterion" Type="State" Mapping="Name:BypassNonLinearPp"/>
+            <Component Name="bypass_linear_pp_criterion" Type="State" Mapping="Name:BypassLinearPp"/>
             <Component Name="mic_mute_criterion" Type="State" Mapping="Name:MicMute"/>
             <Component Name="preproc_enabled_criterion" Type="Preprocessing" Mapping="Name:PreProcEnabled"/>
         </ComponentType>
