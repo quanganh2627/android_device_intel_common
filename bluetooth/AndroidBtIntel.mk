@@ -17,10 +17,10 @@ LOCAL_REQUIRED_MODULES :=  \
 #  2) Symetrical code with others vendors
 #  3) [most important] bt_intel is used in ComboChipVendor.mk to know if this is a Intel chip
 
-# USC is used for testing only, it will be compiled only for eng build
-ifeq ($(TARGET_BUILD_VARIANT),eng)
-LOCAL_REQUIRED_MODULES += libbtuscplugin
-endif
+# disable USC i=until new delivery
+#ifeq ($(TARGET_BUILD_VARIANT),eng)
+#LOCAL_REQUIRED_MODULES += libbtuscplugin
+#endif
 
 include $(BUILD_PHONY_PACKAGE)
 
@@ -28,6 +28,7 @@ include $(BUILD_PHONY_PACKAGE)
 USE_AOSP_BLUEDROID := true
 # set this flag to true to use WCS specific Bluetooth apk
 USE_SPECIFIC_BT_WCS := false
+BOARD_HAVE_BLUETOOTH_INTEL := true
 
 # Add intel ld driver
 include linux/modules/drivers/misc/intel_ld/AndroidLd.mk

@@ -164,8 +164,6 @@ ifeq ($(BOARD_HAVE_SMALL_RAM),true)
 ADDITIONAL_DEFAULT_PROPERTIES += ro.config.low_ram=true
 endif
 
-# This will be replaced by the OEM/carrier with a string like android-<carrier>-us
-ADDITIONAL_DEFAULT_PROPERTIES += ro.com.google.clientidbase=android-google
 endif
 
 ifeq ($(TARGET_BUILD_VARIANT),eng)

@@ -85,7 +85,9 @@ PRODUCT_PACKAGES += \
 $(call inherit-product-if-exists, vendor/intel/houdini/houdini.mk)
 
 #GMS package
--include vendor/google/PRIVATE/gms/products/gms.mk
+$(call inherit-product-if-exists, vendor/google/PRIVATE/gms/products/gms_full.mk)
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.com.google.clientidbase=android-intel
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 PRODUCT_COPY_FILES += \
@@ -197,6 +199,8 @@ PRODUCT_PACKAGES += \
 # Intel Security Assist
 PRODUCT_PACKAGES += \
 	IntelSecurityAssist
+PRODUCT_PACKAGES_ENG += \
+	IntelSecurityAssistTest
 
 # This library is required for Intel's implementation of Dalvik
 # libpcgdvmjit is a part of Dalvik JIT compiler
@@ -206,6 +210,11 @@ PRODUCT_PACKAGES += libpcgdvmjit
 # libcrash is a library which provides recorded state of an applications
 # which crashed while running on Dalvik VM
 PRODUCT_PACKAGES += libcrash
+
+# This is needed to enable silver art optimizer.
+# This will build the plugins/libart-extension.so library,  which is dynamically loaded by
+# AOSP and contains Intel optimizations to the compiler.
+PRODUCT_PACKAGES += libart-extension
 
 # include test suite for eng and userdebug builds
 include $(COMMON_PATH)/test_suites.mk

@@ -3,5 +3,6 @@
 PRODUCT_PACKAGES_DEBUG += \
     crashlogd \
     iperf \
-    peeknpoke
+    peeknpoke \
+    kcmdline \
 
