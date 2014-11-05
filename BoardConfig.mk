@@ -154,7 +154,6 @@ endif
 
 ifeq ($(TARGET_BUILD_VARIANT),eng)
 ADDITIONAL_DEFAULT_PROPERTIES += persist.service.profile.enable=1
-ADDITIONAL_DEFAULT_PROPERTIES += persist.service.kdumpd.enable=0
 endif
 
 #Add persistent property to enable factoryreset protection
