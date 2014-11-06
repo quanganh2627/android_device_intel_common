@@ -28,4 +28,5 @@
   <java-symbol type="string" name="CnapMmi" />
 
   <java-symbol type="bool" name="config_TerminalDetectWindowOrientation" />
+  <java-symbol type="bool" name="config_nonPollingWindowOrientation" />
 </resources>

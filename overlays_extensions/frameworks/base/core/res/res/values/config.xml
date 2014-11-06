@@ -29,4 +29,10 @@
 
     <add-resource type="bool" name="config_TerminalDetectWindowOrientation" />
     <bool name="config_TerminalDetectWindowOrientation">false</bool>
+
+    <!-- Controls whether window orientation should use non-polling mode accelerometer.
+         set default to false to use polling mode. -->
+    <add-resource type="bool" name="config_nonPollingWindowOrientation" />
+    <bool name="config_nonPollingWindowOrientation">false</bool>
+
 </resources>
