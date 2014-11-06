@@ -36,6 +36,15 @@ TARGET_KERNEL_ARCH := x86_64
 # Source: device/intel/mixins/groups/kernel/gmin64/product.mk
 ##############################################################
 
+ifneq ($(filter kernel,$(MAKECMDGOALS)),)
+  BUILD_KERNEL_FROM_SOURCES := 1
+endif
+
+MAKECMDGOALS := $(strip $(filter-out kernel,$(MAKECMDGOALS)))
+
+# if using prebuilts
+ifeq ($(BUILD_KERNEL_FROM_SOURCES),)
+
 LOCAL_KERNEL_MODULE_FILES :=
 ifeq ($(TARGET_PREBUILT_KERNEL),)
   # use default kernel
@@ -75,6 +84,8 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_KERNEL):kernel \
 	$(foreach f, $(LOCAL_KERNEL_MODULE_FILES), $(f):system/lib/modules/$(notdir $(f))) \
   $(foreach f, $(LOCAL_KERNEL_MODULE_TREE_FILES), $(LOCAL_KERNEL_PATH)/lib/modules/$(f):system/lib/modules/$(f))
+
+endif
 ##############################################################
 # Source: device/intel/mixins/groups/dalvik-heap/tablet-7in-hdpi-1024/product.mk
 ##############################################################
