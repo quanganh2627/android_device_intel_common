@@ -89,7 +89,7 @@ $(if $(filter $(1),$(_metatarget)), \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(my_module_path))))) \
     $(eval ### prebuilts must copy the original source file as some post-processing may happen on the built file - others copy the built file) \
     $(if $(filter prebuilt,$(_metatarget)), \
-        $(eval _input_file := $(firstword $(LOCAL_PREBUILT_MODULE_FILE) $(LOCAL_PATH)/$(LOCAL_SRC_FILES))), \
+        $(eval _input_file := $(ext_prebuilt_src_file)), \
         $(if $(filter java_library,$(_metatarget)), \
             $(eval ### get unstripped jar) \
             $(eval _input_file := $(common_javalib.jar)), \
@@ -159,13 +159,15 @@ endef
 
 # Copy several files.
 # $(1): The files to copy.  Each entry is a ':' separated src:dst pair
+# Note: Explicitly fail when attempting to copy a directory as acp does not return an error
 define copy-several-files
 $(foreach f, $(1), \
     $(eval _cmf_tuple := $(subst :, ,$(f))) \
     $(eval _cmf_src := $(word 1,$(_cmf_tuple))) \
     $(eval _cmf_dest := $(word 2,$(_cmf_tuple))) \
-    mkdir -p $(dir $(_cmf_dest)); \
-    $(ACP) $(_cmf_src) $(_cmf_dest);)
+    ( mkdir -p $(dir $(_cmf_dest)); \
+    $(ACP) $(_cmf_src) $(_cmf_dest) && \
+    test ! -d $(_cmf_src) ) && ) true;
 endef
 
 # List several files dependencies.

@@ -113,6 +113,25 @@ endif
 # This requires patches in AOSP /build/ project to backup the .dex file.
 EXT_JAVA_BACKUP_SUFFIX := .dex
 
+# Prebuilts have complex way of finding source files with multilib.
+# Unfortunately, the temporary variable used is reset in prebuilt_internal.mk
+# so we have to replicate handling of the various cases here.
+ifeq ($(_metatarget),prebuilt)
+ifdef LOCAL_PREBUILT_MODULE_FILE
+  ext_prebuilt_src_file := $(LOCAL_PREBUILT_MODULE_FILE)
+else
+  ifdef LOCAL_SRC_FILES_$($(my_prefix)$(LOCAL_2ND_ARCH_VAR_PREFIX)ARCH)
+    ext_prebuilt_src_file := $(LOCAL_PATH)/$(LOCAL_SRC_FILES_$($(my_prefix)$(LOCAL_2ND_ARCH_VAR_PREFIX)ARCH))
+  else
+    ifdef LOCAL_SRC_FILES_$(my_32_64_bit_suffix)
+      ext_prebuilt_src_file := $(LOCAL_PATH)/$(LOCAL_SRC_FILES_$(my_32_64_bit_suffix))
+    else
+      ext_prebuilt_src_file := $(LOCAL_PATH)/$(LOCAL_SRC_FILES)
+    endif
+  endif
+endif
+endif # $(_metatarget),prebuilt
+
 ifeq ($(_metatarget),static_java_library)
 ifneq (, $(wildcard $(common_javalib.jar)))
 $(call external-gather-files,static_java_library,STATIC_JAVA_LIBRARIES)
