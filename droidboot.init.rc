@@ -4,6 +4,7 @@ import /init.watchdog.rc
 import /init.firmware.rc
 
 on early-init
+    setcon u:r:init:s0
     start ueventd
 
 on init
@@ -97,6 +98,7 @@ on property:sys.usb.config=ptp,adb
 
 service ueventd /sbin/ueventd
     critical
+    seclabel u:r:ueventd:s0
 
 service droidboot /system/bin/droidboot
     critical

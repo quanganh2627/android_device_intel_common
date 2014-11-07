@@ -28,6 +28,9 @@ PRODUCT_BOOT_JARS += com.intel.config com.intel.multidisplay
 ifeq ($(strip $(INTEL_FEATURE_AWARESERVICE)),true)
 PRODUCT_BOOT_JARS += com.intel.aware.awareservice
 endif
+ifeq ($(strip $(DOLBY_DAP)),true)
+PRODUCT_BOOT_JARS += dolby_ds
+endif
 
 # Appends path to ARM libs for Houdini
 PRODUCT_LIBRARY_PATH := $(PRODUCT_LIBRARY_PATH):/system/lib/arm
@@ -403,15 +406,6 @@ BOARD_CHARGER_DISABLE_INIT_BLANK := true
 # Define platform battery healthd library
 BOARD_HAL_STATIC_LIBRARIES += libhealthd.intel
 
-# SELinux
-ifeq ($(TARGET_BUILD_VARIANT),eng)
-cmdline_extra += selinux=0
-else ifeq ($(TARGET_BUILD_VARIANT),userdebug)
-cmdline_extra += androidboot.selinux=permissive
-else ifeq ($(TARGET_BUILD_VARIANT),user)
-cmdline_extra += selinux=0
-endif
-
 # crashlogd configuration
 CRASHLOGD_FULL_REPORT ?= true
 CRASHLOGD_COREDUMP ?= true
@@ -430,5 +424,10 @@ CRASHLOGD_MODULE_FABRIC ?= true
 CRASHLOGD_MODULE_FW_UPDATE ?= true
 CRASHLOGD_MODULE_RAMDUMP ?= true
 
-# Build a verified /system partition
-PRODUCT_SYSTEM_VERITY_PARTITION := /dev/block/by-name/system
+# SELinux droidboot set as permissive for all targets
+BOARD_KERNEL_DROIDBOOT_EXTRA_CMDLINE += androidboot.selinux=permissive
+
+# SELinux
+ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
+cmdline_extra += androidboot.selinux=permissive
+endif

@@ -31,6 +31,8 @@ ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 PRODUCT_PACKAGES += \
     Amtl \
     libamtl_jni \
+    Amtl2   \
+    libamtl2_jni \
     TelephonyEventsNotifier
 
 PRODUCT_COPY_FILES += \
