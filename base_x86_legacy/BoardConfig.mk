@@ -71,6 +71,18 @@ TARGET_SYSLINUX_FILES = \
 
 BOARD_MBR_BLOCK_BIN ?= external/syslinux/mbr/gptmbr.bin
 
+#
+# USERFASTBOOT Configuration
+#
+TARGET_STAGE_USERFASTBOOT := true
+TARGET_USE_USERFASTBOOT := true
+
+BOOTLOADER_ADDITIONAL_DEPS += $(PRODUCT_OUT)/fastboot.img
+BOOTLOADER_ADDITIONAL_ARGS += --fastboot $(PRODUCT_OUT)/fastboot.img
+
+BOARD_FLASHFILES += $(BOARD_GPT_INI):gpt.ini
+INSTALLED_RADIOIMAGE_TARGET += $(BOARD_GPT_INI)
+
 ##############################################################
 # Source: device/intel/mixins/groups/kernel/gmin64/BoardConfig.mk.1
 ##############################################################
@@ -101,6 +113,12 @@ TARGET_CPU_ABI := x86
 TARGET_ARCH_VARIANT := x86
 
 TARGET_ARCH := x86
+
+##############################################################
+# Source: device/intel/mixins/groups/houdini/true/BoardConfig.mk
+##############################################################
+# enable ARM codegen for x86 with Houdini
+BUILD_ARM_FOR_X86 := true
 
 ##############################################################
 # Source: device/intel/mixins/groups/graphics/software/BoardConfig.mk
@@ -189,6 +207,9 @@ BOARD_SEPOLICY_UNION := \
     mediaserver.te \
     netd.te \
     platform_app.te \
+    power_hal_helper.te \
+    property_contexts \
+    property.te \
     pstore-clean.te \
     recovery.te \
     service_contexts \
