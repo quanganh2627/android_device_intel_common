@@ -288,4 +288,10 @@
         android:icon="@drawable/ic_settings_about"
         android:title="@string/about_settings" />
 
+    <header
+        android:id="@+id/shutdown"
+        android:icon="@drawable/ic_lock_power_off"
+        android:title="@string/shutdown">
+        <intent android:action="com.android.settings.ShutDown" />
+    </header>
 </preference-headers>

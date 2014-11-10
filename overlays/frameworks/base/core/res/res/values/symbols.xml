@@ -68,6 +68,7 @@
   <java-symbol type="string" name="change_password_failed"/>
   <java-symbol type="drawable" name="stat_notify_large_wipe_container"/>
   <java-symbol type="drawable" name="stat_notify_small_wipe_container"/>
+  <java-symbol type="drawable" name="ic_settings_backup" />
   <!-- ARKHAM-180 Add XML file that describe container manager
        properties set at build time. For now this contains the system
        whitelist. -->
