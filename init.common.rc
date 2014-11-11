@@ -84,7 +84,7 @@ on fs
     mkdir /factory 0775 system system
     mkdir /config 0775 system system
     mkdir /media 0775 media media
-    mount_all /fstab
+    mount_all /fstab.${ro.hardware}
     mkdir /config/wifi
     chown system wifi /config/wifi
     chmod 0770 /config/wifi
