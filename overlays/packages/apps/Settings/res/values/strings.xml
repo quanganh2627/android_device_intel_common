@@ -74,4 +74,7 @@
     <!-- Explanation of drawing unlock pattern to format card [CHAR LIMIT=NONE] -->
     <string name="media_format_gesture_explanation" >You need to draw your unlock pattern to confirm that you want to erase the removable storage.</string>
     <!-- Explanation of drawing unlock pattern to format card [CHAR LIMIT=NONE] -->
+
+    <add-resource type="string" name="vpp_settings"></add-resource>
+    <string name="vpp_settings">Intel<sup><small>®</small></sup> Smart Video</string>
 </resources>

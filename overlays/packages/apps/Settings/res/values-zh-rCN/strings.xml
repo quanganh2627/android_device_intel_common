@@ -44,4 +44,6 @@
     <string name="media_format_final_button_text" msgid="4881713344315923175">"清除全部内容"</string>
     <string name="media_format_gesture_prompt" msgid="3109349468816856670">"绘制您的解锁图案"</string>
     <string name="media_format_gesture_explanation" msgid="2192044794228379224">"您需要绘制解锁图案以确认要清空移动存储设备。"</string>
+    <add-resource type="string" name="vpp_settings"></add-resource>
+    <string name="vpp_settings">英特尔<sup><small>®</small></sup>视频优化</string>
 </resources>
