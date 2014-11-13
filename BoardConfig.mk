@@ -1,4 +1,5 @@
 COMMON_PATH := device/intel/common
+COMMON_PLUS_PATH := device/intel/common_plus
 SUPPORT_PATH := vendor/intel/support
 
 ifeq ($(BOARD_USE_64BIT_USERSPACE),true)
