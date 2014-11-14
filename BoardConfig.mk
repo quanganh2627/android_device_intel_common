@@ -375,6 +375,7 @@ BOARD_HAL_STATIC_LIBRARIES += libhealthd.intel
 
 # crashlogd configuration
 CRASHLOGD_FULL_REPORT ?= true
+CRASHLOGD_APLOG ?= true
 CRASHLOGD_COREDUMP ?= true
 ifeq ($(TARGET_BIOS_TYPE),"uefi")
 CRASHLOGD_EFILINUX ?= true
