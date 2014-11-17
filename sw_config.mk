@@ -6,4 +6,5 @@ PRODUCT_COPY_FILES += $(foreach _conf, $(FOUND_CONFIGS), \
 # Add config service
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/config_init.sh:system/etc/catalog/config_init.sh \
+    $(COMMON_PATH)/config_props.sh:system/etc/catalog/config_props.sh \
     $(COMMON_PATH)/init.config_init.rc:root/init.config_init.rc

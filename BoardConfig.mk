@@ -111,7 +111,7 @@ $(call add-path-map, stlport:external/stlport/stlport \
         libnfc-nci_nfa:external/libnfc-nci/src/nfa/include \
         libnfc-nci_gki:external/libnfc-nci/src/gki \
         libc-private:bionic/libc/private \
-        icu4c-common:external/icu4c/common \
+        icu4c-common:external/icu/icu4c/source/common \
         expat-lib:external/expat/lib \
         libvpx:external/libvpx \
         protobuf:external/protobuf/src \
@@ -122,7 +122,7 @@ $(call add-path-map, stlport:external/stlport/stlport \
         libpcap:external/libpcap \
         libsensorhub:vendor/intel/hardware/libsensorhub/src/include \
         libsensorhub_ish:vendor/intel/hardware/libsensorhub/src_ish/include \
-        icu4c-i18n:external/icu4c/i18n \
+        icu4c-i18n:external/icu/icu4c/source/i18n \
         bt-bluez:system/bluetooth/bluez-clean-headers \
         astl:external/astl/include \
         libusb:external/libusb/libusb \
@@ -247,11 +247,7 @@ IA_PANORAMA_VERSION := 1.0
 TARGET_USE_GR_STATIC_RECT_VB := true
 
 # customize the malloced address to be 16-byte aligned
-ifeq ($(MINIMIZE_MALLOC_ALIGNMENT),true)
-  BOARD_MALLOC_ALIGNMENT := 8
-else
-  BOARD_MALLOC_ALIGNMENT := 16
-endif
+BOARD_MALLOC_ALIGNMENT := 16
 
 
 # Enabled Bluetooth GAP test build in bluez

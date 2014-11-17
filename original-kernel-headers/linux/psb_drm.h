@@ -933,7 +933,7 @@ struct psb_gtt_mapping_arg {
 	uint32_t bcd_buffer_id;
 	uint32_t bcd_buffer_count;
 	uint32_t bcd_buffer_stride;
-	uint32_t vaddr;
+	unsigned long vaddr;
 	uint32_t size;
 };
 
@@ -1327,13 +1327,13 @@ typedef struct intel_dc_plane_zorder {
 typedef struct intel_dc_plane_ctx {
 	enum intel_dc_plane_types type;
 	struct intel_dc_plane_zorder zorder;
-	uint32_t gtt_key;
+	uint64_t gtt_key;
 	union {
 		struct intel_dc_overlay_ctx ov_ctx;
 		struct intel_dc_sprite_ctx sp_ctx;
 		struct intel_dc_primary_ctx prim_ctx;
 		struct intel_dc_cursor_ctx cs_ctx;
 	} ctx;
-} DC_MRFLD_SURF_CUSTOM;
+} __attribute__((packed)) DC_MRFLD_SURF_CUSTOM;
 
 #endif

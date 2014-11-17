@@ -1,1 +1,0 @@
-../generic_rules.mk

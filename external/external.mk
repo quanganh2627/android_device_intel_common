@@ -1,18 +1,42 @@
-ifneq (,$(filter intel_prebuilts,$(MAKECMDGOALS)))
-# at the moment we only generate prebuilts for userdebug builds
+# At the moment we only generate prebuilts for userdebug builds
 # this is a safety feature, eng, user, and userdebug binaries should be the same
 # so intel_prebuilts should be used only for one variant anyway.
 ifeq (userdebug,$(TARGET_BUILD_VARIANT))
 
+
+# Prebuilts generation for external release is now done in two steps
+# 1/ A full build is done
+# 2/ Based on the files generated in 1/, prepare the prebuilts
+#
+# Some modules do specific processing when prebuilts are generated.
+# Therefore, specific variables must be set for both all prebuilt targets.
+#
+# * intel_prebuilts target is built together with full image
+#   It also restarts a make with publish_intel_prebuilts target
+# * generate_intel_prebuilts target will pick built files and package them
+#   in out folder.
+# * publish_intel_prebuilts target takes the prebuilts from out folder
+#   packages them in a zip and publishes the zip in pub
+
+
+ifneq (,$(filter \
+    intel_prebuilts generate_intel_prebuilts publish_intel_prebuilts, \
+    $(MAKECMDGOALS)))
 # GENERATE_INTEL_PREBUILTS is used to indicate we are generating intel_prebuilts
 # so that the tests above are not duplicated in different portions of the code.
 GENERATE_INTEL_PREBUILTS:=true
+
+TARGET_OUT_prebuilts := $(PRODUCT_OUT)/prebuilts/intel
 
 # for easy porting to legacy branches, we setup REF_PRODUCT_NAME
 ifeq ($(REF_PRODUCT_NAME),)
 REF_PRODUCT_NAME:=$(TARGET_PRODUCT)
 endif
 
+endif # intel_prebuilts || generate_intel_prebuilts || publish_intel_prebuilts
+
+
+ifneq (,$(filter generate_intel_prebuilts publish_intel_prebuilts,$(MAKECMDGOALS)))
 # Projects that require prebuilt are defined in manifest as follow:
 # - project belongs to bsp-priv manifest group
 # - and project has g_external annotation set to 'bin' ('g' meaning 'generic' customer)
@@ -48,6 +72,7 @@ $(if $(filter $(1),$(_metatarget)), \
         $(foreach s, $(LOCAL_SRC_FILES) $(LOCAL_PREBUILT_MODULE_FILE), $(if $(findstring /PRIVATE/, $(s)), $(info >    [$(s)]))) \
         $(error Stop) \
     ) \
+    $(eval LOCAL_INSTALLED_MODULE_STEM := $(my_installed_module_stem)) \
     $(eval $(my).$(module_type).$(2).LOCAL_INSTALLED_STEM_MODULES := $($(my).$(module_type).$(2).LOCAL_INSTALLED_STEM_MODULES) $(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM)) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE := $(strip $(LOCAL_MODULE))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_IS_HOST_MODULE := $(strip $(LOCAL_IS_HOST_MODULE))) \
@@ -55,17 +80,21 @@ $(if $(filter $(1),$(_metatarget)), \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_TAGS := $(strip $(LOCAL_MODULE_TAGS))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).OVERRIDE_BUILT_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(OVERRIDE_BUILT_MODULE_PATH))))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_UNINSTALLABLE_MODULE := $(strip $(LOCAL_UNINSTALLABLE_MODULE))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_BUILT_MODULE_STEM := $(strip $(LOCAL_BUILT_MODULE_STEM))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_BUILT_MODULE_STEM := $(strip $(my_built_module_stem))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_STRIP_MODULE := ) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_REQUIRED_MODULES := $(strip $(LOCAL_REQUIRED_MODULES))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_SHARED_LIBRARIES := $(strip $(LOCAL_SHARED_LIBRARIES))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_INSTALLED_MODULE_STEM := $(strip $(LOCAL_INSTALLED_MODULE_STEM))) \
     $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_CERTIFICATE := $(strip $(notdir $(LOCAL_CERTIFICATE)))) \
-    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(LOCAL_MODULE_PATH))))) \
+    $(eval $(my).$(module_type).$(2).$(LOCAL_MODULE).$(LOCAL_INSTALLED_MODULE_STEM).LOCAL_MODULE_PATH := $(strip $(subst $(HOST_OUT),$$$$(HOST_OUT),$(subst $(PRODUCT_OUT),$$$$(PRODUCT_OUT),$(my_module_path))))) \
     $(eval ### prebuilts must copy the original source file as some post-processing may happen on the built file - others copy the built file) \
     $(if $(filter prebuilt,$(_metatarget)), \
-        $(eval _input_file := $(firstword $(LOCAL_PREBUILT_MODULE_FILE) $(LOCAL_PATH)/$(LOCAL_SRC_FILES))), \
-        $(eval _input_file := $(LOCAL_BUILT_MODULE)$(3)) \
+        $(eval _input_file := $(ext_prebuilt_src_file)), \
+        $(if $(filter java_library,$(_metatarget)), \
+            $(eval ### get unstripped jar) \
+            $(eval _input_file := $(common_javalib.jar)), \
+            $(eval _input_file := $(LOCAL_BUILT_MODULE)$(3)) \
+        ) \
     ) \
     $(eval $(my).copyfiles := $($(my).copyfiles) $(_input_file):$(dir $(my))$(module_type)/$(LOCAL_INSTALLED_MODULE_STEM)) \
     $(eval ### for java libraries, also keep jar with classes) \
@@ -130,13 +159,15 @@ endef
 
 # Copy several files.
 # $(1): The files to copy.  Each entry is a ':' separated src:dst pair
+# Note: Explicitly fail when attempting to copy a directory as acp does not return an error
 define copy-several-files
 $(foreach f, $(1), \
     $(eval _cmf_tuple := $(subst :, ,$(f))) \
     $(eval _cmf_src := $(word 1,$(_cmf_tuple))) \
     $(eval _cmf_dest := $(word 2,$(_cmf_tuple))) \
-    mkdir -p $(dir $(_cmf_dest)); \
-    $(ACP) $(_cmf_src) $(_cmf_dest);)
+    ( mkdir -p $(dir $(_cmf_dest)); \
+    $(ACP) $(_cmf_src) $(_cmf_dest) && \
+    test ! -d $(_cmf_src) ) && ) true;
 endef
 
 # List several files dependencies.
@@ -149,8 +180,6 @@ $(foreach f, $(1), $(strip \
 endef
 
 EXTERNAL_BUILD_SYSTEM=device/intel/common/external
-
-TARGET_OUT_prebuilts := $(PRODUCT_OUT)/prebuilts/intel
 
 # hook all the build makefiles with our own version
 # most of them are only symlinks to "unsupported.mk", which will generate an
@@ -170,7 +199,6 @@ BUILD_PACKAGE:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/package.mk
 BUILD_PHONY_PACKAGE:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/phony_package.mk
 BUILD_HOST_PREBUILT:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/host_prebuilt.mk
 BUILD_PREBUILT:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/prebuilt.mk
-BUILD_MULTI_PREBUILT:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/multi_prebuilt.mk
 BUILD_JAVA_LIBRARY:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/java_library.mk
 BUILD_STATIC_JAVA_LIBRARY:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/static_java_library.mk
 BUILD_HOST_JAVA_LIBRARY:= $(EXTERNAL_BUILD_SYSTEM)/symlinks/host_java_library.mk
@@ -179,8 +207,11 @@ BUILD_NATIVE_TEST := $(EXTERNAL_BUILD_SYSTEM)/symlinks/native_test.mk
 BUILD_HOST_NATIVE_TEST := $(EXTERNAL_BUILD_SYSTEM)/symlinks/host_native_test.mk
 BUILD_CUSTOM_EXTERNAL := $(EXTERNAL_BUILD_SYSTEM)/symlinks/custom_external.mk
 
+# No need to define rules for wrappers around targets we already support
+# BUILD_MULTI_PREBUILT -> relies on BUILD_PREBUILT
+
+endif # generate_intel_prebuilts || publish_intel_prebuilts
 endif # userdebug
-endif # intel_prebuilt
 
 # Convenient function to translate the path from internal to external.
 # It's available regardless of the prebuilt generation.

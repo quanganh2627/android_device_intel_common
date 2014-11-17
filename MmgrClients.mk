@@ -15,7 +15,8 @@ PRODUCT_PACKAGES += \
     libmodemupdate \
     nvm_server \
     proxy  \
-    mts
+    mts \
+    init.class_main.sh
 
 #OemTelephony for OEM HOOK API
 PRODUCT_PACKAGES += \
