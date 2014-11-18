@@ -428,6 +428,6 @@ CRASHLOGD_MODULE_RAMDUMP ?= true
 BOARD_KERNEL_DROIDBOOT_EXTRA_CMDLINE += androidboot.selinux=permissive
 
 # SELinux
-ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug user))
+ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 cmdline_extra += androidboot.selinux=permissive
 endif
