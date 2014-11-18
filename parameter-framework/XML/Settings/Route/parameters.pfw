@@ -279,7 +279,11 @@ supDomain: Parameter
 						AlwaysListening Is True
 						LpalDevice Is Main
 						InputSources Is none
-					InputDevices Includes Main
+					ALL
+						InputDevices Includes Main
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
 
 				component: /Route/route_mgr/criteria/input_devices/mask
 					Main = 1
@@ -302,7 +306,12 @@ supDomain: Parameter
 							OutputDevices Includes Sco
 							OutputDevices Includes ScoHeadset
 							OutputDevices Includes ScoCarkit
-					InputDevices Includes ScoHeadset
+					ALL
+						InputDevices Includes ScoHeadset
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
+							AndroidMode Is InVoipCall
 
 				component: /Route/route_mgr/criteria/input_devices/mask
 					SCO_Headset = 1
@@ -323,7 +332,10 @@ supDomain: Parameter
 						OutputDevices Includes Headset
 					ALL
 						InputDevices Includes Headset
-						AndroidMode IsNot InCsvCall
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
+							AndroidMode Is InVoipCall
 					ALL
 						AlwaysListening Is True
 						LpalDevice Is Headset
@@ -362,7 +374,11 @@ supDomain: Parameter
 						ANY
 							OutputDevices Includes Headphones
 							OutputDevices Includes Ihf
-					InputDevices Includes Back
+					ALL
+						InputDevices Includes Back
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
 
 				component: /Route/route_mgr/criteria/input_devices/mask
 					Back = 1
@@ -389,7 +405,11 @@ supDomain: Parameter
 									CmeDirectStreamCapture Is True
 									CmeModemStreamCapture Is True
 
-					InputDevices Includes Ambient
+					ALL
+						InputDevices Includes Ambient
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
 
 				component: /Route/route_mgr/criteria/input_devices/mask
 					Ambient = 1
