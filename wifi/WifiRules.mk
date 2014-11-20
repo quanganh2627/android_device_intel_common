@@ -96,6 +96,8 @@ STA_CONF_FILES      += $(COMMON_WIFI_DIR)/$(COMBO_CHIP_VENDOR)_specific/$(STA_CO
 P2P_CONF_FILES      += $(COMMON_WIFI_DIR)/$(COMBO_CHIP_VENDOR)_specific/$(P2P_CONF_FILE_NAME)
 HOSTAPD_CONF_FILES  += $(COMMON_WIFI_DIR)/$(COMBO_CHIP_VENDOR)_specific/$(HOSTAPD_CONF_FILE_NAME)
 
+-include $(COMMON_PLUS_PATH)/carrier-001/wifi/WifiRules.mk
+
 ####################################
 # Locale variables
 ####################################
