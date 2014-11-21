@@ -171,12 +171,7 @@ PRODUCT_COPY_FILES += \
 ##############################################################
 # Source: device/intel/mixins/groups/gms/true/product.mk
 ##############################################################
-$(call inherit-product-if-exists, vendor/google/gms/products/gms_gpe.mk)
-
-PRODUCT_PACKAGES += DefaultLayout
-
-PRODUCT_PROPERTY_OVERRIDES += \
- ro.com.google.clientidbase=android-intel
+$(call inherit-product-if-exists, vendor/google/gms/products/intel_gms.mk)
 ##############################################################
 # Source: device/intel/mixins/groups/debug-tools/true/product.mk
 ##############################################################
