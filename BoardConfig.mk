@@ -404,4 +404,8 @@ endif
 BOARD_SEPOLICY_DIRS +=\
         device/intel/common/sepolicy
 BOARD_SEPOLICY_UNION +=\
-        intel_prop.te
+        asf.te \
+        file_contexts \
+        intel_prop.te \
+        service_contexts \
+        service.te

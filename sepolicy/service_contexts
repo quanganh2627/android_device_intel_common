@@ -1,0 +1,2 @@
+# Additional service_contexts rules
+securityfile                              u:object_r:securityfile_service:s0
