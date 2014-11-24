@@ -26,7 +26,5 @@
 
 /* Must be true for LnP */
 #define INTEL_LNP_UART TRUE
-/* Enables LPM for LNP if TRUE */
-#define LNP_LPM_ENABLED FALSE
 
 #endif
