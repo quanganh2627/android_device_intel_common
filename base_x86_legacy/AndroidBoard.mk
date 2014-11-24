@@ -140,10 +140,10 @@ endif
 KERNEL_CCSLOP := $(filter-out time_macros,$(subst $(comma), ,$(CCACHE_SLOPPINESS)))
 KERNEL_CCSLOP := $(subst $(space),$(comma),$(KERNEL_CCSLOP))
 
-KERNEL_OUT_DIR := $(PRODUCT_OUT)/linux/kernel
+KERNEL_OUT_DIR := $(PRODUCT_OUT)/linux/kernel/gmin
 
 KERNEL_MODINSTALL := modules_install
-KERNEL_OUT_MODINSTALL := $(PRODUCT_OUT)/linux/$(KERNEL_MODINSTALL)
+KERNEL_OUT_MODINSTALL := $(PRODUCT_OUT)/linux/kernel/$(KERNEL_MODINSTALL)
 KERNEL_MODULES_ROOT := $(PRODUCT_OUT)/system/lib/modules
 KERNEL_CONFIG := $(KERNEL_OUT_DIR)/.config
 
@@ -238,5 +238,22 @@ $(PRODUCT_OUT)/boot.img: $(KERNEL_BZIMAGE)
 #kernel modules are installed in system
 $(PRODUCT_OUT)/system.img: kernel
 
+
+# export kernel binaries the way gmin does
+KERNEL_PREBUILTS_DIR := device/intel/gmin-kernel/$(TARGET_KERNEL_ARCH)
+kernel_prebuilts: kernel
+	@rm -rf $(KERNEL_PREBUILTS_DIR)
+	@mkdir -p $(KERNEL_PREBUILTS_DIR)
+	@cp $(KERNEL_CONFIG) $(KERNEL_PREBUILTS_DIR)/config
+	@cp $(KERNEL_BZIMAGE) $(KERNEL_PREBUILTS_DIR)/bzImage
+	@cp $(KERNEL_OUT_DIR)/System.map $(KERNEL_PREBUILTS_DIR)/
+	@cp $(KERNEL_OUT_DIR)/vmlinux $(KERNEL_PREBUILTS_DIR)/
+	@git --git-dir=$(KERNEL_SRC_DIR)/.git log -n 1 > $(KERNEL_PREBUILTS_DIR)/source.sha1
+	@mkdir -p $(KERNEL_PREBUILTS_DIR)/modules
+	@MODULES_OUT=$(KERNEL_PREBUILTS_DIR)/lib/modules/`cat $(KERNEL_VERSION_FILE)`; \
+	mkdir -p $${MODULES_OUT} && \
+	cp $(KERNEL_MODULES_ROOT)/*.ko $${MODULES_OUT}/ && \
+	cd $(KERNEL_PREBUILTS_DIR)/modules && \
+	cp -s ../lib/modules/*/*.ko .
 endif
 # ------------------ END MIX-IN DEFINITIONS ------------------
