@@ -16,6 +16,9 @@ TARGET_RIL_DISABLE_STATUS_POLLING := true
 TARGET_BOARD_KERNEL_HEADERS := $(COMMON_PATH)/kernel-headers
 KERNEL_SRC_DIR ?= linux/kernel
 
+# enable ARM codegen for x86 with Houdini
+BUILD_ARM_FOR_X86 := true
+
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 
 # PRODUCT_OUT and HOST_OUT are now defined after BoardConfig is included.
