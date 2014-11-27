@@ -420,5 +420,6 @@ BOARD_SEPOLICY_UNION +=\
         asf.te \
         file_contexts \
         intel_prop.te \
+        platform_app.te \
         service_contexts \
         service.te
