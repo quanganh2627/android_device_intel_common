@@ -138,6 +138,20 @@ PRODUCT_PACKAGES += \
     libstagefright_soft_amrenc_mdp \
     libstagefright_soft_amrdec_mdp
 
+# Decoding ASF/MPEG4-ASP/H263
+PRODUCT_PACKAGES += \
+	libasfparser \
+	libmixvbp \
+	libmixvbp_mpeg4 \
+	libva_videodecoder \
+	libOMXVideoDecoderMPEG4 \
+	libOMXVideoDecoderH263 \
+	libva_videoencoder \
+	libOMXVideoEncoderMPEG4 \
+	libOMXVideoEncoderH263 \
+	libintelmetadatabuffer \
+	libwrs_omxil_core_pvwrapped \
+	libwrs_omxil_base
 ##############################################################
 # Source: device/intel/mixins/groups/sensors/iio/product.mk
 ##############################################################
