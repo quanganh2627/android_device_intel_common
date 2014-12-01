@@ -1,7 +1,6 @@
 import /init.watchdog.rc
 import /init.firmware.rc
 import /init.intel.feature.asf.rc
-import /init.intel.features.rc
 import /init.ksm.rc
 import /init.readahead.rc
 import /init.zram.rc
@@ -48,24 +47,6 @@ on init
     mkdir /storage/usbcard1 0700 root root
 
 on boot
-#    chown system system /dev/pvr_sync
-#    chmod 666 /dev/pvr_sync
-
-#   chown system system /dev/dri/card0
-#   chmod 0666 /dev/dri/card0
-#   symlink /dev/dri/card0 /dev/card0
-
-    # IMG Graphics specific setup. See also "service pvrsrvctl"
-    # The permissions below should be tighter.
-#    chown system system /dev/card0
-    chown system system /sys/class/backlight/psb-bl/brightness
-    chown system system /sys/class/backlight/psb-bl/max_brightness
-    chown system system /sys/class/backlight/psb-bl/actual_brightness
- #   chmod 0666 /dev/card0
-    chmod 0664 /sys/class/backlight/psb-bl/brightness
-    chmod 0664 /sys/class/backlight/psb-bl/max_brightness
-    chmod 0664 /sys/class/backlight/psb-bl/actual_brightness
-
     #Change mmc queue nr_requests from 128 to 32 to reduce write latencies
     write /sys/block/mmcblk0/queue/nr_requests 32
 
@@ -162,13 +143,9 @@ on charger
     chmod 0666 /dev/dri/card0
     symlink /dev/dri/card0 /dev/card0
 
-    # IMG Graphics specific setup. See also "service pvrsrvctl"
     # The permissions below should be tighter.
     chown system system /dev/card0
 
-    start pvrsrvctl
-    # reduce backlight
-    write /sys/class/backlight/psb-bl/brightness 50
     #default setting to enable charging in COS
     setprop sys.usb.config charging
 
@@ -186,11 +163,6 @@ service bcu_cpufreqrel /system/bin/bcu_cpufreqrel
     group system
     oneshot
     disabled
-
-service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
-    class core
-    oneshot
-    user root
 
 service ct_monitor /system/bin/ct_monitor
     class core
