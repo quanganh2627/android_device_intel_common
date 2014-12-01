@@ -1,0 +1,2 @@
+# Rules for intel_prop (read Android props from fw)
+type intel_prop, domain;

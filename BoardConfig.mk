@@ -16,6 +16,9 @@ TARGET_RIL_DISABLE_STATUS_POLLING := true
 TARGET_BOARD_KERNEL_HEADERS := $(COMMON_PATH)/kernel-headers
 KERNEL_SRC_DIR ?= linux/kernel
 
+# enable ARM codegen for x86 with Houdini
+BUILD_ARM_FOR_X86 := true
+
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 
 # PRODUCT_OUT and HOST_OUT are now defined after BoardConfig is included.
@@ -402,7 +405,9 @@ BOARD_CHARGER_DISABLE_INIT_BLANK := true
 BOARD_HAL_STATIC_LIBRARIES += libhealthd.intel
 
 # crashlogd configuration
+CRASHLOGD_FACTORY_CHECKSUM ?= true
 CRASHLOGD_FULL_REPORT ?= true
+CRASHLOGD_APLOG ?= true
 CRASHLOGD_COREDUMP ?= true
 ifeq ($(TARGET_BIOS_TYPE),"uefi")
 CRASHLOGD_EFILINUX ?= true
@@ -426,3 +431,8 @@ BOARD_KERNEL_DROIDBOOT_EXTRA_CMDLINE += androidboot.selinux=permissive
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug user))
 cmdline_extra += androidboot.selinux=permissive
 endif
+
+BOARD_SEPOLICY_DIRS +=\
+        device/intel/common/sepolicy
+BOARD_SEPOLICY_UNION +=\
+        intel_prop.te

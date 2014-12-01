@@ -3,82 +3,261 @@ supDomain: Parameter
 
 	supDomain: OutputDevice
 
-		domain: IHF
+		domain: Ihf
 			conf: Selected
-				OutputDevices Includes IHF
+				OutputDevices Includes Ihf
 
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					IHF = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					IHF = 0
 
 		domain: Earpiece
 			conf: Selected
 				OutputDevices Includes Earpiece
 
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					Earpiece = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					Earpiece = 0
 
 		domain: Headset
 			conf: Selected
 				OutputDevices Includes Headset
 
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					Headset = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					Headset = 0
 
 		domain: Headphones
 			conf: Selected
 				OutputDevices Includes Headphones
 
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					Headphones = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					Headphones = 0
 
-		domain: SCO
+		domain: Sco
 			conf: Selected
-				OutputDevices Includes SCO
+				OutputDevices Includes Sco
 
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					SCO = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					SCO = 0
 
-		domain: SCO_Headset
+		domain: ScoHeadset
 			conf: Selected
-				OutputDevices Includes SCO_Headset
+				OutputDevices Includes ScoHeadset
 
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					SCO_Headset = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					SCO_Headset = 0
 
-		domain: SCO_CarKit
+		domain: ScoCarkit
 			conf: Selected
-				OutputDevices Includes SCO_CarKit
+				OutputDevices Includes ScoCarkit
 
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					SCO_CarKit = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_DEVICES_CRITERIA/OUTPUT_DEVICES/
+				component: /Route/route_mgr/criteria/output_devices/mask
 					SCO_CarKit = 0
+
+		domain: A2dp
+			conf: Selected
+				OutputDevices Includes A2dp
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					A2dp = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					A2dp = 0
+
+		domain: A2dpHeadphones
+			conf: Selected
+				OutputDevices Includes A2dpHeadphones
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					A2dpHeadphones = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					A2dpHeadphones = 0
+
+
+		domain: A2dpSpeaker
+			conf: Selected
+				OutputDevices Includes A2dpSpeaker
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					A2dpSpeaker = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					A2dpSpeaker = 0
+
+
+		domain: AuxDigital
+			conf: Selected
+				OutputDevices Includes AuxDigital
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					AuxDigital = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					AuxDigital = 0
+
+
+		domain: AnlgDockHeadset
+			conf: Selected
+				OutputDevices Includes AnlgDockHeadset
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					AnlgDockHeadset = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					AnlgDockHeadset = 0
+
+		domain: DgtlDockHeadset
+			conf: Selected
+				OutputDevices Includes DgtlDockHeadset
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					DgtlDockHeadset = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					DgtlDockHeadset = 0
+
+		domain: UsbAccessory
+			conf: Selected
+				OutputDevices Includes UsbAccessory
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					UsbAccessory = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					UsbAccessory = 0
+
+		domain: UsbDevice
+			conf: Selected
+				OutputDevices Includes UsbDevice
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					UsbDevice = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					UsbDevice = 0
+
+		domain: RemoteSubmix
+			conf: Selected
+				OutputDevices Includes RemoteSubmix
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					RemoteSubmix = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					RemoteSubmix = 0
+
+		domain: TelephonyTx
+			conf: Selected
+				OutputDevices Includes TelephonyTx
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					TelephonyTx = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					TelephonyTx = 0
+
+		domain: Line
+			conf: Selected
+				OutputDevices Includes Line
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					Line = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					Line = 0
+
+		domain: HdmiArc
+			conf: Selected
+				OutputDevices Includes HdmiArc
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					HdmiArc = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					HdmiArc = 0
+
+		domain: Spdif
+			conf: Selected
+				OutputDevices Includes Spdif
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					Spdif = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					Spdif = 0
+
+		domain: Fm
+			conf: Selected
+				OutputDevices Includes Fm
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					Fm = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					Fm = 0
+
+		domain: AuxLine
+			conf: Selected
+				OutputDevices Includes AuxLine
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					AuxLine = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					AuxLine = 0
+
+		domain: SpeakerSafe
+			conf: Selected
+				OutputDevices Includes SpeakerSafe
+
+				component: /Route/route_mgr/criteria/output_devices/mask
+					SpeakerSafe = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_devices/mask
+					SpeakerSafe = 0
 
 
 	supDomain: InputDevice
@@ -100,17 +279,21 @@ supDomain: Parameter
 						AlwaysListening Is True
 						LpalDevice Is Main
 						InputSources Is none
-					InputDevices Includes Main
+					ALL
+						InputDevices Includes Main
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
 
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+				component: /Route/route_mgr/criteria/input_devices/mask
 					Main = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+				component: /Route/route_mgr/criteria/input_devices/mask
 					Main = 0
 
 
-		domain: SCO_Headset
+		domain: ScoHeadset
 			conf: Selected
 				ANY
 					ALL
@@ -120,16 +303,21 @@ supDomain: Parameter
 							CmeDirectStreamCapture Is True
 							CmeModemStreamCapture Is True
 						ANY
-							OutputDevices Includes SCO
-							OutputDevices Includes SCO_Headset
-							OutputDevices Includes SCO_CarKit
-					InputDevices Includes SCO_Headset
+							OutputDevices Includes Sco
+							OutputDevices Includes ScoHeadset
+							OutputDevices Includes ScoCarkit
+					ALL
+						InputDevices Includes ScoHeadset
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
+							AndroidMode Is InVoipCall
 
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+				component: /Route/route_mgr/criteria/input_devices/mask
 					SCO_Headset = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+				component: /Route/route_mgr/criteria/input_devices/mask
 					SCO_Headset = 0
 
 		domain: Headset
@@ -144,28 +332,31 @@ supDomain: Parameter
 						OutputDevices Includes Headset
 					ALL
 						InputDevices Includes Headset
-						AndroidMode IsNot InCsvCall
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
+							AndroidMode Is InVoipCall
 					ALL
 						AlwaysListening Is True
 						LpalDevice Is Headset
 						InputSources Is none
 
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+				component: /Route/route_mgr/criteria/input_devices/mask
 					Headset = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+				component: /Route/route_mgr/criteria/input_devices/mask
 					Headset = 0
 
 		domain: VoiceCall
 			conf: Selected
 				InputDevices Includes VoiceCall
 
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+				component: /Route/route_mgr/criteria/input_devices/mask
 					VoiceCall = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+				component: /Route/route_mgr/criteria/input_devices/mask
 					VoiceCall = 0
 
 		domain: Back
@@ -182,24 +373,28 @@ supDomain: Parameter
 									CmeModemStreamCapture Is True
 						ANY
 							OutputDevices Includes Headphones
-							OutputDevices Includes IHF
-					InputDevices Includes Back
+							OutputDevices Includes Ihf
+					ALL
+						InputDevices Includes Back
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
 
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+				component: /Route/route_mgr/criteria/input_devices/mask
 					Back = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+				component: /Route/route_mgr/criteria/input_devices/mask
 					Back = 0
 
-		# Ambient mic: activated when we have a dual-mic situation (incall + Earpiece or IHF or Headphones)
+		# Ambient mic: activated when we have a dual-mic situation (incall + Earpiece or Ihf or Headphones)
 		domain: Ambient
 			conf: Selected
 				ANY
 					ALL
 						ANY
 							OutputDevices Includes Earpiece
-							OutputDevices Includes IHF
+							OutputDevices Includes Ihf
 							OutputDevices Includes Headphones
 						ANY
 							AndroidMode Is InVoipCall
@@ -210,138 +405,334 @@ supDomain: Parameter
 									CmeDirectStreamCapture Is True
 									CmeModemStreamCapture Is True
 
-					InputDevices Includes Ambient
+					ALL
+						InputDevices Includes Ambient
+						ANY
+							AndroidMode Is Normal
+							AndroidMode Is RingTone
 
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+				component: /Route/route_mgr/criteria/input_devices/mask
 					Ambient = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_DEVICES_CRITERIA/INPUT_DEVICES/
+				component: /Route/route_mgr/criteria/input_devices/mask
 					Ambient = 0
 
+		domain: Communication
+			conf: Selected
+				InputDevices Includes Communication
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Communication = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Communication = 0
+
+		domain: AuxDigital
+			conf: Selected
+				InputDevices Includes AuxDigital
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					AuxDigital = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					AuxDigital = 0
+
+		domain: AnlgDockHeadset
+			conf: Selected
+				InputDevices Includes AnlgDockHeadset
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					AnlgDockHeadset = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					AnlgDockHeadset = 0
+
+		domain: DgtlDockHeadset
+			conf: Selected
+				InputDevices Includes DgtlDockHeadset
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					DgtlDockHeadset = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					DgtlDockHeadset = 0
+
+		domain: UsbAccessory
+			conf: Selected
+				InputDevices Includes UsbAccessory
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					UsbAccessory = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					UsbAccessory = 0
+
+		domain: FmTuner
+			conf: Selected
+				InputDevices Includes FmTuner
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					FmTuner = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					FmTuner = 0
+
+		domain: TvTuner
+			conf: Selected
+				InputDevices Includes AuxDigital
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					TvTuner = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					TvTuner = 0
+
+		domain: Line
+			conf: Selected
+				InputDevices Includes Line
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Line = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Line = 0
+
+		domain: Spdif
+			conf: Selected
+				InputDevices Includes Spdif
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Spdif = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Spdif = 0
+
+		domain: BluetoothA2dp
+			conf: Selected
+				InputDevices Includes BluetoothA2dp
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					BluetoothA2dp = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					BluetoothA2dp = 0
+
+		domain: Loopback
+			conf: Selected
+				InputDevices Includes Loopback
+
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Loopback = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_devices/mask
+					Loopback = 0
+
+
 	supDomain: InputSources
+
+		domain: Default
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_sources/mask
+					Default = 0
 
 		domain: Mic
 			conf: Selected
 				InputSources Includes Mic
 
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					Mic = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					Mic = 0
 
 		domain: Camcorder
 			conf: Selected
 				InputSources Includes Camcorder
 
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					Camcorder = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					Camcorder = 0
 
 		domain: VoiceRecognition
 			conf: Selected
 				InputSources Includes VoiceRecognition
 
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					VoiceRecognition = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					VoiceRecognition = 0
 
 		domain: VoiceCommunication
 			conf: Selected
 				InputSources Includes VoiceCommunication
 
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					VoiceCommunication = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					VoiceCommunication = 0
 
 		domain: VoiceDownlink
 			conf: Selected
 				InputSources Includes VoiceDownlink
 
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					VoiceDownlink = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					VoiceDownlink = 0
 
 		domain: VoiceUplink
 			conf: Selected
 				InputSources Includes VoiceUplink
 
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					VoiceUplink = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					VoiceUplink = 0
+
+		domain: RemoteSubmix
+			conf: Selected
+				InputSources Includes RemoteSubmix
+
+				component: /Route/route_mgr/criteria/input_sources/mask
+					RemoteSubmix = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_sources/mask
+					RemoteSubmix = 0
 
 		domain: VoiceCall
 			conf: Selected
 				InputSources Includes VoiceCall
 
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					VoiceCall = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/INPUT_SOURCES_CRITERIA/INPUT_SOURCES/
+				component: /Route/route_mgr/criteria/input_sources/mask
 					VoiceCall = 0
+
+		domain: Hotword
+			conf: Selected
+				InputSources Includes Hotword
+
+				component: /Route/route_mgr/criteria/input_sources/mask
+					Hotword = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/input_sources/mask
+					Hotword = 0
 
 
 	supDomain: Outputflags
+
+		domain: Direct
+			conf: Selected
+				OutputFlags Includes Direct
+
+				component: /Route/route_mgr/criteria/output_flags/mask
+					direct = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_flags/mask
+					direct = 0
 
 		domain: Primary
 			conf: Selected
 				OutputFlags Includes Primary
 
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_FLAGS_CRITERIA/OUTPUT_FLAGS/
-					AUDIO_OUTPUT_FLAG_PRIMARY = 1
+				component: /Route/route_mgr/criteria/output_flags/mask
+					primary = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_FLAGS_CRITERIA/OUTPUT_FLAGS/
-					AUDIO_OUTPUT_FLAG_PRIMARY = 0
+				component: /Route/route_mgr/criteria/output_flags/mask
+					primary = 0
 
 		domain: Deep
 			conf: Selected
 				OutputFlags Includes Deep
 
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_FLAGS_CRITERIA/OUTPUT_FLAGS/
-					AUDIO_OUTPUT_FLAG_DEEP_BUFFER = 1
+				component: /Route/route_mgr/criteria/output_flags/mask
+					deep_buffer = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_FLAGS_CRITERIA/OUTPUT_FLAGS/
-					AUDIO_OUTPUT_FLAG_DEEP_BUFFER = 0
+				component: /Route/route_mgr/criteria/output_flags/mask
+					deep_buffer = 0
 
 		domain: Fast
 			conf: Selected
 				OutputFlags Includes Fast
 
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_FLAGS_CRITERIA/OUTPUT_FLAGS/
-					AUDIO_OUTPUT_FLAG_FAST = 1
+				component: /Route/route_mgr/criteria/output_flags/mask
+					fast = 1
 
 			conf: NotSelected
-				component: /Route/ROUTEMGR/CRITERIA/OUTPUT_FLAGS_CRITERIA/OUTPUT_FLAGS/
-					AUDIO_OUTPUT_FLAG_FAST = 0
+				component: /Route/route_mgr/criteria/output_flags/mask
+					fast = 0
 
+		domain: Offload
+			conf: Selected
+				OutputFlags Includes Offload
+
+				component: /Route/route_mgr/criteria/output_flags/mask
+					compress_offload = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_flags/mask
+					compress_offload = 0
+
+		domain: NonBlocking
+			conf: Selected
+				OutputFlags Includes NonBlocking
+
+				component: /Route/route_mgr/criteria/output_flags/mask
+					non_blocking = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_flags/mask
+					non_blocking = 0
+
+		domain: HwAvSync
+			conf: Selected
+				OutputFlags Includes HwAvSync
+
+				component: /Route/route_mgr/criteria/output_flags/mask
+					hw_av_sync = 1
+
+			conf: NotSelected
+				component: /Route/route_mgr/criteria/output_flags/mask
+					hw_av_sync = 0
 
 	domain: Mode
 
 		conf: RING_TONE
 			AndroidMode Is RingTone
 
-			component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
-				MODES = RingTone
+			component: /Route/route_mgr/criteria/mode
+				mode = RingTone
 
 		conf: IN_CALL
 			ALL
@@ -352,8 +743,8 @@ supDomain: Parameter
 					CmeModemStreamPlayback Is True
 					CmeModemStreamCapture Is True
 
-			component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
-				MODES = InCsvCall
+			component: /Route/route_mgr/criteria/mode
+				mode = InCsvCall
 
 		conf: IN_IMS
 			ALL
@@ -363,36 +754,36 @@ supDomain: Parameter
 					CmeDirectStreamPlayback Is True
 					CmeDirectStreamCapture Is True
 				ANY
-					OutputDevices Is IHF
+					OutputDevices Is Ihf
 					OutputDevices Is Headset
 					OutputDevices Is Headphones
 					OutputDevices Is Earpiece
-					OutputDevices Is SCO
-					OutputDevices Is SCO_Headset
-					OutputDevices Is SCO_CarKit
+					OutputDevices Is Sco
+					OutputDevices Is ScoHeadset
+					OutputDevices Is ScoCarkit
 
-			component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
-				MODES = InImsCall
+			component: /Route/route_mgr/criteria/mode
+				mode = InImsCall
 
 		conf: IN_COMMUNICATION
 			ALL
 				AndroidMode Is InVoipCall
 				ANY
-					OutputDevices Is IHF
+					OutputDevices Is Ihf
 					OutputDevices Is Headset
 					OutputDevices Is Headphones
 					OutputDevices Is Earpiece
-					OutputDevices Is SCO
-					OutputDevices Is SCO_Headset
-					OutputDevices Is SCO_CarKit
+					OutputDevices Is Sco
+					OutputDevices Is ScoHeadset
+					OutputDevices Is ScoCarkit
 
-			component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
-				MODES = InVoipCall
+			component: /Route/route_mgr/criteria/mode
+				mode = InVoipCall
 
 		conf: NORMAL
 
-			component: /Route/ROUTEMGR/CRITERIA/MODE_CRITERIA/
-				MODES = Normal
+			component: /Route/route_mgr/criteria/mode
+				mode = Normal
 
 
 	domain: Band
@@ -414,8 +805,8 @@ supDomain: Parameter
 					VoIPBandType Is NB
 					AndroidMode IsNot InCsvCall
 
-			component: /Route/ROUTEMGR/CRITERIA/BAND_TYPE_CRITERIA/
-				BANDS = NB
+			component: /Route/route_mgr/criteria/band_type
+				band = NB
 
 		conf: WB
 			ANY
@@ -435,8 +826,8 @@ supDomain: Parameter
 					VoIPBandType Is WB
 					AndroidMode IsNot InCsvCall
 
-			component: /Route/ROUTEMGR/CRITERIA/BAND_TYPE_CRITERIA/
-				BANDS = WB
+			component: /Route/route_mgr/criteria/band_type
+				band = WB
 
 		conf: SuperWB
 			ANY
@@ -456,38 +847,38 @@ supDomain: Parameter
 					VoIPBandType Is SuperWB
 					AndroidMode IsNot InCsvCall
 
-			component: /Route/ROUTEMGR/CRITERIA/BAND_TYPE_CRITERIA/
-				BANDS = SuperWB
+			component: /Route/route_mgr/criteria/band_type
+				band = SuperWB
 
 		conf: Unknown
-			component: /Route/ROUTEMGR/CRITERIA/BAND_TYPE_CRITERIA/
-				BANDS = Unknown
+			component: /Route/route_mgr/criteria/band_type
+				band = Unknown
 
 
 	domain: ScreenState
 		conf: On
 			ScreenOn Is True
 
-			component: /Route/ROUTEMGR/CRITERIA/SCREEN_STATE_CRITERIA/
-				STATE = On
+			component: /Route/route_mgr/criteria/screen_state
+				state = On
 
 		conf: Off
-			component: /Route/ROUTEMGR/CRITERIA/SCREEN_STATE_CRITERIA/
-				STATE = Off
+			component: /Route/route_mgr/criteria/screen_state
+				state = Off
 
 
 	domain: TtyDirection
 		conf: Downlink
 			TtyDirection Is Downlink
 
-			component: /Route/ROUTEMGR/CRITERIA/TTY_DIRECTION_CRITERIA/TTY_DIRECTION/
+			component: /Route/route_mgr/criteria/tty_direction/mask
 				Downlink = 1
 				Uplink = 0
 
 		conf: Uplink
 			TtyDirection Is Uplink
 
-			component: /Route/ROUTEMGR/CRITERIA/TTY_DIRECTION_CRITERIA/TTY_DIRECTION/
+			component: /Route/route_mgr/criteria/tty_direction/mask
 				Downlink = 0
 				Uplink = 1
 
@@ -496,12 +887,12 @@ supDomain: Parameter
 				TtyDirection Includes Downlink
 				TtyDirection Includes Uplink
 
-			component: /Route/ROUTEMGR/CRITERIA/TTY_DIRECTION_CRITERIA/TTY_DIRECTION/
+			component: /Route/route_mgr/criteria/tty_direction/mask
 				Downlink = 1
 				Uplink = 1
 
 		conf: Default
-			component: /Route/ROUTEMGR/CRITERIA/TTY_DIRECTION_CRITERIA/TTY_DIRECTION/
+			component: /Route/route_mgr/criteria/tty_direction/mask
 				Downlink = 0
 				Uplink = 0
 
@@ -509,55 +900,55 @@ supDomain: Parameter
 		conf: On
 			BypassNonLinearPp Is True
 
-			component: /Route/ROUTEMGR/CRITERIA/BYPASS_NON_LINEAR_PP/
-				STATE = On
+			component: /Route/route_mgr/criteria/bypass_non_linear_pp
+				state = On
 
 		conf: Off
-			component: /Route/ROUTEMGR/CRITERIA/BYPASS_NON_LINEAR_PP/
-				STATE = Off
+			component: /Route/route_mgr/criteria/bypass_non_linear_pp
+				state = Off
 
 	domain: BypassLinearPp
 		conf: On
 			BypassLinearPp Is True
 
-			component: /Route/ROUTEMGR/CRITERIA/BYPASS_LINEAR_PP/
-				STATE = On
+			component: /Route/route_mgr/criteria/bypass_linear_pp
+				state = On
 
 		conf: Off
-			component: /Route/ROUTEMGR/CRITERIA/BYPASS_LINEAR_PP/
-				STATE = Off
+			component: /Route/route_mgr/criteria/bypass_linear_pp
+				state = Off
 
 	domain: MicMute
 		conf: Muted
 			MicMute Is True
 
-			component: /Route/ROUTEMGR/CRITERIA/MIC_MUTE/
-				STATE = On
+			component: /Route/route_mgr/criteria/mic_mute
+				state = On
 
 		conf: Unmuted
-			component: /Route/ROUTEMGR/CRITERIA/MIC_MUTE/
-				STATE = Off
+			component: /Route/route_mgr/criteria/mic_mute
+				state = Off
 
 	domain: BtHeadsetNrEc
 		conf: Available
 			BtHeadsetNrEc Is True
 
-			component: /Route/ROUTEMGR/CRITERIA/BT_HEADSET_NREC_CRITERIA/
-				BOOLEAN = True
+			component: /Route/route_mgr/criteria/bt_headset_nrec
+				boolean = True
 
 		conf: NotAvailable
-			component: /Route/ROUTEMGR/CRITERIA/BT_HEADSET_NREC_CRITERIA/
-				BOOLEAN = False
+			component: /Route/route_mgr/criteria/bt_headset_nrec
+				boolean = False
 
 	domain: BtHeadsetBandType
 		conf: WB
 			BtHeadsetBandType Is WB
-			component: /Route/ROUTEMGR/CRITERIA/BT_HEADSET_BAND_CRITERIA/
-				BANDS = WB
+			component: /Route/route_mgr/criteria/bt_headset_band
+				band = WB
 
 		conf: NB
-			component: /Route/ROUTEMGR/CRITERIA/BT_HEADSET_BAND_CRITERIA/
-				BANDS = NB
+			component: /Route/route_mgr/criteria/bt_headset_band
+				band = NB
 
 	supDomain: PreProcessor
 
@@ -565,64 +956,64 @@ supDomain: Parameter
 			conf: Enabled
 				PreProcessorRequestedByActiveInput Includes Aec
 
-				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+				component: /Route/route_mgr/criteria/preproc_enabled/mask
 					Aec = 1
 
 			conf: Disabled
-				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+				component: /Route/route_mgr/criteria/preproc_enabled/mask
 					Aec = 0
 
 		domain: Agc
 			conf: Enabled
 				PreProcessorRequestedByActiveInput Includes Agc
 
-				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+				component: /Route/route_mgr/criteria/preproc_enabled/mask
 					Agc = 1
 
 			conf: Disabled
-				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+				component: /Route/route_mgr/criteria/preproc_enabled/mask
 					Agc = 0
 
 		domain: Ns
 			conf: Enabled
 				PreProcessorRequestedByActiveInput Includes Ns
 
-				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+				component: /Route/route_mgr/criteria/preproc_enabled/mask
 					Ns = 1
 
 			conf: Disabled
-				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+				component: /Route/route_mgr/criteria/preproc_enabled/mask
 					Ns = 0
 
 		domain: Bmf
 			conf: Enabled
 				PreProcessorRequestedByActiveInput Includes Bmf
 
-				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+				component: /Route/route_mgr/criteria/preproc_enabled/mask
 					Bmf = 1
 
 			conf: Disabled
-				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+				component: /Route/route_mgr/criteria/preproc_enabled/mask
 					Bmf = 0
 
 		domain: Wnr
 			conf: Enabled
 				PreProcessorRequestedByActiveInput Includes Wnr
 
-				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+				component: /Route/route_mgr/criteria/preproc_enabled/mask
 					Wnr = 1
 
 			conf: Disabled
-				component: /Route/ROUTEMGR/CRITERIA/PREPROC_ENABLED_CRITERIA/PREPROCESSING_ENABLED/
+				component: /Route/route_mgr/criteria/preproc_enabled/mask
 					Wnr = 0
 
 	domain: Hac
 		conf: Enabled
 			HacSelected Is True
 
-			component: /Route/ROUTEMGR/CRITERIA/HAC_MODE_CRITERIA/
-				STATE = On
+			component: /Route/route_mgr/criteria/hac_mode
+				state = On
 
 		conf: Disabled
-			component: /Route/ROUTEMGR/CRITERIA/HAC_MODE_CRITERIA/
-				STATE = Off
+			component: /Route/route_mgr/criteria/hac_mode
+				state = Off
