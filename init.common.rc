@@ -174,6 +174,8 @@ on charger
 
     start thermald
 
+    trigger firmware_mounts_complete
+
 service thermald /sbin/thermald
     class core
     oneshot
