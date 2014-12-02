@@ -26,14 +26,13 @@ service ifcfg_mac80211 /system/bin/ifconfig wlan0 up
     disabled
     oneshot
 
-service dhcpcd_wlan0 /system/bin/logwrapper /system/bin/dhcpcd -ABKL
+service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL
     class main
     group wifi system dhcp
     disabled
     oneshot
 
-service iprenew_wlan0 /system/bin/logwrapper /system/bin/dhcpcd -n
+service iprenew_wlan0 /system/bin/dhcpcd -n
     group system dhcp
     disabled
     oneshot
-
