@@ -420,6 +420,7 @@ BOARD_SEPOLICY_DIRS +=\
 BOARD_SEPOLICY_UNION +=\
         asf.te \
         file_contexts \
+        genfs_contexts \
         intel_prop.te \
         platform_app.te \
         service_contexts \
