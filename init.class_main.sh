@@ -28,9 +28,16 @@
 
 multisim=`getprop persist.radio.multisim.config`
 
-if [ "$multisim" = "dsds" ] || [ "$multisim" = "dsda" ]; then
-    stop ril-daemon
-    start ril-daemon
-    start ril-daemon1
-fi
+function restart()
+{
+    for service in $@; do
+        stop $service
+        start $service
+    done
+}
 
+if [ "$multisim" = "dsds" ]; then
+    restart mmgr ril-daemon ril-daemon1
+elif [ "$multisim" = "dsda" ]; then
+    restart mmgr mmgr2 ril-daemon ril-daemon1
+fi
