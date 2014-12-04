@@ -132,6 +132,23 @@ on post-fs-data
 
     chown system system /sys/class/drm/card0/gt_max_freq_mhz
 
+    # Collect panic data systematically
+    copy /proc/emmc_ipanic_header /data/dontpanic/emmc_ipanic_header
+    chown root log /data/dontpanic/emmc_ipanic_header
+    chmod 0640 /data/dontpanic/emmc_ipanic_header
+
+    copy /proc/emmc_ipanic_console /data/dontpanic/emmc_ipanic_console
+    chown root log /data/dontpanic/emmc_ipanic_console
+    chmod 0640 /data/dontpanic/emmc_ipanic_console
+
+    copy /proc/emmc_ipanic_threads /data/dontpanic/emmc_ipanic_threads
+    chown root log /data/dontpanic/emmc_ipanic_threads
+    chmod 0640 /data/dontpanic/emmc_ipanic_threads
+
+    copy /proc/emmc_ipanic_gbuffer /data/dontpanic/emmc_ipanic_gbuffer
+    chown root log /data/dontpanic/emmc_ipanic_gbuffer
+    chmod 0640 /data/dontpanic/emmc_ipanic_gbuffer
+
 on property:sys.boot_completed=1
     start bcu_cpufreqrel
 
