@@ -152,6 +152,9 @@ PRODUCT_PACKAGES += \
 	libintelmetadatabuffer \
 	libwrs_omxil_core_pvwrapped \
 	libwrs_omxil_base
+
+# Copy config files to system
+PRODUCT_COPY_FILES += device/intel/common/media/wrs_omxil_components.list:system/etc/wrs_omxil_components.list
 ##############################################################
 # Source: device/intel/mixins/groups/sensors/iio/product.mk
 ##############################################################
