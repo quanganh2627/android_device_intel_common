@@ -1,10 +1,21 @@
 COMMON_PATH := device/intel/common
+COMMON_PLUS_PATH := device/intel/common_plus
 SUPPORT_PATH := vendor/intel/support
 
+ifeq ($(BOARD_USE_64BIT_USERSPACE),true)
+TARGET_ARCH := x86_64
+TARGET_CPU_ABI := x86_64
+TARGET_ARCH_VARIANT := silvermont
+
+TARGET_2ND_CPU_ABI := x86
+TARGET_2ND_ARCH := x86
+TARGET_2ND_ARCH_VARIANT := silvermont
+else
 TARGET_ARCH := x86
 TARGET_ARCH_VARIANT := x86-atom
 TARGET_CPU_VARIANT := x86
 TARGET_CPU_ABI := x86
+endif
 TARGET_CPU_SMP := true
 TARGET_NO_BOOTLOADER := false
 TARGET_NO_RADIOIMAGE := true
@@ -431,3 +442,15 @@ BOARD_KERNEL_DROIDBOOT_EXTRA_CMDLINE += androidboot.selinux=permissive
 ifneq (,$(filter $(TARGET_BUILD_VARIANT),eng userdebug))
 cmdline_extra += androidboot.selinux=permissive
 endif
+
+BOARD_SEPOLICY_DIRS +=\
+        device/intel/common/sepolicy
+BOARD_SEPOLICY_UNION +=\
+        asf.te \
+        file_contexts \
+        genfs_contexts \
+        intel_prop.te \
+        platform_app.te \
+        service_contexts \
+        service.te \
+        system_app.te

@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 genfscon efivarfs       /   u:object_r:efivarfs:s0
 genfscon binfmt_misc    /   u:object_r:binfmt_misc:s0
+=======
+genfscon binfmt_misc / u:object_r:proc:s0
+>>>>>>> 4349ba9cbb59c45a71216dcc68d21a2f7baead24

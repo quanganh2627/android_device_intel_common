@@ -47,7 +47,8 @@ PRODUCT_PACKAGES_ENG += mcd-test
 PRODUCT_PACKAGES_DEBUG += \
     run_test_ipc.sh \
     mmgr-debug \
-    miu-app
+    miu-app \
+    mcd-test
 
 # Modem init actions
 PRODUCT_COPY_FILES += \
