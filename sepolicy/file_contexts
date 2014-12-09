@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-# pstore-clean
-/dev/pstore                 u:object_r:pstore_dev:s0
-/data/kpanic/pstore/(/.*)?  u:object_r:pstore-clean_data_file:s0
-/system/bin/pstore-clean    u:object_r:pstore-clean_exec:s0
-
-# userfastboot
-/sbin/userfastboot          u:object_r:userfastboot_exec:s0
-=======
 # Additional file_contexts
 # ASF securityfile service
 /system/bin/securityfileservice u:object_r:asf_exec:s0
->>>>>>> 4349ba9cbb59c45a71216dcc68d21a2f7baead24
