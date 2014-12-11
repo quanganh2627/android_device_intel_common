@@ -10,12 +10,13 @@ fi
 mkernel() {
     local T=$(gettop)
     local KERNEL_MAKEFILE=$(\cd "$T" && find device -name ${TARGET_PRODUCT}.mk | sed -e "s/${TARGET_PRODUCT}\.mk/AndroidBoard\.mk/")
+    local ARGS=$(echo "$*"; [ -z "$(echo $* | sed -e "s/-[^ ]*//g" -e "s/ //g")" ] && echo "kernel")
 
     if [ ! -f $T/$KERNEL_MAKEFILE ] ; then
         echo "Kernel makefile not found for TARGET_PRODUCT=$TARGET_PRODUCT. abort" 1>&2
         return 1
     fi
-    ONE_SHOT_MAKEFILE=$KERNEL_MAKEFILE make -C $T -f build/core/main.mk BUILD_KERNEL_FROM_SOURCES=1 $*
+    ONE_SHOT_MAKEFILE=$KERNEL_MAKEFILE make -C $T -f build/core/main.mk BUILD_KERNEL_FROM_SOURCES=1 INC_EXTERNAL_KMOD=1 $ARGS
 }
 
 mbimg() {

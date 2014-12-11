@@ -255,5 +255,11 @@ kernel_prebuilts: kernel
 	cp $(KERNEL_MODULES_ROOT)/*.ko $${MODULES_OUT}/ && \
 	cd $(KERNEL_PREBUILTS_DIR)/modules && \
 	cp -s ../lib/modules/*/*.ko .
+
+# When called with mkernel (mm for kernel) include also the external modules
+ifneq ($(INC_EXTERNAL_KMOD),)
+include $(call first-makefiles-under,kernel/gmin-quilt-representation/uefi/modules)
+endif
+
 endif
 # ------------------ END MIX-IN DEFINITIONS ------------------
