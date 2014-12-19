@@ -16,3 +16,7 @@ type hdcpd_data_file, file_type, data_file_type;
 
 #Powercap
 type sysfs_powercap, fs_type, sysfs_type;
+
+#Silent Lake
+type silentlake_data_file, file_type, data_file_type;
+type silentlake_socket, file_type;

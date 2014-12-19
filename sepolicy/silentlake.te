@@ -1,0 +1,9 @@
+type silentlake, domain;
+type silentlake_exec, exec_type, file_type;
+init_daemon_domain(silentlake)
+allow silentlake silentlake_device:chr_file rw_file_perms;
+allow silentlake silentlake_data_file:dir create_dir_perms;
+allow silentlake silentlake_data_file:file create_file_perms;
+allow silentlake silentlake_data_file:fifo_file { write read open setattr create getattr unlink};
+allow silentlake silentlake_socket:sock_file create_file_perms;
+allow silentlake self:process execmem;

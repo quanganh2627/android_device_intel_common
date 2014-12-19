@@ -7,6 +7,7 @@ init_daemon_domain(power_hal_helper)
 # only allow those that we are interested in;
 allow power_hal_helper mediaserver:dir search;
 allow power_hal_helper mediaserver:file { open read };
+allow power_hal_helper silentlake:file { read open };
 
 # no need to complain about denied access
 # as it will clutter the log when probing
