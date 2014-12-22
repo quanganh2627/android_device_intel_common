@@ -207,6 +207,11 @@ endif
 # AOSP and contains Intel optimizations to the compiler.
 PRODUCT_PACKAGES += libart-extension
 ##############################################################
+# Source: device/intel/mixins/groups/cellcoex/default/product.mk
+##############################################################
+PRODUCT_PACKAGES += CwsCellularCoexMgrService
+
+##############################################################
 # Source: device/intel/mixins/groups/widevine/default/product.mk
 ##############################################################
 # Make generic definition of media components.
