@@ -27,8 +27,55 @@ TARGET_RIL_DISABLE_STATUS_POLLING := true
 TARGET_BOARD_KERNEL_HEADERS := $(COMMON_PATH)/kernel-headers
 KERNEL_SRC_DIR ?= linux/kernel
 
-# enable ARM codegen for x86 with Houdini
+### Set ABI List for native bridge support
+#
+# To enable native brige support, the ABI list must
+# be set to include the target ABIs
+#
+# Install Native Bridge
+ifeq ($(WITH_NATIVE_BRIDGE),true)
+
+# Enable ARM codegen for x86 with Native Bridge
 BUILD_ARM_FOR_X86 := true
+
+# Native Bridge ABI List
+NB_ABI_LIST_32_BIT := armeabi-v7a armeabi
+# NB_ABI_LIST_64_BIT := arm64-v8a
+
+# Support 64 Bit Apps
+ifeq ($(TARGET_SUPPORTS_64_BIT_APPS),true)
+  TARGET_CPU_ABI_LIST_64_BIT ?= $(TARGET_CPU_ABI) $(TARGET_CPU_ABI2)
+  ifeq ($(TARGET_SUPPORTS_32_BIT_APPS),true)
+    TARGET_CPU_ABI_LIST_32_BIT ?= $(TARGET_2ND_CPU_ABI) $(TARGET_2ND_CPU_ABI2)
+  endif
+  ifneq ($(findstring ro.zygote=zygote32_64,$(PRODUCT_DEFAULT_PROPERTY_OVERRIDES)),)
+    TARGET_CPU_ABI_LIST := \
+        $(TARGET_CPU_ABI_LIST_32_BIT) \
+        $(TARGET_CPU_ABI_LIST_64_BIT) \
+        $(NB_ABI_LIST_32_BIT) \
+        $(NB_ABI_LIST_64_BIT)
+    TARGET_CPU_ABI_LIST_32_BIT += $(NB_ABI_LIST_32_BIT)
+  else
+    ifeq ($(TARGET_SUPPORTS_32_BIT_APPS),true)
+      TARGET_CPU_ABI_LIST := \
+          $(TARGET_CPU_ABI_LIST_64_BIT) \
+          $(TARGET_CPU_ABI_LIST_32_BIT) \
+          $(NB_ABI_LIST_32_BIT) \
+          $(NB_ABI_LIST_64_BIT)
+      TARGET_CPU_ABI_LIST_32_BIT += $(NB_ABI_LIST_32_BIT)
+    else
+      TARGET_CPU_ABI_LIST := $(TARGET_CPU_ABI_LIST_64_BIT) $(NB_ABI_LIST_64_BIT)
+    endif
+  endif
+  TARGET_CPU_ABI_LIST_64_BIT += $(NB_ABI_LIST_64_BIT)
+
+else
+  TARGET_CPU_ABI_LIST_32_BIT ?= $(TARGET_CPU_ABI) $(TARGET_CPU_ABI2)
+  TARGET_CPU_ABI_LIST_32_BIT += $(NB_ABI_LIST_32_BIT)
+  TARGET_CPU_ABI_LIST := $(TARGET_CPU_ABI_LIST_32_BIT)
+endif
+
+endif
 
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 
@@ -45,9 +92,6 @@ endif
 ifeq ($(strip $(DOLBY_DAP)),true)
 PRODUCT_BOOT_JARS += dolby_ds
 endif
-
-# Appends path to ARM libs for Houdini
-PRODUCT_LIBRARY_PATH := $(PRODUCT_LIBRARY_PATH):/system/lib/arm
 
 # By default, signing is performed using ISU (Intel Signing Utility).  Can be
 # overridden on specific target BoardConfig.mk.  Currently supported values for
@@ -217,12 +261,6 @@ BUILD_WITH_FULL_STAGEFRIGHT := true
 # If not set, one app can only use at most 16MB for runtime heap, which is
 # too small and sometimes would cause out-of-memory error.
 ADDITIONAL_BUILD_PROPERTIES += dalvik.vm.heapsize=64m
-
-# Enabling Houdini by default
-ADDITIONAL_BUILD_PROPERTIES += ro.product.cpu.abi2=armeabi-v7a
-
-# kernel Mmap memory bottom-up
-ADDITIONAL_BUILD_PROPERTIES += ro.config.personality=compat_layout
 
 # Security
 BUILD_WITH_CHAABI_SUPPORT := true
