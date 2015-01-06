@@ -166,6 +166,9 @@ USE_INTEL_IPP := true
 BOARD_USES_WRS_OMXIL_CORE := true
 BOARD_USES_MRST_OMX := true
 INTEL_VA := true
+
+# Enabled to support ALAC
+USE_FEATURE_ALAC := true
 ##############################################################
 # Source: device/intel/mixins/groups/sensors/iio/BoardConfig.mk
 ##############################################################

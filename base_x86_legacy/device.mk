@@ -128,6 +128,10 @@ PRODUCT_PACKAGES += \
     libgabi++-mfx \
     libstlport-mfx
 
+# Enable ALAC
+PRODUCT_PACKAGES += \
+    libstagefright_soft_alacdec
+
 # Build OMX wrapper codecs
 PRODUCT_PACKAGES += \
     libmdp_omx_core \
@@ -210,6 +214,16 @@ PRODUCT_PACKAGES += libart-extension
 # Source: device/intel/mixins/groups/cellcoex/default/product.mk
 ##############################################################
 PRODUCT_PACKAGES += CwsCellularCoexMgrService
+
+##############################################################
+# Source: device/intel/mixins/groups/security_assist/default/product.mk
+##############################################################
+# Intel Security Assist
+PRODUCT_PACKAGES += \
+        IntelSecurityAssist
+PRODUCT_PACKAGES_ENG += \
+        IntelSecurityAssistTest
+
 
 ##############################################################
 # Source: device/intel/mixins/groups/widevine/default/product.mk
