@@ -93,11 +93,6 @@ ifeq ($(strip $(DOLBY_DAP)),true)
 PRODUCT_BOOT_JARS += dolby_ds
 endif
 
-# By default, signing is performed using ISU (Intel Signing Utility).  Can be
-# overridden on specific target BoardConfig.mk.  Currently supported values for
-# the signing method are 'xfstk', 'xfstk_no_xml', 'isu', 'isu_plat2'.
-TARGET_OS_SIGNING_METHOD ?= isu
-
 FLASHFILE_NO_OTA := true
 INTEL_INGREDIENTS_VERSIONS := true
 INTEL_CAMERA := false
