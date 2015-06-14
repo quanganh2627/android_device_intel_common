@@ -362,7 +362,7 @@ endif
 
 .PHONY: get_kernel_from_tarball
 get_kernel_from_tarball:
-	tar -xv -C $(PRODUCT_OUT) -f $(TARGET_KERNEL_TARBALL)
+	tar -xzv -C $(PRODUCT_OUT) -f $(TARGET_KERNEL_TARBALL)
 
 bootimage: build_kernel
 

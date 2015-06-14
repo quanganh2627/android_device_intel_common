@@ -31,7 +31,7 @@ LOCAL_MODULE := init.bt.vendor.rc
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_CLASS := ETC
 LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
-LOCAL_SRC_FILES := init.bt.$(COMBO_CHIP_VENDOR).rc
+LOCAL_SRC_FILES := init.bt.bcm.rc
 include $(BUILD_PREBUILT)
 
 ##################################################
